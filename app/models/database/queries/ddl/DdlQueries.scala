@@ -1,8 +1,12 @@
 package models.database.queries.ddl
 
+import java.util.UUID
+
 import models.database.{ Row, Statement, SingleRowQuery }
 
 object DdlQueries {
+  val testUserId = UUID.fromString("00000000-0000-0000-0000-000000000000")
+
   case class DoesTableExist(tableName: String) extends SingleRowQuery[Boolean] {
     override val sql = "select exists (select * from information_schema.tables WHERE table_name = ?);"
     override val values = tableName :: Nil
@@ -10,7 +14,7 @@ object DdlQueries {
   }
 
   case object DoesTestUserExist extends SingleRowQuery[Boolean] {
-    override def sql = s"select count(*) as c from users where id = '${services.test.TestService.testUserId}'"
+    override def sql = s"select count(*) as c from users where id = '$testUserId'"
     override def map(row: Row): Boolean = row.as[Long]("c") == 1L
   }
 
@@ -18,7 +22,7 @@ object DdlQueries {
     override def sql = s"""insert into users (
       id, username, prefs, profiles, roles, created
     ) values (
-      '${services.test.TestService.testUserId}', 'Test User', '{ }', '{ }', '{ "user" }', '2015-01-01 00:00:00.000'
+      '$testUserId', 'Test User', '{ }', '{ }', '{ "user" }', '2015-01-01 00:00:00.000'
     )"""
   }
 

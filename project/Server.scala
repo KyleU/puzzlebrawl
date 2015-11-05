@@ -4,6 +4,7 @@ import sbt.Keys._
 import sbt.Project.projectToRef
 
 import playscalajs.PlayScalaJS.autoImport._
+import pl.project13.scala.sbt.JmhPlugin
 
 import com.typesafe.sbt.digest.Import._
 import com.typesafe.sbt.GitVersioning
@@ -25,10 +26,11 @@ object Server {
   private[this] val dependencies = {
     import Dependencies._
     Seq(
-      Cache.ehCache, Database.postgresAsync, Testing.akkaTestkit, Mail.mailer,
+      Cache.ehCache, Database.postgresAsync, Mail.mailer,
       Play.playFilters, Play.playWs, Play.playTest, Authentication.silhouette,
       Metrics.metrics, Metrics.healthChecks, Metrics.json, Metrics.jvm, Metrics.ehcache, Metrics.jettyServlet, Metrics.servlets, Metrics.graphite,
-      WebJars.requireJs, WebJars.bootstrap, WebJars.d3, WebJars.nvd3
+      WebJars.requireJs, WebJars.bootstrap, WebJars.d3, WebJars.nvd3,
+      Testing.akkaTestkit, Testing.specs2, Testing.specs2junit
     )
   }
 
@@ -73,6 +75,7 @@ object Server {
     .enablePlugins(SbtWeb)
     .enablePlugins(play.sbt.PlayScala)
     .enablePlugins(GitVersioning)
+    .enablePlugins(JmhPlugin)
     .settings(serverSettings: _*)
     .aggregate(projectToRef(Client.client))
     .aggregate(Shared.sharedJvm)
