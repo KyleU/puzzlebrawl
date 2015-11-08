@@ -1,13 +1,18 @@
 package models.game
 
 object Gem {
-  sealed abstract class Color(val code: Char, val crashCode: Char)
-  case object Red extends Color('r', 'R')
-  case object Green extends Color('g', 'G')
-  case object Blue extends Color('b', 'B')
-  case object Yellow extends Color('y', 'Y')
+  sealed trait Color
+  case object Red extends Color
+  case object Green extends Color
+  case object Blue extends Color
+  case object Yellow extends Color
+  case object Wild extends Color
 }
 
-case class Gem(id: Int, color: Gem.Color, crash: Boolean = false) {
-  def toChar = if(crash) { color.crashCode } else { color.code }
-}
+case class Gem(
+  id: Int,
+  color: Gem.Color,
+  crash: Boolean = false,
+  timer: Option[Int] = None,
+  group: Option[Int] = None
+)

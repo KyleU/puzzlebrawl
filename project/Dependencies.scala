@@ -44,6 +44,10 @@ object Dependencies {
     val graphite = "io.dropwizard.metrics" % "metrics-graphite" % "3.1.2" withSources() intransitive()
   }
 
+  object Miscellaneous {
+    val lanterna = "com.googlecode.lanterna" % "lanterna" % "3.0.0-beta1"
+  }
+
   object Testing {
     val akkaTestkit = "com.typesafe.akka" %% "akka-testkit" % "2.3.14"
     val specs2 = "org.specs2" %% "specs2-core" % "3.6.5"
