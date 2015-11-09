@@ -1,35 +1,51 @@
 package services.console
 
+import java.util.Random
+
+import com.googlecode.lanterna.input.KeyStroke
 import com.googlecode.lanterna.{TerminalPosition, TextColor, TextCharacter}
 import com.googlecode.lanterna.screen.TerminalScreen
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
-import models.game.{Gem, Board}
+import models.game.{GemStream, Color, Gem, Board}
+
+import scala.annotation.tailrec
 
 object ConsoleClient {
   private val fgColor = TextColor.ANSI.WHITE
   private val bgColor = TextColor.ANSI.BLACK
 
   def main(args: Array[String]) {
-    val c = new ConsoleClient()
+    val client = new ConsoleClient()
 
-    val b = Board(6, 12)
-    b.add(Gem(0, Gem.Red), 0, 0)
-    b.add(Gem(1, Gem.Blue), 1, 1)
-    b.add(Gem(2, Gem.Blue, crash = true), 2, 2)
-    b.add(Gem(3, Gem.Green, crash = true), 3, 2)
-    b.add(Gem(4, Gem.Green), 4, 1)
-    b.add(Gem(5, Gem.Yellow), 5, 0)
+    val r = new Random()
 
-    ConsoleBorders.render(c, 0, 0, b.width, b.height, fgColor, bgColor)
-    c.render(b, 1, 1)
+    val rows = Math.floor(client.screen.getTerminalSize.getRows / 15.toDouble).toInt
+    val cols = Math.floor(client.screen.getTerminalSize.getColumns / 15.toDouble).toInt
 
-    c.graphics.putString(0, b.height + 3, "Awaiting Input: ")
-    c.screen.setCursorPosition(new TerminalPosition(16, b.height + 3))
-    c.screen.refresh()
+    val gemStream = GemStream(0)
 
-    c.screen.readInput()
+    val boards = (0 until rows).flatMap { boardY =>
+      (0 until cols).map { boardX =>
+        val board = Board(6, 12)
+        ConsoleBorders.render(client, 1 + (15 * boardX), 1 + (15 * boardY), board.width, board.height, fgColor, bgColor)
 
-    c.stop()
+        (0 until 1).foreach { i =>
+          board.add(gemStream.next, r.nextInt(board.width), r.nextInt(board.height))
+        }
+
+        client.render(board, 2 + (15 * boardX), 2 + (15 * boardY))
+
+        board
+      }
+    }
+
+    client.graphics.putString(0, ((boards.head.height + 3) * rows) + 1, "Awaiting Input: ")
+    client.screen.setCursorPosition(new TerminalPosition(16, ((boards.head.height + 3) * rows) + 1))
+    client.screen.refresh()
+
+    client.processInput(client.screen.readInput())
+
+    client.stop()
   }
 }
 
@@ -69,11 +85,22 @@ class ConsoleClient {
     }
   }
 
-  private[this] def getColor(c: Gem.Color) = c match {
-    case Gem.Red => TextColor.ANSI.RED
-    case Gem.Green => TextColor.ANSI.GREEN
-    case Gem.Blue => TextColor.ANSI.BLUE
-    case Gem.Yellow => TextColor.ANSI.YELLOW
-    case Gem.Wild => TextColor.ANSI.WHITE
+  @tailrec
+  private def processInput(input: KeyStroke): Unit = {
+    val ret = input.getCharacter match {
+      case q if q == 'q' || q == '\n' || (q == 'd' && input.isCtrlDown) => false
+      case _ => true
+    }
+    if(ret) {
+      processInput(screen.readInput())
+    }
+  }
+
+  private[this] def getColor(c: Color) = c match {
+    case Color.Red => TextColor.ANSI.RED
+    case Color.Green => TextColor.ANSI.GREEN
+    case Color.Blue => TextColor.ANSI.BLUE
+    case Color.Yellow => TextColor.ANSI.YELLOW
+    case Color.Wild => TextColor.ANSI.WHITE
   }
 }

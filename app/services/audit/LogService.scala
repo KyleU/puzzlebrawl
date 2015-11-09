@@ -3,7 +3,7 @@ package services.audit
 import java.io.File
 
 import models.audit.ServerLog
-import models.audit.ServerLog.LogLevel
+import models.audit.LogLevel
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 
