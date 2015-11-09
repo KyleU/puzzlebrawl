@@ -8,6 +8,17 @@ case class Board(width: Int, height: Int) {
 
   def add(gem: Gem, x: Int, y: Int) = applyMutation(AddGem(gem, x, y))
 
+  def drop(gem: Gem, x: Int) = {
+    val col = spaces(x)
+    val yOpt = col.indices.reverseIterator.find(i => col(i).isDefined) match {
+      case Some(yMatch) if yMatch == height - 1 => None
+      case Some(yMatch) => Some(yMatch + 1)
+      case None => Some(0)
+    }
+    yOpt.foreach(y => applyMutation(AddGem(gem, x, y)))
+    yOpt
+  }
+
   def applyMutation(m: Mutation) = m match {
     case ag: AddGem => applyAdd(ag)
     case mg: MoveGem => applyMove(mg)
