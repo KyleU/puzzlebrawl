@@ -3,13 +3,12 @@ package services.console
 import com.googlecode.lanterna.{TextColor, TextCharacter}
 
 object ConsoleBorders {
-  private[this] val ulCorner = '\u2554'
-  private[this] val urCorner = '\u2557'
-  private[this] val blCorner = '\u255A'
-  private[this] val brCorner = '\u255D'
-  private[this] val horizontal = '\u2550'
-  private[this] val vertical = '\u2551'
-
+  val ulCorner = '\u2554'
+  val urCorner = '\u2557'
+  val blCorner = '\u255A'
+  val brCorner = '\u255D'
+  val horizontal = '\u2550'
+  val vertical = '\u2551'
 
   def render(c: ConsoleClient, x: Int, y: Int, width: Int, height: Int, fgColor: TextColor, bgColor: TextColor) = {
     c.screen.setCharacter(x, y, new TextCharacter(ulCorner, fgColor, bgColor))
