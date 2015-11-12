@@ -1,4 +1,4 @@
-package models.game
+package models.game.gem
 
 sealed trait FuseRole
 

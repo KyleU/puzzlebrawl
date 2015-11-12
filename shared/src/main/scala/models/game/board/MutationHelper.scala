@@ -1,8 +1,9 @@
-package models.game
+package models.game.board
 
-import models.game.Board._
+import models.game.board.Board._
+import models.game.gem.FuseRole
 
-trait BoardMutationHelper { this: Board =>
+trait MutationHelper { this: Board =>
   def applyMutations(mutations: Seq[Mutation]) = mutations.foreach(applyMutation)
 
   def applyMutation(m: Mutation) = m match {
@@ -13,12 +14,12 @@ trait BoardMutationHelper { this: Board =>
     case rg: RemoveGem => applyRemove(rg)
   }
 
-  protected[this] def applyAdd(m: AddGem) = spaces(m.x)(m.y) match {
+  private[this] def applyAdd(m: AddGem) = spaces(m.x)(m.y) match {
     case Some(offender) => throw new IllegalStateException(s"Attempt to add [${m.gem}] to [${m.x}, ${m.y}], which is occupied by [$offender].")
     case None => spaces(m.x)(m.y) = Some(m.gem)
   }
 
-  protected[this] def applyChange(m: ChangeGem) = {
+  private[this] def applyChange(m: ChangeGem) = {
     val oldGem = spaces(m.x)(m.y).getOrElse(throw new IllegalStateException(s"Change attempted for empty position [${m.x}, ${m.y}]."))
     if(oldGem == m.newGem) {
       throw new IllegalStateException(s"Attempted to change unchanged gem [${m.newGem}].")
@@ -29,20 +30,21 @@ trait BoardMutationHelper { this: Board =>
     spaces(m.x)(m.y) = Some(m.newGem)
   }
 
-  protected[this] def applyFuse(m: FuseGems) = {
+  private[this] def applyFuse(m: FuseGems) = {
     for(xDelta <- 0 until m.width; yDelta <- 0 until m.height) {
       spaces(m.x + xDelta)(m.y + yDelta) match {
         case None => throw new IllegalStateException(s"Attempt to fuse empty space at [${m.x}, ${m.y}].")
-        case Some(gem) =>
+        case Some(gem) => gem.group.foreach { group =>
           val fuseRole = FuseRole.roleFor(xDelta, yDelta, m.width, m.height)
-          if(!gem.fuseRole.contains(fuseRole)) {
-            spaces(m.x + xDelta)(m.y + yDelta) = Some(gem.copy(fuseRole = Some(fuseRole)))
+          if(group._2 != fuseRole) {
+            spaces(m.x + xDelta)(m.y + yDelta) = Some(gem.copy(group = Some(gem.group.get._1 -> fuseRole)))
           }
+        }
       }
     }
   }
 
-  protected[this] def applyMove(m: MoveGem) = {
+  private[this] def applyMove(m: MoveGem) = {
     val source = spaces(m.oldX)(m.oldY).getOrElse(throw new IllegalStateException(s"Move attempted from empty position [${m.oldX}, ${m.oldY}]."))
     spaces(m.newX)(m.newY) match {
       case Some(offender) =>
@@ -54,8 +56,8 @@ trait BoardMutationHelper { this: Board =>
     }
   }
 
-  protected[this] def applyRemove(m: RemoveGem) = {
-    val gem = spaces(m.x)(m.y).getOrElse(throw new IllegalStateException(s"Move attempted from empty position [${m.x}, ${m.y}]."))
+  private[this] def applyRemove(m: RemoveGem) = {
+    val gem = spaces(m.x)(m.y).getOrElse(throw new IllegalStateException(s"Remove attempted from empty position [${m.x}, ${m.y}]."))
     if(!spaces(m.x)(m.y).contains(gem)) {
       throw new IllegalStateException(s"Attempt to remove [$gem] from empty location [${m.x}, ${m.y}].")
     }

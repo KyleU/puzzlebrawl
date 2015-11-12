@@ -1,9 +1,9 @@
-package services.console
+package services.console.test
 
-import com.googlecode.lanterna.input.{ KeyType, KeyStroke }
-import models.game.Board
+import com.googlecode.lanterna.input.{ KeyStroke, KeyType }
+import models.game.board.Board
 
-object ConsoleTestBasic extends ConsoleTest {
+object ConsoleTestBasic extends ConsoleInteractiveTest {
   override def init() = {
     val rows = Math.floor(client.rows / 15.toDouble).toInt
     val cols = Math.floor(client.cols / 15.toDouble).toInt

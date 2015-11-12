@@ -1,16 +1,16 @@
 package services.console
 
 import com.googlecode.lanterna.TextColor
-import models.game.{ Gem, FuseRole }
+import models.game.gem.{ FuseRole, Gem }
 
 object ConsoleGemPattern {
   def pattern(gemOpt: Option[Gem]) = gemOpt match {
     case None => (' ', ' ', TextColor.ANSI.WHITE)
     case Some(gem) if gem.timer.isDefined => (gem.timer.getOrElse(0).toString.head, gem.timer.getOrElse(0).toString.head, getColor(gem.color))
-    case Some(gem) if gem.fuseRole.isDefined =>
+    case Some(gem) if gem.group.isDefined =>
       import ConsoleBorders._
       val color = getColor(gem.color)
-      gem.fuseRole.getOrElse(throw new IllegalStateException()) match {
+      gem.group.map(_._2).getOrElse(throw new IllegalStateException()) match {
         case FuseRole.TopLeft => (ulCorner, horizontal, color)
         case FuseRole.Top => (horizontal, horizontal, color)
         case FuseRole.TopRight => (horizontal, urCorner, color)
@@ -19,7 +19,7 @@ object ConsoleGemPattern {
         case FuseRole.Bottom => (horizontal, horizontal, color)
         case FuseRole.BottomLeft => (blCorner, horizontal, color)
         case FuseRole.Left => (vertical, ' ', color)
-        case FuseRole.Center => (':', ':', color)
+        case FuseRole.Center => (' ', ' ', color)
       }
     case Some(gem) => gem.crash match {
       case true => ('(', ')', getColor(gem.color))

@@ -1,16 +1,11 @@
-package services.console
+package services.console.test
 
-import java.util.Random
-
-import com.googlecode.lanterna.input.{ KeyType, KeyStroke }
+import com.googlecode.lanterna.input.{ KeyStroke, KeyType }
+import services.console.ConsoleClient
 
 import scala.annotation.tailrec
 
-abstract class ConsoleTest {
-  protected val r = new Random()
-  protected val client = new ConsoleClient()
-
-  def init(): Unit
+abstract class ConsoleInteractiveTest extends ConsoleBaseTest {
   def inputCharacter(keyStroke: KeyStroke): Boolean
 
   @tailrec
@@ -32,8 +27,6 @@ abstract class ConsoleTest {
 
   def main(args: Array[String]) {
     init()
-
-    val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("ConsoleTest", "")
     client.addStatusLog(s"Test [$testName] initialized.")
     processInput(client.screen.readInput(), client)
     client.stop()

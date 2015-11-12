@@ -1,6 +1,8 @@
 package models.test
 
-import models.game.{Color, Gem, Board}
+import models.game.board.Board
+import models.game.Color
+import models.game.gem.Gem
 import org.specs2.mutable._
 
 class BoardSpec extends Specification {

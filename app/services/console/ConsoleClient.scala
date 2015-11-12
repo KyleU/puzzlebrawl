@@ -3,7 +3,8 @@ package services.console
 import com.googlecode.lanterna.screen.TerminalScreen
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.{ TerminalPosition, TextCharacter, TextColor }
-import models.game.{ Board, GemStream }
+import models.game.board.Board
+import models.game.gem.GemStream
 import org.joda.time.LocalDateTime
 import utils.{ Formatter, DateUtils }
 

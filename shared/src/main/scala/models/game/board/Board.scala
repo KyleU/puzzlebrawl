@@ -1,4 +1,6 @@
-package models.game
+package models.game.board
+
+import models.game.gem.Gem
 
 object Board {
   sealed trait Mutation
@@ -10,7 +12,7 @@ object Board {
   case class RemoveGem(x: Int, y: Int) extends Mutation
 }
 
-case class Board(width: Int, height: Int) extends BoardMutationHelper {
+case class Board(width: Int, height: Int) extends BoardHelper {
   import Board._
 
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
@@ -18,7 +20,11 @@ case class Board(width: Int, height: Int) extends BoardMutationHelper {
     spaces(x)(y) = None
   }
 
-  def at(x: Int, y: Int) = spaces(x)(y)
+  def at(x: Int, y: Int) = if(x < 0 || x > width - 1 || y < 0 || y > height - 1) {
+    None
+  } else {
+    spaces(x)(y)
+  }
 
   def mapSpaces[T](f: (Option[Gem], Int, Int) => Seq[T]) = for(x <- 0 until width; y <- 0 until height) yield {
     f(at(x, y), x, y)

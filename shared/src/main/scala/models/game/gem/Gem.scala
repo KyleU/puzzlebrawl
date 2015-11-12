@@ -1,4 +1,4 @@
-package models.game
+package models.game.gem
 
 object Gem {
   sealed trait Color
@@ -14,5 +14,5 @@ case class Gem(
   color: Gem.Color,
   crash: Boolean = false,
   timer: Option[Int] = None,
-  fuseRole: Option[FuseRole] = None
+  group: Option[(Int, FuseRole)] = None
 )

@@ -1,8 +1,8 @@
 package models.benchmark
 
 import java.util.concurrent.TimeUnit
-
-import models.game.{ Gem, Board }
+import models.game.board.Board
+import models.game.gem.Gem
 import org.openjdk.jmh.annotations._
 
 class BoardBenchmark {
