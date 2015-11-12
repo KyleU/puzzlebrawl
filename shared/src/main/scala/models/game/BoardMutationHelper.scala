@@ -3,6 +3,8 @@ package models.game
 import models.game.Board._
 
 trait BoardMutationHelper { this: Board =>
+  def applyMutations(mutations: Seq[Mutation]) = mutations.foreach(applyMutation)
+
   def applyMutation(m: Mutation) = m match {
     case ag: AddGem => applyAdd(ag)
     case mg: MoveGem => applyMove(mg)

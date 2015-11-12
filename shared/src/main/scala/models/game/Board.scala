@@ -13,9 +13,20 @@ object Board {
 case class Board(width: Int, height: Int) extends BoardMutationHelper {
   import Board._
 
-  val spaces = Array.ofDim[Option[Gem]](width, height)
-  for(x <- spaces; y <- x.indices) {
-    x(y) = None
+  protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
+  for(x <- 0 until width; y <- 0 until height) {
+    spaces(x)(y) = None
+  }
+
+  def at(x: Int, y: Int) = spaces(x)(y)
+
+  def mapSpaces[T](f: (Option[Gem], Int, Int) => Seq[T]) = for(x <- 0 until width; y <- 0 until height) yield {
+    f(at(x, y), x, y)
+  }
+
+  def mapGems[T](f: (Gem, Int, Int) => Seq[T]) = mapSpaces {
+    case (Some(gem), x, y) => f(gem, x, y)
+    case _ => Seq.empty
   }
 
   def add(gem: Gem, x: Int, y: Int) = applyMutation(AddGem(gem, x, y))
