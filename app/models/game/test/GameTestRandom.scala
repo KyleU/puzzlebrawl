@@ -9,18 +9,21 @@ object GameTestRandom extends GameTest.Provider {
 }
 
 case class GameTestRandom() extends GameTest(seed = Random.nextInt()) {
-  private val boardStream = GemStream(seed)
-  private val goalStream = GemStream(seed)
-
-  override def init() = for(y <- 0 until goal.height) {
-    for(x <- 0 until goal.width) {
-      goal.add(goalStream.next, x, y)
+  override def init() = {
+    val goalStream = GemStream(seed)
+    for(y <- 0 until goal.height) {
+      for(x <- 0 until goal.width) {
+        goal.add(goalStream.next, x, y)
+      }
     }
   }
 
-  override def run() = for(y <- 0 until board.height) {
-    for(x <- 0 until board.width) {
-      board.add(goalStream.next, x, y)
+  override def run() = {
+    val boardStream = GemStream(seed)
+    for(y <- 0 until board.height) {
+      for(x <- 0 until board.width) {
+        board.add(boardStream.next, x, y)
+      }
     }
   }
 }
