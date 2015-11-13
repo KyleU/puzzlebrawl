@@ -2,7 +2,7 @@ package models.game.test
 
 import models.game.gem.{ Color, Gem }
 
-object GameTestCollapse extends GameTest(6, 12) {
+object GameTestCollapse extends GameTest(seed = 0, width = 6, height = 12) {
   override def init() = {
     board.add(Gem(0, Color.Red), 0, 0)
     board.add(Gem(1, Color.Green), 1, 2)

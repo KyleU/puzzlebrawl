@@ -1,7 +1,6 @@
-package services.console.test
+package services.console
 
 import models.game.test.GameTest
-import services.console.ConsoleClient
 
 object ConsoleTest {
   def main(args: Array[String]) {
@@ -12,15 +11,18 @@ object ConsoleTest {
   }
 
   def run(test: GameTest) = {
+    test.init()
     val client = new ConsoleClient()
     client.add(test.board)
     client.add(test.testBoard)
-    test.init()
+
     val pauseBeforeRun = true // ??
     if(pauseBeforeRun) {
-      client.addStatusLog(s"Test [$test.testName] initialized.")
+      client.addStatusLog(s"Test [${test.testName}] initialized.")
       client.screen.readInput()
     }
+    client.render()
+
     test.run()
     client.render()
 
@@ -37,9 +39,9 @@ object ConsoleTest {
     }
 
     if(errors.isEmpty) {
-      client.addStatusLog(s"Test [$test.testName] completed successfully. Press any key to continue.")
+      client.addStatusLog(s"Test [${test.testName}] completed successfully. Press any key to continue.")
     } else {
-      client.addStatusLog(s"Test [$test.testName] completed with [${errors.length}] errors. Press any key to continue.")
+      client.addStatusLog(s"Test [${test.testName}] completed with [${errors.length}] errors. Press any key to continue.")
     }
 
     client.screen.readInput()
