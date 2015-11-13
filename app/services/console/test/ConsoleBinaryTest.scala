@@ -45,7 +45,7 @@ abstract class ConsoleBinaryTest(width: Int, height: Int) extends ConsoleBaseTes
     client.stop()
 
     if(errors.nonEmpty) {
-      val errorStrings = errors.map(x => s"${x._1} is not equal to ${x._2} at position [${x._3}, ${x._4}]")
+      val errorStrings = errors.map(x => s"[${x._3}, ${x._4}]: ${x._1.getOrElse("Empty")} is not equal to ${x._2.getOrElse("Empty")}.")
       throw new IllegalStateException("Errors encountered: [\n  " + errorStrings.mkString("\n  ") + "\n].")
     }
   }
