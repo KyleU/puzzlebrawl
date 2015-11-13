@@ -7,8 +7,8 @@ import _root_.play.api.Play
 object Config {
   private[this] val cnf = ConfigFactory.load()
 
-  val projectId = "sunscreen"
-  val projectName = "Sunscreen"
+  val projectId = "puzzlebrawl"
+  val projectName = "Puzzle Brawl"
   val version = "0.1"
 
   val debug = !Play.isProd(Play.current)

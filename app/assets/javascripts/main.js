@@ -6,7 +6,7 @@ requirejs.config({
   }
 });
 
-requirejs(['Sunscreen'], function(Sunscreen) {
+requirejs(['PuzzleBrawl'], function(PuzzleBrawl) {
   'use strict';
-  window.sunscreen = new Sunscreen();
+  window.puzzlebrawl = new PuzzleBrawl();
 });

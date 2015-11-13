@@ -1,4 +1,4 @@
-/* global Sunscreen:false */
+/* global PuzzleBrawl:false */
 (function() {
   'use strict';
 
@@ -57,7 +57,7 @@
     ajaxStatusEl = document.getElementById('ajax-content');
     scalaJsStatusEl = document.getElementById('scalajs-content');
 
-    scalaJsService = new Sunscreen();
+    scalaJsService = new PuzzleBrawl();
     scalaJsService.register(scalaJsCallback);
     scalaJsStatusEl.textContent = 'Ready';
     setTimeout(sendPings, 1000);

@@ -11,7 +11,7 @@ import playscalajs.ScalaJSPlay
 import playscalajs.ScalaJSPlay.autoImport._
 
 object Shared {
-  val projectId = "sunscreen"
+  val projectId = "puzzlebrawl"
 
   val compileOptions = Seq(
     "-encoding", "UTF-8", "-feature", "-deprecation", "-unchecked", "–Xcheck-null", "-Xfatal-warnings", "-Xlint",

@@ -1,11 +1,9 @@
-import java.util.UUID
-
 import models._
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
 
-object Sunscreen extends js.JSApp {
+object PuzzleBrawl extends js.JSApp {
   override def main(): Unit = {}
 
   private[this] var sendCallback: js.Function1[String, Unit] = _

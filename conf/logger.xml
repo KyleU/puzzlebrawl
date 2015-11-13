@@ -9,9 +9,9 @@
   </appender>
 
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>logs/sunscreen.log</file>
+    <file>logs/puzzlebrawl.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>logs/sunscreen.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <fileNamePattern>logs/puzzlebrawl.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>50MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -26,7 +26,7 @@
 
   <logger name="play" level="INFO" />
   <logger name="application" level="INFO" />
-  <logger name="sunscreen" level="INFO" />
+  <logger name="puzzlebrawl" level="INFO" />
 
   <logger name="com.mohiva" level="INFO" />
   <logger name="com.github.mauricio.async.db" level="WARN" />

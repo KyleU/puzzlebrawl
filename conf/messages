@@ -17,7 +17,7 @@ registration.username.taken = That username is already in use.
 registration.email.taken = That email address is already in use.
 
 # Index Page
-index.welcome = Welcome to Sunscreen!
+index.welcome = Welcome to Puzzle Brawl!
 
 # Feedback
 feedback.prompt = Feedback is always appreciated. Thanks for sharing yours.
@@ -31,7 +31,7 @@ profile.use.image.as.avatar = Use your {0} profile image as your avatar
 profile.connect.account = Connect your {0} account
 
 # Email
-email.from = Sunscreen <admin@127.0.0.1>
+email.from = Puzzle Brawl <admin@puzzlebrawl.com>
 email.welcome.subject = Welcome to {0}!
-email.welcome.body.html = <em>Welcome to <strong>Sunscreen</strong>!</em><br>We're so glad you're here.
-email.welcome.body.text = Welcome to Sunscreen! We're so glad you're here.
+email.welcome.body.html = <em>Welcome to <strong>Puzzle Brawl</strong>!</em><br>We're so glad you're here.
+email.welcome.body.text = Welcome to Puzzle Brawl! We're so glad you're here.

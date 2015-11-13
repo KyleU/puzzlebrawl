@@ -4,12 +4,12 @@ define(['utils/Config', 'utils/Websocket'], function (cfg, Websocket) {
 
   var wsStatusEl = document.getElementById('websocket-content');
 
-  function Sunscreen() {
+  function PuzzleBrawl() {
     this.ws = new Websocket(cfg.wsUrl, this);
     document.getElementById('require-content').textContent = 'Initialized';
   }
 
-  Sunscreen.prototype.onConnect = function() {
+  PuzzleBrawl.prototype.onConnect = function() {
     var self = this;
     function sendPing() {
       self.ws.send('Ping', { timestamp: new Date().getTime() });
@@ -20,7 +20,7 @@ define(['utils/Config', 'utils/Websocket'], function (cfg, Websocket) {
     setTimeout(sendPing, 1000);
   };
 
-  Sunscreen.prototype.onMessage = function(c, v) {
+  PuzzleBrawl.prototype.onMessage = function(c, v) {
     switch(c) {
       case 'Pong':
         var delta = new Date().getTime() - v.timestamp;
@@ -32,5 +32,5 @@ define(['utils/Config', 'utils/Websocket'], function (cfg, Websocket) {
     }
   };
 
-  return Sunscreen;
+  return PuzzleBrawl;
 });

@@ -10,7 +10,7 @@ import utils.metrics.Instrumented
 import scala.concurrent.Future
 
 object PlayLoggingFilter extends Filter with Logging with Instrumented {
-  val prefix = "sunscreen.requests."
+  val prefix = "puzzlebrawl.requests."
 
   val knownStatuses = Seq(
     Status.OK, Status.BAD_REQUEST, Status.FORBIDDEN, Status.NOT_FOUND,
