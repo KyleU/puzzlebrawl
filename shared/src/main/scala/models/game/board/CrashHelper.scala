@@ -24,10 +24,14 @@ trait CrashHelper { this: Board =>
     mapGems { (gem, x, y) =>
       if(gem.crash) {
         val run = check(gem, gem, x, y)
-        run.map { n =>
-          val msg = RemoveGem(n._2, n._3)
-          applyMutation(msg)
-          msg
+        if(run.size > 1) {
+          run.map { n =>
+            val msg = RemoveGem(n._2, n._3)
+            applyMutation(msg)
+            msg
+          }
+        } else {
+          Seq.empty
         }
       } else {
         Seq.empty

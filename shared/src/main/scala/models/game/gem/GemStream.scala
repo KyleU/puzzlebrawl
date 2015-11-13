@@ -27,7 +27,7 @@ case class GemStream(
   private[this] var nextId = 0
 
   private[this] val wildChance = GemStream.baseWildGemChance * gemAdjustWild
-  private[this] val crashChance = GemStream.baseWildGemChance * gemAdjustCrash
+  private[this] val crashChance = GemStream.baseCrashGemChance * gemAdjustCrash
 
   val baseChanceValue = 100.0
 
@@ -48,11 +48,10 @@ case class GemStream(
   private[this] val crashChanceTotal = crashChances.map(_._2).sum
 
   def next = {
-    val diceRoll = r.nextDouble
-    val ret = if(diceRoll < wildChance) {
+    val ret = if(r.nextDouble < wildChance) {
       Gem(nextId, color = Color.Wild)
     } else {
-      val crash = diceRoll < crashChance
+      val crash = r.nextDouble < crashChance
       val color = randomColor(crash)
       Gem(nextId, color = color, crash = crash)
     }
