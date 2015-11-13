@@ -49,6 +49,9 @@ GET         /admin/feedback                    controllers.admin.FeedbackControl
 GET         /admin/feedback/:id/note           controllers.admin.FeedbackController.feedbackNoteForm(id: java.util.UUID)
 GET         /admin/feedback/:id/remove         controllers.admin.FeedbackController.removeFeedback(id: java.util.UUID)
 
+GET         /admin/test                        controllers.admin.TestController.list()
+GET         /admin/test/:name                  controllers.admin.TestController.run(name)
+
 GET         /admin/logs                        controllers.admin.LogController.list()
 GET         /admin/logs/:name                  controllers.admin.LogController.view(name)
 

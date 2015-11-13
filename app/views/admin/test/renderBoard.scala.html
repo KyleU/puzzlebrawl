@@ -1,0 +1,29 @@
+@(board: models.game.board.Board)
+<div>
+  <table class="table table-bordered game-table">
+    <thead>
+      <tr>
+        <th></th>
+        @for(x <- 0 until board.width) {
+          <th>@x</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for(y <- board.height - 1 to 0 by -1) {
+        <tr>
+          <th>@y</th>
+          @for(x <- 0 until board.width) {
+          <td style="text-align: center;">
+          @board.at(x, y).map { gem =>
+            @defining("gem color-" + gem.color.charVal + (if(gem.crash) { " crash" } else { "" })) { cssClass =>
+              <div class="@cssClass" title="[@x, @y]: @gem">@gem.timer.getOrElse(if(gem.color == models.game.gem.Color.Wild) { "W" } else { "" })</div>
+            }
+          }.getOrElse { <div class="empty-space">&nbsp;</div> }
+          </td>
+        }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

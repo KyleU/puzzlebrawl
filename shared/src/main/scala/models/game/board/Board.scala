@@ -10,12 +10,17 @@ object Board {
   case class ChangeGem(newGem: Gem, x: Int, y: Int) extends Mutation
   case class FuseGems(x: Int, y: Int, width: Int, height: Int)
   case class RemoveGem(x: Int, y: Int) extends Mutation
+
+  def withKey(key: String) = ofSize(key, 6, 12)
+  def ofSize(key: String, width: Int, height: Int) = Board(key, Array.ofDim[Option[Gem]](width, height))
 }
 
-case class Board(key: String, width: Int, height: Int) extends BoardHelper {
+case class Board(key: String, spaces: Array[Array[Option[Gem]]]) extends BoardHelper {
   import Board._
 
-  protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
+  val width = spaces.size
+  val height = spaces.headOption.map(_.length).getOrElse(0)
+
   for(x <- 0 until width; y <- 0 until height) {
     spaces(x)(y) = None
   }

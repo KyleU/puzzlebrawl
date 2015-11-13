@@ -1,0 +1,13 @@
+@()(implicit session: Session, flash: Flash)
+@layout.admin(s"${utils.Config.projectName} Tests", "test") {
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="text-large">@utils.Config.projectName Tests</div>
+      <ul>
+        @for(test <- models.game.test.GameTest.all) {
+          <li><a href="@controllers.admin.routes.TestController.run(test.testName)">@test.testName</a></li>
+        }
+      </ul>
+    </div>
+  </div>
+}
