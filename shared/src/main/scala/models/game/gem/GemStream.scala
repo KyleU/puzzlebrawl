@@ -32,25 +32,25 @@ case class GemStream(
   val baseChanceValue = 100.0
 
   private[this] val gemChances = Seq(
-    Gem.Red -> baseChanceValue * gemAdjustRed,
-    Gem.Green -> baseChanceValue * gemAdjustGreen,
-    Gem.Blue -> baseChanceValue * gemAdjustBlue,
-    Gem.Yellow -> baseChanceValue * gemAdjustYellow
+    Color.Red -> baseChanceValue * gemAdjustRed,
+    Color.Green -> baseChanceValue * gemAdjustGreen,
+    Color.Blue -> baseChanceValue * gemAdjustBlue,
+    Color.Yellow -> baseChanceValue * gemAdjustYellow
   )
   private[this] val gemChanceTotal = gemChances.map(_._2).sum
 
   private[this] val crashChances = Seq(
-    Gem.Red -> baseChanceValue * crashAdjustRed,
-    Gem.Green -> baseChanceValue * crashAdjustGreen,
-    Gem.Blue -> baseChanceValue * crashAdjustBlue,
-    Gem.Yellow -> baseChanceValue * crashAdjustYellow
+    Color.Red -> baseChanceValue * crashAdjustRed,
+    Color.Green -> baseChanceValue * crashAdjustGreen,
+    Color.Blue -> baseChanceValue * crashAdjustBlue,
+    Color.Yellow -> baseChanceValue * crashAdjustYellow
   )
   private[this] val crashChanceTotal = crashChances.map(_._2).sum
 
   def next = {
     val diceRoll = r.nextDouble
     val ret = if(diceRoll < wildChance) {
-      Gem(nextId, color = Gem.Wild)
+      Gem(nextId, color = Color.Wild)
     } else {
       val crash = diceRoll < crashChance
       val color = randomColor(crash)
@@ -60,7 +60,7 @@ case class GemStream(
     ret
   }
 
-  private[this] def randomColor(crash: Boolean): Gem.Color = {
+  private[this] def randomColor(crash: Boolean): Color = {
     val dist = if(crash) { crashChances } else { gemChances }
     val p = r.nextDouble * (if(crash) { crashChanceTotal } else { gemChanceTotal })
     var accum = 0.0

@@ -1,7 +1,6 @@
 package models.game.board
 
 import models.game.board.Board._
-import models.game.gem.FuseRole
 
 trait MutationHelper { this: Board =>
   def applyMutations(mutations: Seq[Mutation]) = mutations.foreach(applyMutation)
@@ -34,12 +33,8 @@ trait MutationHelper { this: Board =>
     for(xDelta <- 0 until m.width; yDelta <- 0 until m.height) {
       spaces(m.x + xDelta)(m.y + yDelta) match {
         case None => throw new IllegalStateException(s"Attempt to fuse empty space at [${m.x}, ${m.y}].")
-        case Some(gem) => gem.group.foreach { group =>
-          val fuseRole = FuseRole.roleFor(xDelta, yDelta, m.width, m.height)
-          if(group._2 != fuseRole) {
-            spaces(m.x + xDelta)(m.y + yDelta) = Some(gem.copy(group = Some(gem.group.get._1 -> fuseRole)))
-          }
-        }
+        case Some(gem) =>
+          // TODO
       }
     }
   }

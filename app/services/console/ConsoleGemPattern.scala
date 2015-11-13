@@ -1,7 +1,7 @@
 package services.console
 
 import com.googlecode.lanterna.TextColor
-import models.game.gem.{ FuseRole, Gem }
+import models.game.gem.{ Color, Gem }
 
 object ConsoleGemPattern {
   def pattern(gemOpt: Option[Gem]) = gemOpt match {
@@ -10,28 +10,30 @@ object ConsoleGemPattern {
     case Some(gem) if gem.group.isDefined =>
       import ConsoleBorders._
       val color = getColor(gem.color)
-      gem.group.map(_._2).getOrElse(throw new IllegalStateException()) match {
-        case FuseRole.TopLeft => (ulCorner, horizontal, color)
-        case FuseRole.Top => (horizontal, horizontal, color)
-        case FuseRole.TopRight => (horizontal, urCorner, color)
-        case FuseRole.Right => (' ', vertical, color)
-        case FuseRole.BottomRight => (horizontal, brCorner, color)
-        case FuseRole.Bottom => (horizontal, horizontal, color)
-        case FuseRole.BottomLeft => (blCorner, horizontal, color)
-        case FuseRole.Left => (vertical, ' ', color)
-        case FuseRole.Center => (' ', ' ', color)
-      }
+//      gem.group.map(_._2).getOrElse(throw new IllegalStateException()) match {
+//        case GroupRole.TopLeft => (ulCorner, horizontal, color)
+//        case GroupRole.Top => (horizontal, horizontal, color)
+//        case GroupRole.TopRight => (horizontal, urCorner, color)
+//        case GroupRole.Right => (' ', vertical, color)
+//        case GroupRole.BottomRight => (horizontal, brCorner, color)
+//        case GroupRole.Bottom => (horizontal, horizontal, color)
+//        case GroupRole.BottomLeft => (blCorner, horizontal, color)
+//        case GroupRole.Left => (vertical, ' ', color)
+//        case GroupRole.Center => (' ', ' ', color)
+//      }
+      (horizontal, horizontal, color) // TODO Fix
+
     case Some(gem) => gem.crash match {
       case true => ('(', ')', getColor(gem.color))
       case false => ('[', ']', getColor(gem.color))
     }
   }
 
-  private[this] def getColor(c: Gem.Color) = c match {
-    case Gem.Red => TextColor.ANSI.RED
-    case Gem.Green => TextColor.ANSI.GREEN
-    case Gem.Blue => TextColor.ANSI.BLUE
-    case Gem.Yellow => TextColor.ANSI.YELLOW
-    case Gem.Wild => TextColor.ANSI.WHITE
+  private[this] def getColor(color: Color) = color match {
+    case Color.Red => TextColor.ANSI.RED
+    case Color.Green => TextColor.ANSI.GREEN
+    case Color.Blue => TextColor.ANSI.BLUE
+    case Color.Yellow => TextColor.ANSI.YELLOW
+    case Color.Wild => TextColor.ANSI.WHITE
   }
 }
