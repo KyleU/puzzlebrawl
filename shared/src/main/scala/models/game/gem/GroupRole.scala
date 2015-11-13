@@ -1,17 +1,17 @@
 package models.game.gem
 
-sealed trait FuseRole
+sealed trait GroupRole
 
-object FuseRole {
-  case object TopLeft extends FuseRole
-  case object Top extends FuseRole
-  case object TopRight extends FuseRole
-  case object Right extends FuseRole
-  case object BottomRight extends FuseRole
-  case object Bottom extends FuseRole
-  case object BottomLeft extends FuseRole
-  case object Left extends FuseRole
-  case object Center extends FuseRole
+object GroupRole {
+  case object TopLeft extends GroupRole
+  case object Top extends GroupRole
+  case object TopRight extends GroupRole
+  case object Right extends GroupRole
+  case object BottomRight extends GroupRole
+  case object Bottom extends GroupRole
+  case object BottomLeft extends GroupRole
+  case object Left extends GroupRole
+  case object Center extends GroupRole
 
   def roleFor(x: Int, y: Int, width: Int, height: Int) = if(x == 0) {
     if (y == 0) {
