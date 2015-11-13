@@ -12,7 +12,7 @@ class BoardBenchmark {
   @Threads(6)
   @Fork(1)
   def creation() = {
-    val board = new Board(6, 12)
+    val board = new Board("benchmark", 6, 12)
     board.add(Gem(0, Color.Red), 0, 0)
     board.add(Gem(1, Color.Red), 1, 0)
     board.add(Gem(2, Color.Red), 2, 0)

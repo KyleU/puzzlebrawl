@@ -6,7 +6,7 @@ import com.googlecode.lanterna.{ TerminalPosition, TextCharacter, TextColor }
 import models.game.board.Board
 import models.game.gem.GemStream
 import org.joda.time.LocalDateTime
-import utils.{ Formatter, DateUtils }
+import utils.{ DateUtils, Formatter }
 
 class ConsoleClient {
   var boards = Seq.empty[(Board, Int, Int)]

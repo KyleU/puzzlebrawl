@@ -12,7 +12,7 @@ object Board {
   case class RemoveGem(x: Int, y: Int) extends Mutation
 }
 
-case class Board(width: Int, height: Int) extends BoardHelper {
+case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   import Board._
 
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
