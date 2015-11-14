@@ -47,7 +47,7 @@ class ConsoleGame() extends ConsoleInput {
           b.crash()
           b.collapse()
         }
-        case char if char == 'f' => game.boards.foreach(_.fuse())
+        //case char if char == 'f' => game.boards.foreach(_.fuse())
         case char if char == 'a' => activeGemLeft()
         case char if char == 'd' => activeGemRight()
         case char => client.addStatusLog(s"Unknown input: [$char].")

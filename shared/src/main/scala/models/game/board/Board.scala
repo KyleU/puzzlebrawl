@@ -8,7 +8,7 @@ object Board {
   case class AddGem(gem: Gem, x: Int, y: Int) extends Mutation
   case class MoveGem(oldX: Int, oldY: Int, newX: Int, newY: Int) extends Mutation
   case class ChangeGem(newGem: Gem, x: Int, y: Int) extends Mutation
-  case class FuseGems(x: Int, y: Int, width: Int, height: Int)
+  case class FuseGems(groupId: Int, x: Int, y: Int, width: Int, height: Int) extends Mutation
   case class RemoveGem(x: Int, y: Int) extends Mutation
 
   def withKey(key: String) = ofSize(key, 6, 12)
@@ -54,5 +54,15 @@ case class Board(key: String, spaces: Array[Array[Option[Gem]]]) extends BoardHe
       case None => Some(0)
     }
     yOpt.foreach(y => applyMutation(AddGem(gem, x, y)))
+  }
+
+  def decrementTimers() = mapGems { (gem, x, y) =>
+    gem.timer match {
+      case Some(v) =>
+        val msg = ChangeGem(gem.copy(timer = if(v == 1) { None } else { Some(v - 1) }), x, y)
+        applyMutation(msg)
+        Seq(msg)
+      case None => Seq.empty
+    }
   }
 }

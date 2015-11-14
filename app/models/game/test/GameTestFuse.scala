@@ -33,5 +33,5 @@ case class GameTestFuse() extends GameTest(seed = 0) {
     goal.add(Gem(10, Color.Blue, timer = Some(5)), 3, 0)
   }
 
-  override def run() = board.fuse()
+  override def run() = board.fuse(0, 0)
 }

@@ -17,7 +17,9 @@
           <td style="text-align: center;">
           @board.at(x, y).map { gem =>
             @defining("gem color-" + gem.color.charVal + (if(gem.crash) { " crash" } else { "" })) { cssClass =>
-              <div class="@cssClass" title="[@x, @y]: @gem">@gem.timer.getOrElse(if(gem.color == models.game.gem.Color.Wild) { "W" } else { "" })</div>
+              @defining(gem.timer.getOrElse(if(gem.color == models.game.gem.Color.Wild) { "W" } else { gem.group.map(x => "#").getOrElse(" ") })) { content =>
+                <div class="@cssClass" title="[@x, @y]: @gem">@content</div>
+              }
             }
           }.getOrElse { <div class="empty-space">&nbsp;</div> }
           </td>

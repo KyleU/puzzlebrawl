@@ -5,7 +5,7 @@ import models.game.board.Board._
 trait MutationHelper { this: Board =>
   def applyMutations(mutations: Seq[Mutation]) = mutations.foreach(applyMutation)
 
-  def applyMutation(m: Mutation) = m match {
+  def applyMutation(m: Mutation): Unit = m match {
     case ag: AddGem => applyAdd(ag)
     case mg: MoveGem => applyMove(mg)
     case cg: ChangeGem => applyChange(cg)
@@ -29,13 +29,11 @@ trait MutationHelper { this: Board =>
     spaces(m.x)(m.y) = Some(m.newGem)
   }
 
-  private[this] def applyFuse(m: FuseGems) = {
-    for(xDelta <- 0 until m.width; yDelta <- 0 until m.height) {
-      spaces(m.x + xDelta)(m.y + yDelta) match {
-        case None => throw new IllegalStateException(s"Attempt to fuse empty space at [${m.x}, ${m.y}].")
-        case Some(gem) =>
-          // TODO
-      }
+  private[this] def applyFuse(m: FuseGems) = for(y <- 0 until m.height; x <- 0 until m.width) yield {
+    at(x, y) match {
+      case None => throw new IllegalStateException(s"Fuse [$m] called for empty space at [$x, $y].")
+      case Some(gem) if gem.group.contains(m.groupId) => None // No op
+      case Some(gem) => applyMutation(ChangeGem(gem.copy(group = Some(m.groupId)), x, y))
     }
   }
 
