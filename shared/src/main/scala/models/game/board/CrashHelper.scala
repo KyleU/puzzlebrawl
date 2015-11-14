@@ -4,7 +4,7 @@ import models.game.board.Board.RemoveGem
 import models.game.gem.Gem
 
 trait CrashHelper { this: Board =>
-  def crash() = {
+  def crash(x: Int, y: Int) = {
     val encountered = scala.collection.mutable.HashSet.empty[Int]
 
     def check(source: Gem, gem: Gem, x: Int, y: Int): Seq[(Gem, Int, Int)] = {
@@ -21,21 +21,18 @@ trait CrashHelper { this: Board =>
       }
     }
 
-    mapGems { (gem, x, y) =>
-      if(gem.crash) {
-        val run = check(gem, gem, x, y)
-        if(run.size > 1) {
-          run.map { n =>
-            val msg = RemoveGem(n._2, n._3)
-            applyMutation(msg)
-            msg
-          }
-        } else {
-          Seq.empty
-        }
-      } else {
-        Seq.empty
+    val gem = at(x, y).getOrElse(throw new IllegalStateException(s"Crash called for empty space at [$x, $y]."))
+    if(!gem.crash) {
+      throw new IllegalStateException(s"Crash called at [$x, $y], which is occupied by non-crash gem $gem.")
+    }
+
+    val run = check(gem, gem, x, y)
+    if(run.size > 1) {
+      run.map { n =>
+        val msg = RemoveGem(n._2, n._3)
+        applyMutation(msg)
+        msg
       }
-    }.flatten
+    }
   }
 }

@@ -29,10 +29,10 @@ trait MutationHelper { this: Board =>
     spaces(m.x)(m.y) = Some(m.newGem)
   }
 
-  private[this] def applyFuse(m: FuseGems) = for(y <- 0 until m.height; x <- 0 until m.width) yield {
+  private[this] def applyFuse(m: FuseGems) = for(y <- 0 until m.height; x <- 0 until m.width) {
     at(x, y) match {
       case None => throw new IllegalStateException(s"Fuse [$m] called for empty space at [$x, $y].")
-      case Some(gem) if gem.group.contains(m.groupId) => None // No op
+      case Some(gem) if gem.group.contains(m.groupId) => // No op
       case Some(gem) => applyMutation(ChangeGem(gem.copy(group = Some(m.groupId)), x, y))
     }
   }
