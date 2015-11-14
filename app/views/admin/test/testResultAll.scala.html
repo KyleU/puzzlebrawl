@@ -1,0 +1,6 @@
+@(results: Seq[controllers.admin.TestController.Result])(implicit session: Session, flash: Flash)
+@layout.admin(s"${utils.Config.projectName} Tests", "test") {
+  @for(result <- results) {
+    @testResult(result)
+  }
+}

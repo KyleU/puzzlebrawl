@@ -39,6 +39,8 @@ class ConsoleGame() extends ConsoleInput {
       }
       client.render()
       true
+    case x if x.getKeyType == KeyType.ArrowLeft => activeGemLeft(); true
+    case x if x.getKeyType == KeyType.ArrowRight => activeGemRight(); true
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
         case char if char == 'c' => game.boards.foreach { b =>
@@ -46,10 +48,20 @@ class ConsoleGame() extends ConsoleInput {
           b.collapse()
         }
         case char if char == 'f' => game.boards.foreach(_.fuse())
+        case char if char == 'a' => activeGemLeft()
+        case char if char == 'd' => activeGemRight()
         case char => client.addStatusLog(s"Unknown input: [$char].")
       }
       client.render()
       true
     case _ => true
+  }
+
+  private[this] def activeGemLeft() = {
+
+  }
+
+  private[this] def activeGemRight() = {
+
   }
 }

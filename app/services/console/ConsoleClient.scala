@@ -38,7 +38,6 @@ class ConsoleClient {
       nextBoardX = 0
       nextBoardY += boards.filter(_._3 == nextBoardY).map(_._1.height + 3).max
     }
-    ConsoleBorders.render(this, nextBoardX, nextBoardY, b.width, b.height, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
     boards = boards :+ ((b, nextBoardX, nextBoardY))
     nextBoardX += (b.width * 2) + 3
   }
@@ -74,6 +73,7 @@ class ConsoleClient {
     }
 
     boards.foreach { b =>
+      ConsoleBorders.render(this, b._2, b._3, b._1.width, b._1.height, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
       (0 until b._1.width).foreach { x =>
         (0 until b._1.height).foreach { y =>
           val pattern = ConsoleGemPattern.pattern(b._1.at(x, y))

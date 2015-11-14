@@ -1,5 +1,6 @@
 package services.console
 
+import models.game.board.Board
 import models.game.test.GameTest
 
 object ConsoleTest {
@@ -13,7 +14,11 @@ object ConsoleTest {
   def run(test: GameTest, pauseBeforeRun: Boolean) = {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("GameTest", "")
     test.init()
+
+    val originalBoard = Board("original", test.board.spaces.map(_.clone()))
+
     val client = new ConsoleClient()
+    client.add(originalBoard)
     client.add(test.board)
     client.add(test.goal)
 

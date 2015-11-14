@@ -1,0 +1,62 @@
+@(result: controllers.admin.TestController.Result)
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="text-large">Test [@result.name]</div>
+    <div>Initialized in [@{result.initMs}ms], and ran with [@result.status] in [@{result.runMs}ms].</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Original</h4>
+        @renderBoard(result.original)
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Test</h4>
+        @renderBoard(result.board)
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Goal</h4>
+        @renderBoard(result.goal)
+      </div>
+    </div>
+  </div>
+</div>
+
+@if(result.errors.nonEmpty) {
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <h4>Errors</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>X</th>
+            <th>Y</th>
+            <th>Source</th>
+            <th>Target</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for(error <- result.errors) {
+          <tr>
+            <td>@error.x</td>
+            <td>@error.y</td>
+            <td>@error.src</td>
+            <td>@error.tgt</td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}

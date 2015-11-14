@@ -12,18 +12,20 @@ object Board {
   case class RemoveGem(x: Int, y: Int) extends Mutation
 
   def withKey(key: String) = ofSize(key, 6, 12)
-  def ofSize(key: String, width: Int, height: Int) = Board(key, Array.ofDim[Option[Gem]](width, height))
+  def ofSize(key: String, width: Int, height: Int) = {
+    val spaces = Array.ofDim[Option[Gem]](width, height)
+    for(x <- 0 until width; y <- 0 until height) {
+      spaces(x)(y) = None
+    }
+    Board(key, spaces)
+  }
 }
 
 case class Board(key: String, spaces: Array[Array[Option[Gem]]]) extends BoardHelper {
   import Board._
 
-  val width = spaces.size
+  val width = spaces.length
   val height = spaces.headOption.map(_.length).getOrElse(0)
-
-  for(x <- 0 until width; y <- 0 until height) {
-    spaces(x)(y) = None
-  }
 
   def at(x: Int, y: Int) = if(x < 0 || x > width - 1 || y < 0 || y > height - 1) {
     None
