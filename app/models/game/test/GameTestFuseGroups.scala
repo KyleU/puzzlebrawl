@@ -2,11 +2,11 @@ package models.game.test
 
 import models.game.gem.{ Color, Gem }
 
-object GameTestFuse extends GameTest.Provider {
-  override def newInstance() = GameTestFuse()
+object GameTestFuseGroups extends GameTest.Provider {
+  override def newInstance() = GameTestFuseGroups()
 }
 
-case class GameTestFuse() extends GameTest(seed = 0) {
+case class GameTestFuseGroups() extends GameTest(seed = 0) {
   override def init() = {
     board.add(Gem(0, Color.Red), 0, 0)
     board.add(Gem(1, Color.Red), 1, 0)
