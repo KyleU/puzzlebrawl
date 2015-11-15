@@ -26,7 +26,7 @@ trait FuseHelper { this: Board =>
     val matchesTop = if(originY + height > this.height - 1) {
       false
     } else {
-      !(0 until width).exists(x => !canFuse(at(originX + x, originY + height + 1), color))
+      !(0 until width).exists( x => !canFuse(at(originX + x, originY + height), color))
     }
     val topResult = if(matchesTop) {
       expand(originX, originY, color, width, height + 1)
@@ -38,7 +38,7 @@ trait FuseHelper { this: Board =>
     val matchesRight = if(originX + width > this.width - 1) {
       false
     } else {
-      !(0 until height).exists( y => !canFuse(at(originX + width + 1, originY + y), color))
+      !(0 until height).exists( y => !canFuse(at(originX + width, originY + y), color))
     }
     val rightResult = if(matchesRight) {
       expand(originX, originY, color, width + 1, height)
