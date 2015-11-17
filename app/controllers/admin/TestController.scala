@@ -42,7 +42,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     val initStart = DateUtils.nowMillis
     test.init()
     val initMs = (DateUtils.nowMillis - initStart).toInt
-    val originalBoard = Board("original", test.board.spaces.map(_.clone()))
+    val originalBoard = test.board.clone("original")
 
     val runStart = DateUtils.nowMillis
     test.run()

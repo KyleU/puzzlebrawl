@@ -14,7 +14,17 @@ object GameTest {
     def newInstance(): GameTest
   }
 
-  val all = Seq(GameTestRandom, GameTestDrop, GameTestCollapse, GameTestCrash, GameTestFuseBasic, GameTestFuseGroups, GameTestGemStream, GameTestTimer)
+  val all = Seq(
+    GameTestCollapse,
+    GameTestCrash,
+    GameTestDrop,
+    GameTestFuseGroups,
+    GameTestFuseBasic,
+    GameTestGemStream,
+    GameTestRandom,
+    GameTestRemove,
+    GameTestTimer
+  )
   def fromString(s: String) = all.find(_.testName == s)
 
   case class TestError(src: Option[Gem], tgt: Option[Gem], x: Int, y: Int) {

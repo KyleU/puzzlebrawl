@@ -44,7 +44,7 @@ class ConsoleGame() extends ConsoleInput {
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
         case char if char == 'c' => game.boards.foreach(_.collapse())
-        //case char if char == 'f' => game.boards.foreach(_.fuse())
+        case char if char == 'f' => game.boards.foreach(_.fuse())
         case char if char == 'a' => activeGemLeft()
         case char if char == 'd' => activeGemRight()
         case char => client.addStatusLog(s"Unknown input: [$char].")

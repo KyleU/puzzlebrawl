@@ -7,7 +7,7 @@ object ConsoleGemPattern {
   def pattern(gemOpt: Option[Gem]) = gemOpt match {
     case None => (' ', ' ', TextColor.ANSI.WHITE)
     case Some(gem) if gem.timer.isDefined => (gem.timer.getOrElse(0).toString.head, gem.timer.getOrElse(0).toString.head, getColor(gem.color))
-    case Some(gem) if gem.group.isDefined =>
+    case Some(gem) if gem.width.isDefined || gem.height.isDefined =>
       import ConsoleBorders._
       val color = getColor(gem.color)
 //      gem.group.map(_._2).getOrElse(throw new IllegalStateException()) match {

@@ -21,6 +21,9 @@
             }
             <ul class="dropdown-menu">
               <li><a href="@routes.ProfileController.profile">Profile</a></li>
+              @if(user.isAdmin) {
+                <li><a href="@controllers.admin.routes.AdminController.index()">Admin</a></li>
+              }
               <li role="separator" class="divider"></li>
               <li><a href="@controllers.auth.routes.AuthenticationController.signOut">Sign Out</a></li>
             </ul>
@@ -30,7 +33,6 @@
               <li><a href="@controllers.auth.routes.RegistrationController.registrationForm">Register</a></li>
               <li><a href="@controllers.auth.routes.AuthenticationController.signInForm">Sign In</a></li>
             </ul>
-
           }
         </li>
       </ul>

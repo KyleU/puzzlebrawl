@@ -22,20 +22,12 @@ case class GameTestFuseBasic() extends GameTest(seed = 0) {
     board.add(Gem(10, Color.Red), 3, 1)
     board.add(Gem(10, Color.Red, timer = Some(5)), 3, 2)
 
-    goal.add(Gem(0, Color.Red, group = Some(1)), 0, 0)
-    goal.add(Gem(1, Color.Red, group = Some(1)), 1, 0)
-    goal.add(Gem(2, Color.Red, group = Some(1)), 2, 0)
-    goal.add(Gem(3, Color.Red, group = Some(1)), 0, 1)
-    goal.add(Gem(4, Color.Red, group = Some(1)), 1, 1)
-    goal.add(Gem(5, Color.Red, group = Some(1)), 2, 1)
-    goal.add(Gem(6, Color.Red, group = Some(1)), 0, 2)
-    goal.add(Gem(7, Color.Red, group = Some(1)), 1, 2)
-    goal.add(Gem(8, Color.Red, group = Some(1)), 2, 2)
+    goal.add(Gem(0, Color.Red, width = Some(3), height = Some(3)), 0, 0)
     goal.add(Gem(9, Color.Red), 0, 3)
     goal.add(Gem(10, Color.Red), 3, 0)
     goal.add(Gem(10, Color.Red), 3, 1)
     goal.add(Gem(10, Color.Red, timer = Some(5)), 3, 2)
   }
 
-  override def run() = board.fuse(0, 0)
+  override def run() = board.fuse()
 }

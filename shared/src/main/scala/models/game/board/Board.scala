@@ -8,29 +8,32 @@ object Board {
   case class AddGem(gem: Gem, x: Int, y: Int) extends Mutation
   case class MoveGem(oldX: Int, oldY: Int, newX: Int, newY: Int) extends Mutation
   case class ChangeGem(newGem: Gem, x: Int, y: Int) extends Mutation
-  case class FuseGems(groupId: Int, x: Int, y: Int, width: Int, height: Int) extends Mutation
   case class RemoveGem(x: Int, y: Int) extends Mutation
 
-  def withKey(key: String) = ofSize(key, 6, 12)
-  def ofSize(key: String, width: Int, height: Int) = {
-    val spaces = Array.ofDim[Option[Gem]](width, height)
-    for(x <- 0 until width; y <- 0 until height) {
-      spaces(x)(y) = None
-    }
-    Board(key, spaces)
-  }
+  def withKey(key: String) = Board(key, 6, 12)
 }
 
-case class Board(key: String, spaces: Array[Array[Option[Gem]]]) extends BoardHelper {
+case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   import Board._
 
-  val width = spaces.length
-  val height = spaces.headOption.map(_.length).getOrElse(0)
+  protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
+
+  for(x <- 0 until width; y <- 0 until height) {
+    spaces(x)(y) = None
+  }
 
   def at(x: Int, y: Int) = if(x < 0 || x > width - 1 || y < 0 || y > height - 1) {
     None
   } else {
     spaces(x)(y)
+  }
+
+  def set(x: Int, y: Int, gem: Option[Gem]) = if(x < 0 || x > width - 1) {
+    throw new IllegalArgumentException(s"Index [$x] is outside of width [$width].")
+  } else if(y < 0 || y > height - 1) {
+    throw new IllegalArgumentException(s"Index [$y] is outside of height [$height].")
+  } else {
+    spaces(x)(y) = gem
   }
 
   def mapSpaces[T](f: (Option[Gem], Int, Int) => Seq[T]) = for(x <- 0 until width; y <- 0 until height) yield {
@@ -64,5 +67,15 @@ case class Board(key: String, spaces: Array[Array[Option[Gem]]]) extends BoardHe
         Seq(msg)
       case None => Seq.empty
     }
+  }
+
+  def clone(newKey: String) = {
+    val ret = Board(newKey, width, height)
+    for(y <- 0 until height) {
+      for(x <- 0 until width) {
+        ret.set(x, y, at(x, y))
+      }
+    }
+    ret
   }
 }

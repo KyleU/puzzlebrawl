@@ -5,7 +5,13 @@ case class Gem(
   color: Color,
   crash: Boolean = false,
   timer: Option[Int] = None,
-  group: Option[Int] = None
+  width: Option[Int] = None,
+  height: Option[Int] = None
 ) {
-  override def toString = s"[$id: $color${if(crash) { ", crash" } else { "" }}${timer.map(t => ", timer " + t).getOrElse("")}${group.map(g => ", group " + g).getOrElse("")}]"
+  override def toString = {
+    val crashAppend = if(crash) { ", crash" } else { "" }
+    val timerAppend = timer.map(t => ", timer " + t).getOrElse("")
+    val dimensionsAppend = if(width.isDefined || height.isDefined) { s" (${width.getOrElse(1)}x${height.getOrElse(1)})" } else { "" }
+    s"[$id: $color$crashAppend$timerAppend$dimensionsAppend]"
+  }
 }

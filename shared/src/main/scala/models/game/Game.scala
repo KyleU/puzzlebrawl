@@ -15,7 +15,7 @@ object Game {
     width: Int = 6,
     height: Int = 12
   ) = {
-    val players = playerNames.map( name => Player(name, Board.ofSize(name, width, height), gemStream = GemStream(seed)))
+    val players = playerNames.map( name => Player(name, Board(name, width, height), gemStream = GemStream(seed)))
     Game(id, seed, players)
   }
 

@@ -15,7 +15,7 @@ object ConsoleTest {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("GameTest", "")
     test.init()
 
-    val originalBoard = Board("original", test.board.spaces.map(_.clone()))
+    val originalBoard = test.board.clone("original")
 
     val client = new ConsoleClient()
     client.add(originalBoard)
