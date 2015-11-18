@@ -45,13 +45,16 @@ trait MutationHelper { this: Board =>
 
     for(yOffset <- 0 until m.newGem.height.getOrElse(1)) {
       for(xOffset <- 0 until m.newGem.width.getOrElse(1)) {
-        at(m.x + xOffset, m.y + yOffset) match {
-          case None => set(m.x + xOffset, m.y + yOffset, Some(m.newGem))
-          case Some(occupant) if occupant == m.newGem => // No op
-          case Some(occupant) if occupant.id == m.newGem.id => set(m.x + xOffset, m.y + yOffset, Some(m.newGem))
+        val shouldSet = at(m.x + xOffset, m.y + yOffset) match {
+          case None => true
+          case Some(occupant) if occupant == m.newGem => false
+          case Some(occupant) if occupant.id == m.newGem.id => true
           case Some(offender) =>
             val msg = s"Attempted to expand [${m.newGem}] to space [${m.x + xOffset}, ${m.y + yOffset}], which is occupied by [$offender]."
             throw new IllegalStateException(msg)
+        }
+        if(shouldSet) {
+          set(m.x + xOffset, m.y + yOffset, Some(m.newGem))
         }
       }
     }
