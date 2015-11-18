@@ -10,7 +10,7 @@ import scala.concurrent.Future
 
 object TestController {
   case class Result(
-    name: String, status: String, errors: Seq[models.game.test.GameTest.TestError], initMs: Int, runMs: Int,
+    name: String, status: String, errors: Seq[GameTest.TestError], initMs: Int, runMs: Int,
     original: models.game.board.Board, board: models.game.board.Board, goal: models.game.board.Board
   )
 }

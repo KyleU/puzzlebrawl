@@ -29,13 +29,32 @@ trait MutationHelper { this: Board =>
 
   private[this] def applyChange(m: ChangeGem) = {
     val oldGem = at(m.x, m.y).getOrElse(throw new IllegalStateException(s"Change attempted for empty position [${m.x}, ${m.y}]."))
+
     if(oldGem == m.newGem) {
       throw new IllegalStateException(s"Attempted to change unchanged gem [${m.newGem}].")
     }
     if(oldGem.id != m.newGem.id) {
       throw new IllegalStateException(s"Attempted to change [$oldGem] to gem [${m.newGem}] with a different id.")
     }
-    set(m.x, m.y, Some(m.newGem))
+    if(oldGem.width.getOrElse(1) > m.newGem.width.getOrElse(1)) {
+      throw new IllegalStateException(s"Attempted to reduce [$oldGem]'s width for [${m.newGem}].")
+    }
+    if(oldGem.height.getOrElse(1) > m.newGem.height.getOrElse(1)) {
+      throw new IllegalStateException(s"Attempted to reduce [$oldGem]'s height for [${m.newGem}].")
+    }
+
+    for(yOffset <- 0 until m.newGem.height.getOrElse(1)) {
+      for(xOffset <- 0 until m.newGem.width.getOrElse(1)) {
+        at(m.x + xOffset, m.y + yOffset) match {
+          case None => set(m.x + xOffset, m.y + yOffset, Some(m.newGem))
+          case Some(occupant) if occupant == m.newGem => // No op
+          case Some(occupant) if occupant.id == m.newGem.id => set(m.x + xOffset, m.y + yOffset, Some(m.newGem))
+          case Some(offender) =>
+            val msg = s"Attempted to expand [${m.newGem}] to space [${m.x + xOffset}, ${m.y + yOffset}], which is occupied by [$offender]."
+            throw new IllegalStateException(msg)
+        }
+      }
+    }
   }
 
   private[this] def applyMove(m: MoveGem) = {

@@ -40,9 +40,17 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     f(at(x, y), x, y)
   }
 
-  def mapGems[T](f: (Gem, Int, Int) => Seq[T]) = mapSpaces {
-    case (Some(gem), x, y) => f(gem, x, y)
-    case _ => Seq.empty
+  def mapGems[T](f: (Gem, Int, Int) => Seq[T]) = {
+    val encounteredGems = collection.mutable.HashSet.empty[Gem]
+    mapSpaces {
+      case (Some(gem), x, y) => if(encounteredGems.contains(gem)) {
+        Seq.empty
+      } else {
+        encounteredGems += gem
+        f(gem, x, y)
+      }
+      case _ => Seq.empty
+    }
   }
 
   def add(gem: Gem, x: Int, y: Int) = applyMutation(AddGem(gem, x, y))

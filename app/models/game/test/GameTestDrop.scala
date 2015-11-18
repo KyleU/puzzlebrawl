@@ -17,6 +17,7 @@ case class GameTestDrop() extends GameTest(seed = 0) {
     goal.add(Gem(6, Color.Blue, crash = true), 1, 2)
     goal.add(Gem(7, Color.Yellow, crash = true), 1, 3)
     goal.add(Gem(8, Color.Wild), 2, 0)
+    goal.add(Gem(9, Color.Red, width = Some(2), height = Some(2)), 4, 0)
   }
 
   override def run() = {
@@ -29,5 +30,6 @@ case class GameTestDrop() extends GameTest(seed = 0) {
     board.drop(Gem(6, Color.Blue, crash = true), 1)
     board.drop(Gem(7, Color.Yellow, crash = true), 1)
     board.drop(Gem(8, Color.Wild), 2)
+    board.drop(Gem(9, Color.Red, width = Some(2), height = Some(2)), 4)
   }
 }

@@ -41,8 +41,8 @@ abstract class GameTest(val seed: Int = Math.abs(Random.nextInt()), val board: B
 
   def init(): Unit
 
-  def getErrors = (0 until goal.width).flatMap { x =>
-    (0 until goal.height).flatMap { y =>
+  def getErrors = (0 until goal.height).flatMap { y =>
+    (0 until goal.width).flatMap { x =>
       val src = board.at(x, y)
       val tgt = goal.at(x, y)
       if(src == tgt) {
