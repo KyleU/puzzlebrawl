@@ -13,7 +13,7 @@ trait CollapseHelper { this: Board =>
       }
     }
     moveIndex.map { idx =>
-      val msg = MoveGem(x, y, x, idx)
+      val msg = MoveGem(x, y, 0, idx - y)
       applyMutation(msg)
       msg
     }.toSeq

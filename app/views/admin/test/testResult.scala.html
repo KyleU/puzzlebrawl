@@ -51,8 +51,12 @@
           <tr>
             <td>@error.x</td>
             <td>@error.y</td>
-            <td>@error.src</td>
-            <td>@error.tgt</td>
+            @if(error.message.isDefined) {
+              <td colspan="2">@error.message</td>
+            } else {
+              <td>@error.src</td>
+              <td>@error.tgt</td>
+            }
           </tr>
         }
         </tbody>

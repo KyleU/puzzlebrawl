@@ -39,20 +39,20 @@ trait MutationHelper { this: Board =>
   }
 
   private[this] def applyMove(m: MoveGem) = {
-    val source = at(m.oldX, m.oldY).getOrElse(throw new IllegalStateException(s"Move attempted from empty position [${m.oldX}, ${m.oldY}]."))
-    at(m.newX, m.newY) match {
-      case Some(offender) =>
-        val msg = s"Attempted to move [$source] to [${m.newX}, ${m.newY}], which is occupied by [$offender]."
-        throw new IllegalStateException(msg)
-      case None =>
-        set(m.oldX, m.oldY, None)
-        set(m.newX, m.newY, Some(source))
+    val gem = at(m.x, m.y).getOrElse(throw new IllegalStateException(s"Move attempted from empty position [${m.x}, ${m.y}]."))
+    val (startX, startY) = startIndexFor(gem, m.x, m.y)
+    for(y <- 0 until gem.height.getOrElse(1)) {
+      for(x <- 0 until gem.width.getOrElse(1)) {
+        val src = (startX + x, startY + y)
+        val tgt = (x, y)
+        set(src._1, src._2, None)
+        set(src._1 + m.xDelta, src._2 + m.yDelta, Some(gem))
+      }
     }
   }
 
   private[this] def applyRemove(m: RemoveGem) = {
     val gem = at(m.x, m.y).getOrElse(throw new IllegalStateException(s"Remove attempted from empty position [${m.x}, ${m.y}]."))
-
     val (startX, startY) = startIndexFor(gem, m.x, m.y)
 
     for(y <- 0 until gem.height.getOrElse(1)) {

@@ -6,7 +6,7 @@ object Board {
   sealed trait Mutation
 
   case class AddGem(gem: Gem, x: Int, y: Int) extends Mutation
-  case class MoveGem(oldX: Int, oldY: Int, newX: Int, newY: Int) extends Mutation
+  case class MoveGem(x: Int, y: Int, xDelta: Int, yDelta: Int) extends Mutation
   case class ChangeGem(newGem: Gem, x: Int, y: Int) extends Mutation
   case class RemoveGem(x: Int, y: Int) extends Mutation
 

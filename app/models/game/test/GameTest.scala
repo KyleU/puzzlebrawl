@@ -27,8 +27,8 @@ object GameTest {
   )
   def fromString(s: String) = all.find(_.testName == s)
 
-  case class TestError(src: Option[Gem], tgt: Option[Gem], x: Int, y: Int) {
-    override def toString = s"[$x, $y]: ${src.getOrElse("Empty")} is not equal to ${tgt.getOrElse("Empty")}."
+  case class TestError(src: Option[Gem], tgt: Option[Gem], x: Int, y: Int, message: Option[String] = None) {
+    override def toString = s"[$x, $y]: " + message.getOrElse(s"${src.getOrElse("Empty")} is not equal to ${tgt.getOrElse("Empty")}.")
   }
   implicit val testErrorReads = Json.reads[TestError]
   implicit val testErrorWrites = Json.writes[TestError]
