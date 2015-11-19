@@ -36,7 +36,7 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     spaces(x)(y) = gem
   }
 
-  def mapSpaces[T](f: (Option[Gem], Int, Int) => Seq[T]) = for(x <- 0 until width; y <- 0 until height) yield {
+  def mapSpaces[T](f: (Option[Gem], Int, Int) => Seq[T]) = for(y <- 0 until height; x <- 0 until width) yield {
     f(at(x, y), x, y)
   }
 

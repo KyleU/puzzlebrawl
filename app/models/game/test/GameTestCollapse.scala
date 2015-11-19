@@ -16,6 +16,7 @@ case class GameTestCollapse() extends GameTest(seed = 0) {
     board.add(Gem(5, Color.Red), 5, 11)
     board.add(Gem(6, Color.Yellow), 2, 6)
     board.add(Gem(7, Color.Yellow), 3, 9)
+    board.add(Gem(8, Color.Blue, width = Some(2), height = Some(2)), 0, 10)
 
     goal.add(Gem(0, Color.Red, width = Some(2), height = Some(2)), 0, 0)
     goal.add(Gem(1, Color.Green), 1, 2)
@@ -25,6 +26,7 @@ case class GameTestCollapse() extends GameTest(seed = 0) {
     goal.add(Gem(5, Color.Red), 5, 0)
     goal.add(Gem(6, Color.Yellow), 2, 1)
     goal.add(Gem(7, Color.Yellow), 3, 1)
+    goal.add(Gem(8, Color.Blue, width = Some(2), height = Some(2)), 0, 3)
   }
 
   override def run() = board.collapse()

@@ -20,7 +20,7 @@
               @defining(gem.timer.getOrElse(if(gem.color == models.game.gem.Color.Wild) {
                 "W"
               } else if(gem.width.isDefined || gem.height.isDefined) {
-                "#"
+                models.game.test.TextGemPattern.single(board, x, y).toString
               } else {
                 " "
               })) { content =>

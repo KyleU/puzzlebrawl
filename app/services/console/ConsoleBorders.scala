@@ -9,6 +9,7 @@ object ConsoleBorders {
   val brCorner = '\u255D'
   val horizontal = '\u2550'
   val vertical = '\u2551'
+  val center = ' '
 
   def render(c: ConsoleClient, x: Int, y: Int, width: Int, height: Int, fgColor: TextColor, bgColor: TextColor): Unit = {
     c.screen.setCharacter(x, y, new TextCharacter(ulCorner, fgColor, bgColor))

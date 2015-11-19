@@ -5,6 +5,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.{ TerminalPosition, TextCharacter, TextColor }
 import models.game.board.Board
 import models.game.gem.GemStream
+import models.game.test.TextGemPattern
 import org.joda.time.LocalDateTime
 import utils.{ DateUtils, Formatter }
 
@@ -74,9 +75,9 @@ class ConsoleClient {
 
     boards.foreach { b =>
       ConsoleBorders.render(this, b._2, b._3, b._1.width, b._1.height, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
-      (0 until b._1.width).foreach { x =>
-        (0 until b._1.height).foreach { y =>
-          val pattern = ConsoleGemPattern.pattern(b._1.at(x, y))
+      (0 until b._1.height).foreach { y =>
+        (0 until b._1.width).foreach { x =>
+          val pattern = TextGemPattern.pair(b._1, x, y)
           val targetX = b._2 + 1 + (x * 2)
           val targetY = b._3 + 1 + (b._1.height - y - 1)
 
