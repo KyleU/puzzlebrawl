@@ -30,6 +30,4 @@ object Game {
 
 case class Game(id: UUID, seed: Int, players: Seq[Player], started: Long = new Date().getTime) {
   private[this] val rng = new Random(seed)
-
-  lazy val boards = players.map(_.board)
 }
