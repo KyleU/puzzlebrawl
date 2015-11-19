@@ -15,6 +15,7 @@ object GameTest {
   }
 
   val all = Seq(
+    GameTestTestbed,
     GameTestCollapse,
     GameTestCrash,
     GameTestDrop,

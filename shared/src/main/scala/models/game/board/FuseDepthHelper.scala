@@ -16,17 +16,21 @@ object FuseDepthHelper {
       0 // Incompatible Gems
     } else {
       if(b.at(xStart, yStart + 1) == b.at(xStart - 1, yStart + 1)) {
-        0 // Out-of-bounds below
-      } else if(b.at(xStart + width - 1, yStart + 1) == b.at(xStart + width, yStart + 1)) {
-        0 // Out-of-bounds above
+        0 // Out-of-bounds left
       } else {
-        val continues = (0 until width).exists { xVal =>
-          b.at(xStart + xVal, yStart + 2).contains(gems(xVal))
-        }
-        if(!continues) {
-          1 + pendingCols
+        val rightEdge = b.at(xStart + width - 1, yStart + 1)
+        val pastRightEdge = b.at(xStart + width, yStart + 1)
+        if (pastRightEdge.isDefined && rightEdge == pastRightEdge) {
+          0 // Out-of-bounds right
         } else {
-          fuseUpDepth(b, gem, xStart, yStart + 1, width, 1 + pendingCols)
+          val continues = (0 until width).exists { xVal =>
+            b.at(xStart + xVal, yStart + 2).contains(gems(xVal))
+          }
+          if (!continues) {
+            1 + pendingCols
+          } else {
+            fuseUpDepth(b, gem, xStart, yStart + 1, width, 1 + pendingCols)
+          }
         }
       }
     }

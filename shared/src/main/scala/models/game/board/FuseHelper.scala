@@ -38,7 +38,7 @@ trait FuseHelper { this: Board =>
     def expand(gem: Gem, x: Int, y: Int, width: Int, height: Int): (Int, Int) = {
       checkedDimensions += (width -> height)
 
-      val upDepth = FuseDepthHelper.fuseUpDepth(this, gem, x, y + height, width, 0)
+      val upDepth = FuseDepthHelper.fuseUpDepth(this, gem, x, y + height - 1, width, 0)
       val upDim = width -> (height + upDepth)
       val upResult = if (upDepth == 0 || checkedDimensions(upDim)) {
         upDim
