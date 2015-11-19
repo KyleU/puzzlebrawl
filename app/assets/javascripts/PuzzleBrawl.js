@@ -1,12 +1,10 @@
 /* global define:false */
-define(['utils/Config', 'utils/Websocket'], function (cfg, Websocket) {
+define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], function (cfg, DebugInfo, Status, Websocket) {
   'use strict';
-
-  var wsStatusEl = document.getElementById('websocket-content');
 
   function PuzzleBrawl() {
     this.ws = new Websocket(cfg.wsUrl, this);
-    document.getElementById('require-content').textContent = 'Initialized';
+    this.activeGame = null;
   }
 
   PuzzleBrawl.prototype.onConnect = function() {
@@ -16,7 +14,7 @@ define(['utils/Config', 'utils/Websocket'], function (cfg, Websocket) {
       setTimeout(sendPing, 5000);
     }
 
-    wsStatusEl.textContent = 'Connected';
+    Status.set('connection', 'Connected.');
     setTimeout(sendPing, 1000);
   };
 
@@ -24,7 +22,11 @@ define(['utils/Config', 'utils/Websocket'], function (cfg, Websocket) {
     switch(c) {
       case 'Pong':
         var delta = new Date().getTime() - v.timestamp;
-        wsStatusEl.textContent = 'Ping response received in [' + delta + 'ms].';
+        Status.set('latency', delta);
+        break;
+      case 'SendDebugInfo':
+        var data = DebugInfo.getDebugInfo(this.activeGame);
+        this.ws.send('DebugInfo', { 'data': JSON.stringify(data) });
         break;
       default:
         console.log('Message [' + c + '] received over websocket: ' + JSON.stringify(v, null, 2));

@@ -9,9 +9,17 @@ body, html {
 
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #607d8b;
-  color: #ffffff;
   min-width: 300px;
+}
+
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+body.dark {
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .noscroll {
@@ -50,8 +58,3 @@ body {
     height: 32px;
   }
 }
-
-@import "_home";
-@import "_auth";
-@import "_profile";
-@import "_feedback";

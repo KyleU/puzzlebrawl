@@ -1,0 +1,19 @@
+@(user: models.user.User)(
+  implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
+)@layout.basic(title = utils.Config.projectName, bodyClass = Some("light")) {
+  <ul id="status-container">
+    <li>Connection: <span id="status-connection">Starting...</span></li>
+    <li>Latency: <span id="status-latency">Unknown</span></li>
+    <li>Score: <span id="status-score">0</span></li>
+  </ul>
+
+  <!-- Scala.js output -->
+  @if(play.api.Play.isProd(play.api.Play.current)) {
+    <script src="@routes.Assets.versioned("client-opt.js")" type="text/javascript"></script>
+  } else {
+    <script src="@routes.Assets.versioned("client-fastopt.js")" type="text/javascript"></script>
+  }
+
+  <!-- Require.js entrypoint -->
+  <script data-main="@routes.Assets.versioned("javascripts/main.js")" src="@routes.Assets.versioned("lib/requirejs/require.min.js")"></script>
+}

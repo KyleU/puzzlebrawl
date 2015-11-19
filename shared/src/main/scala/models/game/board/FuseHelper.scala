@@ -4,7 +4,7 @@ import models.game.board.Board.{ ChangeGem, RemoveGem }
 import models.game.gem.Gem
 
 trait FuseHelper { this: Board =>
-  def fuse() = mapGems { (gem, x, y) =>
+  def fuse(): Seq[Seq[Board.Mutation]] = mapGems { (gem, x, y) =>
     val (width, height) = largestSize(gem, x, y)
 
     if(width > gem.width.getOrElse(1) || height > gem.height.getOrElse(1)) {
@@ -30,7 +30,7 @@ trait FuseHelper { this: Board =>
     } else {
       Seq.empty
     }
-  }.flatten
+  }
 
   private[this] def largestSize(gem: Gem, x: Int, y: Int) = {
     val checkedDimensions = collection.mutable.HashSet.empty[(Int, Int)]

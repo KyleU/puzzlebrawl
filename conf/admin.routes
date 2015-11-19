@@ -1,0 +1,37 @@
+# Admin
+GET         /                            controllers.admin.AdminController.index()
+GET         /enable                      controllers.admin.AdminController.enable()
+GET         /sandbox                     controllers.admin.SandboxController.defaultSandbox()
+GET         /sandbox/:key                controllers.admin.SandboxController.sandbox(key)
+
+GET         /status                      controllers.admin.AdminController.status
+GET         /wipe                        controllers.admin.AdminController.wipeSchema(key)
+
+GET         /trace/connection/:id        controllers.admin.TraceController.traceConnection(id: java.util.UUID)
+GET         /trace/client/:id            controllers.admin.TraceController.traceClient(id: java.util.UUID)
+
+GET         /users                       controllers.admin.UserController.userList(q ?= "", sortBy ?= "created", page: Int ?= 0)
+GET         /users/:id                   controllers.admin.UserController.userDetail(id: java.util.UUID)
+GET         /users/:id/remove            controllers.admin.UserController.removeUser(id: java.util.UUID)
+
+GET         /traces                      controllers.admin.ClientTraceController.traceList(q ?= "", sortBy ?= "created", page: Int ?= 0)
+GET         /traces/:id                  controllers.admin.ClientTraceController.traceDetail(id: java.util.UUID)
+GET         /traces/:id/remove           controllers.admin.ClientTraceController.removeTrace(id: java.util.UUID)
+
+GET         /requests                    controllers.admin.RequestLogController.requestList(q ?= "", sortBy ?= "started", page: Int ?= 0)
+
+GET         /feedback                    controllers.admin.FeedbackController.feedbackList(q ?= "", sortBy ?= "occurred", page: Int ?= 0)
+GET         /feedback/:id/note           controllers.admin.FeedbackController.feedbackNoteForm(id: java.util.UUID)
+GET         /feedback/:id/remove         controllers.admin.FeedbackController.removeFeedback(id: java.util.UUID)
+
+GET         /test                        controllers.admin.TestController.list()
+GET         /test/:name                  controllers.admin.TestController.run(name)
+
+GET         /logs                        controllers.admin.LogController.list()
+GET         /logs/:name                  controllers.admin.LogController.view(name)
+
+GET         /report/trend                controllers.admin.ReportController.trend()
+GET         /report/requests             controllers.admin.ReportController.requests()
+GET         /report/email                controllers.admin.ReportController.email()
+GET         /report/ad-hoc               controllers.admin.AdHocQueryController.queryList(query: Option[java.util.UUID] ?= None, action: Option[String] ?= None)
+POST        /report/ad-hoc/run           controllers.admin.AdHocQueryController.run()

@@ -18,6 +18,8 @@ registration.email.taken = That email address is already in use.
 
 # Index Page
 index.welcome = Welcome to Puzzle Brawl!
+index.about = I'm trying to build the web''s best games. Thanks for checking out my progress!
+index.play.now = Play Now
 
 # Feedback
 feedback.prompt = Feedback is always appreciated. Thanks for sharing yours.

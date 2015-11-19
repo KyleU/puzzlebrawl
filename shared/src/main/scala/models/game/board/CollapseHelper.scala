@@ -3,7 +3,7 @@ package models.game.board
 import models.game.board.Board.MoveGem
 
 trait CollapseHelper { this: Board =>
-  def collapse() = mapGems { (gem, x, y) =>
+  def collapse(): Seq[Board.Mutation] = mapGems { (gem, x, y) =>
     val moveIndexes = (0 until gem.width.getOrElse(1)).map { xOffset =>
       y match {
         case 0 => None

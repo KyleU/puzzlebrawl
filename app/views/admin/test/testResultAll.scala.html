@@ -1,5 +1,12 @@
 @(results: Seq[controllers.admin.TestController.Result])(implicit session: Session, flash: Flash)
 @layout.admin(s"${utils.Config.projectName} Tests", "test") {
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="text-large">All @utils.Config.projectName Tests</div>
+      <div>Ran [@results.size] tests in [@{results.map(_.runMs).sum}ms] with [@results.count(_.errors.nonEmpty)] errors.</div>
+    </div>
+  </div>
+
   @for(result <- results) {
     @testResult(result)
   }

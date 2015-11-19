@@ -1,9 +1,11 @@
 package models.benchmark
 
 import java.util.concurrent.TimeUnit
-import models.game.board.Board
-import models.game.gem.{ Color, Gem }
+
+import models.game.Game
 import org.openjdk.jmh.annotations._
+
+import scala.util.Random
 
 class BoardBenchmark {
   @Benchmark
@@ -12,12 +14,16 @@ class BoardBenchmark {
   @Threads(6)
   @Fork(1)
   def creation() = {
-    val board = Board.withKey("benchmark")
-    board.add(Gem(0, Color.Red), 0, 0)
-    board.add(Gem(1, Color.Red), 1, 0)
-    board.add(Gem(2, Color.Red), 2, 0)
-    board.add(Gem(3, Color.Red), 3, 0)
-    board.add(Gem(4, Color.Red), 4, 0)
-    board
+    val game = Game.blank()
+    val board = game.players.head.board
+    val gemStream = game.players.head.gemStream
+
+    for(i <- 0 until 20) {
+      board.drop(gemStream.next, Random.nextInt(6))
+    }
+
+    board.fuse()
+    board.crash()
+    board.collapse()
   }
 }

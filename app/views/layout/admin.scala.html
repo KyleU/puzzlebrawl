@@ -34,6 +34,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Test <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href="@controllers.admin.routes.TestController.list()">Overview</a></li>
+              <li><a href="@controllers.admin.routes.TestController.run("All")">Run All Tests</a></li>
               <li class="divider"></li>
               @for(test <- models.game.test.GameTest.all) {
                 <li><a href="@controllers.admin.routes.TestController.run(test.testName)">@test.testName</a></li>

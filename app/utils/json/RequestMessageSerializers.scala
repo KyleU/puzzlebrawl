@@ -1,7 +1,6 @@
 package utils.json
 
 import models._
-import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 object RequestMessageSerializers {
@@ -12,10 +11,11 @@ object RequestMessageSerializers {
 
   private[this] val setPreferenceReads = Json.reads[SetPreference]
 
-  implicit val requestMessageReads: Reads[RequestMessage] = (
-    (__ \ 'c).read[String] and
-    (__ \ 'v).read[JsValue]
-  ) { (c, v) =>
+  implicit val requestMessageReads = new Reads[RequestMessage] {
+    override def reads(json: JsValue) = {
+      val c = (json \ "c").as[String]
+      val v = (json \ "v").as[JsValue]
+
       val jsResult = c match {
         case "MalformedRequest" => malformedRequestReads.reads(v)
         case "Ping" => pingReads.reads(v)
@@ -27,8 +27,12 @@ object RequestMessageSerializers {
         case _ => JsSuccess(MalformedRequest("UnknownType", s"c: $c, v: ${Json.stringify(v)}"))
       }
       jsResult match {
-        case rm: JsSuccess[RequestMessage @unchecked] => rm.get
-        case e: JsError => throw new IllegalArgumentException(s"Error parsing json for [$c]: $JsError")
+        case rm: JsSuccess[_] => rm
+        case e: JsError =>
+          val errors = e.errors.map(err => "[" + err._1.toString + ": " + err._2.map(x => x.message).mkString(", ") + "]").mkString(", ")
+          val msg = s"Error parsing json for [$c]: $errors - ${Json.prettyPrint(v)}"
+          throw new IllegalArgumentException(msg)
       }
     }
+  }
 }

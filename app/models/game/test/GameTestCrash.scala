@@ -23,7 +23,7 @@ case class GameTestCrash() extends GameTest(seed = 0) {
   }
 
   override def run() = {
-    board.crash(1, 0)
+    board.crash()
     board.collapse()
   }
 }
