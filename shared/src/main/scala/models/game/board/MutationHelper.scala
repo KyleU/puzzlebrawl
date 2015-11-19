@@ -5,6 +5,21 @@ import models.game.gem.Gem
 
 import scala.annotation.tailrec
 
+object MutationHelper {
+  @tailrec
+  final def startIndexFor(b: Board, gem: Gem, x: Int, y: Int): (Int, Int) = {
+    if(b.at(x - 1, y).contains(gem)) {
+      startIndexFor(b, gem, x - 1, y)
+    } else {
+      if(b.at(x, y - 1).contains(gem)) {
+        startIndexFor(b, gem, x, y - 1)
+      } else {
+        (x, y)
+      }
+    }
+  }
+}
+
 trait MutationHelper { this: Board =>
   def applyMutations(mutations: Seq[Mutation]) = mutations.foreach(applyMutation)
 
@@ -62,7 +77,7 @@ trait MutationHelper { this: Board =>
 
   private[this] def applyMove(m: MoveGem) = {
     val gem = at(m.x, m.y).getOrElse(throw new IllegalStateException(s"Move attempted from empty position [${m.x}, ${m.y}]."))
-    val (startX, startY) = startIndexFor(gem, m.x, m.y)
+    val (startX, startY) = MutationHelper.startIndexFor(this, gem, m.x, m.y)
     for(y <- 0 until gem.height.getOrElse(1)) {
       for(x <- 0 until gem.width.getOrElse(1)) {
         val src = (startX + x, startY + y)
@@ -75,7 +90,7 @@ trait MutationHelper { this: Board =>
 
   private[this] def applyRemove(m: RemoveGem) = {
     val gem = at(m.x, m.y).getOrElse(throw new IllegalStateException(s"Remove attempted from empty position [${m.x}, ${m.y}]."))
-    val (startX, startY) = startIndexFor(gem, m.x, m.y)
+    val (startX, startY) = MutationHelper.startIndexFor(this, gem, m.x, m.y)
 
     for(y <- 0 until gem.height.getOrElse(1)) {
       for(x <- 0 until gem.width.getOrElse(1)) {
@@ -83,19 +98,6 @@ trait MutationHelper { this: Board =>
           case Some(g) => set(startX + x, startY + y, None)
           case None => throw new IllegalStateException(s"Remove attempted for [$gem] from empty position [$startX, $startY] at index [$x, $y].")
         }
-      }
-    }
-  }
-
-  @tailrec
-  private[this] def startIndexFor(gem: Gem, x: Int, y: Int): (Int, Int) = {
-    if(at(x - 1, y).contains(gem)) {
-      startIndexFor(gem, x - 1, y)
-    } else {
-      if(at(x, y - 1).contains(gem)) {
-        startIndexFor(gem, x, y - 1)
-      } else {
-        (x, y)
       }
     }
   }

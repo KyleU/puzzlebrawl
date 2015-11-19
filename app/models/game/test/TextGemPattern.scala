@@ -42,7 +42,7 @@ object TextGemPattern {
       case (true, false, true, true) /* Right */ => vertical
       case (true, false, false, true) /* Bottom Right */ => brCorner
       case (true, true, false, true) /* Bottom */ => horizontal
-      case _ => throw new IllegalStateException(s"$gem: [$u, $r, $d, $l]")
+      case _ => '?'
     }
   }
 
@@ -59,7 +59,7 @@ object TextGemPattern {
       case (true, false, true, true) /* Right */ => center -> vertical
       case (true, false, false, true) /* Bottom Right */ => horizontal -> brCorner
       case (true, true, false, true) /* Bottom */ => horizontal -> horizontal
-      case _ => throw new IllegalStateException(s"$gem: [$u, $r, $d, $l]")
+      case _ => '?' -> '?'
     }
   }
 
