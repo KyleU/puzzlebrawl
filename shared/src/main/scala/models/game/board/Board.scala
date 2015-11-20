@@ -50,14 +50,10 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     case rg: RemoveGem => Remove(this, rg)
   }
 
-  def clone(newKey: String) = {
-    val ret = Board(newKey, width, height)
-    for (y <- 0 until height) {
-      for (x <- 0 until width) {
-        ret.set(x, y, at(x, y))
-      }
+  def cloneTo(board: Board) = for (y <- 0 until height) {
+    for (x <- 0 until width) {
+      board.set(x, y, at(x, y))
     }
-    ret
   }
 
   def clear() = mapGems((gem, x, y) => Seq(applyMutation(RemoveGem(x, y))))

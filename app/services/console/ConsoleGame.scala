@@ -14,18 +14,15 @@ object ConsoleGame extends Logging {
 }
 
 class ConsoleGame() extends ConsoleInput {
-  val client = new ConsoleClient()
-  val rows = Math.floor(client.rows / 15.toDouble).toInt
-  val cols = Math.floor(client.cols / 15.toDouble).toInt
-
-  val numPlayers = rows * cols
+  val numPlayers = 4
   val game = Game.blank(playerNames = (0 until numPlayers).map(x => "board-" + x))
+
+  val client = new ConsoleClient(game)
 
   game.players.foreach { player =>
     (0 until 20).foreach { i =>
-      player.board.drop(client.gemStream.next, Random.nextInt(player.board.width))
+      player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
     }
-    client.add(player.board)
   }
 
   client.addStatusLog("Game started. Use the arrows keys to move and rotate, space to drop, and escape to quit.")
@@ -37,7 +34,7 @@ class ConsoleGame() extends ConsoleInput {
   override def inputCharacter(input: KeyStroke): Boolean = input match {
     case x if x.getKeyType == KeyType.Enter =>
       game.players.foreach { player =>
-        player.board.drop(client.gemStream.next, Random.nextInt(player.board.width))
+        player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
       }
       client.render()
       true

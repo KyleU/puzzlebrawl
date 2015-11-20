@@ -8,25 +8,23 @@ object GameTestFullTurn extends GameTest.Provider {
   override def newInstance() = new GameTestFullTurn()
 }
 
-class GameTestFullTurn() extends GameTest(seed = Random.nextInt()) {
+class GameTestFullTurn() extends GameTest(seed = Some(Random.nextInt())) {
   override def init() = {
-    val boardStream = GemStream(seed)
-    for (y <- 0 until board.height) {
-      for (x <- 0 until board.width) {
-        board.add(boardStream.next, x, y)
+    for (y <- 0 until test.board.height) {
+      for (x <- 0 until test.board.width) {
+        test.board.add(test.gemStream.next, x, y)
       }
     }
 
-    val goalStream = GemStream(seed)
-    for (y <- 0 until goal.height) {
-      for (x <- 0 until goal.width) {
-        goal.add(goalStream.next, x, y)
+    for (y <- 0 until goal.board.height) {
+      for (x <- 0 until goal.board.width) {
+        goal.board.add(goal.gemStream.next, x, y)
       }
     }
-    goal.fullTurn()
+    goal.board.fullTurn()
   }
 
   override def run() = {
-    board.fullTurn()
+    test.board.fullTurn()
   }
 }

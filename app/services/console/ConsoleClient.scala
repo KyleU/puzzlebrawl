@@ -3,17 +3,12 @@ package services.console
 import com.googlecode.lanterna.screen.TerminalScreen
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.{ TerminalPosition, TextCharacter, TextColor }
-import models.game.board.Board
-import models.game.gem.GemStream
+import models.game.{ Player, Game }
 import models.game.test.TextGemPattern
 import org.joda.time.LocalDateTime
 import utils.{ DateUtils, Formatter }
 
-class ConsoleClient {
-  var boards = Seq.empty[(Board, Int, Int)]
-
-  val gemStream = GemStream(0)
-
+class ConsoleClient(game: Game) {
   val screen = {
     val factory = new DefaultTerminalFactory()
     factory.setSuppressSwingTerminalFrame(true)
@@ -26,22 +21,25 @@ class ConsoleClient {
 
   val graphics = screen.newTextGraphics()
 
-  val rows = screen.getTerminalSize.getRows
-  val cols = screen.getTerminalSize.getColumns
+  private val rows = screen.getTerminalSize.getRows
+  private val cols = screen.getTerminalSize.getColumns
+
+  var playerLocations = Seq.empty[(Player, Int, Int)]
+  game.players.foreach(p => add(p))
 
   def stop() = screen.stopScreen()
 
   private var nextBoardX = 0
   private var nextBoardY = 0
 
-  def add(b: Board) = {
-    if (nextBoardX + (b.width * 2) + 3 > cols) {
+  private[this] def add(p: Player) = {
+    if (nextBoardX + (p.board.width * 2) + 3 > cols) {
       nextBoardX = 0
       val currentY = nextBoardY
-      nextBoardY += boards.filter(_._3 == currentY).map(_._1.height + 3).max
+      nextBoardY += playerLocations.filter(_._3 == currentY).map(_._1.board.height + 3).max
     }
-    boards = boards :+ ((b, nextBoardX, nextBoardY))
-    nextBoardX += (b.width * 2) + 3
+    playerLocations = playerLocations :+ ((p, nextBoardX, nextBoardY))
+    nextBoardX += (p.board.width * 2) + 3
   }
 
   private[this] val statusLogs = collection.mutable.ListBuffer.empty[(LocalDateTime, String)]
@@ -70,17 +68,17 @@ class ConsoleClient {
   }
 
   def render() = {
-    if (boards.isEmpty) {
-      throw new IllegalStateException("No boards in client.")
+    if (game.players.isEmpty) {
+      throw new IllegalStateException("No players in client.")
     }
 
-    boards.foreach { b =>
-      ConsoleBorders.render(this, b._2, b._3, b._1.width, b._1.height, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
-      (0 until b._1.height).foreach { y =>
-        (0 until b._1.width).foreach { x =>
-          val pattern = TextGemPattern.pair(b._1, x, y)
+    playerLocations.foreach { b =>
+      ConsoleBorders.render(this, b._2, b._3, b._1.board.width, b._1.board.height, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
+      (0 until b._1.board.height).foreach { y =>
+        (0 until b._1.board.width).foreach { x =>
+          val pattern = TextGemPattern.pair(b._1.board, x, y)
           val targetX = b._2 + 1 + (x * 2)
-          val targetY = b._3 + 1 + (b._1.height - y - 1)
+          val targetY = b._3 + 1 + (b._1.board.height - y - 1)
 
           screen.setCharacter(targetX, targetY, new TextCharacter(pattern._1, pattern._3, TextColor.ANSI.BLACK))
           screen.setCharacter(targetX + 1, targetY, new TextCharacter(pattern._2, pattern._3, TextColor.ANSI.BLACK))

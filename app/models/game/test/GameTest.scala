@@ -1,6 +1,6 @@
 package models.game.test
 
-import models.game.board.Board
+import models.game.Game
 import models.game.gem.Gem
 import play.api.libs.json.Json
 
@@ -44,17 +44,21 @@ object GameTest {
   implicit val testErrorWrites = Json.writes[TestError]
 }
 
-abstract class GameTest(val seed: Int = Math.abs(Random.nextInt()), val board: Board = Board("board", 6, 12), val goal: Board = Board("goal", 6, 12)) {
-  protected val r = new Random(seed)
+abstract class GameTest(val seed: Option[Int] = None) {
+  val game = Game.blank(seed = seed.getOrElse(Math.abs(Random.nextInt())), playerNames = Seq("original", "test", "goal"))
+
+  val original = game.players.find(_.name == "original").getOrElse(throw new IllegalStateException())
+  val test = game.players.find(_.name == "test").getOrElse(throw new IllegalStateException())
+  val goal = game.players.find(_.name == "goal").getOrElse(throw new IllegalStateException())
 
   def run(): Unit
 
   def init(): Unit
 
-  def getErrors = (0 until goal.height).flatMap { y =>
-    (0 until goal.width).flatMap { x =>
-      val src = board.at(x, y)
-      val tgt = goal.at(x, y)
+  def getErrors = (0 until goal.board.height).flatMap { y =>
+    (0 until goal.board.width).flatMap { x =>
+      val src = test.board.at(x, y)
+      val tgt = goal.board.at(x, y)
       if (src == tgt) {
         None
       } else {

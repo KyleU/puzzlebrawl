@@ -1,20 +1,17 @@
 package models.game.test
 
-import models.game.gem.GemStream
-
 object GameTestClear extends GameTest.Provider {
   override def newInstance() = new GameTestClear()
 }
 
-class GameTestClear() extends GameTest(seed = 0) {
+class GameTestClear() extends GameTest() {
   override def init() = {
-    val boardStream = GemStream(seed)
-    for (y <- 0 until board.height / 2) {
-      for (x <- 0 until board.width) {
-        board.add(boardStream.next, x, y)
+    for (y <- 0 until test.board.height / 2) {
+      for (x <- 0 until test.board.width) {
+        test.board.add(test.gemStream.next, x, y)
       }
     }
   }
 
-  override def run() = board.clear()
+  override def run() = test.board.clear()
 }

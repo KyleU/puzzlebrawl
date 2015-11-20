@@ -11,7 +11,7 @@ import scala.concurrent.Future
 object TestController {
   case class Result(
     name: String, status: String, errors: Seq[GameTest.TestError], initMs: Int, runMs: Int,
-    original: models.game.board.Board, board: models.game.board.Board, goal: models.game.board.Board
+    original: models.game.Player, test: models.game.Player, goal: models.game.Player
   )
 }
 
@@ -38,7 +38,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     val initStart = DateUtils.nowMillis
     test.init()
     val initMs = (DateUtils.nowMillis - initStart).toInt
-    val originalBoard = test.board.clone("original")
+    test.test.board.cloneTo(test.original.board)
 
     val (runMs, testErrors) = try {
       val runStart = DateUtils.nowMillis
@@ -53,6 +53,6 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
 
     val status = testErrors.headOption.map(x => s"${testErrors.size} Errors").getOrElse("Success")
 
-    TestController.Result(testName, status, testErrors, initMs, runMs, originalBoard, test.board, test.goal)
+    TestController.Result(testName, status, testErrors, initMs, runMs, test.original, test.test, test.goal)
   }
 }

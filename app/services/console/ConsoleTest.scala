@@ -1,6 +1,5 @@
 package services.console
 
-import models.game.board.Board
 import models.game.test.GameTest
 
 object ConsoleTest {
@@ -15,12 +14,9 @@ object ConsoleTest {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("GameTest", "")
     test.init()
 
-    val originalBoard = test.board.clone("original")
+    test.test.board.cloneTo(test.original.board)
 
-    val client = new ConsoleClient()
-    client.add(originalBoard)
-    client.add(test.board)
-    client.add(test.goal)
+    val client = new ConsoleClient(test.game)
 
     if (pauseBeforeRun) {
       client.addStatusLog(s"Test [$testName] initialized.")
