@@ -2,6 +2,7 @@ package services.console
 
 import com.googlecode.lanterna.{ TextColor, TextCharacter }
 import models.game.Player
+import utils.Formatter
 
 object ConsoleBorders {
   val ulCorner = '\u2554'
@@ -31,7 +32,8 @@ object ConsoleBorders {
 
     val bottom = {
       val padding = (((width * 2) - 6) / 2) - 2
-      val ret = (0 to padding).map(idx => horizontal).mkString + "[012345]" + (0 to padding).map(idx => horizontal).mkString
+      val paddedScore = Formatter.padLeft(player.score.toString, 6, '0')
+      val ret = (0 to padding).map(idx => horizontal).mkString + "[" + paddedScore + "]" + (0 to padding).map(idx => horizontal).mkString
       if(ret.length > width * 2) { ret.substring(0, width * 2) } else { ret }
     }
     bottom.zipWithIndex.foreach(char => c.screen.setCharacter(x + char._2 + 1, y + height + 1, new TextCharacter(char._1, fgColor, bgColor)))
