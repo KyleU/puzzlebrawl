@@ -73,7 +73,7 @@ class ConsoleClient(game: Game) {
     }
 
     playerLocations.foreach { b =>
-      ConsoleBorders.render(this, b._2, b._3, b._1.board.width, b._1.board.height, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
+      ConsoleBorders.render(this, b._2, b._3, b._1, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
       (0 until b._1.board.height).foreach { y =>
         (0 until b._1.board.width).foreach { x =>
           val pattern = TextGemPattern.pair(b._1.board, x, y)

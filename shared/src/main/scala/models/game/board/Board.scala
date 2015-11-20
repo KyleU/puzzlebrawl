@@ -18,8 +18,6 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     spaces(x)(y)
   }
 
-  def add(gem: Gem, x: Int, y: Int) = applyMutation(AddGem(gem, x, y))
-
   def set(x: Int, y: Int, gem: Option[Gem]) = if (x < 0 || x > width - 1) {
     throw new IllegalArgumentException(s"Index [$x] is outside of width [$width].")
   } else if (y < 0 || y > height - 1) {

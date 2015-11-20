@@ -2,20 +2,12 @@ package services.console
 
 import com.googlecode.lanterna.input.{ KeyType, KeyStroke }
 import models.game.Game
-import utils.Logging
 
 import scala.util.Random
 
-object ConsoleGame extends Logging {
-  def main(args: Array[String]) {
-    log.info(s"Starting Console game with args [${args.mkString(", ")}].")
-    new ConsoleGame()
-  }
-}
-
 class ConsoleGame() extends ConsoleInput {
   val numPlayers = 4
-  val game = Game.blank(playerNames = (0 until numPlayers).map(x => "board-" + x))
+  val game = Game.blank(playerNames = (0 until numPlayers).map(x => "Player " + x))
 
   val client = new ConsoleClient(game)
 
@@ -30,6 +22,8 @@ class ConsoleGame() extends ConsoleInput {
   client.render()
 
   startInputLoop(client)
+
+  client.stop()
 
   override def inputCharacter(input: KeyStroke): Boolean = input match {
     case x if x.getKeyType == KeyType.Enter =>

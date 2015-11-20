@@ -3,13 +3,6 @@ package services.console
 import models.game.test.GameTest
 
 object ConsoleTest {
-  def main(args: Array[String]) {
-    args.headOption.flatMap(GameTest.fromString) match {
-      case Some(test) => run(test.newInstance(), args.contains("pause"))
-      case x => throw new IllegalStateException(s"First argument must be one of [${GameTest.all.map(_.testName).mkString(", ")}].")
-    }
-  }
-
   def run(test: GameTest, pauseBeforeRun: Boolean) = {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("GameTest", "")
     test.init()

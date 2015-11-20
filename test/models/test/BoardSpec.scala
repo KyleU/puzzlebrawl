@@ -1,6 +1,7 @@
 package models.test
 
 import models.game.board.Board
+import models.game.board.mutation.Mutation.AddGem
 import models.game.gem.{ Color, Gem }
 import org.specs2.mutable._
 
@@ -16,8 +17,8 @@ class BoardSpec extends Specification {
 
     "insert single blocks" in {
       val b = Board("board", 4, 4)
-      b.add(Gem(0, Color.Red), 0, 0)
-      b.add(Gem(1, Color.Red, crash = true), 0, 1)
+      b.applyMutation(AddGem(Gem(0, Color.Red), 0, 0))
+      b.applyMutation(AddGem(Gem(1, Color.Red, crash = true), 0, 1))
 
       b.at(0, 0) === Some(Gem(0, Color.Red))
       b.at(0, 1) === Some(Gem(1, Color.Red, crash = true))
