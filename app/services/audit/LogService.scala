@@ -13,7 +13,7 @@ object LogService {
   private[this] val logStartPhrases = Seq("[TRACE]", "[DEBUG]", "[INFO] ", "[WARN] ", "[ERROR]", "[FATAL]")
 
   val logDir = new File("logs")
-  if(!logDir.exists) {
+  if (!logDir.exists) {
     throw new IllegalStateException("Log directory does not exist.")
   }
 
@@ -33,7 +33,7 @@ object LogService {
         }
         pendingLog = Some(parseLog(main._1, main._2))
       case l => pendingLog match {
-        case Some(log) => pendingLog = Some(log.copy(message = log.message + { if(log.message.isEmpty) { "" } else { "\n" } } + l._1))
+        case Some(log) => pendingLog = Some(log.copy(message = log.message + { if (log.message.isEmpty) { "" } else { "\n" } } + l._1))
         case None => throw new IllegalStateException(s"Unhandled line [${l._2}] with no pending log: [$l].")
       }
     }
@@ -49,7 +49,7 @@ object LogService {
     // [ERROR] 2015-07-23 18:48:56,395 from application in New I/O worker #29
 
     val levelEndIndex = line.indexOf(']')
-    if(levelEndIndex == -1 || (levelEndIndex != 5 && levelEndIndex != 6)) {
+    if (levelEndIndex == -1 || (levelEndIndex != 5 && levelEndIndex != 6)) {
       throw new IllegalStateException(s"Invalid main line index [$levelEndIndex] for line [$lineNumber]: $line")
     }
     val level = LogLevel.fromString(line.substring(1, levelEndIndex))
@@ -59,7 +59,7 @@ object LogService {
     val occurred = LocalDateTime.parse(occurredString, dateFormatter)
 
     val loggerStartIndex = line.indexOf(" from ", occurredEndIndex) + 6
-    if(loggerStartIndex == 5) {
+    if (loggerStartIndex == 5) {
       throw new IllegalStateException(s"No [from] section in line [$lineNumber}]: $line")
     }
     val loggerEndIndex = line.indexOf(" in ", loggerStartIndex)

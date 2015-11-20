@@ -15,10 +15,11 @@ class BoardBenchmark {
   @Fork(1)
   def creation() = {
     val game = Game.blank()
-    val board = game.players.head.board
-    val gemStream = game.players.head.gemStream
+    val p = game.players.headOption.getOrElse(throw new IllegalStateException())
+    val board = p.board
+    val gemStream = p.gemStream
 
-    for(i <- 0 until 20) {
+    for (i <- 0 until 20) {
       board.drop(gemStream.next, Random.nextInt(6))
     }
 

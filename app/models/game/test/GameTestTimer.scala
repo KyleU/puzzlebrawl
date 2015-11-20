@@ -3,10 +3,10 @@ package models.game.test
 import models.game.gem.{ Color, Gem }
 
 object GameTestTimer extends GameTest.Provider {
-  override def newInstance() = GameTestTimer()
+  override def newInstance() = new GameTestTimer()
 }
 
-case class GameTestTimer() extends GameTest(seed = 0) {
+class GameTestTimer() extends GameTest(seed = 0) {
   override def init() = {
     board.add(Gem(0, Color.Red, timer = Some(5)), 0, 0)
     board.add(Gem(0, Color.Red, timer = Some(4)), 1, 0)

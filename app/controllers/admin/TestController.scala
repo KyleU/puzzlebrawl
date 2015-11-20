@@ -22,7 +22,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
   }
 
   def run(name: String) = withAdminSession("test.run") { implicit request =>
-    if(name == "All") {
+    if (name == "All") {
       val results = GameTest.all.map(x => getResult(x.testName, x.newInstance()))
       Future.successful(Ok(views.html.admin.test.testResultAll(results)))
     } else {
@@ -51,7 +51,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
         0 -> Seq(GameTest.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}")))
     }
 
-    val status = testErrors.headOption.map( x => s"${testErrors.size} Errors").getOrElse("Success")
+    val status = testErrors.headOption.map(x => s"${testErrors.size} Errors").getOrElse("Success")
 
     TestController.Result(testName, status, testErrors, initMs, runMs, originalBoard, test.board, test.goal)
   }

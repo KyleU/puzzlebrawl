@@ -35,9 +35,10 @@ class ConsoleClient {
   private var nextBoardY = 0
 
   def add(b: Board) = {
-    if(nextBoardX + (b.width * 2) + 3 > cols) {
+    if (nextBoardX + (b.width * 2) + 3 > cols) {
       nextBoardX = 0
-      nextBoardY += boards.filter(_._3 == nextBoardY).map(_._1.height + 3).max
+      val currentY = nextBoardY
+      nextBoardY += boards.filter(_._3 == currentY).map(_._1.height + 3).max
     }
     boards = boards :+ ((b, nextBoardX, nextBoardY))
     nextBoardX += (b.width * 2) + 3
@@ -58,18 +59,18 @@ class ConsoleClient {
     writeStatus()
   }
 
-  def previousStatus() = if(statusIndex > 0) {
+  def previousStatus() = if (statusIndex > 0) {
     statusIndex -= 1
     writeStatus()
   }
 
-  def nextStatus() = if(statusIndex < statusLogs.size - 1) {
+  def nextStatus() = if (statusIndex < statusLogs.size - 1) {
     statusIndex += 1
     writeStatus()
   }
 
   def render() = {
-    if(boards.isEmpty) {
+    if (boards.isEmpty) {
       throw new IllegalStateException("No boards in client.")
     }
 

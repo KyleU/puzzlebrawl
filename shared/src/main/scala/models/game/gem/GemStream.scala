@@ -8,20 +8,20 @@ object GemStream {
 }
 
 case class GemStream(
-  seed: Int,
+    seed: Int,
 
-  gemAdjustWild: Double = 1.0,
-  gemAdjustCrash: Double = 1.0,
+    gemAdjustWild: Double = 1.0,
+    gemAdjustCrash: Double = 1.0,
 
-  gemAdjustRed: Double = 1.0,
-  gemAdjustGreen: Double = 1.0,
-  gemAdjustBlue: Double = 1.0,
-  gemAdjustYellow: Double = 1.0,
+    gemAdjustRed: Double = 1.0,
+    gemAdjustGreen: Double = 1.0,
+    gemAdjustBlue: Double = 1.0,
+    gemAdjustYellow: Double = 1.0,
 
-  crashAdjustRed: Double = 1.0,
-  crashAdjustGreen: Double = 1.0,
-  crashAdjustBlue: Double = 1.0,
-  crashAdjustYellow: Double = 1.0
+    crashAdjustRed: Double = 1.0,
+    crashAdjustGreen: Double = 1.0,
+    crashAdjustBlue: Double = 1.0,
+    crashAdjustYellow: Double = 1.0
 ) {
   private[this] val r = new Random(seed)
   private[this] var nextId = 0
@@ -48,7 +48,7 @@ case class GemStream(
   private[this] val crashChanceTotal = crashChances.map(_._2).sum
 
   def next = {
-    val ret = if(r.nextDouble < wildChance) {
+    val ret = if (r.nextDouble < wildChance) {
       Gem(nextId, color = Color.Wild)
     } else {
       val crash = r.nextDouble < crashChance
@@ -60,17 +60,13 @@ case class GemStream(
   }
 
   private[this] def randomColor(crash: Boolean): Color = {
-    val dist = if(crash) { crashChances } else { gemChances }
-    val p = r.nextDouble * (if(crash) { crashChanceTotal } else { gemChanceTotal })
+    val dist = if (crash) { crashChances } else { gemChances }
+    val p = r.nextDouble * (if (crash) { crashChanceTotal } else { gemChanceTotal })
     var accum = 0.0
-    val it = dist.iterator
-    while (it.hasNext) {
-      val (item, itemProb) = it.next
+    dist.iterator.find { i =>
+      val (item, itemProb) = i
       accum += itemProb
-      if (accum >= p) {
-        return item
-      }
-    }
-    throw new IllegalStateException()
+      accum >= p
+    }.map(_._1).getOrElse(throw new IllegalStateException())
   }
 }

@@ -13,7 +13,7 @@ object GroupRole {
   case object Left extends GroupRole
   case object Center extends GroupRole
 
-  def roleFor(x: Int, y: Int, width: Int, height: Int) = if(x == 0) {
+  def roleFor(x: Int, y: Int, width: Int, height: Int) = if (x == 0) {
     if (y == 0) {
       TopLeft
     } else if (y == height - 1) {
@@ -21,7 +21,7 @@ object GroupRole {
     } else {
       Left
     }
-  } else if(x == width - 1) {
+  } else if (x == width - 1) {
     if (y == 0) {
       TopRight
     } else if (y == height - 1) {
@@ -29,9 +29,9 @@ object GroupRole {
     } else {
       Right
     }
-  } else if(y == 0) {
+  } else if (y == 0) {
     Top
-  } else if(y == height - 1) {
+  } else if (y == height - 1) {
     Bottom
   } else {
     Center

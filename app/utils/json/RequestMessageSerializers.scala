@@ -27,7 +27,7 @@ object RequestMessageSerializers {
         case _ => JsSuccess(MalformedRequest("UnknownType", s"c: $c, v: ${Json.stringify(v)}"))
       }
       jsResult match {
-        case rm: JsSuccess[_] => rm
+        case rm: JsSuccess[RequestMessage @unchecked] => rm
         case e: JsError =>
           val errors = e.errors.map(err => "[" + err._1.toString + ": " + err._2.map(x => x.message).mkString(", ") + "]").mkString(", ")
           val msg = s"Error parsing json for [$c]: $errors - ${Json.prettyPrint(v)}"

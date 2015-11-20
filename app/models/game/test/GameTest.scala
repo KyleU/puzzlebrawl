@@ -55,7 +55,7 @@ abstract class GameTest(val seed: Int = Math.abs(Random.nextInt()), val board: B
     (0 until goal.width).flatMap { x =>
       val src = board.at(x, y)
       val tgt = goal.at(x, y)
-      if(src == tgt) {
+      if (src == tgt) {
         None
       } else {
         Some(GameTest.TestError(src, tgt, x, y))

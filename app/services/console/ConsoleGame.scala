@@ -2,11 +2,13 @@ package services.console
 
 import com.googlecode.lanterna.input.{ KeyType, KeyStroke }
 import models.game.Game
+import utils.Logging
 
 import scala.util.Random
 
-object ConsoleGame {
+object ConsoleGame extends Logging {
   def main(args: Array[String]) {
+    log.info(s"Starting Console game with args [${args.mkString(", ")}].")
     new ConsoleGame()
   }
 }
@@ -39,14 +41,14 @@ class ConsoleGame() extends ConsoleInput {
       }
       client.render()
       true
-    case x if x.getKeyType == KeyType.ArrowLeft => activeGemLeft(); true
-    case x if x.getKeyType == KeyType.ArrowRight => activeGemRight(); true
+    case x if x.getKeyType == KeyType.ArrowLeft => activeGemLeft()
+    case x if x.getKeyType == KeyType.ArrowRight => activeGemRight()
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
-        case char if char == 'c' => game.players.foreach(_.board.collapse())
-        case char if char == 'f' => game.players.foreach(_.board.fuse())
-        case char if char == 'a' => activeGemLeft()
-        case char if char == 'd' => activeGemRight()
+        case char if char.charValue == 'c' => game.players.foreach(_.board.collapse())
+        case char if char.charValue == 'f' => game.players.foreach(_.board.fuse())
+        case char if char.charValue == 'a' => activeGemLeft()
+        case char if char.charValue == 'd' => activeGemRight()
         case char => client.addStatusLog(s"Unknown input: [$char].")
       }
       client.render()
@@ -55,10 +57,10 @@ class ConsoleGame() extends ConsoleInput {
   }
 
   private[this] def activeGemLeft() = {
-
+    true
   }
 
   private[this] def activeGemRight() = {
-
+    true
   }
 }

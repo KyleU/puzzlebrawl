@@ -39,11 +39,10 @@ object UserService extends Logging {
   }
 
   def save(user: User, update: Boolean = false): Future[User] = {
+    log.info(s"${ if(update) { "Updating" } else { "Creating" } } user [$user].")
     val statement = if (update) {
-      log.info(s"Updating user [$user].")
       UserQueries.UpdateUser(user)
     } else {
-      log.info(s"Creating new user [$user].")
       UserQueries.insert(user)
     }
     Database.execute(statement).map { i =>
@@ -71,16 +70,14 @@ object UserService extends Logging {
     }
   }
 
-  def enableAdmin(user: User) = {
-    Database.query(UserQueries.CountAdmins).flatMap { adminCount =>
-      if (adminCount == 0) {
-        Database.execute(UserQueries.AddRole(user.id, Role.Admin)).map { x =>
-          UserCache.removeUser(user.id)
-          "OK"
-        }
-      } else {
-        Future.successful(s"Forbidden. $adminCount admins already exist.")
+  def enableAdmin(user: User) = Database.query(UserQueries.CountAdmins).flatMap { adminCount =>
+    if (adminCount == 0) {
+      Database.execute(UserQueries.AddRole(user.id, Role.Admin)).map { x =>
+        UserCache.removeUser(user.id)
+        "OK"
       }
+    } else {
+      Future.successful(s"Forbidden. $adminCount admins already exist.")
     }
   }
 

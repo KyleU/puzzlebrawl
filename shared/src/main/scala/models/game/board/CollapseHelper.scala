@@ -16,7 +16,7 @@ trait CollapseHelper { this: Board =>
       }
     }
 
-    val moveIndex = if(moveIndexes.contains(None)) {
+    val moveIndex = if (moveIndexes.contains(None)) {
       None
     } else {
       Some(moveIndexes.flatten.max)

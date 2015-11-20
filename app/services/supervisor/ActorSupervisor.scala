@@ -22,7 +22,7 @@ object ActorSupervisor extends Logging {
   case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeGame: Option[UUID], started: LocalDateTime)
 }
 
-class ActorSupervisor extends InstrumentedActor with  Logging {
+class ActorSupervisor extends InstrumentedActor with Logging {
   import ActorSupervisor.ConnectionRecord
 
   protected[this] val connections = collection.mutable.HashMap.empty[UUID, ConnectionRecord]

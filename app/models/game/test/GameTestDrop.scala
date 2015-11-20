@@ -3,10 +3,10 @@ package models.game.test
 import models.game.gem.{ Color, Gem }
 
 object GameTestDrop extends GameTest.Provider {
-  override def newInstance() = GameTestDrop()
+  override def newInstance() = new GameTestDrop()
 }
 
-case class GameTestDrop() extends GameTest(seed = 0) {
+class GameTestDrop() extends GameTest(seed = 0) {
   override def init() = {
     goal.add(Gem(0, Color.Red), 0, 0)
     goal.add(Gem(1, Color.Green), 0, 1)

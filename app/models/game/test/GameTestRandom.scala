@@ -1,18 +1,18 @@
 package models.game.test
 
-import models.game.gem.{ GemStream, Color, Gem }
+import models.game.gem.GemStream
 
 import scala.util.Random
 
 object GameTestRandom extends GameTest.Provider {
-  override def newInstance() = GameTestRandom()
+  override def newInstance() = new GameTestRandom()
 }
 
-case class GameTestRandom() extends GameTest(seed = Random.nextInt()) {
+class GameTestRandom() extends GameTest(seed = Random.nextInt()) {
   override def init() = {
     val goalStream = GemStream(seed)
-    for(y <- 0 until goal.height) {
-      for(x <- 0 until goal.width) {
+    for (y <- 0 until goal.height) {
+      for (x <- 0 until goal.width) {
         goal.add(goalStream.next, x, y)
       }
     }
@@ -20,8 +20,8 @@ case class GameTestRandom() extends GameTest(seed = Random.nextInt()) {
 
   override def run() = {
     val boardStream = GemStream(seed)
-    for(y <- 0 until board.height) {
-      for(x <- 0 until board.width) {
+    for (y <- 0 until board.height) {
+      for (x <- 0 until board.width) {
         board.add(boardStream.next, x, y)
       }
     }

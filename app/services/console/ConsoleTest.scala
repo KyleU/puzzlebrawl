@@ -22,7 +22,7 @@ object ConsoleTest {
     client.add(test.board)
     client.add(test.goal)
 
-    if(pauseBeforeRun) {
+    if (pauseBeforeRun) {
       client.addStatusLog(s"Test [$testName] initialized.")
       client.screen.readInput()
     }
@@ -32,7 +32,7 @@ object ConsoleTest {
     client.render()
 
     val errors = test.getErrors
-    if(errors.isEmpty) {
+    if (errors.isEmpty) {
       client.addStatusLog(s"Test [$testName] completed successfully. Press any key to continue.")
     } else {
       client.addStatusLog(s"Test [$testName] completed with [${errors.length}] errors. Press any key to continue.")
@@ -41,7 +41,7 @@ object ConsoleTest {
     client.screen.readInput()
     client.stop()
 
-    if(errors.nonEmpty) {
+    if (errors.nonEmpty) {
       throw new IllegalStateException("Errors encountered: [\n  " + errors.mkString("\n  ") + "\n].")
     }
   }

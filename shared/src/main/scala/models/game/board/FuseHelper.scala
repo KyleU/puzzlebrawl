@@ -6,7 +6,7 @@ import models.game.gem.Gem
 
 trait FuseHelper { this: Board =>
   def fuse(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
-    if(gem.crash || gem.timer.isDefined) {
+    if (gem.crash || gem.timer.isDefined) {
       Seq.empty
     } else {
       val (width, height) = largestSize(gem, x, y)
@@ -45,7 +45,7 @@ trait FuseHelper { this: Board =>
       } else {
         expand(gem, x, y, upDim._1, upDim._2)
       }
-      val upArea = if(upResult._1 == 1 || upResult._2 == 1) { 1 } else { upResult._1 * upResult._2 }
+      val upArea = if (upResult._1 == 1 || upResult._2 == 1) { 1 } else { upResult._1 * upResult._2 }
 
       val rightDepth = FuseDepthHelper.fuseRightDepth(this, gem, x + width - 1, y, height, 0)
       val rightDim = (width + rightDepth) -> height
@@ -54,7 +54,7 @@ trait FuseHelper { this: Board =>
       } else {
         expand(gem, x, y, rightDim._1, rightDim._2)
       }
-      val rightArea = if(rightResult._1 == 1 || rightResult._2 == 1) { 1 } else { rightResult._1 * rightResult._2 }
+      val rightArea = if (rightResult._1 == 1 || rightResult._2 == 1) { 1 } else { rightResult._1 * rightResult._2 }
 
       if (upArea > rightArea) {
         upResult
