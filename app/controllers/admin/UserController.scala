@@ -37,11 +37,8 @@ class UserController @javax.inject.Inject() (override val messagesApi: MessagesA
       val success = if (result("users") == 1) { "successfully" } else { "with an error" }
       val profiles = result("profiles")
       val requests = result("requests")
-      val cards = result("cards")
-      val moves = result("moves")
       val timing = result("timing")
-      val msg = s"User [$id] removed $success in [${timing}ms]. " +
-        s"Removed $profiles profiles, and $requests requests."
+      val msg = s"User [$id] removed $success in [${timing}ms]. Removed $profiles profiles, and $requests requests."
       Redirect(controllers.admin.routes.UserController.userList("")).flashing("success" -> msg)
     }
   }

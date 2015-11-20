@@ -1,6 +1,6 @@
 package models.game.test
 
-import models.game.board.Board.RemoveGem
+import models.game.board.mutation.Mutation.RemoveGem
 import models.game.gem.{ Color, Gem }
 
 object GameTestRemove extends GameTest.Provider {

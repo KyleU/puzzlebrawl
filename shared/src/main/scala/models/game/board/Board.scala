@@ -1,23 +1,13 @@
 package models.game.board
 
+import models.game.board.mutation._
+import models.game.board.mutation.Mutation._
 import models.game.gem.Gem
 
-object Board {
-  sealed trait Mutation
-
-  case class AddGem(gem: Gem, x: Int, y: Int) extends Mutation
-  case class MoveGem(x: Int, y: Int, xDelta: Int, yDelta: Int) extends Mutation
-  case class ChangeGem(newGem: Gem, x: Int, y: Int) extends Mutation
-  case class RemoveGem(x: Int, y: Int) extends Mutation
-
-  def withKey(key: String) = Board(key, 6, 12)
-}
+import scala.annotation.tailrec
 
 case class Board(key: String, width: Int, height: Int) extends BoardHelper {
-  import Board._
-
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
-
   for(x <- 0 until width; y <- 0 until height) {
     spaces(x)(y) = None
   }
@@ -28,6 +18,17 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     spaces(x)(y)
   }
 
+  @tailrec
+  final def startIndexFor(gem: Gem, x: Int, y: Int): (Int, Int) = if(at(x - 1, y).contains(gem)) {
+    startIndexFor(gem, x - 1, y)
+  } else if(at(x, y - 1).contains(gem)) {
+    startIndexFor(gem, x, y - 1)
+  } else {
+    (x, y)
+  }
+
+  def add(gem: Gem, x: Int, y: Int) = applyMutation(AddGem(gem, x, y))
+
   def set(x: Int, y: Int, gem: Option[Gem]) = if(x < 0 || x > width - 1) {
     throw new IllegalArgumentException(s"Index [$x] is outside of width [$width].")
   } else if(y < 0 || y > height - 1) {
@@ -36,9 +37,7 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     spaces(x)(y) = gem
   }
 
-  def mapSpaces[T](f: (Option[Gem], Int, Int) => Seq[T]) = for(y <- 0 until height; x <- 0 until width) yield {
-    f(at(x, y), x, y)
-  }
+  def mapSpaces[T](f: (Option[Gem], Int, Int) => Seq[T]) = for(y <- 0 until height; x <- 0 until width) yield f(at(x, y), x, y)
 
   def mapGems[T](f: (Gem, Int, Int) => Seq[T]) = {
     val encounteredGems = collection.mutable.HashSet.empty[Gem]
@@ -53,28 +52,11 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     }
   }
 
-  def add(gem: Gem, x: Int, y: Int) = applyMutation(AddGem(gem, x, y))
-
-  def clear() = for(x <- spaces; y <- x.indices) { x(y) = None }
-
-  def drop(gem: Gem, x: Int) = {
-    val col = spaces(x)
-    val yOpt = col.indices.reverseIterator.find(i => col(i).isDefined) match {
-      case Some(yMatch) if yMatch == height - 1 => None
-      case Some(yMatch) => Some(yMatch + 1)
-      case None => Some(0)
-    }
-    yOpt.foreach(y => applyMutation(AddGem(gem, x, y)))
-  }
-
-  def decrementTimers() = mapGems { (gem, x, y) =>
-    gem.timer match {
-      case Some(v) =>
-        val msg = ChangeGem(gem.copy(timer = if(v == 1) { None } else { Some(v - 1) }), x, y)
-        applyMutation(msg)
-        Seq(msg)
-      case None => Seq.empty
-    }
+  def applyMutation(m: Mutation) = m match {
+    case ag: AddGem => Add(this, ag)
+    case mg: MoveGem => Move(this, mg)
+    case cg: ChangeGem => Change(this, cg)
+    case rg: RemoveGem => Remove(this, rg)
   }
 
   def clone(newKey: String) = {
@@ -86,4 +68,6 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     }
     ret
   }
+
+  def clear() = mapGems((gem, x, y) => Seq(applyMutation(RemoveGem(x, y))))
 }

@@ -1,9 +1,10 @@
 package models.game.board
 
-import models.game.board.Board.MoveGem
+import models.game.board.mutation.Mutation
+import models.game.board.mutation.Mutation.MoveGem
 
 trait CollapseHelper { this: Board =>
-  def collapse(): Seq[Board.Mutation] = mapGems { (gem, x, y) =>
+  def collapse(): Seq[Mutation] = mapGems { (gem, x, y) =>
     val moveIndexes = (0 until gem.width.getOrElse(1)).map { xOffset =>
       y match {
         case 0 => None
@@ -21,10 +22,6 @@ trait CollapseHelper { this: Board =>
       Some(moveIndexes.flatten.max)
     }
 
-    moveIndex.map { idx =>
-      val msg = MoveGem(x, y, 0, idx - y)
-      applyMutation(msg)
-      msg
-    }.toSeq
+    moveIndex.map(idx => applyMutation(MoveGem(x, y, 0, idx - y))).toSeq
   }.flatten
 }

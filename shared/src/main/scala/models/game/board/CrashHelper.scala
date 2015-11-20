@@ -1,10 +1,11 @@
 package models.game.board
 
-import models.game.board.Board.RemoveGem
+import models.game.board.mutation.Mutation
+import models.game.board.mutation.Mutation.RemoveGem
 import models.game.gem.Gem
 
 trait CrashHelper { this: Board =>
-  def crash(): Seq[Seq[Board.Mutation]] = mapGems { (gem, x, y) =>
+  def crash(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
     if(gem.crash) {
       crashGem(gem, x, y)
     } else {
@@ -35,11 +36,7 @@ trait CrashHelper { this: Board =>
 
     val run = check(gem, gem, x, y)
     if(run.size > 1) {
-      run.map { n =>
-        val msg = RemoveGem(n._2, n._3)
-        applyMutation(msg)
-        msg
-      }
+      run.map(n => applyMutation(RemoveGem(n._2, n._3)))
     } else {
       Seq.empty
     }

@@ -1,34 +1,34 @@
 package models.game.board
 
-import models.game.board.Board.{ ChangeGem, RemoveGem }
+import models.game.board.mutation.Mutation
+import models.game.board.mutation.Mutation.{ RemoveGem, ChangeGem }
 import models.game.gem.Gem
 
 trait FuseHelper { this: Board =>
-  def fuse(): Seq[Seq[Board.Mutation]] = mapGems { (gem, x, y) =>
-    val (width, height) = largestSize(gem, x, y)
+  def fuse(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
+    if(gem.crash || gem.timer.isDefined) {
+      Seq.empty
+    } else {
+      val (width, height) = largestSize(gem, x, y)
 
-    if(width > gem.width.getOrElse(1) || height > gem.height.getOrElse(1)) {
-      val encounteredGems = collection.mutable.HashSet.empty[Int]
-      val removals = (0 until height).flatMap { yOffset =>
-        (0 until width).flatMap { xOffset =>
-          val testGem = at(x + xOffset, y + yOffset)
-          if(testGem.isEmpty) {
-            None
-          } else if(testGem.contains(gem)) {
-            None
-          } else {
-            val msg = RemoveGem(x + xOffset, y + yOffset)
-            applyMutation(msg)
-            Some(msg)
+      if (width > 1 && height > 1 && (width > gem.width.getOrElse(1) || height > gem.height.getOrElse(1))) {
+        val removals = (0 until height).flatMap { yOffset =>
+          (0 until width).flatMap { xOffset =>
+            val testGem = at(x + xOffset, y + yOffset)
+            if (testGem.isEmpty) {
+              None
+            } else if (testGem.contains(gem)) {
+              None
+            } else {
+              Some(applyMutation(RemoveGem(x + xOffset, y + yOffset)))
+            }
           }
         }
-      }
 
-      val changeMsg = ChangeGem(gem.copy(width = Some(width), height = Some(height)), x, y)
-      applyMutation(changeMsg)
-      removals :+ changeMsg
-    } else {
-      Seq.empty
+        removals :+ applyMutation(ChangeGem(gem.copy(width = Some(width), height = Some(height)), x, y))
+      } else {
+        Seq.empty
+      }
     }
   }
 

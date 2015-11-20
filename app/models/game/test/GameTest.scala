@@ -16,6 +16,9 @@ object GameTest {
 
   val all = Seq(
     GameTestTestbed,
+    GameTestFullTurn,
+
+    GameTestClear,
     GameTestCollapse,
     GameTestCrash,
     GameTestDrop,
@@ -29,7 +32,8 @@ object GameTest {
     GameTestGemStream,
     GameTestRandom,
     GameTestRemove,
-    GameTestTimer
+    GameTestTimer,
+    GameTestWild
   )
   def fromString(s: String) = all.find(_.testName == s)
 
@@ -40,7 +44,7 @@ object GameTest {
   implicit val testErrorWrites = Json.writes[TestError]
 }
 
-abstract class GameTest(val seed: Int = Math.abs(Random.nextInt()), val board: Board = Board.withKey("board"), val goal: Board = Board.withKey("goal")) {
+abstract class GameTest(val seed: Int = Math.abs(Random.nextInt()), val board: Board = Board("board", 6, 12), val goal: Board = Board("goal", 6, 12)) {
   protected val r = new Random(seed)
 
   def run(): Unit
