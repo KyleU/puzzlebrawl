@@ -4,6 +4,7 @@ import java.util.{ UUID, Date }
 
 import models.game.board.Board
 import models.game.gem.GemStream
+import models.game.player.Player
 
 import scala.util.Random
 
@@ -32,7 +33,7 @@ case class Game(id: UUID, seed: Int, players: Seq[Player], started: Long = new D
   private[this] val rng = new Random(seed)
 
   val playersById = players.map(p => p.id -> p).toMap
-  if(playersById.size != players.size) {
+  if (playersById.size != players.size) {
     throw new IllegalStateException(s"Game cannot have duplicate players: [${players.map(_.name).mkString(", ")}]")
   }
 }

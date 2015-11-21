@@ -3,7 +3,7 @@ import services.console.{ ConsoleTest, ConsoleGame }
 
 object Console {
   def main(args: Array[String]) {
-    if(args.isEmpty) {
+    if (args.isEmpty) {
       new ConsoleGame()
     } else {
       args.headOption.flatMap(GameTest.fromString) match {

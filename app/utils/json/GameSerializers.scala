@@ -1,8 +1,9 @@
 package utils.json
 
-import models.game.{ Player, Game }
+import models.game.Game
 import models.game.board.Board
-import models.game.gem.{ GemStream, Color, Gem }
+import models.game.gem.{ GemLocation, GemStream, Color, Gem }
+import models.game.player.Player
 import play.api.libs.json._
 
 object GameSerializers {
@@ -15,6 +16,9 @@ object GameSerializers {
 
   implicit val gemReads = Json.reads[Gem]
   implicit val gemWrites = Json.writes[Gem]
+
+  implicit val gemLocationReads = Json.reads[GemLocation]
+  implicit val gemLocationWrites = Json.writes[GemLocation]
 
   implicit val spacesReads = new Reads[Array[Array[Option[Gem]]]] {
     override def reads(json: JsValue) = {

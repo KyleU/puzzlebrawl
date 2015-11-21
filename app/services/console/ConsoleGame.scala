@@ -7,7 +7,7 @@ import scala.util.Random
 
 class ConsoleGame() extends ConsoleInput {
   val numPlayers = 4
-  val game = Game.blank(playerNames = (0 until numPlayers).map(x => "Player " + x))
+  val game = Game.blank(playerNames = (0 until numPlayers).map(x => "Player " + (x + 1)))
 
   val client = new ConsoleClient(game)
 
@@ -15,16 +15,16 @@ class ConsoleGame() extends ConsoleInput {
     (0 until 20).foreach { i =>
       player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
     }
+    player.createActiveGems()
   }
 
   client.addStatusLog("Game started. Use the arrows keys to move and rotate, space to drop, and escape to quit.")
 
-  client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
+  private val playerOne = game.players.headOption.getOrElse(throw new IllegalStateException())
 
+  client.setActivePlayer(playerOne.id)
   client.render()
-
   startInputLoop(client)
-
   client.stop()
 
   override def inputCharacter(input: KeyStroke): Boolean = input match {
@@ -34,8 +34,10 @@ class ConsoleGame() extends ConsoleInput {
       }
       client.render()
       true
-    case x if x.getKeyType == KeyType.ArrowLeft => activeGemLeft()
-    case x if x.getKeyType == KeyType.ArrowRight => activeGemRight()
+    case x if x.getKeyType == KeyType.ArrowLeft =>
+      activeGemLeft(); true
+    case x if x.getKeyType == KeyType.ArrowRight =>
+      activeGemRight(); true
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
         case char if char.charValue == 'c' => game.players.foreach(_.board.collapse())
@@ -43,10 +45,10 @@ class ConsoleGame() extends ConsoleInput {
         case char if char.charValue == 'a' => activeGemLeft()
         case char if char.charValue == 'd' => activeGemRight()
 
-        case char if char.charValue == '1' => client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
-        case char if char.charValue == '2' => client.setActivePlayer(game.players(1).id)
-        case char if char.charValue == '3' => client.setActivePlayer(game.players(2).id)
-        case char if char.charValue == '4' => client.setActivePlayer(game.players(3).id)
+        case char if char.charValue == 1 => client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
+        case char if char.charValue == 2 => client.setActivePlayer(game.players(1).id)
+        case char if char.charValue == 3 => client.setActivePlayer(game.players(2).id)
+        case char if char.charValue == 4 => client.setActivePlayer(game.players(3).id)
         case char => client.addStatusLog(s"Unknown input: [$char].")
       }
       client.render()
@@ -55,10 +57,10 @@ class ConsoleGame() extends ConsoleInput {
   }
 
   private[this] def activeGemLeft() = {
-    true
+    val p = client.getActivePlayer
+    p.activeGems
   }
 
   private[this] def activeGemRight() = {
-    true
   }
 }

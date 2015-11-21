@@ -6,17 +6,18 @@ import models.game.gem.{ Color, Gem }
 import services.console.ConsoleBorders._
 
 object TextGemPattern {
-  def single(board: Board, x: Int, y: Int) = {
+  def single(board: Board, gemOpt: Option[Gem], x: Int, y: Int) = {
     board.at(x, y) match {
       case None => ' '
       case Some(gem) if gem.timer.isDefined => gem.timer.getOrElse(0).toString.head
       case Some(gem) if gem.width.isDefined || gem.height.isDefined => character(board, gem, x, y)
+      case Some(gem) if gem.color == Color.Wild => 'W'
       case Some(gem) => ' '
     }
   }
 
-  def pair(board: Board, x: Int, y: Int) = {
-    board.at(x, y) match {
+  def pair(board: Board, gemOpt: Option[Gem], x: Int, y: Int) = {
+    gemOpt match {
       case None => (' ', ' ', TextColor.ANSI.WHITE)
       case Some(gem) if gem.timer.isDefined => (gem.timer.getOrElse(0).toString.head, gem.timer.getOrElse(0).toString.head, getColor(gem.color))
       case Some(gem) if gem.width.isDefined || gem.height.isDefined =>
@@ -30,7 +31,7 @@ object TextGemPattern {
   }
 
   private[this] def character(b: Board, gem: Gem, x: Int, y: Int) = {
-    def check(x: Int, y: Int) = b.at(x, y).exists(_.id == gem.id)
+    def check(x2: Int, y2: Int) = b.at(x2, y2).exists(_.id == gem.id)
     val (u, r, d, l) = (check(x, y + 1), check(x + 1, y), check(x, y - 1), check(x - 1, y))
     (u, r, d, l) match {
       case (true, true, true, true) => center

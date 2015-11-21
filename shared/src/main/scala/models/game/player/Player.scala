@@ -1,9 +1,8 @@
-package models.game
+package models.game.player
 
 import java.util.UUID
-
 import models.game.board.Board
-import models.game.gem.{ Gem, GemStream }
+import models.game.gem.{ GemLocation, GemStream }
 
 case class Player(
   id: UUID,
@@ -11,5 +10,5 @@ case class Player(
   board: Board,
   gemStream: GemStream,
   var score: Int = 0,
-  var activeGems: Seq[Gem] = Seq.empty
-)
+  var activeGems: Seq[GemLocation] = Seq.empty
+) extends ActiveGemHelper

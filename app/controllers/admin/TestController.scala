@@ -1,7 +1,9 @@
 package controllers.admin
 
 import controllers.BaseController
+import models.game.player.Player
 import models.game.test.GameTest
+import models.game.test.GameTest.TestError
 import play.api.i18n.MessagesApi
 import services.user.AuthenticationEnvironment
 import utils.DateUtils
@@ -9,10 +11,7 @@ import utils.DateUtils
 import scala.concurrent.Future
 
 object TestController {
-  case class Result(
-    name: String, status: String, errors: Seq[GameTest.TestError], initMs: Int, runMs: Int,
-    original: models.game.Player, test: models.game.Player, goal: models.game.Player
-  )
+  case class Result(name: String, status: String, errors: Seq[TestError], initMs: Int, runMs: Int, original: Player, test: Player, goal: Player)
 }
 
 @javax.inject.Singleton

@@ -39,7 +39,7 @@ object UserService extends Logging {
   }
 
   def save(user: User, update: Boolean = false): Future[User] = {
-    log.info(s"${ if(update) { "Updating" } else { "Creating" } } user [$user].")
+    log.info(s"${if (update) { "Updating" } else { "Creating" }} user [$user].")
     val statement = if (update) {
       UserQueries.UpdateUser(user)
     } else {
