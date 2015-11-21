@@ -5,7 +5,7 @@
       <div class="text-large">Game Tests (<a href="@controllers.admin.routes.TestController.run("All")">Run All</a>)</div>
       <ul>
         @for(test <- models.game.test.GameTest.all) {
-          <li><a href="@controllers.admin.routes.TestController.run(test.testName)">@test.testName</a></li>
+          <li><a href="@controllers.admin.routes.TestController.run(test.testName, false)">@test.testName</a></li>
         }
       </ul>
     </div>

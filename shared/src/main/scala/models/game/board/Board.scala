@@ -4,13 +4,12 @@ import models.game.board.mutation._
 import models.game.board.mutation.Mutation._
 import models.game.gem.Gem
 
-import scala.annotation.tailrec
-
 case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
   for (x <- 0 until width; y <- 0 until height) {
     spaces(x)(y) = None
   }
+  def getSpacesCopy = spaces.map(x => x.map(y => y))
 
   def at(x: Int, y: Int) = if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
     None

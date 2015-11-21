@@ -40,7 +40,12 @@ object GameSerializers {
   }
 
   implicit val boardReads = Json.reads[Board]
-  implicit val boardWrites = Json.writes[Board]
+  implicit val boardWrites = new Writes[Board] {
+    override def writes(o: Board) = {
+      val json = Json.writes[Board].writes(o)
+      json.as[JsObject] ++ JsObject(Seq("spaces" -> Json.toJson(o.getSpacesCopy)))
+    }
+  }
 
   implicit val gemStreamReads = Json.reads[GemStream]
   implicit val gemStreamWrites = Json.writes[GemStream]

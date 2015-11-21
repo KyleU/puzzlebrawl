@@ -1,6 +1,7 @@
 @(result: controllers.admin.TestController.Result)
 <div class="panel panel-default">
   <div class="panel-body">
+    <div class="pull-right"><a href="@controllers.admin.routes.TestController.run(result.name, true)">As JSON</a></div>
     <div class="text-large">Test [@result.name]</div>
     <div>Initialized in [@{result.initMs}ms], and ran with [@result.status] in [@{result.runMs}ms].</div>
   </div>

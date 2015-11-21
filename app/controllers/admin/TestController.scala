@@ -5,13 +5,17 @@ import models.game.player.Player
 import models.game.test.GameTest
 import models.game.test.GameTest.TestError
 import play.api.i18n.MessagesApi
+import play.api.libs.json.Json
 import services.user.AuthenticationEnvironment
 import utils.DateUtils
 
 import scala.concurrent.Future
 
 object TestController {
+  import utils.json.GameSerializers._
+
   case class Result(name: String, status: String, errors: Seq[TestError], initMs: Int, runMs: Int, original: Player, test: Player, goal: Player)
+  implicit val writesResult = Json.writes[Result]
 }
 
 @javax.inject.Singleton
@@ -20,15 +24,20 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     Future.successful(Ok(views.html.admin.test.list()))
   }
 
-  def run(name: String) = withAdminSession("test.run") { implicit request =>
+  def run(name: String, json: Boolean) = withAdminSession("test.run") { implicit request =>
     if (name == "All") {
       val results = GameTest.all.map(x => getResult(x.testName, x.newInstance()))
       Future.successful(Ok(views.html.admin.test.testResultAll(results)))
     } else {
       Future.successful {
         val test = GameTest.fromString(name).map(x => x.testName -> x.newInstance()).getOrElse(throw new IllegalArgumentException(s"Invalid test [$name]."))
-        val result = views.html.admin.test.testResult(getResult(test._1, test._2))
-        Ok(views.html.layout.admin(s"${utils.Config.projectName} [$name] Test", "test")(result))
+        val result = getResult(test._1, test._2)
+        val html = views.html.admin.test.testResult(result)
+        if(json) {
+          Ok(Json.toJson(result))
+        } else {
+          Ok(views.html.layout.admin(s"${utils.Config.projectName} [$name] Test", "test")(html))
+        }
       }
     }
   }

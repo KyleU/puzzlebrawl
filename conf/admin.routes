@@ -25,7 +25,7 @@ GET         /feedback/:id/note           controllers.admin.FeedbackController.fe
 GET         /feedback/:id/remove         controllers.admin.FeedbackController.removeFeedback(id: java.util.UUID)
 
 GET         /test                        controllers.admin.TestController.list()
-GET         /test/:name                  controllers.admin.TestController.run(name)
+GET         /test/:name                  controllers.admin.TestController.run(name, json: Boolean ?= false)
 
 GET         /logs                        controllers.admin.LogController.list()
 GET         /logs/:name                  controllers.admin.LogController.view(name)
