@@ -15,7 +15,7 @@ object Game {
     width: Int = 6,
     height: Int = 12
   ) = {
-    val players = playerNames.map(name => Player(name, Board(name, width, height), gemStream = GemStream(seed)))
+    val players = playerNames.map(name => Player(UUID.randomUUID, name, Board(name, width, height), gemStream = GemStream(seed)))
     Game(id, seed, players)
   }
 
@@ -30,4 +30,9 @@ object Game {
 
 case class Game(id: UUID, seed: Int, players: Seq[Player], started: Long = new Date().getTime) {
   private[this] val rng = new Random(seed)
+
+  val playersById = players.map(p => p.id -> p).toMap
+  if(playersById.size != players.size) {
+    throw new IllegalStateException(s"Game cannot have duplicate players: [${players.map(_.name).mkString(", ")}]")
+  }
 }

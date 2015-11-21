@@ -1,5 +1,7 @@
 package services.console
 
+import java.util.UUID
+
 import com.googlecode.lanterna.screen.TerminalScreen
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.{ TerminalPosition, TextCharacter, TextColor }
@@ -9,6 +11,13 @@ import org.joda.time.LocalDateTime
 import utils.{ DateUtils, Formatter }
 
 class ConsoleClient(game: Game) {
+  private[this] var activePlayer: Option[UUID] = None
+
+  def setActivePlayer(id: UUID) = {
+    activePlayer = Some(id)
+    addStatusLog(s"Player [$id] selected.")
+  }
+
   val screen = {
     val factory = new DefaultTerminalFactory()
     factory.setSuppressSwingTerminalFrame(true)
@@ -43,27 +52,22 @@ class ConsoleClient(game: Game) {
   }
 
   private[this] val statusLogs = collection.mutable.ListBuffer.empty[(LocalDateTime, String)]
-  private[this] var statusIndex = -1
+  private[this] val statusRows = rows - 15
   private[this] def writeStatus() = {
-    val log = statusLogs(statusIndex)
-    val msg = "[" + Formatter.niceTime(log._1.toLocalTime) + "] (" + (statusIndex + 1) + "/" + statusLogs.size + "): " + log._2
-    graphics.putString(0, rows - 1, msg + (0 until cols).map(x => " ").mkString(""))
+    graphics.setForegroundColor(TextColor.ANSI.WHITE)
+    val logs = statusLogs.zipWithIndex.takeRight(statusRows).reverse
+    for(l <- logs.zipWithIndex) {
+      val logIndex = l._1._2
+      val rowIndex = l._2
+      val log = l._1._1
+      val msg = "[" + Formatter.niceTime(log._1.toLocalTime) + "] (" + (logIndex + 1) + "/" + statusLogs.size + "): " + log._2
+      graphics.putString(0, rows - rowIndex - 1, msg + (0 until cols).map(x => " ").mkString(""))
+    }
     render()
   }
 
   def addStatusLog(s: String) = {
     statusLogs += (DateUtils.now -> s)
-    statusIndex = statusLogs.length - 1
-    writeStatus()
-  }
-
-  def previousStatus() = if (statusIndex > 0) {
-    statusIndex -= 1
-    writeStatus()
-  }
-
-  def nextStatus() = if (statusIndex < statusLogs.size - 1) {
-    statusIndex += 1
     writeStatus()
   }
 
@@ -73,7 +77,8 @@ class ConsoleClient(game: Game) {
     }
 
     playerLocations.foreach { b =>
-      ConsoleBorders.render(this, b._2, b._3, b._1, TextColor.ANSI.WHITE, TextColor.ANSI.BLACK)
+      val fg = if(activePlayer.contains(b._1.id)) { TextColor.ANSI.CYAN } else { TextColor.ANSI.WHITE }
+      ConsoleBorders.render(this, b._2, b._3, b._1, fg, TextColor.ANSI.BLACK)
       (0 until b._1.board.height).foreach { y =>
         (0 until b._1.board.width).foreach { x =>
           val pattern = TextGemPattern.pair(b._1.board, x, y)

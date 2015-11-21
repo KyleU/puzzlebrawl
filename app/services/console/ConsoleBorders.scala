@@ -17,6 +17,9 @@ object ConsoleBorders {
     val width = player.board.width
     val height = player.board.height
 
+    c.graphics.setForegroundColor(fgColor)
+    c.graphics.setBackgroundColor(bgColor)
+
     c.screen.setCharacter(x, y, new TextCharacter(ulCorner, fgColor, bgColor))
     c.screen.setCharacter(x + (width * 2) + 1, y, new TextCharacter(urCorner, fgColor, bgColor))
     c.screen.setCharacter(x, y + height + 1, new TextCharacter(blCorner, fgColor, bgColor))
@@ -28,7 +31,7 @@ object ConsoleBorders {
       val ret = (0 to padding).map(idx => horizontal).mkString + "[" + player.name + "]" + (0 to padding).map(idx => horizontal).mkString
       if(ret.length > width * 2) { ret.substring(0, width * 2) } else { ret }
     }
-    top.zipWithIndex.foreach(char => c.screen.setCharacter(x + char._2 + 1, y, new TextCharacter(char._1, fgColor, bgColor)))
+    c.graphics.putString(x + 1, y, top)
 
     val bottom = {
       val padding = (((width * 2) - 6) / 2) - 2
@@ -36,9 +39,9 @@ object ConsoleBorders {
       val ret = (0 to padding).map(idx => horizontal).mkString + "[" + paddedScore + "]" + (0 to padding).map(idx => horizontal).mkString
       if(ret.length > width * 2) { ret.substring(0, width * 2) } else { ret }
     }
-    bottom.zipWithIndex.foreach(char => c.screen.setCharacter(x + char._2 + 1, y + height + 1, new TextCharacter(char._1, fgColor, bgColor)))
+    c.graphics.putString(x + 1, y + height + 1, bottom)
 
-    c.graphics.drawLine(x, y + 1, x, y + height, new TextCharacter(vertical, fgColor, bgColor))
-    c.graphics.drawLine(x + (width * 2) + 1, y + 1, x + (width * 2) + 1, y + height, new TextCharacter(vertical, fgColor, bgColor))
+    c.graphics.drawLine(x, y + 1, x, y + height, vertical)
+    c.graphics.drawLine(x + (width * 2) + 1, y + 1, x + (width * 2) + 1, y + height, vertical)
   }
 }

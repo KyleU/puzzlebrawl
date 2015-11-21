@@ -19,6 +19,8 @@ class ConsoleGame() extends ConsoleInput {
 
   client.addStatusLog("Game started. Use the arrows keys to move and rotate, space to drop, and escape to quit.")
 
+  client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
+
   client.render()
 
   startInputLoop(client)
@@ -40,6 +42,11 @@ class ConsoleGame() extends ConsoleInput {
         case char if char.charValue == 'f' => game.players.foreach(_.board.fuse())
         case char if char.charValue == 'a' => activeGemLeft()
         case char if char.charValue == 'd' => activeGemRight()
+
+        case char if char.charValue == '1' => client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
+        case char if char.charValue == '2' => client.setActivePlayer(game.players(1).id)
+        case char if char.charValue == '3' => client.setActivePlayer(game.players(2).id)
+        case char if char.charValue == '4' => client.setActivePlayer(game.players(3).id)
         case char => client.addStatusLog(s"Unknown input: [$char].")
       }
       client.render()
