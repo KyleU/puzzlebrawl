@@ -15,6 +15,8 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
   }
 
   def fullTurn() = {
+    val timerActions = decrementTimers()
+
     val fuseActions = fuse()
 
     val wildsActions = processWilds()
@@ -38,6 +40,6 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
       fuse()
     }
 
-    Seq(fuseActions, wildsActions, postWildFuseActions, crashActions, postCrashFuseActions, Seq(collapseActions), postCollapseFuseActions).flatten
+    Seq(timerActions, fuseActions, wildsActions, postWildFuseActions, crashActions, postCrashFuseActions, Seq(collapseActions), postCollapseFuseActions).flatten
   }
 }

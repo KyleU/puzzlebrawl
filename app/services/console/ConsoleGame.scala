@@ -15,6 +15,7 @@ class ConsoleGame() extends ConsoleInput {
     (0 until 20).foreach { i =>
       player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
     }
+    player.board.fullTurn()
     player.createActiveGems()
   }
 
@@ -44,11 +45,16 @@ class ConsoleGame() extends ConsoleInput {
         case char if char.charValue == 'f' => game.players.foreach(_.board.fuse())
         case char if char.charValue == 'a' => activeGemLeft()
         case char if char.charValue == 'd' => activeGemRight()
+        case char if char.charValue == ' ' =>
+          val p = client.getActivePlayer
+          p.dropActiveGems()
+          p.board.fullTurn()
+          p.createActiveGems()
 
-        case char if char.charValue == 1 => client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
-        case char if char.charValue == 2 => client.setActivePlayer(game.players(1).id)
-        case char if char.charValue == 3 => client.setActivePlayer(game.players(2).id)
-        case char if char.charValue == 4 => client.setActivePlayer(game.players(3).id)
+        case char if char.charValue == '1' => client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
+        case char if char.charValue == '2' => client.setActivePlayer(game.players(1).id)
+        case char if char.charValue == '3' => client.setActivePlayer(game.players(2).id)
+        case char if char.charValue == '4' => client.setActivePlayer(game.players(3).id)
         case char => client.addStatusLog(s"Unknown input: [$char].")
       }
       client.render()
@@ -58,9 +64,17 @@ class ConsoleGame() extends ConsoleInput {
 
   private[this] def activeGemLeft() = {
     val p = client.getActivePlayer
-    p.activeGems
+    if(p.activeGems.map(_.x).min > 0) {
+      p.activeGems = p.activeGems.map(loc => loc.copy(x = loc.x - 1))
+      client.render()
+    }
   }
 
   private[this] def activeGemRight() = {
+    val p = client.getActivePlayer
+    if(p.activeGems.map(_.x).max < p.board.width - 1) {
+      p.activeGems = p.activeGems.map(loc => loc.copy(x = loc.x + 1))
+      client.render()
+    }
   }
 }

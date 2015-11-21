@@ -12,4 +12,9 @@ trait ActiveGemHelper { this: Player =>
     val y = board.height - 1
     activeGems = Seq(GemLocation(gemStream.next, x, y), GemLocation(gemStream.next, x + 1, y))
   }
+
+  def dropActiveGems() = {
+    activeGems.flatMap(ag => board.drop(ag.gem, ag.x))
+    activeGems = Seq.empty
+  }
 }
