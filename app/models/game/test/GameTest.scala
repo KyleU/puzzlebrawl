@@ -22,6 +22,7 @@ object GameTest {
     GameTestCollapse,
     GameTestCrash,
     GameTestDrop,
+    GameTestDropFull,
     GameTestFuseBasic,
     GameTestFuseConflict,
     GameTestFuseExpand,

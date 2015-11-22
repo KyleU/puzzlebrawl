@@ -68,7 +68,7 @@ class ConsoleClient(game: Game) {
       ConsoleBorders.render(this, xOffset, 1, p._1, fg, TextColor.ANSI.BLACK)
       (0 until p._1.board.height).foreach { y =>
         (0 until p._1.board.width).foreach { x =>
-          val pattern = TextGemPattern.pair(p._1.board, p._1.board.at(x, y + 1), x, y + 1)
+          val pattern = TextGemPattern.pair(p._1.board, p._1.board.at(x, y), x, y)
           val targetX = xOffset + 1 + (x * 2)
           val targetY = p._1.board.height - y + 1
           screen.setCharacter(targetX, targetY, new TextCharacter(pattern._1, pattern._3, TextColor.ANSI.BLACK))

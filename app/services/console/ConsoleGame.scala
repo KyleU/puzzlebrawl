@@ -35,10 +35,8 @@ class ConsoleGame() extends ConsoleInput {
       }
       client.render()
       true
-    case x if x.getKeyType == KeyType.ArrowLeft =>
-      activeGemLeft(); true
-    case x if x.getKeyType == KeyType.ArrowRight =>
-      activeGemRight(); true
+    case x if x.getKeyType == KeyType.ArrowLeft => activeGemLeft(); true
+    case x if x.getKeyType == KeyType.ArrowRight => activeGemRight(); true
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
         case char if char.charValue == 'c' => game.players.foreach(_.board.collapse())
