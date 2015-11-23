@@ -24,7 +24,12 @@ trait CrashHelper { this: Board =>
       if (gem.timer.isEmpty && gem.color == source.color && !encountered.contains(gem.id)) {
         def helper(xIdx: Int, yIdx: Int) = at(xIdx, yIdx).map(g => check(source, g, xIdx, yIdx)).getOrElse(Seq.empty)
         encountered += gem.id
-        (gem, x, y) +: Seq(helper(x, y + 1), helper(x + 1, y), helper(x, y - 1), helper(x - 1, y)).flatten
+        (gem, x, y) +: Seq(
+          (0 until width).map(w => helper(x + w, y + 1)),
+          (0 until height).map(h => helper(x + 1, y + h)),
+          (0 until width).map(w => helper(x + w, y - 1)),
+          (0 until height).map(h => helper(x - 1, y + h))
+        ).flatten.flatten
       } else {
         Seq.empty
       }
