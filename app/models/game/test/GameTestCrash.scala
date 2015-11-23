@@ -17,6 +17,7 @@ class GameTestCrash() extends GameTest() {
     test.board.applyMutation(AddGem(Gem(5, Color.Red, width = Some(2), height = Some(2)), 4, 0))
     test.board.applyMutation(AddGem(Gem(6, Color.Blue), 0, 1))
     test.board.applyMutation(AddGem(Gem(7, Color.Green), 3, 2))
+    test.board.applyMutation(AddGem(Gem(8, Color.Red), 5, 2))
 
     goal.board.applyMutation(AddGem(Gem(6, Color.Blue), 0, 0))
     goal.board.applyMutation(AddGem(Gem(7, Color.Green), 3, 0))
