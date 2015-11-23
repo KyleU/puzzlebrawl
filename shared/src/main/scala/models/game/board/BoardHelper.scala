@@ -1,5 +1,6 @@
 package models.game.board
 
+import models.game.board.mutation.Mutation
 import models.game.gem.Gem
 
 import scala.annotation.tailrec
@@ -14,7 +15,7 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
     (x, y)
   }
 
-  def fullTurn() = {
+  final def fullTurn(): Seq[Seq[Mutation]] = {
     val timerActions = decrementTimers()
 
     val fuseActions = fuse()
@@ -40,6 +41,21 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
       fuse()
     }
 
-    Seq(timerActions, fuseActions, wildsActions, postWildFuseActions, crashActions, postCrashFuseActions, Seq(collapseActions), postCollapseFuseActions).flatten
+    val ret = Seq(
+      Seq(timerActions),
+      fuseActions,
+      wildsActions,
+      postWildFuseActions,
+      crashActions,
+      postCrashFuseActions,
+      Seq(collapseActions),
+      postCollapseFuseActions
+    ).flatten.filter(_.nonEmpty)
+
+    if(ret.isEmpty) {
+      ret
+    } else {
+      ret ++ fullTurn()
+    }
   }
 }
