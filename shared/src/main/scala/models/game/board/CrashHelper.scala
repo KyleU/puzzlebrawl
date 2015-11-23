@@ -22,14 +22,20 @@ trait CrashHelper { this: Board =>
 
     def check(source: Gem, gem: Gem, x: Int, y: Int): Seq[(Gem, Int, Int)] = {
       if (gem.timer.isEmpty && gem.color == source.color && !encountered.contains(gem.id)) {
-        def helper(xIdx: Int, yIdx: Int) = at(xIdx, yIdx).map(g => check(source, g, xIdx, yIdx)).getOrElse(Seq.empty)
+        def helper(xIdx: Int, yIdx: Int) = {
+          println(s"Source: $source, Gem: $gem, Target: ${at(xIdx, yIdx)} - [$xIdx, $yIdx]")
+          at(xIdx, yIdx).map(g => check(source, g, xIdx, yIdx)).getOrElse(Seq.empty)
+        }
+
         encountered += gem.id
-        (gem, x, y) +: Seq(
-          (0 until width).map(w => helper(x + w, y + 1)),
-          (0 until height).map(h => helper(x + 1, y + h)),
-          (0 until width).map(w => helper(x + w, y - 1)),
-          (0 until height).map(h => helper(x - 1, y + h))
-        ).flatten.flatten
+
+        val (startX, startY) = startIndexFor(gem, x, y)
+
+        val above = (0 until gem.width.getOrElse(1)).flatMap(w => helper(startX + w, startY + gem.height.getOrElse(1)))
+        val right = (0 until gem.height.getOrElse(1)).flatMap(h => helper(startX + gem.width.getOrElse(1), startY + h))
+        val below = (0 until gem.width.getOrElse(1)).flatMap(w => helper(startX + w, startY - 1))
+        val left = (0 until gem.height.getOrElse(1)).flatMap(h => helper(startX - 1, startY + h))
+        (gem, x, y) +: Seq(above, right, below, left).flatten
       } else {
         Seq.empty
       }

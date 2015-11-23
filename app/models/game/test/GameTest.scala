@@ -20,6 +20,7 @@ object GameTest {
     GameTestCollapse,
     GameTestCombo,
     GameTestCrash,
+    GameTestCrashLarge,
     GameTestDrop,
     GameTestDropFull,
     GameTestFullTurn,
