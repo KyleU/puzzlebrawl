@@ -33,7 +33,7 @@ class ConsoleClient(game: Game) {
 
   private val rows = screen.getTerminalSize.getRows
   private val cols = screen.getTerminalSize.getColumns
-  private val padding = (cols / 2) - game.players.map(_.board.width + 2).sum
+  private val padding = (cols / 2) - game.players.map(_.board.width + 4).sum + 1
 
   def stop() = screen.stopScreen()
 
@@ -64,7 +64,7 @@ class ConsoleClient(game: Game) {
 
     game.players.zipWithIndex.foreach { p =>
       val fg = if (activePlayer.contains(p._1.id)) { TextColor.ANSI.CYAN } else { TextColor.ANSI.WHITE }
-      val xOffset = padding + (p._2 * 16) + 2
+      val xOffset = padding + (p._2 * 19) + 2
       ConsoleBorders.render(this, xOffset, 1, p._1, fg, TextColor.ANSI.BLACK)
       (0 until p._1.board.height).foreach { y =>
         (0 until p._1.board.width).foreach { x =>
@@ -82,6 +82,9 @@ class ConsoleClient(game: Game) {
         screen.setCharacter(targetX, targetY, new TextCharacter(pattern._1, pattern._3, TextColor.ANSI.BLACK))
         screen.setCharacter(targetX + 1, targetY, new TextCharacter(pattern._2, pattern._3, TextColor.ANSI.BLACK))
       }
+
+      // Energy?
+      graphics.putString(xOffset + (p._1.board.width * 2) + 2, 2, "00")
     }
 
     screen.setCursorPosition(new TerminalPosition(cols - 1, rows - 1))

@@ -14,7 +14,7 @@ trait ActiveGemHelper { this: Player =>
   }
 
   def dropActiveGems() = {
-    activeGems.flatMap(ag => board.drop(ag.gem, ag.x))
+    activeGems.sortBy(g => g.y -> g.x).flatMap(ag => board.drop(ag.gem, ag.x))
     activeGems = Seq.empty
   }
 }

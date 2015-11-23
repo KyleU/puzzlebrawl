@@ -37,6 +37,8 @@ class ConsoleGame() extends ConsoleInput {
       true
     case x if x.getKeyType == KeyType.ArrowLeft => activeGemLeft(); true
     case x if x.getKeyType == KeyType.ArrowRight => activeGemRight(); true
+    case x if x.getKeyType == KeyType.ArrowDown => activeGemCounterClockwise(); true
+    case x if x.getKeyType == KeyType.ArrowUp => activeGemClockwise(); true
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
         case char if char.charValue == 'c' => game.players.foreach(_.board.collapse())
@@ -62,7 +64,14 @@ class ConsoleGame() extends ConsoleInput {
 
   private[this] def activeGemLeft() = {
     val p = client.getActivePlayer
-    if(p.activeGems.map(_.x).min > 0) {
+    val ok = !p.activeGems.exists { g =>
+      if(g.x == 0) {
+        true
+      } else {
+        p.board.at(g.x - 1, g.y).isDefined
+      }
+    }
+    if(ok) {
       p.activeGems = p.activeGems.map(loc => loc.copy(x = loc.x - 1))
       client.render()
     }
@@ -70,9 +79,37 @@ class ConsoleGame() extends ConsoleInput {
 
   private[this] def activeGemRight() = {
     val p = client.getActivePlayer
-    if(p.activeGems.map(_.x).max < p.board.width - 1) {
+    val ok = !p.activeGems.exists { g =>
+      if(g.x == p.board.width - 1) {
+        true
+      } else {
+        p.board.at(g.x + 1, g.y).isDefined
+      }
+    }
+    if(ok) {
       p.activeGems = p.activeGems.map(loc => loc.copy(x = loc.x + 1))
       client.render()
     }
+  }
+
+  private[this] def activeGemCounterClockwise() = {
+    val p = client.getActivePlayer
+    val newActive = p.activeGems match {
+      case Seq(a, b) => (b.x - a.x, b.y - a.y) match {
+        case (1, 0) => Seq(a, b.copy(x = b.x - 1, y = b.y - 1))
+        case (0, -1) => Seq(a.copy(x = a.x + 1), b.copy(y = b.y + 1))
+        case (-1, 0) => Seq(a.copy(x = a.x - 1, y = a.y - 1), b)
+        case (0, 1) => Seq(a.copy(y = a.y + 1), b.copy(x = b.x + 1))
+        case (x, y) => throw new IllegalStateException(s"Unable to rotate active gems with unknown offset [$x, $y].")
+      }
+      case _ => throw new IllegalStateException(s"There are [${p.activeGems.size}] active gems, but [2] are needed.")
+    }
+    p.activeGems = newActive
+    client.render()
+  }
+
+  private[this] def activeGemClockwise() = {
+    val p = client.getActivePlayer
+    client.render()
   }
 }

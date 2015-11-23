@@ -11,6 +11,8 @@ object ConsoleBorders {
   val brCorner = '\u255D'
   val horizontal = '\u2550'
   val vertical = '\u2551'
+  val topT = '\u2566'
+  val bottomT = '\u2569'
   val center = ' '
 
   def render(c: ConsoleClient, x: Int, y: Int, player: Player, fgColor: TextColor, bgColor: TextColor): Unit = {
@@ -21,9 +23,18 @@ object ConsoleBorders {
     c.graphics.setBackgroundColor(bgColor)
 
     c.screen.setCharacter(x, y, new TextCharacter(ulCorner, fgColor, bgColor))
-    c.screen.setCharacter(x + (width * 2) + 1, y, new TextCharacter(urCorner, fgColor, bgColor))
+
+    c.screen.setCharacter(x + (width * 2) + 1, y, new TextCharacter(topT, fgColor, bgColor))
+    c.screen.setCharacter(x + (width * 2) + 2, y, new TextCharacter(horizontal, fgColor, bgColor))
+    c.screen.setCharacter(x + (width * 2) + 3, y, new TextCharacter(horizontal, fgColor, bgColor))
+    c.screen.setCharacter(x + (width * 2) + 4, y, new TextCharacter(urCorner, fgColor, bgColor))
+
     c.screen.setCharacter(x, y + height + 1, new TextCharacter(blCorner, fgColor, bgColor))
-    c.screen.setCharacter(x + (width * 2) + 1, y + height + 1, new TextCharacter(brCorner, fgColor, bgColor))
+
+    c.screen.setCharacter(x + (width * 2) + 1, y + height + 1, new TextCharacter(bottomT, fgColor, bgColor))
+    c.screen.setCharacter(x + (width * 2) + 2, y + height + 1, new TextCharacter(horizontal, fgColor, bgColor))
+    c.screen.setCharacter(x + (width * 2) + 3, y + height + 1, new TextCharacter(horizontal, fgColor, bgColor))
+    c.screen.setCharacter(x + (width * 2) + 4, y + height + 1, new TextCharacter(brCorner, fgColor, bgColor))
 
     val top = {
       val l = player.name.length
@@ -43,5 +54,6 @@ object ConsoleBorders {
 
     c.graphics.drawLine(x, y + 1, x, y + height, vertical)
     c.graphics.drawLine(x + (width * 2) + 1, y + 1, x + (width * 2) + 1, y + height, vertical)
+    c.graphics.drawLine(x + (width * 2) + 4, y + 1, x + (width * 2) + 4, y + height, vertical)
   }
 }
