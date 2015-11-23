@@ -96,10 +96,10 @@ class ConsoleGame() extends ConsoleInput {
     val p = client.getActivePlayer
     val newActive = p.activeGems match {
       case Seq(a, b) => (b.x - a.x, b.y - a.y) match {
-        case (1, 0) => Seq(a, b.copy(x = b.x - 1, y = b.y - 1))
-        case (0, -1) => Seq(a.copy(x = a.x + 1), b.copy(y = b.y + 1))
-        case (-1, 0) => Seq(a.copy(x = a.x - 1, y = a.y - 1), b)
-        case (0, 1) => Seq(a.copy(y = a.y + 1), b.copy(x = b.x + 1))
+        case (1, 0) => Seq(a, b.copy(x = b.x - 1, y = b.y + 1)) // To the right
+        case (0, -1) => Seq(a, b.copy(x = b.x + 1, y = b.y + 1)) // Below
+        case (-1, 0) => Seq(a, b.copy(x = b.x + 1, y = b.y - 1)) // To the left
+        case (0, 1) => Seq(a, b.copy(x = b.x - 1, y = b.y - 1)) // Above
         case (x, y) => throw new IllegalStateException(s"Unable to rotate active gems with unknown offset [$x, $y].")
       }
       case _ => throw new IllegalStateException(s"There are [${p.activeGems.size}] active gems, but [2] are needed.")
@@ -110,6 +110,17 @@ class ConsoleGame() extends ConsoleInput {
 
   private[this] def activeGemClockwise() = {
     val p = client.getActivePlayer
+    val newActive = p.activeGems match {
+      case Seq(a, b) => (b.x - a.x, b.y - a.y) match {
+        case (1, 0) => Seq(a, b.copy(x = b.x - 1, y = b.y - 1)) // To the right
+        case (0, -1) => Seq(a, b.copy(x = b.x - 1, y = b.y + 1)) // Below
+        case (-1, 0) => Seq(a, b.copy(x = b.x + 1, y = b.y + 1)) // To the left
+        case (0, 1) => Seq(a, b.copy(x = b.x + 1, y = b.y - 1)) // Above
+        case (x, y) => throw new IllegalStateException(s"Unable to rotate active gems with unknown offset [$x, $y].")
+      }
+      case _ => throw new IllegalStateException(s"There are [${p.activeGems.size}] active gems, but [2] are needed.")
+    }
+    p.activeGems = newActive
     client.render()
   }
 }
