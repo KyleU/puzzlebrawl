@@ -24,7 +24,6 @@ class GameTestCrash() extends GameTest() {
   }
 
   override def run() = {
-    test.board.crash()
-    test.board.collapse()
+    test.board.crash() :+ test.board.collapse()
   }
 }

@@ -14,9 +14,9 @@ class GameTestRemove() extends GameTest() {
     test.board.applyMutation(AddGem(Gem(0, Color.Blue, width = Some(3), height = Some(3)), 3, 0))
   }
 
-  override def run() = {
-    test.board.applyMutation(RemoveGem(0, 0))
-    test.board.applyMutation(RemoveGem(2, 0))
+  override def run() = Seq(Seq(
+    test.board.applyMutation(RemoveGem(0, 0)),
+    test.board.applyMutation(RemoveGem(2, 0)),
     test.board.applyMutation(RemoveGem(4, 1))
-  }
+  ))
 }

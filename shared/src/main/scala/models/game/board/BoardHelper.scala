@@ -15,7 +15,8 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
     (x, y)
   }
 
-  final def fullTurn(): Seq[Seq[Mutation]] = {
+  @tailrec
+  final def fullTurn(carry: Seq[Seq[Mutation]] = Seq.empty): Seq[Seq[Mutation]] = {
     val timerActions = decrementTimers()
 
     val fuseActions = fuse()
@@ -53,9 +54,9 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
     ).flatten.filter(_.nonEmpty)
 
     if(ret.isEmpty) {
-      ret
+      carry
     } else {
-      ret ++ fullTurn()
+      fullTurn(carry ++ ret)
     }
   }
 }

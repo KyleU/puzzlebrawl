@@ -1,6 +1,7 @@
 package controllers.admin
 
 import controllers.BaseController
+import models.game.board.mutation.Mutation
 import models.game.player.Player
 import models.game.test.GameTest
 import models.game.test.GameTest.TestError
@@ -13,8 +14,19 @@ import scala.concurrent.Future
 
 object TestController {
   import utils.json.GameSerializers._
+  import utils.json.MutationSerializers._
 
-  case class Result(name: String, status: String, errors: Seq[TestError], initMs: Int, runMs: Int, original: Player, test: Player, goal: Player)
+  case class Result(
+    name: String,
+    status: String,
+    errors: Seq[TestError],
+    initMs: Int,
+    runMs: Int,
+    original: Player,
+    test: Player,
+    testMessages: Seq[Seq[Mutation]],
+    goal: Player
+  )
   implicit val writesResult = Json.writes[Result]
 }
 
@@ -48,19 +60,19 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     val initMs = (DateUtils.nowMillis - initStart).toInt
     test.test.board.cloneTo(test.original.board)
 
-    val (runMs, testErrors) = try {
+    val (runMs, testMessages, testErrors) = try {
       val runStart = DateUtils.nowMillis
-      test.run()
+      val msgs = test.run()
       val runMs = (DateUtils.nowMillis - runStart).toInt
-      runMs -> test.getErrors
+      (runMs, msgs, test.getErrors)
     } catch {
       case x: Exception =>
         log.warn(s"Test [$testName] has failed with exception [$x].", x)
-        0 -> Seq(GameTest.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}")))
+        (0, Seq.empty, Seq(GameTest.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}"))))
     }
 
     val status = testErrors.headOption.map(x => s"${testErrors.size} Errors").getOrElse("Success")
 
-    TestController.Result(testName, status, testErrors, initMs, runMs, test.original, test.test, test.goal)
+    TestController.Result(testName, status, testErrors, initMs, runMs, test.original, test.test, testMessages, test.goal)
   }
 }

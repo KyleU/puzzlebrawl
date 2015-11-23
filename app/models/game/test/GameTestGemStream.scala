@@ -21,10 +21,10 @@ class GameTestGemStream() extends GameTest() {
   override def run() = {
     val seed = Math.abs(Random.nextInt)
     val stream = GemStream(seed = seed, gemAdjustWild = 0, gemAdjustCrash = 0, gemAdjustRed = 1.0, gemAdjustGreen = 0, gemAdjustBlue = 0, gemAdjustYellow = 0)
-    for (y <- 0 until 12) {
-      for (x <- 0 until 6) {
+    Seq((0 until 12).flatMap { y =>
+      (0 until 6).map { x =>
         test.board.applyMutation(AddGem(stream.next, x, y))
       }
-    }
+    })
   }
 }

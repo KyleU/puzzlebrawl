@@ -30,5 +30,5 @@ class GameTestCollapse() extends GameTest() {
     goal.board.applyMutation(AddGem(Gem(8, Color.Blue, width = Some(2), height = Some(2)), 0, 3))
   }
 
-  override def run() = test.board.collapse()
+  override def run() = Seq(test.board.collapse())
 }
