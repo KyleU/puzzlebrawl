@@ -20,10 +20,7 @@ class ConsoleGame() {
   }
 
   client.addStatusLog("Game started. Use the arrows keys to move and rotate, space to drop, and escape to quit.")
-
-  private val playerOne = game.players.headOption.getOrElse(throw new IllegalStateException())
-
-  client.setActivePlayer(playerOne.id)
+  client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
   client.render()
   input.startInputLoop(client)
   client.stop()

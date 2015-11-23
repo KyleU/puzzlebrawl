@@ -15,14 +15,13 @@ object GameTest {
   }
 
   val all = Seq(
-    GameTestTestbed,
-    GameTestFullTurn,
-
     GameTestClear,
     GameTestCollapse,
+    GameTestCombo,
     GameTestCrash,
     GameTestDrop,
     GameTestDropFull,
+    GameTestFullTurn,
     GameTestFuseBasic,
     GameTestFuseConflict,
     GameTestFuseExpand,
@@ -33,6 +32,7 @@ object GameTest {
     GameTestGemStream,
     GameTestRandom,
     GameTestRemove,
+    GameTestTestbed,
     GameTestTimer,
     GameTestWild
   )

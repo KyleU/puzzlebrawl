@@ -22,13 +22,9 @@ trait CrashHelper { this: Board =>
 
     def check(source: Gem, gem: Gem, x: Int, y: Int): Seq[(Gem, Int, Int)] = {
       if (gem.timer.isEmpty && gem.color == source.color && !encountered.contains(gem.id)) {
+        def helper(xIdx: Int, yIdx: Int) = at(xIdx, yIdx).map(g => check(source, g, xIdx, yIdx)).getOrElse(Seq.empty)
         encountered += gem.id
-        (gem, x, y) +: Seq(
-          at(x, y + 1).map(g => check(source, g, x, y + 1)), // u
-          at(x + 1, y).map(g => check(source, g, x + 1, y)), // r
-          at(x, y - 1).map(g => check(source, g, x, y - 1)), // d
-          at(x - 1, y).map(g => check(source, g, x - 1, y)) // l
-        ).flatten.flatten
+        (gem, x, y) +: Seq(helper(x, y + 1), helper(x + 1, y), helper(x, y - 1), helper(x - 1, y)).flatten
       } else {
         Seq.empty
       }

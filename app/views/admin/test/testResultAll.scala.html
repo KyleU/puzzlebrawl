@@ -12,6 +12,13 @@
         All @utils.Config.projectName Tests
       </div>
       <div>Ran [@results.size] tests in [@{results.map(_.runMs).sum}ms] with [@errorCount] errors.</div>
+      @if(errorCount > 0) {
+      <ul>
+        @for(result <- results if result.errors.nonEmpty) {
+          <li><a href="#@result.name">@result.name</a>
+        }
+      </ul>
+      }
       }
     </div>
   </div>
