@@ -15,8 +15,7 @@ class ConsoleGameActiveGems(game: Game, client: ConsoleClient) {
       }
     }
     if(ok) {
-      p.activeGems = p.activeGems.map(loc => loc.copy(x = loc.x - 1))
-      client.render()
+      setActiveGems(p, p.activeGems.map(loc => loc.copy(x = loc.x - 1)))
     }
   }
 
@@ -30,9 +29,14 @@ class ConsoleGameActiveGems(game: Game, client: ConsoleClient) {
       }
     }
     if(ok) {
-      p.activeGems = p.activeGems.map(loc => loc.copy(x = loc.x + 1))
-      client.render()
+      setActiveGems(p, p.activeGems.map(loc => loc.copy(x = loc.x + 1)))
     }
+  }
+
+  def stepActiveGems() = {
+    val p = client.getActivePlayer
+    val newActive = p.activeGems.map(g => g.copy(y = g.y - 1))
+    setActiveGems(p, newActive)
   }
 
   def activeGemCounterClockwise() = {
@@ -66,7 +70,23 @@ class ConsoleGameActiveGems(game: Game, client: ConsoleClient) {
   }
 
   private[this] def setActiveGems(p: Player, newActive: Seq[GemLocation]) = {
-    p.activeGems = newActive
+    val minX = newActive.map(_.x).min
+    val maxX = newActive.map(_.x).max
+    val xAdjusted = if(minX < 0) {
+      newActive.map(g => g.copy(x = g.x - minX))
+    } else if(maxX >= p.board.width) {
+      newActive.map(g => g.copy(x = g.x + (maxX - p.board.width - 1)))
+    } else {
+      newActive
+    }
+
+    val maxY = newActive.map(_.y).max
+    val yAdjusted = if(maxY >= p.board.height) {
+      xAdjusted.map(g => g.copy(y = g.y + (maxY - p.board.height - 1)))
+    } else {
+      xAdjusted
+    }
+    p.activeGems = yAdjusted
     client.render()
   }
 }

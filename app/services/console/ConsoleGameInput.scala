@@ -23,6 +23,7 @@ class ConsoleGameInput(game: Game, client: ConsoleClient, activeGems: ConsoleGam
         case char if char.charValue == 'f' => game.players.foreach(_.board.fuse())
         case char if char.charValue == 'a' => activeGems.activeGemLeft()
         case char if char.charValue == 'd' => activeGems.activeGemRight()
+        case char if char.charValue == '.' => activeGems.stepActiveGems()
         case char if char.charValue == ' ' =>
           val p = client.getActivePlayer
           p.dropActiveGems()
