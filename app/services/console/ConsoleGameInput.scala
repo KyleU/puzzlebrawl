@@ -13,15 +13,15 @@ class ConsoleGameInput(game: Game, client: ConsoleClient, activeGems: ConsoleGam
       }
       client.render()
       true
-    case x if x.getKeyType == KeyType.ArrowLeft => activeGems.activeGemLeft(); true
+    case x if x.getKeyType == KeyType.ArrowLeft => activeGems.activeGemsLeft(); true
     case x if x.getKeyType == KeyType.ArrowRight => activeGems.activeGemRight(); true
-    case x if x.getKeyType == KeyType.ArrowUp => activeGems.activeGemClockwise(); true
-    case x if x.getKeyType == KeyType.ArrowDown => activeGems.activeGemCounterClockwise(); true
+    case x if x.getKeyType == KeyType.ArrowUp => activeGems.activeGemsClockwise(); true
+    case x if x.getKeyType == KeyType.ArrowDown => activeGems.activeGemsCounterClockwise(); true
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
         case char if char.charValue == 'c' => game.players.foreach(_.board.collapse())
         case char if char.charValue == 'f' => game.players.foreach(_.board.fuse())
-        case char if char.charValue == 'a' => activeGems.activeGemLeft()
+        case char if char.charValue == 'a' => activeGems.activeGemsLeft()
         case char if char.charValue == 'd' => activeGems.activeGemRight()
         case char if char.charValue == '.' => activeGems.stepActiveGems()
         case char if char.charValue == ' ' =>

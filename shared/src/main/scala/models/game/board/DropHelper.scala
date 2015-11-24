@@ -4,9 +4,9 @@ import models.game.board.mutation.Mutation.AddGem
 import models.game.gem.Gem
 
 trait DropHelper { this: Board =>
-  def drop(gem: Gem, x: Int) = {
+  def drop(gem: Gem, x: Int, fromY: Int = height) = {
     val col = spaces(x)
-    val yOpt = col.indices.reverseIterator.find(i => col(i).isDefined) match {
+    val yOpt = col.indices.reverseIterator.drop(height - fromY).find(i => col(i).isDefined) match {
       case Some(yMatch) if yMatch == height - 1 => None
       case Some(yMatch) => Some(yMatch + 1)
       case None => Some(0)

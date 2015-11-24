@@ -2,7 +2,7 @@ package models.game.player
 
 import java.util.UUID
 import models.game.board.Board
-import models.game.gem.{ Gem, GemLocation, GemStream }
+import models.game.gem.{ GemLocation, GemStream }
 
 case class Player(
   id: UUID,
