@@ -3,19 +3,35 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
   'use strict';
 
   function PuzzleBrawl() {
-    this.ws = new Websocket(cfg.wsUrl, this);
+    this.started = false;
     this.activeGame = null;
+    this.ws = new Websocket(cfg.wsUrl, this);
+    this.start();
   }
 
   PuzzleBrawl.prototype.onConnect = function() {
+    Status.set('connection', 'Connected');
+  };
+
+  PuzzleBrawl.prototype.onDisconnect = function() {
+    Status.set('connection', 'Disconnected');
+
+    console.info('Connection closed. Attempting to reconnect in five seconds.');
+    var self = this;
+    setTimeout(function() { self.ws.connect(self); }, 5000);
+  };
+
+  PuzzleBrawl.prototype.start = function() {
     var self = this;
     function sendPing() {
-      self.ws.send('Ping', { timestamp: new Date().getTime() });
+      if(self.ws.connected) {
+        self.ws.send('Ping', { timestamp: new Date().getTime() });
+      }
       setTimeout(sendPing, 5000);
     }
-
-    Status.set('connection', 'Connected.');
     setTimeout(sendPing, 1000);
+
+    this.started = true;
   };
 
   PuzzleBrawl.prototype.onMessage = function(c, v) {

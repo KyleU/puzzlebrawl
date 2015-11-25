@@ -31,13 +31,11 @@ define(['utils/Config'], function (cfg) {
     };
     ws.onclose = function() {
       me.connected = false;
-      setTimeout(function() {
-        console.info('Websocket connection closed. Attempting to reconnect.');
-        me.connect(context);
-      }, 5000);
+      context.onDisconnect();
     };
     ws.onerror = function(err) {
       me.connected = false;
+      context.onDisconnect();
       console.error('Received error from websocket connection [' + err + '].');
     };
     this.connection = ws;
