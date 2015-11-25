@@ -1,11 +1,23 @@
-@(user: models.user.User)(
+@(user: models.user.User, debug: Boolean)(
   implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
 )@layout.basic(title = utils.Config.projectName, bodyClass = Some("light")) {
+  <div id="game-container"></div>
+
   <ul id="status-container">
     <li>Connection: <span id="status-connection">Starting...</span></li>
     <li>Latency: <span id="status-latency">Unknown</span></li>
     <li>Score: <span id="status-score">0</span></li>
   </ul>
+
+  @if(debug) {
+    <script src="@routes.Assets.versioned("lib/phaser/js/phaser-arcade-physics.js")"></script>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/phaser-debug.min.css").url" />
+    <script src="@routes.Assets.versioned("lib/phaser/js/phaser-debug.js")"></script>
+    <script src="@routes.Assets.versioned("lib/underscorejs/underscore.js").url"></script>
+  } else {
+    <script src="@routes.Assets.versioned("lib/phaser/js/phaser-arcade-physics.min.js")"></script>
+    <script src="@routes.Assets.versioned("lib/underscorejs/underscore-min.js").url"></script>
+  }
 
   <!-- Scala.js output -->
   @if(play.api.Play.isProd(play.api.Play.current)) {

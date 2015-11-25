@@ -29,7 +29,7 @@ object Server {
       Cache.ehCache, Database.postgresAsync, Mail.mailer,
       Play.playFilters, Play.playWs, Play.playTest, Authentication.silhouette,
       Metrics.metrics, Metrics.healthChecks, Metrics.json, Metrics.jvm, Metrics.ehcache, Metrics.jettyServlet, Metrics.servlets, Metrics.graphite,
-      WebJars.requireJs, WebJars.bootstrap, WebJars.d3, WebJars.nvd3, Testing.akkaTestkit, Miscellaneous.lanterna
+      WebJars.requireJs, WebJars.bootstrap, WebJars.underscore, WebJars.d3, WebJars.nvd3, Testing.akkaTestkit, Miscellaneous.lanterna
     )
   }
 

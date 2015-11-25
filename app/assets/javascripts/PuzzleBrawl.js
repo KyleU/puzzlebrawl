@@ -1,9 +1,8 @@
 /* global define:false */
-define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], function (cfg, DebugInfo, Status, Websocket) {
+define(['client/GameClient', 'utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], function (GameClient, cfg, DebugInfo, Status, Websocket) {
   'use strict';
 
   function PuzzleBrawl() {
-    this.started = false;
     this.activeGame = null;
     this.ws = new Websocket(cfg.wsUrl, this);
     this.start();
@@ -22,6 +21,8 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
   };
 
   PuzzleBrawl.prototype.start = function() {
+    this.client = new GameClient(this.ws);
+
     var self = this;
     function sendPing() {
       if(self.ws.connected) {
@@ -30,8 +31,6 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
       setTimeout(sendPing, 5000);
     }
     setTimeout(sendPing, 1000);
-
-    this.started = true;
   };
 
   PuzzleBrawl.prototype.onMessage = function(c, v) {
