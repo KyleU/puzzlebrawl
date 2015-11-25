@@ -1,5 +1,5 @@
 /* global define:false */
-define(['state/GameState'], function (GameState) {
+define(['state/GameState', 'gem/GemSprites'], function (GameState, GemSprites) {
   'use strict';
 
   function Sandbox(client) {
@@ -15,7 +15,9 @@ define(['state/GameState'], function (GameState) {
   Sandbox.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
 
-    var gem = this.add.sprite(this.client.world.centerX, this.client.world.centerY, 'gems');
+    var idx = GemSprites.spriteFor({ color: 'b', role: 'x'});
+    console.log(idx);
+    var gem = this.add.sprite(this.client.world.centerX, this.client.world.centerY, 'gems', idx);
     gem.anchor.setTo(0.5, 0.5);
   };
 
