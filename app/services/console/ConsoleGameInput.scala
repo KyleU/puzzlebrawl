@@ -16,7 +16,7 @@ class ConsoleGameInput(game: Game, client: ConsoleClient) extends ConsoleInput {
       true
     case x if x.getKeyType == KeyType.ArrowLeft => withPlayer(_.activeGemsLeft())
     case x if x.getKeyType == KeyType.ArrowRight => withPlayer(_.activeGemsRight())
-    case x if x.getKeyType == KeyType.ArrowUp => withPlayer(_.activeGemsCounterClockwise())
+    case x if x.getKeyType == KeyType.ArrowUp => withPlayer(_.activeGemsClockwise())
     case x if x.getKeyType == KeyType.ArrowDown => withPlayer(_.activeGemsCounterClockwise())
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {

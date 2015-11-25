@@ -12,8 +12,7 @@ trait ActiveGemRotationHelper { this: Player =>
         case (0, 1) => 1 -> -1 // Above
         case (x, y) => throw new IllegalStateException(s"Unable to rotate active gems with unknown offset [$x, $y].")
       }
-      val newB = b.copy(x = b.x + delta._1, y = b.y + delta._2)
-      setIfPossible(a, newB)
+      setIfPossible(a, b, delta._1, delta._2)
     case _ => throw new IllegalStateException(s"There are [${activeGems.size}] active gems, but [2] are needed.")
   }
 
@@ -26,43 +25,38 @@ trait ActiveGemRotationHelper { this: Player =>
         case (0, 1) => -1 -> -1 // Above
         case (x, y) => throw new IllegalStateException(s"Unable to rotate active gems with unknown offset [$x, $y].")
       }
-      val newB = b.copy(x = b.x + delta._1, y = b.y + delta._2)
-      setIfPossible(a, newB)
+      setIfPossible(a, b, delta._1, delta._2)
     case _ => throw new IllegalStateException(s"There are [${activeGems.size}] active gems, but [2] are needed.")
   }
 
-  private[this] def setIfPossible(a: GemLocation, newB: GemLocation) = board.at(newB.x, newB.y) match {
-    case None => if (newB.x < 0) {
-      val xDelta = -newB.x
-      val newGems = Seq(a.copy(x = a.x + xDelta), newB.copy(x = newB.x + xDelta))
-      if(newGems.exists(g => board.at(g.x, g.y).isDefined)) {
-        // Blocked right, no op
-      } else {
-        activeGems = newGems
-      }
-    } else if (newB.x >= board.width) {
-      val xDelta = newB.x - board.width - 1
-      val newGems = Seq(a.copy(x = a.x + xDelta), newB.copy(x = newB.x + xDelta))
-      if(newGems.exists(g => board.at(g.x, g.y).isDefined)) {
-        // Blocked left, no op
-      } else {
-        activeGems = newGems
-      }
-    } else if (newB.y >= board.height) {
-      val yDelta = board.height - 1 - newB.y
-      val newGems = Seq(a.copy(y = a.y + yDelta), newB.copy(y = newB.y + yDelta))
-      if(newGems.exists(g => board.at(g.x, g.y).isDefined)) {
-        // Blocked below, no op
-      } else {
-        activeGems = newGems
-      }
-    } else if (newB.y < 0) {
-      // Outside bottom, no op
-    } else if(board.at(newB.x, newB.y).isDefined) {
-      // Occupied, no op for now.
+  private[this] def setIfPossible(a: GemLocation, b: GemLocation, bXDiff: Int, bYDiff: Int) = {
+    def withDelta(xDelta: Int = 0, yDelta: Int = 0) = Seq(
+      a.copy(x = a.x + xDelta, y = a.y + yDelta),
+      b.copy(x = b.x + bXDiff + xDelta, y = b.y + bYDiff + yDelta)
+    )
+
+    activeGems = if(board.isValid(b.x + bXDiff, b.y + bYDiff)) {
+      Seq(a, b.copy(x = b.x + bXDiff, y = b.y + bYDiff))
     } else {
-      activeGems = Seq(a, newB)
+      val first = if(bXDiff > 0) { withDelta(xDelta = -1) } else { withDelta(xDelta = 1) }
+      val firstOk = !first.exists(g => !board.isValid(g.x, g.y))
+      if(firstOk) {
+        first
+      } else {
+        val second = if(bXDiff > 0) { withDelta(xDelta = 1) } else { withDelta(xDelta = -1) }
+        val secondOk = !second.exists(g => !board.isValid(g.x, g.y))
+        if(secondOk) {
+          second
+        } else {
+          val down = withDelta(yDelta = -1)
+          val downOk = !down.exists(g => !board.isValid(g.x, g.y))
+          if(downOk) {
+            down
+          } else {
+            Seq(a.copy(gem = b.gem), b.copy(gem = a.gem))
+          }
+        }
+      }
     }
-    case Some(occupant) => // Occupied, no op
   }
 }

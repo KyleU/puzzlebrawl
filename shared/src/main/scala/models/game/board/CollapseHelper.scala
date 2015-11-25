@@ -8,7 +8,7 @@ trait CollapseHelper { this: Board =>
     val moveIndexes = (0 until gem.width.getOrElse(1)).map { xOffset =>
       y match {
         case 0 => None
-        case _ => ((y - 1) to 0 by -1).find(idx => at(x + xOffset, idx).isDefined) match {
+        case _ => ((y - 1) to 0 by -1).find(idx => !isValid(x + xOffset, idx)) match {
           case Some(idx) if idx == y - 1 => None
           case Some(idx) => Some(idx + 1)
           case None => Some(0)

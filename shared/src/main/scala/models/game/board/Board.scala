@@ -17,6 +17,12 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     spaces(x)(y)
   }
 
+  def isValid(x: Int, y: Int) = if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
+    false
+  } else {
+    spaces(x)(y).isEmpty
+  }
+
   def set(x: Int, y: Int, gem: Option[Gem]) = if (x < 0 || x > width - 1) {
     throw new IllegalArgumentException(s"Index [$x] is outside of width [$width].")
   } else if (y < 0 || y > height - 1) {
