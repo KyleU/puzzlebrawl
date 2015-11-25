@@ -1,6 +1,6 @@
 @(user: models.user.User, debug: Boolean)(
   implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
-)@layout.basic(title = utils.Config.projectName, bodyClass = Some("light")) {
+)@layout.basic(title = utils.Config.projectName, bodyClass = Some("dark")) {
   <div id="game-container"></div>
 
   <ul id="status-container">

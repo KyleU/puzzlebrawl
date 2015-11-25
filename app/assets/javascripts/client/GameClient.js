@@ -3,6 +3,11 @@
 define(['state/InitialState'], function (InitialState) {
   'use strict';
 
+  if(window.PhaserGlobal === undefined) {
+    window.PhaserGlobal = {};
+  }
+  window.PhaserGlobal.hideBanner = true;
+
   function GameClient(ws) {
     this.ws = ws;
 

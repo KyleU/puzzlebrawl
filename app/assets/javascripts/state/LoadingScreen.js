@@ -11,6 +11,7 @@ define(['state/GameState', 'state/Sandbox'], function (GameState, Sandbox) {
 
   LoadingScreen.prototype.preload = function() {
     this.client.load.spritesheet('gems', 'assets/images/game/gems.png', 128, 128);
+    this.client.load.image('board-bg-a', 'assets/images/board/bg-a.png');
 
     var sandbox = new Sandbox(this.client);
     this.game.state.add('sandbox', sandbox);
