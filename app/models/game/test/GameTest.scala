@@ -16,7 +16,8 @@ object GameTest {
   }
 
   val all = Seq(
-    GameTestActiveGems,
+    GameTestActiveGemsDrop,
+    GameTestActiveGemsInsert,
     GameTestClear,
     GameTestCollapse,
     GameTestCombo,

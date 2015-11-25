@@ -8,8 +8,7 @@ class ConsoleGame() {
   val game = Game.blank(playerNames = (0 until numPlayers).map(x => "Player " + (x + 1)))
   val client = new ConsoleClient(game)
 
-  val activeGems = new ConsoleGameActiveGems(game, client)
-  val input = new ConsoleGameInput(game, client, activeGems)
+  val input = new ConsoleGameInput(game, client)
 
   game.players.foreach { player =>
     (0 until 20).foreach { i =>

@@ -2,7 +2,7 @@ package models.game.gem
 
 case class Gem(
     id: Int,
-    color: Color,
+    color: Color = Color.Red,
     crash: Boolean = false,
     timer: Option[Int] = None,
     width: Option[Int] = None,

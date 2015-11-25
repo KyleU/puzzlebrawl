@@ -13,7 +13,7 @@ class GameTestGemStream() extends GameTest() {
   override def init() = {
     for (y <- 0 until 12) {
       for (x <- 0 until 6) {
-        goal.board.applyMutation(AddGem(Gem((y * 6) + x, Color.Red), x, y))
+        goal.board.applyMutation(AddGem(Gem((y * 6) + x), x, y))
       }
     }
   }

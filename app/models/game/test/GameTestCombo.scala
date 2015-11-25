@@ -9,9 +9,9 @@ object GameTestCombo extends GameTest.Provider {
 
 class GameTestCombo() extends GameTest() {
   override def init() = {
-    test.board.applyMutation(AddGem(Gem(0, Color.Red), 0, 0))
-    test.board.applyMutation(AddGem(Gem(1, Color.Red), 1, 0))
-    test.board.applyMutation(AddGem(Gem(2, Color.Red, crash = true), 0, 1))
+    test.board.applyMutation(AddGem(Gem(0), 0, 0))
+    test.board.applyMutation(AddGem(Gem(1), 1, 0))
+    test.board.applyMutation(AddGem(Gem(2, crash = true), 0, 1))
     test.board.applyMutation(AddGem(Gem(3, Color.Green), 1, 1))
     test.board.applyMutation(AddGem(Gem(4, Color.Green, crash = true), 0, 2))
     test.board.applyMutation(AddGem(Gem(5, Color.Blue), 1, 2))
