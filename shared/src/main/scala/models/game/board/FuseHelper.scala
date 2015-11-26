@@ -6,7 +6,7 @@ import models.game.gem.Gem
 
 trait FuseHelper { this: Board =>
   def fuse(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
-    if (gem.crash || gem.timer.isDefined) {
+    if (gem.crash.exists(x => x) || gem.timer.isDefined) {
       Seq.empty
     } else {
       val (width, height) = largestSize(gem, x, y)

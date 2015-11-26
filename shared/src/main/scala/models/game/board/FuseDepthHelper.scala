@@ -5,7 +5,7 @@ import models.game.gem.Gem
 import scala.annotation.tailrec
 
 object FuseDepthHelper {
-  private[this] def canFuse(src: Gem, tgt: Gem) = (!tgt.crash) && tgt.timer.isEmpty && src.color == tgt.color
+  private[this] def canFuse(src: Gem, tgt: Gem) = (!tgt.crash.exists(x => x)) && tgt.timer.isEmpty && src.color == tgt.color
 
   @tailrec
   def fuseUpDepth(b: Board, gem: Gem, xStart: Int, yStart: Int, width: Int, pendingCols: Int): Int = {

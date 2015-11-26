@@ -10,7 +10,7 @@ object GameTestCrash extends GameTest.Provider {
 class GameTestCrash() extends GameTest() {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0), 0, 0))
-    test.board.applyMutation(AddGem(Gem(1, crash = true), 1, 0))
+    test.board.applyMutation(AddGem(Gem(1, crash = Some(true)), 1, 0))
     test.board.applyMutation(AddGem(Gem(2), 2, 0))
     test.board.applyMutation(AddGem(Gem(3), 2, 1))
     test.board.applyMutation(AddGem(Gem(4), 3, 1))

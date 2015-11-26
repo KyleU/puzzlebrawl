@@ -51,8 +51,8 @@ case class GemStream(
     val ret = if (r.nextDouble < wildChance) {
       Gem(nextId, color = Color.Wild)
     } else {
-      val crash = r.nextDouble < crashChance
-      val color = randomColor(crash)
+      val crash = if(r.nextDouble < crashChance) { Some(true) } else { None }
+      val color = randomColor(crash.exists(x => x))
       Gem(nextId, color = color, crash = crash)
     }
     nextId += 1

@@ -90,7 +90,7 @@ Debug.prototype.init = function () {
     this.panels.scene = new ScenePanel(this.game, this);
 
     // add elements to the page
-    // REMOVED ui.addCss(css);
+    ui.addCss(css);
     document.body.appendChild(this._createElement());
 
     this._bindEvents();
@@ -864,7 +864,7 @@ function escapeExpression(string) {
   }
 
   // Force a string conversion as this will be done by the append regardless and
-  // the regex observe will do this transparently behind the scenes, causing issues if
+  // the regex test will do this transparently behind the scenes, causing issues if
   // an object's to string has escaped characters in it.
   string = "" + string;
 
@@ -898,7 +898,7 @@ module.exports = require("handlebars/runtime")["default"];
 },{"handlebars/runtime":8}],10:[function(require,module,exports){
 module.exports={
   "name": "phaser-debug",
-  "version": "1.1.1",
+  "version": "1.1.5",
   "description": "Simple debug module for phaser",
   "author": "Chad Engler <chad@pantherdev.com>",
   "license": "MIT",
@@ -919,6 +919,7 @@ module.exports={
   ],
   "dependencies": {
     "handlebars": "^2.0.0",
+    "node-lessify": "^0.0.5",
     "hbsfy": "^2.1.0"
   },
   "devDependencies": {
@@ -930,13 +931,16 @@ module.exports={
     "gulp-jshint": "^1.8.4",
     "gulp-util": "^3.0.1",
     "jshint-summary": "^0.4.0",
-    "node-lessify": "0.0.4",
     "vinyl-source-stream": "^0.1.1",
     "watchify": "^1.0.2"
   },
+  "main": "./dist/phaser-debug.js",
   "browser": "./src/index.js",
   "browserify": {
-    "transform": ["hbsfy", "node-lessify"],
+    "transform": [
+      "hbsfy",
+      "node-lessify"
+    ],
     "transform-options": {
       "node-lessify": "textMode"
     }
@@ -1134,7 +1138,7 @@ Performance.prototype.createPanelElement = function () {
 };
 
 Performance.prototype.update = function () {
-    this.graph.addData(this.parent.timings);
+    this.graph.addData(this.parent.timings, this.eventQueue.shift());
 };
 
 Performance.prototype.mark = function (label) {
@@ -1285,10 +1289,7 @@ function typeToString () {
 
     // If no phaser type defined, try to guess
     if (node.type === undefined) {
-        if (node instanceof PIXI.Stage) {
-            return 'PIXI Stage';
-        }
-        else if (node instanceof PIXI.Sprite) {
+        if (node instanceof PIXI.Sprite) {
             return 'PIXI Sprite';
         }
         else if (node instanceof PIXI.DisplayObjectContainer) {
@@ -1303,86 +1304,78 @@ function typeToString () {
     }
     // return a string for the phaser type
     else {
-      /* solitaire.gg modifications */
-      if(node.constructor.name === "Card") {
-        return "Card (" + node.toString() + ")";
-      } else if(node.constructor.name === "Pile") {
-          return "Pile";
-      } else {
         switch(node.type) {
-          case Phaser.SPRITE:
-            return 'Sprite';
+            case Phaser.SPRITE:
+                return 'Sprite';
 
-          case Phaser.BUTTON:
-            return 'Button';
+            case Phaser.BUTTON:
+                return 'Button';
 
-          case Phaser.IMAGE:
-            return 'Image';
+            case Phaser.IMAGE:
+                return 'Image';
 
-          case Phaser.GRAPHICS:
-            return 'Graphics';
+            case Phaser.GRAPHICS:
+                return 'Graphics';
 
-          case Phaser.TEXT:
-            return 'Text';
+            case Phaser.TEXT:
+                return 'Text';
 
-          case Phaser.TILESPRITE:
-            return 'Tile Sprite';
+            case Phaser.TILESPRITE:
+                return 'Tile Sprite';
 
-          case Phaser.BITMAPTEXT:
-            return 'Bitmap Text';
+            case Phaser.BITMAPTEXT:
+                return 'Bitmap Text';
 
-          case Phaser.GROUP:
-            return 'Group';
+            case Phaser.GROUP:
+                return 'Group';
 
-          case Phaser.RENDERTEXTURE:
-            return 'Render Texture';
+            case Phaser.RENDERTEXTURE:
+                return 'Render Texture';
 
-          case Phaser.TILEMAP:
-            return 'Tilemap';
+            case Phaser.TILEMAP:
+                return 'Tilemap';
 
-          case Phaser.TILEMAPLAYER:
-            return 'Tilemap Layer';
+            case Phaser.TILEMAPLAYER:
+                return 'Tilemap Layer';
 
-          case Phaser.EMITTER:
-            return 'Emitter';
+            case Phaser.EMITTER:
+                return 'Emitter';
 
-          case Phaser.POLYGON:
-            return 'Polygon';
+            case Phaser.POLYGON:
+                return 'Polygon';
 
-          case Phaser.BITMAPDATA:
-            return 'Bitmap Data';
+            case Phaser.BITMAPDATA:
+                return 'Bitmap Data';
 
-          case Phaser.CANVAS_FILTER:
-            return 'Canvas Filter';
+            case Phaser.CANVAS_FILTER:
+                return 'Canvas Filter';
 
-          case Phaser.WEBGL_FILTER:
-            return 'WebGL Filter';
+            case Phaser.WEBGL_FILTER:
+                return 'WebGL Filter';
 
-          case Phaser.ELLIPSE:
-            return 'Ellipse';
+            case Phaser.ELLIPSE:
+                return 'Ellipse';
 
-          case Phaser.SPRITEBATCH:
-            return 'Sprite Batch';
+            case Phaser.SPRITEBATCH:
+                return 'Sprite Batch';
 
-          case Phaser.RETROFONT:
-            return 'Retro Font';
+            case Phaser.RETROFONT:
+                return 'Retro Font';
 
-          case Phaser.POINTER:
-            return 'Pointer';
+            case Phaser.POINTER:
+                return 'Pointer';
 
-          case Phaser.ROPE:
-            return 'Rope';
+            case Phaser.ROPE:
+                return 'Rope';
 
-          default:
-            return 'Unknown';
+            default:
+                return 'Unknown';
         }
-      }
-      /* End solitaire.gg modifications */
     }
 }
 
 },{"../hbs/scene/details.hbs":11,"../hbs/scene/panel.hbs":12,"../hbs/scene/tree.hbs":13,"../util/ui":19,"./Panel":14,"hbsfy/runtime":9}],17:[function(require,module,exports){
-module.exports = "";
+module.exports = ".pdebug{font-size:14px;position:fixed;bottom:0;width:100%;color:#aaa;background:#333;border-top:3px solid #00bf00}.pdebug a{color:#00bf00}.pdebug label{display:inline-block;width:60px}.pdebug strong{font-weight:400;color:#fff}.pdebug .weak{color:#aaa}.pdebug .pdebug-menu{height:32px;padding:0 15px;text-shadow:1px 1px 0 #111;background:#333}.pdebug .pdebug-menu span{display:inline-block;height:32px;line-height:32px}.pdebug .pdebug-menu .pdebug-head{padding-right:25px;border-right:1px solid #666}.pdebug .pdebug-menu .pdebug-stats{float:right;padding:0 0 0 10px}.pdebug .pdebug-menu .pdebug-stats .pdebug-stats-item{display:inline-block;width:100px;text-align:right}.pdebug .pdebug-menu .pdebug-stats .pdebug-stats-item>span{color:#fff}.pdebug .pdebug-menu .pdebug-stats .pdebug-stats-item.obj{width:100px;border:0}.pdebug .pdebug-menu .pdebug-menu-item{color:#fff;display:inline-block;text-decoration:none;padding:0 10px;height:32px;line-height:32px;border-right:1px solid #666}.pdebug .pdebug-menu .pdebug-menu-item.active{color:#00bf00;background:#111}.pdebug .pdebug-panel{display:none;height:265px;overflow:auto;font-size:12px;background:#111}.pdebug .pdebug-panel.scene .sidebar{float:left;height:100%;min-width:175px;max-width:500px;resize:horizontal;overflow:auto}.pdebug .pdebug-panel.scene .details{float:left;height:100%}.pdebug .pdebug-panel.scene .refresh{position:absolute}.pdebug .pdebug-panel.scene>ul{padding:0;margin:0;border-right:solid 1px #aaa;margin-right:10px}.pdebug .pdebug-panel.scene>ul li{color:#fff;list-style:none;cursor:pointer}.pdebug .pdebug-panel.scene>ul li.expanded>ul{display:block}.pdebug .pdebug-panel.scene>ul li.selected{color:#00bf00}.pdebug .pdebug-panel.scene>ul li::before{content:\'-\';display:inline-block;width:12px;height:1px;color:#aaa}.pdebug .pdebug-panel.scene>ul li.has-children::before{content:\'\';display:inline-block;width:0;height:0;margin:0 6px 0 0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:0;border-left:6px solid rgba(255,255,255,.3)}.pdebug .pdebug-panel.scene>ul li.has-children.expanded::before{margin:0 4px 0 -4px;border-top:6px solid rgba(255,255,255,.3);border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:0}.pdebug .pdebug-panel.scene>ul li>ul{display:none;padding:0 0 0 10px}input[type=checkbox]{visibility:hidden}.checkbox{width:75px;height:26px;background:#333;position:relative;line-height:normal;-webkit-border-radius:50px;-moz-border-radius:50px;border-radius:50px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.2);-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.2);-o-box-shadow:inset 0 1px 1px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.2);-ms-box-shadow:inset 0 1px 1px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.2);box-shadow:inset 0 1px 1px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.2)}.checkbox:after{content:\'OFF\';font:12px/26px Arial,sans-serif;color:#000;position:absolute;right:10px;z-index:0;font-weight:700;text-shadow:1px 1px 0 rgba(255,255,255,.15)}.checkbox:before{content:\'ON\';font:12px/26px Arial,sans-serif;color:#00bf00;position:absolute;left:10px;z-index:0;font-weight:700}.checkbox+span{position:relative;display:block;top:-25px;left:90px;width:200px;color:#fcfff4;font-size:1.1em}.checkbox input[type=checkbox]:checked+label{left:38px}.checkbox label{display:block;width:34px;height:20px;-webkit-border-radius:50px;-moz-border-radius:50px;border-radius:50px;-webkit-transition:all .4s ease;-moz-transition:all .4s ease;-o-transition:all .4s ease;-ms-transition:all .4s ease;transition:all .4s ease;cursor:pointer;position:absolute;top:3px;left:3px;z-index:1;background:#fcfff4;background:-webkit-linear-gradient(top,#fcfff4 0,#dfe5d7 40%,#b3bead 100%);background:-moz-linear-gradient(top,#fcfff4 0,#dfe5d7 40%,#b3bead 100%);background:-o-linear-gradient(top,#fcfff4 0,#dfe5d7 40%,#b3bead 100%);background:-ms-linear-gradient(top,#fcfff4 0,#dfe5d7 40%,#b3bead 100%);background:linear-gradient(top,#fcfff4 0,#dfe5d7 40%,#b3bead 100%);-webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,.3);-moz-box-shadow:0 2px 5px 0 rgba(0,0,0,.3);box-shadow:0 2px 5px 0 rgba(0,0,0,.3)}";
 },{}],18:[function(require,module,exports){
 // TODO: Move the legend into DOM?
 
@@ -1406,6 +1399,8 @@ function Graph(container, width, height, colors, options) {
     this.legendBoxSize = 10;
     this.legendIndent = 5;
 
+    this.eventY = this.padding * 2;
+
     this.colors = colors;
 
     this.dataCanvas = document.createElement('canvas');
@@ -1424,13 +1419,13 @@ Graph.prototype.constructor = Graph;
 module.exports = Graph;
 
 // render the graph with the new data point
-Graph.prototype.addData = function (values) {
+Graph.prototype.addData = function (values, event) {
     // clear the main canvas
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.drawBg();
     this.drawLegend(values);
-    this.drawData(values);
+    this.drawData(values, event);
 };
 
 Graph.prototype.drawBg = function () {
@@ -1502,7 +1497,7 @@ Graph.prototype.drawLegend = function (values) {
     }
 };
 
-Graph.prototype.drawData = function (values) {
+Graph.prototype.drawData = function (values, event) {
     var x = this.dataCanvas.width - this.dataLineWidth + 0.5,
         y = this.dataCanvas.height - 0.5;
 
@@ -1521,6 +1516,27 @@ Graph.prototype.drawData = function (values) {
 
     // draw the buffer back to the data canvas
     this.dctx.drawImage(this.dataCanvasBuffer, 0, 0);
+
+    // draw event to the new line of the data canvas if there was one
+    if (event) {
+        this.dctx.beginPath();
+        this.dctx.strokeStyle = this.dctx.fillStyle = '#ff0000';
+        this.dctx.lineWidth = this.dataLineWidth;
+
+        this.dctx.moveTo(x, y);
+        this.dctx.lineTo(x, 0);
+
+        this.dctx.stroke();
+
+        this.dctx.textAlign = 'right';
+        this.dctx.fillText(event, x - this.padding, this.eventY);
+
+        this.eventY += (this.padding * 2);
+
+        if (this.eventY > (this.dataCanvas.height / 2)) {
+            this.eventY = (this.padding * 2);
+        }
+    }
 
     // draws the data values to the new line of the data canvas
 

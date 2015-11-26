@@ -6,7 +6,7 @@ import models.game.gem.Gem
 
 trait CrashHelper { this: Board =>
   def crash(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
-    if (gem.crash) {
+    if (gem.crash.exists(x => x)) {
       crashGem(gem, x, y)
     } else {
       Seq.empty
@@ -14,7 +14,7 @@ trait CrashHelper { this: Board =>
   }
 
   private[this] def crashGem(gem: Gem, x: Int, y: Int) = {
-    if (!gem.crash) {
+    if (!gem.crash.exists(x => x)) {
       throw new IllegalStateException(s"Crash called at [$x, $y], which is occupied by non-crash gem $gem.")
     }
 

@@ -24,8 +24,8 @@ object TextGemPattern {
         val chars = characterPair(board, gem, x, y)
         (chars._1, chars._2, getColor(gem.color))
       case Some(gem) => gem.crash match {
-        case true => ('(', ')', getColor(gem.color))
-        case false => ('[', ']', getColor(gem.color))
+        case Some(true) => ('(', ')', getColor(gem.color))
+        case _ => ('[', ']', getColor(gem.color))
       }
     }
   }
