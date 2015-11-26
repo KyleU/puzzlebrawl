@@ -1,5 +1,5 @@
 /* global define:false */
-define(['client/GameClient', 'utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], function (GameClient, cfg, DebugInfo, Status, Websocket) {
+define(['game/Game', 'utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], function (Game, cfg, DebugInfo, Status, Websocket) {
   'use strict';
 
   function PuzzleBrawl() {
@@ -21,7 +21,7 @@ define(['client/GameClient', 'utils/Config', 'utils/DebugInfo', 'utils/Status', 
   };
 
   PuzzleBrawl.prototype.start = function() {
-    this.client = new GameClient(this.ws);
+    this.game = new Game(this.ws);
 
     var self = this;
     function sendPing() {

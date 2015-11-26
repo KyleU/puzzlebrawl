@@ -2,25 +2,25 @@
 define(['state/GameState', 'state/Sandbox'], function (GameState, Sandbox) {
   'use strict';
 
-  function LoadingScreen(client) {
-    GameState.call(this, 'loading', client);
+  function LoadingScreen(game) {
+    GameState.call(this, 'loading', game);
   }
 
   LoadingScreen.prototype = Object.create(GameState.prototype);
   LoadingScreen.prototype.constructor = LoadingScreen;
 
   LoadingScreen.prototype.preload = function() {
-    this.client.load.spritesheet('gems', 'assets/images/game/gems.png', 128, 128);
-    this.client.load.image('board-bg-a', 'assets/images/board/bg-a.png');
+    this.game.load.spritesheet('gems', 'assets/images/game/gems.png', 128, 128);
+    this.game.load.image('board-bg-a', 'assets/images/board/bg-a.png');
 
-    var sandbox = new Sandbox(this.client);
-    this.client.state.add('sandbox', sandbox);
+    var sandbox = new Sandbox(this.game);
+    this.game.state.add('sandbox', sandbox);
   };
 
   LoadingScreen.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
 
-    this.client.state.start('sandbox');
+    this.game.state.start('sandbox');
   };
 
   return LoadingScreen;

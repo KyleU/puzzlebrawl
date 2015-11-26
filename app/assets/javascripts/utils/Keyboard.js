@@ -14,26 +14,26 @@ define([], function () {
     }
   }
 
-  var Keyboard = function(client) {
-    this.client = client;
+  var Keyboard = function(game) {
+    this.game = game;
   };
 
   Keyboard.prototype.init = function() {
-    var c = this.client;
+    var g = this.game;
 
-    var sandboxKey = c.input.keyboard.addKey(Phaser.Keyboard.X);
-    sandboxKey.onDown.add(function() { c.sandbox(); });
+    var sandboxKey = g.input.keyboard.addKey(Phaser.Keyboard.X);
+    sandboxKey.onDown.add(function() { g.sandbox(); });
 
-    var debugKey = c.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    var debugKey = g.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     debugKey.onDown.add(toggleDebug);
   };
 
   Keyboard.prototype.enable = function() {
-    this.client.input.keyboard.enabled = true;
+    this.game.input.keyboard.enabled = true;
   };
 
   Keyboard.prototype.disable = function() {
-    this.client.input.keyboard.enabled = false;
+    this.game.input.keyboard.enabled = false;
   };
 
   return Keyboard;

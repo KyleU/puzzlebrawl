@@ -4,10 +4,9 @@
 define([], function () {
   'use strict';
 
-  function GameState(id, client) {
+  function GameState(id, game) {
     this.id = id;
-    this.client = client;
-    Phaser.State.call(this, client);
+    Phaser.State.call(this, game);
   }
 
   GameState.prototype = Object.create(Phaser.State.prototype);

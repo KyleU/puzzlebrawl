@@ -8,7 +8,7 @@ define(['state/InitialState'], function (InitialState) {
   }
   window.PhaserGlobal.hideBanner = true;
 
-  function GameClient(ws) {
+  function Game(ws) {
     this.initialized = false;
     this.ws = ws;
 
@@ -27,8 +27,8 @@ define(['state/InitialState'], function (InitialState) {
     Phaser.Game.call(this, configOptions);
   }
 
-  GameClient.prototype = Phaser.Game.prototype;
-  GameClient.prototype.constructor = GameClient;
+  Game.prototype = Phaser.Game.prototype;
+  Game.prototype.constructor = Game;
 
-  return GameClient;
+  return Game;
 });

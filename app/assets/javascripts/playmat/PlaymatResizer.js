@@ -21,9 +21,9 @@ define([], function () {
 
   PlaymatResizer.prototype.resize = function() {
     var p = this.playmat;
-    var totalHeight = p.client.world.height;
+    var totalHeight = p.game.world.height;
 
-    var widthRatio = p.client.world.width / p.w;
+    var widthRatio = p.game.world.width / p.w;
     var heightRatio = totalHeight / p.h;
 
     var newPosition = p.position;
@@ -37,13 +37,13 @@ define([], function () {
       }
     } else {
       newScale = new Phaser.Point(heightRatio, heightRatio);
-      var xOffset = (p.client.world.width - (p.w * heightRatio)) / 2;
+      var xOffset = (p.game.world.width - (p.w * heightRatio)) / 2;
       if(xOffset > 0 || p.x !== 0) {
         newPosition = new Phaser.Point(xOffset, 0);
       }
     }
 
-    if(p.client.initialized) {
+    if(p.game.initialized) {
       p.game.add.tween(p.scale).to({x: newScale.x, y: newScale.y}, 500, Phaser.Easing.Quadratic.InOut, true);
       p.game.add.tween(p.position).to({x: newPosition.x, y: newPosition.y}, 500, Phaser.Easing.Quadratic.InOut, true);
     } else {

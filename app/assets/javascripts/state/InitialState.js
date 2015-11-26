@@ -3,8 +3,8 @@
 define(['state/GameState', 'state/LoadingScreen'], function (GameState, LoadingScreen) {
   'use strict';
 
-  function InitialState(client) {
-    GameState.call(this, 'initial', client);
+  function InitialState(game) {
+    GameState.call(this, 'initial', game);
   }
 
   InitialState.prototype = Object.create(GameState.prototype);
@@ -17,28 +17,28 @@ define(['state/GameState', 'state/LoadingScreen'], function (GameState, LoadingS
   InitialState.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
 
-    var loadingScreen = new LoadingScreen(this.client);
-    this.client.state.add('loading', loadingScreen);
+    var loadingScreen = new LoadingScreen(this.game);
+    this.game.state.add('loading', loadingScreen);
 
-    this.client.time.advancedTiming = true;
+    this.game.time.advancedTiming = true;
 
-    this.client.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
+    this.game.scale.scaleMode = Phaser.ScaleManager.NO_SCALE;
 
-    var c = this.client;
+    var g = this.game;
     var resizeCallback = function() {
       var w = window.innerWidth > 2000 ? 2000 : window.innerWidth;
-      c.scale.setGameSize(w, window.innerHeight);
-      c.state.getCurrentState().resize();
+      g.scale.setGameSize(w, window.innerHeight);
+      g.state.getCurrentState().resize();
     };
 
     window.addEventListener('resize', resizeCallback);
     resizeCallback();
 
     if(typeof Phaser.Plugin.Debug === 'function') {
-      this.client.add.plugin(Phaser.Plugin.Debug);
+      this.game.add.plugin(Phaser.Plugin.Debug);
     }
 
-    this.client.state.start('loading');
+    this.game.state.start('loading');
   };
 
   return InitialState;
