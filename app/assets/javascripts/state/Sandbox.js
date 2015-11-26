@@ -1,5 +1,5 @@
 /* global define:false */
-define(['state/GameState', 'gem/GemSprites', 'board/Board'], function (GameState, GemSprites, Board) {
+define(['state/GameState', 'gem/Gem', 'board/Board', 'playmat/Playmat'], function (GameState, Gem, Board, Playmat) {
   'use strict';
 
   function Sandbox(client) {
@@ -16,20 +16,38 @@ define(['state/GameState', 'gem/GemSprites', 'board/Board'], function (GameState
   Sandbox.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
 
+    this.playmat = new Playmat(this.client);
+
     var board = new Board('sandbox', 6, 12, this.client);
-    board.scale = { x: 0.4, y: 0.4 };
-    board.x = this.client.world.centerX - (board.width / 2);
-    board.y = this.client.world.centerY - (board.height / 2);
+    board.x = 32;
+    board.y = 32;
 
-    var idx1 = GemSprites.spriteFor({ color: 'b', role: 'x'});
-    var gem1 = this.add.sprite(this.client.world.centerX - 64, this.client.world.centerY, 'gems', idx1);
-    gem1.name = 'Gem 1';
-    gem1.anchor.setTo(0.5, 0.5);
+    this.playmat.add(board);
 
-    var idx2 = GemSprites.spriteFor({ color: 'b' });
-    var gem2 = this.add.sprite(this.client.world.centerX + 64, this.client.world.centerY, 'gems', idx2);
-    gem2.name = 'Gem 2';
-    gem2.anchor.setTo(0.5, 0.5);
+    var g1 = new Gem({
+      id: 0,
+      color: 'r'
+    }, this.client);
+    var g2 = new Gem({
+      id: 1,
+      color: 'b',
+      crash: true
+    }, this.client);
+    var g3 = new Gem({
+      id: 2,
+      color: 'g',
+      timer: 3
+    }, this.client);
+
+    board.addGem(g1, 0, 0);
+    board.addGem(g2, 1, 0);
+    board.addGem(g3, 2, 0);
+  };
+
+  Sandbox.prototype.resize = function() {
+    if(this.playmat !== undefined) {
+      this.playmat.resizer.resize();
+    }
   };
 
   return Sandbox;

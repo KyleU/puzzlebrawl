@@ -17,8 +17,8 @@ define(['state/GameState', 'state/LoadingScreen'], function (GameState, LoadingS
   InitialState.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
 
-    var loadingScreen = new LoadingScreen(this.game);
-    this.game.state.add('loading', loadingScreen);
+    var loadingScreen = new LoadingScreen(this.client);
+    this.client.state.add('loading', loadingScreen);
 
     this.client.time.advancedTiming = true;
 
@@ -38,7 +38,7 @@ define(['state/GameState', 'state/LoadingScreen'], function (GameState, LoadingS
       this.client.add.plugin(Phaser.Plugin.Debug);
     }
 
-    this.game.state.start('loading');
+    this.client.state.start('loading');
   };
 
   return InitialState;

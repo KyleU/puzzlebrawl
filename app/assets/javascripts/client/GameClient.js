@@ -9,6 +9,7 @@ define(['state/InitialState'], function (InitialState) {
   window.PhaserGlobal.hideBanner = true;
 
   function GameClient(ws) {
+    this.initialized = false;
     this.ws = ws;
 
     var initialState = new InitialState(this);
