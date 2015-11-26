@@ -20,7 +20,15 @@ class TestGemStream() extends Test() {
 
   override def run() = {
     val seed = Math.abs(Random.nextInt)
-    val stream = GemStream(seed = seed, gemAdjustWild = 0, gemAdjustCrash = 0, gemAdjustRed = 1.0, gemAdjustGreen = 0, gemAdjustBlue = 0, gemAdjustYellow = 0)
+    val stream = GemStream(
+      seed = seed,
+      gemAdjustWild = Some(0),
+      gemAdjustCrash = Some(0),
+      gemAdjustRed = Some(1.0),
+      gemAdjustGreen = Some(0),
+      gemAdjustBlue = Some(0),
+      gemAdjustYellow = Some(0)
+    )
     Seq((0 until 12).flatMap { y =>
       (0 until 6).map { x =>
         test.board.applyMutation(AddGem(stream.next, x, y))

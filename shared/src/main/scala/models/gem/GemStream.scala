@@ -10,40 +10,40 @@ object GemStream {
 case class GemStream(
     seed: Int,
 
-    gemAdjustWild: Double = 1.0,
-    gemAdjustCrash: Double = 1.0,
+    gemAdjustWild: Option[Double] = None,
+    gemAdjustCrash: Option[Double] = None,
 
-    gemAdjustRed: Double = 1.0,
-    gemAdjustGreen: Double = 1.0,
-    gemAdjustBlue: Double = 1.0,
-    gemAdjustYellow: Double = 1.0,
+    gemAdjustRed: Option[Double] = None,
+    gemAdjustGreen: Option[Double] = None,
+    gemAdjustBlue: Option[Double] = None,
+    gemAdjustYellow: Option[Double] = None,
 
-    crashAdjustRed: Double = 1.0,
-    crashAdjustGreen: Double = 1.0,
-    crashAdjustBlue: Double = 1.0,
-    crashAdjustYellow: Double = 1.0
+    crashAdjustRed: Option[Double] = None,
+    crashAdjustGreen: Option[Double] = None,
+    crashAdjustBlue: Option[Double] = None,
+    crashAdjustYellow: Option[Double] = None
 ) {
   private[this] val r = new Random(seed)
   private[this] var nextId = 0
 
-  private[this] val wildChance = GemStream.baseWildGemChance * gemAdjustWild
-  private[this] val crashChance = GemStream.baseCrashGemChance * gemAdjustCrash
+  private[this] val wildChance = GemStream.baseWildGemChance * gemAdjustWild.getOrElse(1.0)
+  private[this] val crashChance = GemStream.baseCrashGemChance * gemAdjustCrash.getOrElse(1.0)
 
   val baseChanceValue = 100.0
 
   private[this] val gemChances = Seq(
-    Color.Red -> baseChanceValue * gemAdjustRed,
-    Color.Green -> baseChanceValue * gemAdjustGreen,
-    Color.Blue -> baseChanceValue * gemAdjustBlue,
-    Color.Yellow -> baseChanceValue * gemAdjustYellow
+    Color.Red -> baseChanceValue * gemAdjustRed.getOrElse(1.0),
+    Color.Green -> baseChanceValue * gemAdjustGreen.getOrElse(1.0),
+    Color.Blue -> baseChanceValue * gemAdjustBlue.getOrElse(1.0),
+    Color.Yellow -> baseChanceValue * gemAdjustYellow.getOrElse(1.0)
   )
   private[this] val gemChanceTotal = gemChances.map(_._2).sum
 
   private[this] val crashChances = Seq(
-    Color.Red -> baseChanceValue * crashAdjustRed,
-    Color.Green -> baseChanceValue * crashAdjustGreen,
-    Color.Blue -> baseChanceValue * crashAdjustBlue,
-    Color.Yellow -> baseChanceValue * crashAdjustYellow
+    Color.Red -> baseChanceValue * crashAdjustRed.getOrElse(1.0),
+    Color.Green -> baseChanceValue * crashAdjustGreen.getOrElse(1.0),
+    Color.Blue -> baseChanceValue * crashAdjustBlue.getOrElse(1.0),
+    Color.Yellow -> baseChanceValue * crashAdjustYellow.getOrElse(1.0)
   )
   private[this] val crashChanceTotal = crashChances.map(_._2).sum
 
