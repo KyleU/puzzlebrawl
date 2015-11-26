@@ -49,7 +49,6 @@ define([], function () {
     } else {
       p.scale = newScale;
       p.position = newPosition;
-      console.log('resized');
     }
   };
 

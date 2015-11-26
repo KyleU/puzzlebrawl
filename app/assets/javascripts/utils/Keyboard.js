@@ -22,9 +22,7 @@ define([], function () {
     var c = this.client;
 
     var sandboxKey = c.input.keyboard.addKey(Phaser.Keyboard.X);
-    sandboxKey.onDown.add(function() {
-      c.sandbox();
-    });
+    sandboxKey.onDown.add(function() { c.sandbox(); });
 
     var debugKey = c.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     debugKey.onDown.add(toggleDebug);
