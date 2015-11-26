@@ -36,7 +36,7 @@ object Test {
     TestGemStream,
     TestRandom,
     TestRemove,
-    TestTestbed,
+    TestScratchpad,
     TestTimer,
     TestWild
   )
@@ -50,11 +50,11 @@ object Test {
 }
 
 abstract class Test(val seed: Option[Int] = None) {
-  val game = Brawl.blank(seed = seed.getOrElse(Math.abs(Random.nextInt())), playerNames = Seq("original", "test", "goal"))
+  val brawl = Brawl.blank(seed = seed.getOrElse(Math.abs(Random.nextInt())), playerNames = Seq("original", "test", "goal"))
 
-  val original = game.players.find(_.name == "original").getOrElse(throw new IllegalStateException())
-  val test = game.players.find(_.name == "test").getOrElse(throw new IllegalStateException())
-  val goal = game.players.find(_.name == "goal").getOrElse(throw new IllegalStateException())
+  val original = brawl.players.find(_.name == "original").getOrElse(throw new IllegalStateException())
+  val test = brawl.players.find(_.name == "test").getOrElse(throw new IllegalStateException())
+  val goal = brawl.players.find(_.name == "goal").getOrElse(throw new IllegalStateException())
 
   def run(): Seq[Seq[Mutation]]
 

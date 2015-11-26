@@ -46,7 +46,7 @@ define([], function () {
         case 'br':
           return 14;
         default:
-          throw role;
+          return 10;
       }
     } else {
       return 0;

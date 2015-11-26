@@ -9,18 +9,15 @@ define(['game/GameNetwork', 'utils/Config', 'state/InitialState'], function (Gam
   window.PhaserGlobal.hideBanner = true;
 
   function Game() {
-    this.initialized = false;
     this.connected = false;
     this.network = new GameNetwork(this);
-
-    var initialState = new InitialState(this);
 
     var configOptions = {
       width: '100%',
       height: '100%',
       renderer: Phaser.AUTO,
       parent: 'game-container',
-      state: initialState,
+      state: new InitialState(this),
       transparent: true,
       resolution: 2
     };
@@ -38,7 +35,7 @@ define(['game/GameNetwork', 'utils/Config', 'state/InitialState'], function (Gam
   Game.prototype.onMessage = function(c, v) {
     switch(c) {
       default:
-        console.log('Message [' + c + '] received over websocket: ' + JSON.stringify(v, null, 2));
+        this.state.getCurrentState().onMessage(c, v);
         break;
     }
   };

@@ -54,7 +54,11 @@ define(['utils/Config'], function (cfg) {
     } else {
       s = JSON.stringify(msg);
     }
-    this.connection.send(s);
+    if(this.connected) {
+      this.connection.send(s);
+    } else {
+      console.warn('Unable to send [' + c + '] while disconnected.');
+    }
   };
 
   return Websocket;

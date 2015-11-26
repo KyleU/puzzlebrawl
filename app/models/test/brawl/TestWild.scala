@@ -17,7 +17,6 @@ class TestWild() extends Test() {
     test.board.applyMutation(AddGem(Gem(5, Color.Wild), 1, 2))
 
     goal.board.applyMutation(AddGem(Gem(2, crash = Some(true)), 3, 0))
-    goal.board.applyMutation(AddGem(Gem(3, timer = Some(1)), 4, 0))
     goal.board.applyMutation(AddGem(Gem(4, Color.Blue), 5, 0))
   }
 

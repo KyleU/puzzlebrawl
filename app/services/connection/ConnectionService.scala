@@ -5,6 +5,7 @@ import java.util.UUID
 import akka.actor.{ ActorRef, Props }
 import models._
 import models.brawl.Brawl
+import models.test.brawl.Test
 import models.user.User
 import utils.Config
 
@@ -52,7 +53,14 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
 
   private[this] def handleStartBrawl(scenario: String) = {
     val brawl = scenario match {
-      case "sandbox" => Brawl.blank()
+      case "sandbox" => Brawl.blank(playerNames = Seq("a", "b", "c", "d"))
+      case x if x.startsWith("test") =>
+        val testName = x.stripPrefix("test")
+        val provider = Test.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
+        val test = provider.newInstance()
+        test.init()
+        test.run()
+        test.brawl
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }
     out ! BrawlFound(brawl)

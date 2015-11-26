@@ -9,7 +9,7 @@ object ConsoleTest {
 
     test.test.board.cloneTo(test.original.board)
 
-    val client = new ConsoleClient(test.game)
+    val client = new ConsoleClient(test.brawl)
 
     if (pauseBeforeRun) {
       client.addStatusLog(s"Test [$testName] initialized.")

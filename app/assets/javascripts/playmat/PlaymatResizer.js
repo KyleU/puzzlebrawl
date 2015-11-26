@@ -1,5 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
+/* global _:false */
 define([], function () {
   'use strict';
 
@@ -11,7 +12,14 @@ define([], function () {
     var p = this.playmat;
     var originalSize = [p.w, p.h];
 
-    p.w = 832;
+    var xOffset = 32;
+    _.each(p.boards, function(board) {
+      board.x = xOffset;
+      board.y = 32;
+      xOffset += board.width + 32;
+    });
+
+    p.w = xOffset;
     p.h = 1600;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
@@ -43,12 +51,13 @@ define([], function () {
       }
     }
 
-    if(p.game.initialized) {
+    if(0 /* for now */) {
       p.game.add.tween(p.scale).to({x: newScale.x, y: newScale.y}, 500, Phaser.Easing.Quadratic.InOut, true);
       p.game.add.tween(p.position).to({x: newPosition.x, y: newPosition.y}, 500, Phaser.Easing.Quadratic.InOut, true);
     } else {
       p.scale = newScale;
       p.position = newPosition;
+      p.initialized = true;
     }
   };
 
