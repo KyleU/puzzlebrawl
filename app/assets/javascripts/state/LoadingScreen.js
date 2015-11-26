@@ -1,5 +1,5 @@
 /* global define:false */
-define(['state/GameState', 'state/Sandbox', 'utils/Keyboard'], function (GameState, Sandbox, Keyboard) {
+define(['state/GameState', 'state/Sandbox'], function (GameState, Sandbox) {
   'use strict';
 
   function LoadingScreen(client) {
@@ -19,9 +19,6 @@ define(['state/GameState', 'state/Sandbox', 'utils/Keyboard'], function (GameSta
 
   LoadingScreen.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
-
-    this.client.keyboard = new Keyboard(this.client);
-    this.client.keyboard.init();
 
     this.client.state.start('sandbox');
   };

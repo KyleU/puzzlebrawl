@@ -25,11 +25,11 @@ define([], function () {
     } else if(gem.timer !== undefined) {
       return parseInt(gem.timer);
     } else if(gem.width > 0 || gem.height > 0) {
-      var role = 'c';
+      var role = gem.role;
       switch(role) {
         case 'ul':
           return 6;
-        case 'u':
+        case 't':
           return 7;
         case 'ur':
           return 8;

@@ -1,5 +1,5 @@
 /* global define:false */
-define(['state/GameState', 'gem/Gem', 'board/Board', 'playmat/Playmat'], function (GameState, Gem, Board, Playmat) {
+define(['state/GameState', 'gem/Gem', 'board/Board', 'playmat/Playmat', 'utils/Keyboard'], function (GameState, Gem, Board, Playmat, Keyboard) {
   'use strict';
 
   function Sandbox(client) {
@@ -13,8 +13,32 @@ define(['state/GameState', 'gem/Gem', 'board/Board', 'playmat/Playmat'], functio
 
   };
 
+  function addBigGem(board, client) {
+    var g5 = new Gem({ id: 4, color: 'b', width: 3, height: 3, role: 'bl' }, client);
+    board.addGem(g5, 3, 0);
+    var g6 = new Gem({ id: 5, color: 'b', width: 3, height: 3, role: 'b' }, client);
+    board.addGem(g6, 4, 0);
+    var g7 = new Gem({ id: 6, color: 'b', width: 3, height: 3, role: 'br' }, client);
+    board.addGem(g7, 5, 0);
+    var g8 = new Gem({ id: 7, color: 'b', width: 3, height: 3, role: 'l' }, client);
+    board.addGem(g8, 3, 1);
+    var g9 = new Gem({ id: 8, color: 'b', width: 3, height: 3, role: 'c' }, client);
+    board.addGem(g9, 4, 1);
+    var g10 = new Gem({ id: 9, color: 'b', width: 3, height: 3, role: 'r' }, client);
+    board.addGem(g10, 5, 1);
+    var g11 = new Gem({ id: 10, color: 'b', width: 3, height: 3, role: 'ul' }, client);
+    board.addGem(g11, 3, 2);
+    var g12 = new Gem({ id: 11, color: 'b', width: 3, height: 3, role: 't' }, client);
+    board.addGem(g12, 4, 2);
+    var g13 = new Gem({ id: 12, color: 'b', width: 3, height: 3, role: 'ur' }, client);
+    board.addGem(g13, 5, 2);
+  }
+
   Sandbox.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
+
+    this.client.keyboard = new Keyboard(this.client);
+    this.client.keyboard.init();
 
     this.playmat = new Playmat(this.client);
 
@@ -24,24 +48,18 @@ define(['state/GameState', 'gem/Gem', 'board/Board', 'playmat/Playmat'], functio
 
     this.playmat.add(board);
 
-    var g1 = new Gem({
-      id: 0,
-      color: 'r'
-    }, this.client);
-    var g2 = new Gem({
-      id: 1,
-      color: 'b',
-      crash: true
-    }, this.client);
-    var g3 = new Gem({
-      id: 2,
-      color: 'g',
-      timer: 3
-    }, this.client);
-
+    var g1 = new Gem({ id: 0, color: 'r' }, this.client);
     board.addGem(g1, 0, 0);
+
+    var g2 = new Gem({ id: 1, color: 'g', timer: 3 }, this.client);
     board.addGem(g2, 1, 0);
+
+    var g3 = new Gem({ id: 2, color: 'y' }, this.client);
     board.addGem(g3, 2, 0);
+    var g4 = new Gem({ id: 3, color: 'y', crash: true }, this.client);
+    board.addGem(g4, 2, 1);
+
+    addBigGem(board, this.client);
   };
 
   Sandbox.prototype.resize = function() {
