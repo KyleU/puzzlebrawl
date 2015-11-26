@@ -1,6 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
-define(['state/InitialState'], function (InitialState) {
+define(['game/GameNetwork', 'utils/Config', 'state/InitialState'], function (GameNetwork, Config, InitialState) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -8,9 +8,10 @@ define(['state/InitialState'], function (InitialState) {
   }
   window.PhaserGlobal.hideBanner = true;
 
-  function Game(ws) {
+  function Game() {
     this.initialized = false;
-    this.ws = ws;
+    this.connected = false;
+    this.network = new GameNetwork(this);
 
     var initialState = new InitialState(this);
 
@@ -29,6 +30,18 @@ define(['state/InitialState'], function (InitialState) {
 
   Game.prototype = Phaser.Game.prototype;
   Game.prototype.constructor = Game;
+
+  Game.prototype.send = function(c, v) {
+    this.network.send(c, v);
+  };
+
+  Game.prototype.onMessage = function(c, v) {
+    switch(c) {
+      default:
+        console.log('Message [' + c + '] received over websocket: ' + JSON.stringify(v, null, 2));
+        break;
+    }
+  };
 
   return Game;
 });

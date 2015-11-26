@@ -11,6 +11,8 @@ object RequestMessageSerializers {
 
   private[this] val setPreferenceReads = Json.reads[SetPreference]
 
+  private[this] val startBrawlReads = Json.reads[StartBrawl]
+
   implicit val requestMessageReads = new Reads[RequestMessage] {
     override def reads(json: JsValue) = {
       val c = (json \ "c").as[String]
@@ -23,6 +25,8 @@ object RequestMessageSerializers {
         case "DebugInfo" => debugInfoReads.reads(v)
 
         case "SetPreference" => setPreferenceReads.reads(v)
+
+        case "StartBrawl" => startBrawlReads.reads(v)
 
         case _ => JsSuccess(MalformedRequest("UnknownType", s"c: $c, v: ${Json.stringify(v)}"))
       }

@@ -14,7 +14,7 @@ import utils.DateUtils
 import scala.concurrent.Future
 
 object TestController {
-  import utils.json.GameSerializers._
+  import utils.json.BrawlSerializers._
   import utils.json.MutationSerializers._
 
   case class Result(

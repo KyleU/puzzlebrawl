@@ -40,6 +40,8 @@ define(['state/GameState', 'gem/Gem', 'board/Board', 'playmat/Playmat', 'utils/K
     this.game.keyboard = new Keyboard(this.game);
     this.game.keyboard.init();
 
+    this.game.send('StartBrawl', { scenario: 'sandbox' });
+
     this.playmat = new Playmat(this.game);
 
     var board = new Board('sandbox', 6, 12, this.game);

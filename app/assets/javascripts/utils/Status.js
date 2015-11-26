@@ -1,5 +1,5 @@
 /* global define:false */
-define(function () {
+define(['utils/Status'], function (Status) {
   'use strict';
 
   var connection;

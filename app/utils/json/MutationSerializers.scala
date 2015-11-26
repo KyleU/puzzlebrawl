@@ -5,7 +5,7 @@ import models.board.mutation.Mutation.{ RemoveGem, ChangeGem, MoveGem, AddGem }
 import play.api.libs.json._
 
 object MutationSerializers {
-  import utils.json.GameSerializers.{ gemReads, gemWrites }
+  import utils.json.BrawlSerializers.{ gemReads, gemWrites }
 
   implicit val addGemReads = Json.reads[AddGem]
   implicit val addGemWrites = Json.writes[AddGem]

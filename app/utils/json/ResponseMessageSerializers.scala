@@ -3,11 +3,15 @@ package utils.json
 import models._
 import play.api.libs.json._
 
+import utils.json.BrawlSerializers.brawlWrites
+
 object ResponseMessageSerializers {
   private[this] val serverErrorWrites = Json.writes[ServerError]
   private[this] val pongWrites = Json.writes[Pong]
   private[this] val versionResponseWrites = Json.writes[VersionResponse]
-  private[this] val disconnectedResponseWrites = Json.writes[Disconnected]
+  private[this] val disconnectedWrites = Json.writes[Disconnected]
+
+  private[this] val brawlFoundWrites = Json.writes[BrawlFound]
 
   implicit val responseMessageWrites = Writes[ResponseMessage] { r: ResponseMessage =>
     val json = r match {
@@ -15,7 +19,9 @@ object ResponseMessageSerializers {
       case p: Pong => pongWrites.writes(p)
       case vr: VersionResponse => versionResponseWrites.writes(vr)
       case SendDebugInfo => JsObject(Nil)
-      case d: Disconnected => disconnectedResponseWrites.writes(d)
+      case d: Disconnected => disconnectedWrites.writes(d)
+
+      case bf: BrawlFound => brawlFoundWrites.writes(bf)
 
       case _ => throw new IllegalArgumentException(s"Unhandled ResponseMessage type [${r.getClass.getSimpleName}].")
     }

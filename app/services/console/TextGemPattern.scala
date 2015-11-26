@@ -7,7 +7,7 @@ import services.console.ConsoleBorders._
 
 object TextGemPattern {
   def single(board: Board, gemOpt: Option[Gem], x: Int, y: Int) = {
-    board.at(x, y) match {
+    gemOpt match {
       case None => ' '
       case Some(gem) if gem.timer.isDefined => gem.timer.getOrElse(0).toString.head
       case Some(gem) if gem.width.isDefined || gem.height.isDefined => character(board, gem, x, y)

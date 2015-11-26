@@ -8,7 +8,7 @@ import play.api.libs.json.Json
 import scala.util.Random
 
 object Test {
-  import utils.json.GameSerializers._
+  import utils.json.BrawlSerializers._
 
   trait Provider {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")

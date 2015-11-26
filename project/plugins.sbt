@@ -28,6 +28,8 @@ addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.2.4")
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.4")
 
 // Code Quality
+addSbtPlugin("org.jetbrains" % "sbt-ide-settings" % "0.1.1")
+
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.7.0") // scalastyle
 
 addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.0")

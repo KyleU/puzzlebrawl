@@ -4,6 +4,7 @@ import java.util.UUID
 
 import akka.actor.{ ActorRef, Props }
 import models._
+import models.brawl.Brawl
 import models.user.User
 import utils.Config
 
@@ -28,6 +29,7 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
     case GetVersion => timeReceive(GetVersion) { out ! VersionResponse(Config.version) }
     case sp: SetPreference => timeReceive(sp) { handleSetPreference(sp) }
     case di: DebugInfo => timeReceive(di) { handleDebugInfo(di.data) }
+    case sb: StartBrawl => timeReceive(sb) { handleStartBrawl(sb.scenario) }
 
     // Incoming game messages
     case im: InternalMessage => handleInternalMessage(im)
@@ -46,5 +48,13 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
     case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace() }
     case ct: ClientTrace => timeReceive(ct) { handleClientTrace() }
     case x => throw new IllegalArgumentException(s"Unhandled internal message [${x.getClass.getSimpleName}].")
+  }
+
+  private[this] def handleStartBrawl(scenario: String) = {
+    val brawl = scenario match {
+      case "sandbox" => Brawl.blank()
+      case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
+    }
+    out ! BrawlFound(brawl)
   }
 }

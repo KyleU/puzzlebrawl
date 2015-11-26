@@ -1,3 +1,4 @@
+import _root_.sbtide.Keys._
 import com.typesafe.sbt.jshint.Import.JshintKeys
 import sbt._
 import sbt.Keys._
@@ -63,7 +64,14 @@ object Server {
     // Code Quality
     scapegoatIgnoredFiles := Seq(".*/Row.scala", ".*/Routes.scala", ".*/ReverseRoutes.scala", ".*/JavaScriptReverseRoutes.scala", ".*/*.template.scala"),
     scapegoatDisabledInspections := Seq("DuplicateImport"),
-    ScalariformKeys.preferences := ScalariformKeys.preferences.value
+    ScalariformKeys.preferences := ScalariformKeys.preferences.value,
+
+    // IntelliJ import fixes
+    ideExcludedDirectories <<= (baseDirectory, target, crossTarget) { (b, t, ct) =>
+      (t * "*").filter(_.isDirectory).filter(_ != ct).get ++
+        (ct * "*").filter(_.isDirectory).filter(f => !(f.name.contains("twirl") || f.name.contains("routes"))).get ++
+        Seq(b / "logs")
+    }
   ) ++ defaultScalariformSettings
 
   lazy val server = Project(
