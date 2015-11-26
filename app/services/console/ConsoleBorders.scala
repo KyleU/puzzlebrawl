@@ -1,7 +1,7 @@
 package services.console
 
 import com.googlecode.lanterna.{ TextColor, TextCharacter }
-import models.game.player.Player
+import models.player.Player
 import utils.Formatter
 
 object ConsoleBorders {

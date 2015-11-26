@@ -5,15 +5,14 @@ import java.util.UUID
 import com.googlecode.lanterna.screen.TerminalScreen
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory
 import com.googlecode.lanterna.{ TerminalPosition, TextCharacter, TextColor }
-import models.game.Game
-import models.game.test.TextGemPattern
+import models.brawl.Brawl
 import org.joda.time.LocalDateTime
 import utils.{ DateUtils, Formatter }
 
-class ConsoleClient(game: Game) {
+class ConsoleClient(brawl: Brawl) {
   private[this] var activePlayer: Option[UUID] = None
 
-  def getActivePlayer = activePlayer.map(x => game.playersById(x)).getOrElse(throw new IllegalStateException())
+  def getActivePlayer = activePlayer.map(x => brawl.playersById(x)).getOrElse(throw new IllegalStateException())
   def setActivePlayer(id: UUID) = {
     activePlayer = Some(id)
     addStatusLog(s"Player [$id] selected.")
@@ -33,7 +32,7 @@ class ConsoleClient(game: Game) {
 
   private val rows = screen.getTerminalSize.getRows
   private val cols = screen.getTerminalSize.getColumns
-  private val padding = (cols / 2) - game.players.map(_.board.width + 4).sum + 1
+  private val padding = (cols / 2) - brawl.players.map(_.board.width + 4).sum + 1
 
   def stop() = screen.stopScreen()
 
@@ -58,11 +57,11 @@ class ConsoleClient(game: Game) {
   }
 
   def render() = {
-    if (game.players.isEmpty) {
+    if (brawl.players.isEmpty) {
       throw new IllegalStateException("No players in client.")
     }
 
-    game.players.zipWithIndex.foreach { p =>
+    brawl.players.zipWithIndex.foreach { p =>
       val fg = if (activePlayer.contains(p._1.id)) { TextColor.ANSI.CYAN } else { TextColor.ANSI.WHITE }
       val xOffset = padding + (p._2 * 19) + 2
       ConsoleBorders.render(this, xOffset, 1, p._1, fg, TextColor.ANSI.BLACK)

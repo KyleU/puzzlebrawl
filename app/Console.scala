@@ -1,15 +1,15 @@
-import models.game.test.GameTest
+import models.test.brawl.Test
 import services.console.{ ConsoleTest, ConsoleGame }
 
 object Console {
-  private[this] val errorMsg = s"First argument must be one of [*, ${GameTest.all.map(_.testName).mkString(", ")}]."
+  private[this] val errorMsg = s"First argument must be one of [*, ${Test.all.map(_.testName).mkString(", ")}]."
 
   def main(args: Array[String]) {
     if (args.isEmpty) {
       new ConsoleGame()
     } else {
       args.headOption match {
-        case Some(testName) => GameTest.fromString(testName) match {
+        case Some(testName) => Test.fromString(testName) match {
           case Some(test) => ConsoleTest.run(test.newInstance(), args.contains("pause"))
           case None => if(Seq("*", "All", "all").contains(testName)) {
             allTests()
@@ -22,7 +22,7 @@ object Console {
     }
   }
 
-  private[this] def allTests() = GameTest.all.foreach { provider =>
+  private[this] def allTests() = Test.all.foreach { provider =>
     val test = provider.newInstance()
     test.init()
     val messages = test.run()

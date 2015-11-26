@@ -1,9 +1,9 @@
 package utils.json
 
-import models.game.Game
-import models.game.board.Board
-import models.game.gem.{ GemLocation, GemStream, Color, Gem }
-import models.game.player.Player
+import models.board.Board
+import models.brawl.Brawl
+import models.gem.{ GemLocation, GemStream, Color, Gem }
+import models.player.Player
 import play.api.libs.json._
 
 object GameSerializers {
@@ -53,6 +53,6 @@ object GameSerializers {
   implicit val playerReads = Json.reads[Player]
   implicit val playerWrites = Json.writes[Player]
 
-  implicit val gameReads = Json.reads[Game]
-  implicit val gameWrites = Json.writes[Game]
+  implicit val brawlReads = Json.reads[Brawl]
+  implicit val brawlWrites = Json.writes[Brawl]
 }

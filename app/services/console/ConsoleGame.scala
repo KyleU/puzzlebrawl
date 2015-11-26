@@ -1,11 +1,12 @@
 package services.console
 
-import models.game.Game
+import models.brawl.Brawl
+
 import scala.util.Random
 
 class ConsoleGame() {
   val numPlayers = 4
-  val game = Game.blank(playerNames = (0 until numPlayers).map(x => "Player " + (x + 1)))
+  val game = Brawl.blank(playerNames = (0 until numPlayers).map(x => "Player " + (x + 1)))
   val client = new ConsoleClient(game)
 
   val input = new ConsoleGameInput(game, client)
@@ -18,7 +19,7 @@ class ConsoleGame() {
     player.createActiveGems()
   }
 
-  client.addStatusLog("Game started. Use the arrows keys to move and rotate, space to drop, and escape to quit.")
+  client.addStatusLog("Brawl started. Use the arrows keys to move and rotate, space to drop, and escape to quit.")
   client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
   client.render()
   input.startInputLoop(client)

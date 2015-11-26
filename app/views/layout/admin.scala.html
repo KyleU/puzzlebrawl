@@ -1,3 +1,4 @@
+@import models.test.brawl.Test
 @(title: String, section: String, scripts: Seq[String] = Nil, stylesheets: Seq[String] = Nil)(content: Html)(implicit session: Session, flash: Flash)@bootstrap(
   title,
   scripts = Seq(routes.Assets.versioned("javascripts/admin.js").url) ++ scripts,
@@ -36,7 +37,7 @@
               <li><a href="@controllers.admin.routes.TestController.list()">Overview</a></li>
               <li><a href="@controllers.admin.routes.TestController.run("All")">Run All Tests</a></li>
               <li class="divider"></li>
-              @for(test <- models.game.test.GameTest.all) {
+              @for(test <- Test.all) {
                 <li><a href="@controllers.admin.routes.TestController.run(test.testName)">@test.testName</a></li>
               }
             </ul>

@@ -1,10 +1,10 @@
 package services.console
 
-import models.game.test.GameTest
+import models.test.brawl.Test
 
 object ConsoleTest {
-  def run(test: GameTest, pauseBeforeRun: Boolean) = {
-    val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("GameTest", "")
+  def run(test: Test, pauseBeforeRun: Boolean) = {
+    val testName = test.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
     test.init()
 
     test.test.board.cloneTo(test.original.board)

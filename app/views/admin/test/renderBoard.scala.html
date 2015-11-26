@@ -1,4 +1,5 @@
-@(board: models.game.board.Board)
+@import services.console.TextGemPattern
+@(board: models.board.Board)
 <div>
   <table class="table table-bordered game-table">
     <thead>
@@ -17,7 +18,7 @@
           <td style="text-align: center;">
           @board.at(x, y).map { gem =>
             @defining("gem color-" + gem.color.charVal + (if(gem.crash.exists(x => x)) { " crash" } else { "" })) { cssClass =>
-              <div class="@cssClass" title="[@x, @y]: @gem">@models.game.test.TextGemPattern.single(board, Some(gem), x, y).toString</div>
+              <div class="@cssClass" title="[@x, @y]: @gem">@TextGemPattern.single(board, Some(gem), x, y).toString</div>
             }
           }.getOrElse { <div class="empty-space">&nbsp;</div> }
           </td>

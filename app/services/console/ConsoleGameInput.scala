@@ -1,15 +1,15 @@
 package services.console
 
 import com.googlecode.lanterna.input.{ KeyStroke, KeyType }
-import models.game.Game
-import models.game.player.Player
+import models.brawl.Brawl
+import models.player.Player
 
 import scala.util.Random
 
-class ConsoleGameInput(game: Game, client: ConsoleClient) extends ConsoleInput {
+class ConsoleGameInput(brawl: Brawl, client: ConsoleClient) extends ConsoleInput {
   override def inputCharacter(input: KeyStroke): Boolean = input match {
     case x if x.getKeyType == KeyType.Enter =>
-      game.players.foreach { player =>
+      brawl.players.foreach { player =>
         player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
       }
       client.render()
@@ -20,8 +20,8 @@ class ConsoleGameInput(game: Game, client: ConsoleClient) extends ConsoleInput {
     case x if x.getKeyType == KeyType.ArrowDown => withPlayer(_.activeGemsCounterClockwise())
     case x if x.getKeyType == KeyType.Character =>
       x.getCharacter match {
-        case char if char.charValue == 'c' => game.players.foreach(_.board.collapse())
-        case char if char.charValue == 'f' => game.players.foreach(_.board.fuse())
+        case char if char.charValue == 'c' => brawl.players.foreach(_.board.collapse())
+        case char if char.charValue == 'f' => brawl.players.foreach(_.board.fuse())
         case char if char.charValue == 'a' => withPlayer(_.activeGemsLeft())
         case char if char.charValue == 'd' => withPlayer(_.activeGemsRight())
         case char if char.charValue == 'w' => withPlayer(_.activeGemsClockwise())
@@ -32,10 +32,10 @@ class ConsoleGameInput(game: Game, client: ConsoleClient) extends ConsoleInput {
           p.board.fullTurn()
           p.createActiveGems()
         }
-        case char if char.charValue == '1' => client.setActivePlayer(game.players.headOption.getOrElse(throw new IllegalStateException()).id)
-        case char if char.charValue == '2' => client.setActivePlayer(game.players(1).id)
-        case char if char.charValue == '3' => client.setActivePlayer(game.players(2).id)
-        case char if char.charValue == '4' => client.setActivePlayer(game.players(3).id)
+        case char if char.charValue == '1' => client.setActivePlayer(brawl.players.headOption.getOrElse(throw new IllegalStateException()).id)
+        case char if char.charValue == '2' => client.setActivePlayer(brawl.players(1).id)
+        case char if char.charValue == '3' => client.setActivePlayer(brawl.players(2).id)
+        case char if char.charValue == '4' => client.setActivePlayer(brawl.players(3).id)
         case char => client.addStatusLog(s"Unknown input: [$char].")
       }
       client.render()

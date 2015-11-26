@@ -1,8 +1,7 @@
 package models.benchmark
 
 import java.util.concurrent.TimeUnit
-
-import models.game.Game
+import models.brawl.Brawl
 import org.openjdk.jmh.annotations._
 
 import scala.util.Random
@@ -14,7 +13,7 @@ class BoardBenchmark {
   @Threads(6)
   @Fork(1)
   def creation() = {
-    val game = Game.blank()
+    val game = Brawl.blank()
     val p = game.players.headOption.getOrElse(throw new IllegalStateException())
     val board = p.board
     val gemStream = p.gemStream

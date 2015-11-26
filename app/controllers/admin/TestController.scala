@@ -1,10 +1,11 @@
 package controllers.admin
 
 import controllers.BaseController
-import models.game.board.mutation.Mutation
-import models.game.player.Player
-import models.game.test.GameTest
-import models.game.test.GameTest.TestError
+import models.board.mutation.Mutation
+import models.player.Player
+import models.test.brawl.Test
+import Test.TestError
+import models.test.brawl.Test
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
 import services.user.AuthenticationEnvironment
@@ -38,11 +39,11 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
 
   def run(name: String, json: Boolean) = withAdminSession("test.run") { implicit request =>
     if (name == "All") {
-      val results = GameTest.all.map(x => getResult(x.testName, x.newInstance()))
+      val results = Test.all.map(x => getResult(x.testName, x.newInstance()))
       Future.successful(Ok(views.html.admin.test.testResultAll(results)))
     } else {
       Future.successful {
-        val test = GameTest.fromString(name).map(x => x.testName -> x.newInstance()).getOrElse(throw new IllegalArgumentException(s"Invalid test [$name]."))
+        val test = Test.fromString(name).map(x => x.testName -> x.newInstance()).getOrElse(throw new IllegalArgumentException(s"Invalid test [$name]."))
         val result = getResult(test._1, test._2)
         val html = views.html.admin.test.testResult(result)
         if(json) {
@@ -54,7 +55,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     }
   }
 
-  private[this] def getResult(testName: String, test: GameTest) = {
+  private[this] def getResult(testName: String, test: Test) = {
     val initStart = DateUtils.nowMillis
     test.init()
     val initMs = (DateUtils.nowMillis - initStart).toInt
@@ -68,7 +69,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     } catch {
       case x: Exception =>
         log.warn(s"Test [$testName] has failed with exception [$x].", x)
-        (0, Seq.empty, Seq(GameTest.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}"))))
+        (0, Seq.empty, Seq(Test.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}"))))
     }
 
     val status = testErrors.headOption.map(x => s"${testErrors.size} Errors").getOrElse("Success")

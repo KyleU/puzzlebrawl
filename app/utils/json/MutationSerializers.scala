@@ -1,7 +1,7 @@
 package utils.json
 
-import models.game.board.mutation.Mutation
-import models.game.board.mutation.Mutation.{ RemoveGem, ChangeGem, MoveGem, AddGem }
+import models.board.mutation.Mutation
+import models.board.mutation.Mutation.{ RemoveGem, ChangeGem, MoveGem, AddGem }
 import play.api.libs.json._
 
 object MutationSerializers {
