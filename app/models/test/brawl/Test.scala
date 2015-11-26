@@ -75,7 +75,7 @@ abstract class Test(val seed: Option[Int] = None) {
     val activeGemErrors = test.activeGems.indices.flatMap { i =>
       val src = test.activeGems.lift(i)
       val tgt = goal.activeGems.lift(i)
-      if(src == tgt) {
+      if (src == tgt) {
         None
       } else {
         Some(Test.TestError(src.map(_.gem), tgt.map(_.gem), src.map(_.x).getOrElse(0), src.map(_.y).getOrElse(0)))

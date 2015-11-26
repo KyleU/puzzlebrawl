@@ -35,22 +35,22 @@ trait ActiveGemRotationHelper { this: Player =>
       b.copy(x = b.x + bXDiff + xDelta, y = b.y + bYDiff + yDelta)
     )
 
-    activeGems = if(board.isValid(b.x + bXDiff, b.y + bYDiff)) {
+    activeGems = if (board.isValid(b.x + bXDiff, b.y + bYDiff)) {
       Seq(a, b.copy(x = b.x + bXDiff, y = b.y + bYDiff))
     } else {
-      val first = if(bXDiff > 0) { withDelta(xDelta = -1) } else { withDelta(xDelta = 1) }
+      val first = if (bXDiff > 0) { withDelta(xDelta = -1) } else { withDelta(xDelta = 1) }
       val firstOk = !first.exists(g => !board.isValid(g.x, g.y))
-      if(firstOk) {
+      if (firstOk) {
         first
       } else {
-        val second = if(bXDiff > 0) { withDelta(xDelta = 1) } else { withDelta(xDelta = -1) }
+        val second = if (bXDiff > 0) { withDelta(xDelta = 1) } else { withDelta(xDelta = -1) }
         val secondOk = !second.exists(g => !board.isValid(g.x, g.y))
-        if(secondOk) {
+        if (secondOk) {
           second
         } else {
           val down = withDelta(yDelta = -1)
           val downOk = !down.exists(g => !board.isValid(g.x, g.y))
-          if(downOk) {
+          if (downOk) {
             down
           } else {
             Seq(a.copy(gem = b.gem), b.copy(gem = a.gem))

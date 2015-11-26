@@ -6,7 +6,7 @@ import models.gem.{ GemLocation, GemStream, Color, Gem }
 import models.player.Player
 import play.api.libs.json._
 
-object GameSerializers {
+object BrawlSerializers {
   implicit val colorReads = new Reads[Color] {
     override def reads(json: JsValue) = JsSuccess(Color.fromChar(json.as[String].head))
   }

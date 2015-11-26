@@ -11,7 +11,7 @@ object Console {
       args.headOption match {
         case Some(testName) => Test.fromString(testName) match {
           case Some(test) => ConsoleTest.run(test.newInstance(), args.contains("pause"))
-          case None => if(Seq("*", "All", "all").contains(testName)) {
+          case None => if (Seq("*", "All", "all").contains(testName)) {
             allTests()
           } else {
             println(errorMsg) // scalastyle:ignore
@@ -28,7 +28,7 @@ object Console {
     val messages = test.run()
     val e = test.getErrors
     def colorize(color: Int, s: String) = "[" + 27.toChar + "[" + color + "m" + s + 27.toChar + "[37m]"
-    val status = if(e.isEmpty) { colorize(32, "OK") } else { colorize(31, "Error") }
+    val status = if (e.isEmpty) { colorize(32, "OK") } else { colorize(31, "Error") }
     println(s"${provider.testName}: $status") // scalastyle:ignore
   }
 }

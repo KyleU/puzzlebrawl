@@ -53,7 +53,7 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
       postCollapseFuseActions
     ).flatten.filter(_.nonEmpty)
 
-    if(ret.isEmpty) {
+    if (ret.isEmpty) {
       carry
     } else {
       fullTurn(carry ++ ret)

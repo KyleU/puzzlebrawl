@@ -46,7 +46,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
         val test = Test.fromString(name).map(x => x.testName -> x.newInstance()).getOrElse(throw new IllegalArgumentException(s"Invalid test [$name]."))
         val result = getResult(test._1, test._2)
         val html = views.html.admin.test.testResult(result)
-        if(json) {
+        if (json) {
           Ok(Json.toJson(result))
         } else {
           Ok(views.html.layout.admin(s"${utils.Config.projectName} [$name] Test", "test")(html))

@@ -9,7 +9,7 @@ trait WildHelper { this: Board =>
     if (gem.color == Color.Wild) {
       at(x, y - 1) match {
         case Some(seed) => applyMutation(RemoveGem(x, y)) +: mapGems { (candidate, candidateX, candidateY) =>
-          if ((!candidate.crash.exists(x => x)) && candidate.timer.isEmpty && candidate.color == seed.color) {
+          if ((!candidate.crash.exists(x => x)) && candidate.color == seed.color) {
             Seq(applyMutation(RemoveGem(candidateX, candidateY)))
           } else {
             Seq.empty

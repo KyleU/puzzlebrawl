@@ -9,10 +9,10 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
     }
     val x = (board.width / 2) - 1
     val y = board.height - 1
-    if(!board.isValid(x, y)) {
+    if (!board.isValid(x, y)) {
       throw new IllegalStateException(s"Cannot create active gems, as [$x, $y] is occupied by [${board.at(x, y)}].")
     }
-    if(!board.isValid(x + 1, y)) {
+    if (!board.isValid(x + 1, y)) {
       throw new IllegalStateException(s"Cannot create active gems, as [${x + 1}, $y] is occupied by [${board.at(x + 1, y)}].")
     }
     activeGems = Seq(GemLocation(gemStream.next, x, y), GemLocation(gemStream.next, x + 1, y))
