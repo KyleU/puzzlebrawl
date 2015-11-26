@@ -20,7 +20,6 @@ import play.sbt.routes.RoutesKeys.routesGenerator
 
 import com.sksamuel.scapegoat.sbt.ScapegoatSbtPlugin.autoImport._
 import com.typesafe.sbt.SbtScalariform.{ ScalariformKeys, defaultScalariformSettings }
-import net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 object Server {
   private[this] val dependencies = {
@@ -65,7 +64,7 @@ object Server {
     scapegoatIgnoredFiles := Seq(".*/Row.scala", ".*/Routes.scala", ".*/ReverseRoutes.scala", ".*/JavaScriptReverseRoutes.scala", ".*/*.template.scala"),
     scapegoatDisabledInspections := Seq("DuplicateImport"),
     ScalariformKeys.preferences := ScalariformKeys.preferences.value
-  ) ++ graphSettings ++ defaultScalariformSettings
+  ) ++ defaultScalariformSettings
 
   lazy val server = Project(
     id = Shared.projectId,

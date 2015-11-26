@@ -34,7 +34,7 @@ addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.0")
 
 addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.5") // stats
 
-addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.5") // dependencyGraph
+addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.0") // dependencyGraph
 
 addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.8") // dependencyUpdates
 
