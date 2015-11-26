@@ -6,8 +6,7 @@ object ConsoleTest {
   def run(test: Test, pauseBeforeRun: Boolean) = {
     val testName = test.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
     test.init()
-
-    test.test.board.cloneTo(test.original.board)
+    test.cloneOriginal()
 
     val client = new ConsoleClient(test.brawl)
 

@@ -58,8 +58,8 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
   private[this] def getResult(testName: String, test: Test) = {
     val initStart = DateUtils.nowMillis
     test.init()
+    test.cloneOriginal()
     val initMs = (DateUtils.nowMillis - initStart).toInt
-    test.test.board.cloneTo(test.original.board)
 
     val (runMs, testMessages, testErrors) = try {
       val runStart = DateUtils.nowMillis

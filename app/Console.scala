@@ -25,6 +25,7 @@ object Console {
   private[this] def allTests() = Test.all.foreach { provider =>
     val test = provider.newInstance()
     test.init()
+    test.cloneOriginal()
     val messages = test.run()
     val e = test.getErrors
     def colorize(color: Int, s: String) = "[" + 27.toChar + "[" + color + "m" + s + 27.toChar + "[37m]"

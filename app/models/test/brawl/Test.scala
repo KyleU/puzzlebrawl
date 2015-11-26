@@ -60,6 +60,8 @@ abstract class Test(val seed: Option[Int] = None) {
 
   def init(): Unit
 
+  def cloneOriginal() = test.board.cloneTo(original.board)
+
   def getErrors = {
     val spaceErrors = (0 until goal.board.height).flatMap { y =>
       (0 until goal.board.width).flatMap { x =>

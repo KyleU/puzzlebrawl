@@ -59,6 +59,7 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
         val provider = Test.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
         val test = provider.newInstance()
         test.init()
+        test.cloneOriginal()
         test.run()
         test.brawl
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
