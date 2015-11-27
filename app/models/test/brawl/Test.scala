@@ -50,7 +50,11 @@ object Test {
 }
 
 abstract class Test(val seed: Option[Int] = None) {
-  val brawl = Brawl.blank(seed = seed.getOrElse(Math.abs(Random.nextInt())), playerNames = Seq("original", "test", "goal"))
+  val brawl = Brawl.blank(
+    scenario = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", ""),
+    seed = seed.getOrElse(Math.abs(Random.nextInt())),
+    playerNames = Seq("original", "test", "goal")
+  )
 
   val original = brawl.players.find(_.name == "original").getOrElse(throw new IllegalStateException())
   val test = brawl.players.find(_.name == "test").getOrElse(throw new IllegalStateException())

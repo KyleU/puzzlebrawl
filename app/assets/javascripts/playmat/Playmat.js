@@ -1,7 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
 /* global _:false */
-define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer'], function (Board, Gem, PlaymatResizer) {
+define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], function (Board, Gem, PlaymatResizer, Status) {
   'use strict';
 
   var Playmat = function(game) {
@@ -17,6 +17,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer'], function (Board, Ge
   Playmat.prototype.constructor = Playmat;
 
   Playmat.prototype.setBrawl = function(brawl) {
+    Status.set('scenario', brawl.scenario);
     var playmat = this;
     _.each(brawl.players, function(p) {
       var board = new Board(p.board, playmat.game);

@@ -11,6 +11,9 @@ define(['utils/Status'], function (Status) {
   var score;
   var scoreEl = document.getElementById('status-score');
 
+  var scenario;
+  var scenarioEl = document.getElementById('status-scenario');
+
   return {
     set: function(key, val) {
       switch(key) {
@@ -25,6 +28,10 @@ define(['utils/Status'], function (Status) {
         case 'score':
           score = val;
           scoreEl.textContent = score;
+          break;
+        case 'scenario':
+          scenario = val;
+          scenarioEl.textContent = scenario;
           break;
         default:
           break;

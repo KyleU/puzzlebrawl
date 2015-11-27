@@ -11,13 +11,14 @@ import scala.util.Random
 object Brawl {
   def blank(
     id: UUID = UUID.randomUUID,
+    scenario: String = "Ad-hoc Test",
     seed: Int = Math.abs(Random.nextInt()),
     playerNames: Seq[String] = Seq("Player 1"),
     width: Int = 6,
     height: Int = 12
   ) = {
     val players = playerNames.map(name => Player(UUID.randomUUID, name, Board(name, width, height), gemStream = GemStream(seed)))
-    Brawl(id, seed, players)
+    Brawl(id, scenario, seed, players)
   }
 
   def random(playerNames: Seq[String] = Seq("Player 1"), width: Int = 6, height: Int = 12, initialDrops: Int = 0) = {
@@ -29,7 +30,7 @@ object Brawl {
   }
 }
 
-case class Brawl(id: UUID, seed: Int, players: Seq[Player], started: Long = new Date().getTime) {
+case class Brawl(id: UUID, scenario: String, seed: Int, players: Seq[Player], started: Long = new Date().getTime) {
   private[this] val rng = new Random(seed)
 
   val playersById = players.map(p => p.id -> p).toMap
