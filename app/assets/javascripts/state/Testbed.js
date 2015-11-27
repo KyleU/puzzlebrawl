@@ -24,7 +24,7 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
 
     var self = this;
     function startWhenConnected() {
-      if(self.game.network.connected) {
+      if(self.game.gameNetwork.connected) {
         self.game.send('StartBrawl', {scenario: scenario});
       } else {
         setTimeout(startWhenConnected, 20);

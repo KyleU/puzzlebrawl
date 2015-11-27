@@ -1,6 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
-define(['game/GameNetwork', 'utils/Config', 'state/InitialState'], function (GameNetwork, Config, InitialState) {
+define(['game/GameInput', 'game/GameNetwork', 'utils/Config', 'state/InitialState'], function (GameInput, GameNetwork, Config, InitialState) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -10,7 +10,8 @@ define(['game/GameNetwork', 'utils/Config', 'state/InitialState'], function (Gam
 
   function Game() {
     this.connected = false;
-    this.network = new GameNetwork(this);
+    this.gameNetwork = new GameNetwork(this);
+    this.gameInput = new GameInput(this);
 
     var configOptions = {
       width: '100%',
@@ -28,9 +29,8 @@ define(['game/GameNetwork', 'utils/Config', 'state/InitialState'], function (Gam
   Game.prototype = Phaser.Game.prototype;
   Game.prototype.constructor = Game;
 
-  Game.prototype.send = function(c, v) {
-    this.network.send(c, v);
-  };
+  Game.prototype.send = function(c, v) { this.gameNetwork.send(c, v); };
+  Game.prototype.onInput = function(t) { this.gameInput.onInput(t); };
 
   Game.prototype.onMessage = function(c, v) {
     switch(c) {
