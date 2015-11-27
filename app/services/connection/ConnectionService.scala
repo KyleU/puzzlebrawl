@@ -9,6 +9,8 @@ import models.test.brawl.Test
 import models.user.User
 import utils.Config
 
+import scala.util.Random
+
 object ConnectionService {
   def props(supervisor: ActorRef, user: User, out: ActorRef) = Props(new ConnectionService(supervisor, user, out))
 }
@@ -53,7 +55,16 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
 
   private[this] def handleStartBrawl(scenario: String) = {
     val brawl = scenario match {
-      case "sandbox" => Brawl.blank(playerNames = Seq("a", "b", "c", "d"))
+      case "testbed" =>
+        val brawl = Brawl.blank(playerNames = Seq("a", "b", "c", "d"))
+        brawl.players.foreach { player =>
+          (0 until 20).foreach { i =>
+            player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
+          }
+          player.board.fullTurn()
+          player.createActiveGems()
+        }
+        brawl
       case x if x.startsWith("test") =>
         val testName = x.stripPrefix("test")
         val provider = Test.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))

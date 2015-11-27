@@ -1,5 +1,5 @@
 /* global define:false */
-define(['state/GameState', 'state/Sandbox'], function (GameState, Sandbox) {
+define(['state/GameState', 'state/Testbed'], function (GameState, Testbed) {
   'use strict';
 
   function LoadingScreen(game) {
@@ -13,14 +13,14 @@ define(['state/GameState', 'state/Sandbox'], function (GameState, Sandbox) {
     this.game.load.spritesheet('gems', 'assets/images/game/gems.png', 128, 128);
     this.game.load.image('board-bg-a', 'assets/images/board/bg-a.png');
 
-    var sandbox = new Sandbox(this.game);
-    this.game.state.add('sandbox', sandbox);
+    var testbed = new Testbed(this.game);
+    this.game.state.add('testbed', testbed);
   };
 
   LoadingScreen.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
 
-    this.game.state.start('sandbox');
+    this.game.state.start('testbed');
   };
 
   return LoadingScreen;

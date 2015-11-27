@@ -34,5 +34,12 @@ define(['gem/Gem'], function (Gem) {
     this.add(gem);
   };
 
+  Board.prototype.setActiveGems = function(ags) {
+    for(var agIdx = 0; agIdx < ags.length; agIdx++) {
+      var ag = ags[agIdx];
+      this.addGem(new Gem(ag.gem, this.game), ag.x, ag.y);
+    }
+  };
+
   return Board;
 });

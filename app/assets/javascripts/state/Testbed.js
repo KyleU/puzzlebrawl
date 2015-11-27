@@ -2,14 +2,14 @@
 define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameState, Playmat, Keyboard) {
   'use strict';
 
-  function Sandbox(game) {
-    GameState.call(this, 'sandbox', game);
+  function Testbed(game) {
+    GameState.call(this, 'testbed', game);
   }
 
-  Sandbox.prototype = Object.create(GameState.prototype);
-  Sandbox.prototype.constructor = Sandbox;
+  Testbed.prototype = Object.create(GameState.prototype);
+  Testbed.prototype.constructor = Testbed;
 
-  Sandbox.prototype.create = function() {
+  Testbed.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
 
     this.game.keyboard = new Keyboard(this.game);
@@ -19,7 +19,7 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
     if(window.location.hash.length > 1) {
       scenario = window.location.hash.replace('#', '');
     } else {
-      scenario = 'sandbox';
+      scenario = 'testbed';
     }
 
     var self = this;
@@ -33,13 +33,13 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
     startWhenConnected();
   };
 
-  Sandbox.prototype.resize = function() {
+  Testbed.prototype.resize = function() {
     if(this.playmat !== undefined) {
       this.playmat.resizer.resize();
     }
   };
 
-  Sandbox.prototype.onMessage = function(c, v) {
+  Testbed.prototype.onMessage = function(c, v) {
     switch(c) {
       case 'BrawlFound':
         this.startBrawl(v.brawl);
@@ -50,10 +50,10 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
     }
   };
 
-  Sandbox.prototype.startBrawl = function(brawl) {
+  Testbed.prototype.startBrawl = function(brawl) {
     this.playmat = new Playmat(this.game);
     this.playmat.setBrawl(brawl);
   };
 
-  return Sandbox;
+  return Testbed;
 });

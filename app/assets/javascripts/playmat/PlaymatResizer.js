@@ -51,7 +51,7 @@ define([], function () {
       }
     }
 
-    if(0 /* for now */) {
+    if(p.initialized) {
       p.game.add.tween(p.scale).to({x: newScale.x, y: newScale.y}, 500, Phaser.Easing.Quadratic.InOut, true);
       p.game.add.tween(p.position).to({x: newPosition.x, y: newPosition.y}, 500, Phaser.Easing.Quadratic.InOut, true);
     } else {

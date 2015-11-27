@@ -20,6 +20,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer'], function (Board, Ge
     var playmat = this;
     _.each(brawl.players, function(p) {
       var board = new Board(p.board, playmat.game);
+      board.setActiveGems(p.activeGems);
       playmat.boards.push(board);
       playmat.add(board);
     });
