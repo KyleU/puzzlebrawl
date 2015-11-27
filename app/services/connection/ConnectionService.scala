@@ -73,7 +73,7 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
         test.brawl
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }
-    out ! BrawlFound(brawl)
+    out ! BrawlJoined(brawl, 0)
   }
 
   private[this] def handleInternalMessage(im: InternalMessage) = im match {

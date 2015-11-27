@@ -11,7 +11,7 @@ object ResponseMessageSerializers {
   private[this] val versionResponseWrites = Json.writes[VersionResponse]
   private[this] val disconnectedWrites = Json.writes[Disconnected]
 
-  private[this] val brawlFoundWrites = Json.writes[BrawlFound]
+  private[this] val brawlJoinedWrites = Json.writes[BrawlJoined]
 
   implicit val responseMessageWrites = Writes[ResponseMessage] { r: ResponseMessage =>
     val json = r match {
@@ -21,7 +21,7 @@ object ResponseMessageSerializers {
       case SendDebugInfo => JsObject(Nil)
       case d: Disconnected => disconnectedWrites.writes(d)
 
-      case bf: BrawlFound => brawlFoundWrites.writes(bf)
+      case bj: BrawlJoined => brawlJoinedWrites.writes(bj)
 
       case _ => throw new IllegalArgumentException(s"Unhandled ResponseMessage type [${r.getClass.getSimpleName}].")
     }

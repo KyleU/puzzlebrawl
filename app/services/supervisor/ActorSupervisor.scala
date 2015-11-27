@@ -20,10 +20,10 @@ object ActorSupervisor extends Logging {
   }
 
   case class BrawlRecord(connections: Seq[(UUID, String)], actorRef: ActorRef, started: LocalDateTime)
-  case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeGame: Option[UUID], started: LocalDateTime)
+  case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeBrawl: Option[UUID], started: LocalDateTime)
 }
 
-class ActorSupervisor extends InstrumentedActor with Logging {
+class ActorSupervisor extends InstrumentedActor with Logging with ActorSupervisorBrawlHelper {
   import ActorSupervisor._
 
   protected[this] val connections = collection.mutable.HashMap.empty[UUID, ConnectionRecord]
@@ -44,11 +44,16 @@ class ActorSupervisor extends InstrumentedActor with Logging {
     case cs: ConnectionStarted => timeReceive(cs) { handleConnectionStarted(cs.user, cs.connectionId, cs.conn) }
     case cs: ConnectionStopped => timeReceive(cs) { handleConnectionStopped(cs.connectionId) }
 
+    case cb: CreateBrawl => timeReceive(cb) { handleCreateBrawl(cb.scenario, cb.players, cb.seed) }
+    case cbj: ConnectionBrawlJoin => timeReceive(cbj) { handleConnectionBrawlJoin(cbj.id, cbj.connectionId) }
+    case cbo: ConnectionBrawlObserve => timeReceive(cbo) { handleConnectionBrawlObserve(cbo.id, cbo.connectionId, cbo.as) }
+    case bs: BrawlStopped => timeReceive(bs) { handleBrawlStopped(bs.id) }
+
     case GetSystemStatus => timeReceive(GetSystemStatus) { handleGetSystemStatus() }
     case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace(ct) }
     case ct: ClientTrace => timeReceive(ct) { handleClientTrace(ct) }
 
-    case sm: InternalMessage => log.warn(s"Unhandled internal message [${sm.getClass.getSimpleName}] received.")
+    case im: InternalMessage => log.warn(s"Unhandled internal message [${im.getClass.getSimpleName}] received.")
     case x => log.warn(s"ActorSupervisor encountered unknown message: ${x.toString}")
   }
 

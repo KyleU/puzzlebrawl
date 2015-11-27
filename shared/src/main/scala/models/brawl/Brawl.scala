@@ -30,7 +30,14 @@ object Brawl {
   }
 }
 
-case class Brawl(id: UUID, scenario: String, seed: Int, players: Seq[Player], started: Long = new Date().getTime) {
+case class Brawl(
+  id: UUID,
+  scenario: String,
+  seed: Int,
+  players: Seq[Player],
+  started: Long = new Date().getTime,
+  var completed: Option[Long] = None
+) {
   private[this] val rng = new Random(seed)
 
   val playersById = players.map(p => p.id -> p).toMap

@@ -41,7 +41,7 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
 
   Testbed.prototype.onMessage = function(c, v) {
     switch(c) {
-      case 'BrawlFound':
+      case 'BrawlJoined':
         this.startBrawl(v.brawl);
         break;
       default:

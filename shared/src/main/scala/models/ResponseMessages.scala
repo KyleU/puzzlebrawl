@@ -11,6 +11,6 @@ case class VersionResponse(version: String) extends ResponseMessage
 case object SendDebugInfo extends ResponseMessage
 case class Disconnected(reason: String) extends ResponseMessage
 
-case class BrawlFound(brawl: Brawl) extends ResponseMessage
+case class BrawlJoined(brawl: Brawl, elapsedMs: Int) extends ResponseMessage
 
 case class MessageSet(messages: Seq[ResponseMessage]) extends ReversibleResponseMessage
