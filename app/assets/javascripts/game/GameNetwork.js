@@ -42,7 +42,7 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
         Status.set('latency', delta);
         break;
       case 'SendDebugInfo':
-        var data = DebugInfo.getDebugInfo(this.activeGame);
+        var data = DebugInfo.getDebugInfo(this.game);
         this.ws.send('DebugInfo', { 'data': JSON.stringify(data) });
         break;
       default:

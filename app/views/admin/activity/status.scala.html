@@ -1,6 +1,6 @@
 @(status: SystemStatus)(implicit session: Session, flash: Flash)@layout.admin("Server Status", "activity") {
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
       <div class="panel panel-default">
         <div class="panel-body">
           <h5>@status.connections.size Connections</h5>
@@ -20,6 +20,30 @@
                   <td>
                     <a href="@controllers.admin.routes.TraceController.traceClient(connection._1)" class="trace-link"><span class="glyphicon glyphicon-cloud-download"></span></a>
                   </td>
+                </tr>
+              }
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h5>@status.brawls.size Brawls</h5>
+          <div class="list-panel">
+            <table class="table table-bordered">
+              <tr>
+                <th>Brawl ID</th>
+                <th>Players</th>
+              </tr>
+              @for(brawl <- status.brawls) {
+                <tr>
+                  <td>
+                    <a href="@controllers.admin.routes.TraceController.traceBrawl(brawl._1)" class="trace-link">@brawl._1</a>
+                  </td>
+                  <td>@brawl._2.map(_._2).mkString(", ")</td>
                 </tr>
               }
             </table>

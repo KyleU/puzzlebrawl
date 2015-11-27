@@ -19,14 +19,18 @@ object ActorSupervisor extends Logging {
     instanceRef
   }
 
+  case class BrawlRecord(connections: Seq[(UUID, String)], actorRef: ActorRef, started: LocalDateTime)
   case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeGame: Option[UUID], started: LocalDateTime)
 }
 
 class ActorSupervisor extends InstrumentedActor with Logging {
-  import ActorSupervisor.ConnectionRecord
+  import ActorSupervisor._
 
   protected[this] val connections = collection.mutable.HashMap.empty[UUID, ConnectionRecord]
   protected[this] val connectionsCounter = metrics.counter("active-connections")
+
+  protected[this] val brawls = collection.mutable.HashMap.empty[UUID, BrawlRecord]
+  protected[this] val brawlsCounter = metrics.counter("active-brawls")
 
   override def preStart() {
     context.actorOf(Props[MetricsServletActor], "metrics-servlet")
@@ -49,8 +53,9 @@ class ActorSupervisor extends InstrumentedActor with Logging {
   }
 
   private[this] def handleGetSystemStatus() = {
+    val brawlStatuses = brawls.toList.sortBy(_._1).map(x => x._1 -> x._2.connections)
     val connectionStatuses = connections.toList.sortBy(_._2.name).map(x => x._1 -> x._2.name)
-    sender() ! SystemStatus(connectionStatuses)
+    sender() ! SystemStatus(brawlStatuses, connectionStatuses)
   }
 
   private[this] def handleConnectionTrace(ct: ConnectionTrace) = connections.find(_._1 == ct.id) match {

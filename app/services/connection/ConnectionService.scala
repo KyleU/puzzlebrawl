@@ -19,6 +19,10 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
   protected[this] val id = UUID.randomUUID
 
   protected[this] var userPreferences = user.preferences
+
+  protected[this] var activeBrawlId: Option[UUID] = None
+  protected[this] var activeBrawl: Option[ActorRef] = None
+
   protected[this] var pendingDebugChannel: Option[ActorRef] = None
 
   override def preStart() = {
@@ -47,12 +51,6 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
     supervisor ! ConnectionStopped(id)
   }
 
-  private[this] def handleInternalMessage(im: InternalMessage) = im match {
-    case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace() }
-    case ct: ClientTrace => timeReceive(ct) { handleClientTrace() }
-    case x => throw new IllegalArgumentException(s"Unhandled internal message [${x.getClass.getSimpleName}].")
-  }
-
   private[this] def handleStartBrawl(scenario: String) = {
     val brawl = scenario match {
       case "testbed" =>
@@ -76,5 +74,18 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }
     out ! BrawlFound(brawl)
+  }
+
+  private[this] def handleInternalMessage(im: InternalMessage) = im match {
+    case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace() }
+    case ct: ClientTrace => timeReceive(ct) { handleClientTrace() }
+    case bm: BrawlMessage => handleBrawlMessage(bm)
+
+    case x => throw new IllegalArgumentException(s"Unhandled internal message [${x.getClass.getSimpleName}].")
+  }
+
+  private[this] def handleBrawlMessage(bm: BrawlMessage) = activeBrawl match {
+    case Some(ab) => ab forward BrawlRequest(user.id, bm)
+    case None => throw new IllegalArgumentException(s"Received game message [${bm.getClass.getSimpleName}] while not in game.")
   }
 }

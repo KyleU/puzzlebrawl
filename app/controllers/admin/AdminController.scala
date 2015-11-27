@@ -1,5 +1,7 @@
 package controllers.admin
 
+import java.util.UUID
+
 import akka.pattern.ask
 import akka.util.Timeout
 import controllers.BaseController
@@ -13,6 +15,7 @@ import services.user.{ UserService, AuthenticationEnvironment }
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
+import scala.util.Random
 
 @javax.inject.Singleton
 class AdminController @javax.inject.Inject() (
@@ -34,7 +37,7 @@ class AdminController @javax.inject.Inject() (
 
   def status = withAdminSession("status") { implicit request =>
     (ActorSupervisor.instance ask GetSystemStatus).map {
-      case x: SystemStatus => Ok(views.html.admin.status(x))
+      case x: SystemStatus => Ok(views.html.admin.activity.status(x))
     }
   }
 
@@ -46,5 +49,25 @@ class AdminController @javax.inject.Inject() (
     } else {
       Future.successful(NotFound("Missing key."))
     }
+  }
+
+  def observeRandomBrawl() = withAdminSession("observe.random") { implicit request =>
+    (ActorSupervisor.instance ask GetSystemStatus).map {
+      case ss: SystemStatus => if (ss.brawls.isEmpty) {
+        Ok("No brawls available.")
+      } else {
+        val gameId = ss.brawls(new Random().nextInt(ss.brawls.length))._1
+        Ok("TODO")
+      }
+      case se: ServerError => Ok(s"${se.reason}: ${se.content}")
+    }
+  }
+
+  def observeBrawlAsAdmin(gameId: UUID) = withAdminSession("observe.brawl") { implicit request =>
+    Future.successful(Ok("TODO"))
+  }
+
+  def observeBrawlAs(gameId: UUID, as: UUID) = withAdminSession("observe.brawl.as") { implicit request =>
+    Future.successful(Ok("TODO"))
   }
 }

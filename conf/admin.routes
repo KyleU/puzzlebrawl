@@ -9,6 +9,11 @@ GET         /wipe                        controllers.admin.AdminController.wipeS
 
 GET         /trace/connection/:id        controllers.admin.TraceController.traceConnection(id: java.util.UUID)
 GET         /trace/client/:id            controllers.admin.TraceController.traceClient(id: java.util.UUID)
+GET         /trace/brawl/:id             controllers.admin.TraceController.traceBrawl(id: java.util.UUID)
+
+GET         /observe/random              controllers.admin.AdminController.observeRandomBrawl()
+GET         /observe/:id                 controllers.admin.AdminController.observeBrawlAsAdmin(id: java.util.UUID)
+GET         /observe/:id/:as             controllers.admin.AdminController.observeBrawlAs(id: java.util.UUID, as: java.util.UUID)
 
 GET         /users                       controllers.admin.UserController.userList(q ?= "", sortBy ?= "created", page: Int ?= 0)
 GET         /users/:id                   controllers.admin.UserController.userDetail(id: java.util.UUID)
