@@ -14,7 +14,7 @@ trait TraceHelper { this: BrawlService =>
           val observeUrl = controllers.admin.routes.AdminController.observeBrawlAs(brawl.id, player.userId).url
           val traceLink = s"""<a class="btn btn-default" href="${connUrl(cId)}" class="trace-link">Trace Connection</a>"""
           val observeLink = s"""<a class="btn btn-default" href="$observeUrl" target="_blank">Observe game as [${player.name}]</a>"""
-          s"User ID:${player.userId}<br />Connection ID: $cId<br />$traceLink$observeLink"
+          s"User:${player.userId}: ${player.name}<br />Connection: $cId<br />$traceLink$observeLink<br />"
         case None => s"${player.userId.toString} (Disconnected)"
       }
     }
@@ -22,7 +22,7 @@ trait TraceHelper { this: BrawlService =>
       "scenario" -> brawl.scenario,
       "seed" -> brawl.seed,
       "started" -> brawl.started,
-      "players" -> players.map(p => p.userId + ": " + p.name),
+      "players" -> playerStrings.mkString("<br/>\n"),
       "observers" -> observerConnections.map { x =>
         x._1.connectionId match {
           case Some(connId) => s"""<a href="${connUrl(connId)}" class="trace-link">$connId</a> (${x._1.name} as ${x._2.getOrElse("admin")})"""

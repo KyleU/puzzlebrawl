@@ -52,6 +52,7 @@ class ActorSupervisor extends InstrumentedActor with Logging with ActorSuperviso
     case GetSystemStatus => timeReceive(GetSystemStatus) { handleGetSystemStatus() }
     case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace(ct) }
     case ct: ClientTrace => timeReceive(ct) { handleClientTrace(ct) }
+    case bt: BrawlTrace => timeReceive(bt) { handleBrawlTrace(bt) }
 
     case im: InternalMessage => log.warn(s"Unhandled internal message [${im.getClass.getSimpleName}] received.")
     case x => log.warn(s"ActorSupervisor encountered unknown message: ${x.toString}")
@@ -71,6 +72,11 @@ class ActorSupervisor extends InstrumentedActor with Logging with ActorSuperviso
   private[this] def handleClientTrace(ct: ClientTrace) = connections.find(_._1 == ct.id) match {
     case Some(g) => g._2.actorRef forward ct
     case None => sender() ! ServerError("Unknown Client", ct.id.toString)
+  }
+
+  private[this] def handleBrawlTrace(bt: BrawlTrace) = brawls.get(bt.id) match {
+    case Some(g) => g.actorRef forward bt
+    case None => sender() ! ServerError("Unknown Game", bt.id.toString)
   }
 
   protected[this] def handleConnectionStarted(user: User, connectionId: UUID, conn: ActorRef) {

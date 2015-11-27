@@ -4,12 +4,8 @@ import java.util.UUID
 
 import akka.actor.{ ActorRef, Props }
 import models._
-import models.brawl.Brawl
-import models.test.brawl.Test
 import models.user.User
 import utils.Config
-
-import scala.util.Random
 
 object ConnectionService {
   def props(supervisor: ActorRef, user: User, out: ActorRef) = Props(new ConnectionService(supervisor, user, out))
@@ -36,7 +32,11 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
     case GetVersion => timeReceive(GetVersion) { out ! VersionResponse(Config.version) }
     case sp: SetPreference => timeReceive(sp) { handleSetPreference(sp) }
     case di: DebugInfo => timeReceive(di) { handleDebugInfo(di.data) }
-    case sb: StartBrawl => timeReceive(sb) { handleStartBrawl(sb.scenario) }
+
+    case sb: StartBrawl => timeReceive(sb) { handleStartBrawl(sb.scenario, None) }
+    case jb: JoinBrawl => timeReceive(jb) { handleJoinBrawl(jb.id) }
+    case ob: ObserveBrawl => timeReceive(ob) { handleObserveBrawl(ob.id, ob.as) }
+    case gm: BrawlMessage => handleBrawlMessage(gm)
 
     // Incoming game messages
     case im: InternalMessage => handleInternalMessage(im)
@@ -51,35 +51,11 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
     supervisor ! ConnectionStopped(id)
   }
 
-  private[this] def handleStartBrawl(scenario: String) = {
-    val brawl = scenario match {
-      case "testbed" =>
-        val brawl = Brawl.blank(playerNames = Seq("a", "b", "c", "d"))
-        brawl.players.foreach { player =>
-          (0 until 20).foreach { i =>
-            player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
-          }
-          player.board.fullTurn()
-          player.createActiveGems()
-        }
-        brawl
-      case x if x.startsWith("test") =>
-        val testName = x.stripPrefix("test")
-        val provider = Test.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
-        val test = provider.newInstance()
-        test.init()
-        test.cloneOriginal()
-        test.run()
-        test.brawl
-      case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
-    }
-    out ! BrawlJoined(brawl, 0)
-  }
-
   private[this] def handleInternalMessage(im: InternalMessage) = im match {
     case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace() }
     case ct: ClientTrace => timeReceive(ct) { handleClientTrace() }
     case bm: BrawlMessage => handleBrawlMessage(bm)
+    case bs: BrawlStarted => handleBrawlStarted(bs.id, bs.brawlService, bs.started)
 
     case x => throw new IllegalArgumentException(s"Unhandled internal message [${x.getClass.getSimpleName}].")
   }

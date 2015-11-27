@@ -1,5 +1,7 @@
 package models
 
+import java.util.UUID
+
 sealed trait RequestMessage
 
 case class MalformedRequest(reason: String, content: String) extends RequestMessage
@@ -11,5 +13,7 @@ case class SetPreference(name: String, value: String) extends RequestMessage
 case class DebugInfo(data: String) extends RequestMessage
 
 case class StartBrawl(scenario: String) extends RequestMessage
+case class JoinBrawl(id: UUID) extends RequestMessage
+case class ObserveBrawl(id: UUID, as: Option[UUID]) extends RequestMessage
 
 trait BrawlMessage extends RequestMessage
