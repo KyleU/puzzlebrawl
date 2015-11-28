@@ -15,6 +15,6 @@ object Move {
         b.set(src._1 + m.xDelta, src._2 + m.yDelta, Some(gem))
       }
     }
-    m
+    MoveGem(startX, startY, m.xDelta, m.yDelta)
   }
 }

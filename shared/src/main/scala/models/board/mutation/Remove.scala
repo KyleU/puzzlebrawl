@@ -16,6 +16,6 @@ object Remove {
         }
       }
     }
-    m
+    RemoveGem(startX, startY)
   }
 }
