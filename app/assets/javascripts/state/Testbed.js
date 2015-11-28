@@ -74,18 +74,23 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Gamepad', 'utils/Gesture', 
     if(board === undefined || board === null) {
       throw 'Player update received with invalid id [' + update.id + '].';
     }
-    _.each(update.mutations, function(m) {
-      switch(m.t) {
-        case 'a':
-          board.addGem(m.v.gem, m.v.x, m.v.y);
-          break;
-        case 'g':
-          board.setActiveGems(m.v.gems);
-          break;
-        default:
-          console.log('Unhandled mutation [' + m.t + '].');
-          break;
-      }
+    _.each(update.mutations, function(mSeq) {
+      _.each(mSeq, function(m) {
+        switch(m.t) {
+          case 'a':
+            board.addGem(m.v.gem, m.v.x, m.v.y);
+            break;
+          case 'g':
+            board.setActiveGems(m.v.gems);
+            break;
+          case 'r':
+            board.removeGem(m.v.gems);
+            break;
+          default:
+            console.log('Unhandled mutation [' + m.t + '].');
+            break;
+        }
+      });
     });
   };
 

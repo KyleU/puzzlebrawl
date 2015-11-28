@@ -27,7 +27,7 @@ trait ScenarioHelper { this: BrawlService =>
             player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
           }
           player.board.fullTurn()
-          player.createActiveGems()
+          player.activeGemsCreate()
         }
         brawl
       case x if x.startsWith("test") =>

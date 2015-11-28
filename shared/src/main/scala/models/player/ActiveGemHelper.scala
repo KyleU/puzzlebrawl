@@ -1,9 +1,10 @@
 package models.player
 
+import models.board.mutation.Mutation.ActiveGemsUpdate
 import models.gem.GemLocation
 
 trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper { this: Player =>
-  def createActiveGems() = {
+  def activeGemsCreate() = {
     if (activeGems.nonEmpty) {
       throw new IllegalStateException(s"Active gems created, but player [$id] already has active gems [${activeGems.mkString(", ")}].")
     }
@@ -16,6 +17,7 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
       throw new IllegalStateException(s"Cannot create active gems, as [${x + 1}, $y] is occupied by [${board.at(x + 1, y)}].")
     }
     activeGems = Seq(GemLocation(gemStream.next, x, y), GemLocation(gemStream.next, x + 1, y))
+    ActiveGemsUpdate(activeGems)
   }
 
   def activeGemsDrop() = {

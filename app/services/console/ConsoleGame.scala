@@ -16,7 +16,7 @@ class ConsoleGame() {
       player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
     }
     player.board.fullTurn()
-    player.createActiveGems()
+    player.activeGemsCreate()
   }
 
   client.addStatusLog("Brawl started. Use the arrows keys to move and rotate, space to drop, and escape to quit.")

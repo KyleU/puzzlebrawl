@@ -16,6 +16,10 @@ case class Disconnected(reason: String) extends ResponseMessage
 
 case class BrawlJoined(brawl: Brawl, elapsedMs: Int) extends ResponseMessage
 
-case class PlayerUpdate(id: UUID, mutations: Seq[Mutation]) extends ResponseMessage
+object PlayerUpdate {
+  def using(id: UUID, m: Mutation) = PlayerUpdate(id, Seq(Seq(m)))
+  def using(id: UUID, ms: Seq[Mutation]) = PlayerUpdate(id, Seq(ms))
+}
+case class PlayerUpdate(id: UUID, mutations: Seq[Seq[Mutation]]) extends ResponseMessage
 
 case class MessageSet(messages: Seq[ResponseMessage]) extends ReversibleResponseMessage

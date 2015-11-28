@@ -8,7 +8,7 @@ object TestActiveGemsDrop extends Test.Provider {
 
 class TestActiveGemsDrop() extends Test() {
   override def init() = {
-    test.createActiveGems()
+    test.activeGemsCreate()
 
     goal.board.applyMutation(AddGem(goal.gemStream.next, 2, 0))
     goal.board.applyMutation(AddGem(goal.gemStream.next, 3, 0))
@@ -20,9 +20,9 @@ class TestActiveGemsDrop() extends Test() {
 
   override def run() = {
     val a = test.activeGemsDrop()
-    test.createActiveGems()
+    test.activeGemsCreate()
     val b = test.activeGemsDrop()
-    test.createActiveGems()
+    test.activeGemsCreate()
     test.activeGemsRight()
     val c = test.activeGemsDrop()
     Seq(a, b, c)
