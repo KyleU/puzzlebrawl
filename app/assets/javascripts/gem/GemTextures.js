@@ -5,8 +5,10 @@ define(['gem/GemSprites'], function(GemSprites) {
 
   function keyFor(gem) {
     var key = gem.color;
-    if(gem.w === undefined) { key += '1'; } else { key += gem.w; }
-    if(gem.h === undefined) { key += '1'; } else { key += gem.h; }
+    if(gem.width === undefined) { key += '1'; } else { key += gem.width; }
+    if(gem.height === undefined) { key += '1'; } else { key += gem.height; }
+    if(gem.crash) { key += 'c'; }
+    if(gem.timer !== undefined) { key += gem.timer; }
     return key;
   }
 
@@ -39,15 +41,17 @@ define(['gem/GemSprites'], function(GemSprites) {
   GemTextures.prototype.loadTexture = function(gem, key) {
     if(this.gemTextures[key] === undefined) {
       var width, height;
-      if(gem.w === undefined) { width = 1; } else { width = gem.w; }
-      if(gem.h === undefined) { height = 1; } else { height = gem.h; }
+      if(gem.width === undefined) { width = 1; } else { width = gem.width; }
+      if(gem.height === undefined) { height = 1; } else { height = gem.height; }
+      var bd = this.game.add.bitmapData(width * 128, height * 128);
+      for(var x = 0; x < width; x++) {
+        for(var y = 0; y < height; y++) {
+          var texIdx = GemSprites.spriteFor(gem, x, y);
+          bd.copy(this.gemImages[texIdx], 0, 0, 128, 128, x * 128, (height - y - 1) * 128);
+        }
+      }
 
-      //var tex = this.game.add.bitmapData(width * 128, height * 128);
-
-      var texIdx = GemSprites.spriteFor(gem);
-      //tex.draw(this.gemImages[texIdx], 0, 0);
-
-      this.gemTextures[key] = this.gemImages[texIdx];
+      this.gemTextures[key] = bd.texture;
     } else {
       throw 'Texture for [' + key + '] already loaded.';
     }

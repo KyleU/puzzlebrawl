@@ -6,13 +6,9 @@ define(['gem/GemSprites'], function (GemSprites) {
   function Gem(model, game) {
     this.model = model;
 
-    //Phaser.Sprite.call(this, game, 0, 0);
-    //this.setTexture(this.game.gemTextures.getTexture(this.model));
-
-    var idx = GemSprites.spriteFor(this.model);
-    Phaser.Sprite.call(this, game, 0, 0, 'gems', idx);
-
+    Phaser.Sprite.call(this, game);
     this.name = 'gem-' + this.model.id;
+    this.setTexture(this.game.gemTextures.getTexture(this.model));
     this.anchor.setTo(0.0, 1.0);
   }
 
@@ -21,8 +17,7 @@ define(['gem/GemSprites'], function (GemSprites) {
 
   Gem.prototype.updateModel = function(newModel) {
     this.model = newModel;
-    var idx = GemSprites.spriteFor(this.model);
-    return idx;
+    this.setTexture(this.game.gemTextures.getTexture(this.model));
   };
 
   return Gem;

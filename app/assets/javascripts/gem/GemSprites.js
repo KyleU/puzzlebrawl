@@ -19,34 +19,37 @@ define([], function () {
     }
   }
 
-  function xForRole(gem, role) {
+  function xForRole(gem, x, y, width, height) {
     if(gem.crash) {
       return 15;
     } else if(gem.timer !== undefined) {
       return parseInt(gem.timer);
     } else {
       if(gem.width > 0 || gem.height > 0) {
-        switch(role) {
-          case 'ul':
-            return 6;
-          case 't':
-            return 7;
-          case 'ur':
-            return 8;
-          case 'l':
-            return 9;
-          case 'c':
-            return 10;
-          case 'r':
-            return 11;
-          case 'bl':
-            return 12;
-          case 'b':
-            return 13;
-          case 'br':
-            return 14;
-          default:
-            return 10;
+        if(y === 0) {
+          if(x === 0) {
+            return 12; // bl
+          } else if(x === gem.width - 1) {
+            return 14; // br
+          } else {
+            return 13; // b
+          }
+        } else if(y === gem.height - 1) {
+          if(x === 0) {
+            return 6; // ul
+          } else if(x === gem.width - 1) {
+            return 8; // ur
+          } else {
+            return 7; // t
+          }
+        } else {
+          if(x === 0) {
+            return 9; // l
+          } else if(x === gem.width - 1) {
+            return 11; // r
+          } else {
+            return 10; // t
+          }
         }
       } else {
         return 0;
@@ -55,10 +58,10 @@ define([], function () {
   }
 
   return {
-    spriteFor: function(gem) {
-      var x = xForRole(gem);
-      var y = yForColor(gem.color);
-      return (y * 16) + x;
+    spriteFor: function(gem, x, y) {
+      var col = xForRole(gem, x, y);
+      var row = yForColor(gem.color);
+      return (row * 16) + col;
     }
   };
 });
