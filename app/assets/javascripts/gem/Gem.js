@@ -9,7 +9,7 @@ define(['gem/GemSprites'], function (GemSprites) {
     Phaser.Sprite.call(this, game, 0, 0, 'gems', idx);
 
     this.name = 'gem-' + this.model.id;
-    this.anchor.setTo(0.5, 0.5);
+    this.anchor.setTo(0.0, 1.0);
   }
 
   Gem.prototype = Phaser.Sprite.prototype;

@@ -9,6 +9,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     this.game.add.existing(this);
 
     this.boards = [];
+    this.boardsByPlayer = {};
 
     this.resizer = new PlaymatResizer(this);
   };
@@ -23,6 +24,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
       var board = new Board(p.board, playmat.game);
       board.setActiveGems(p.activeGems);
       playmat.boards.push(board);
+      playmat.boardsByPlayer[p.id] = board;
       playmat.add(board);
     });
     this.resizer.refreshLayout();

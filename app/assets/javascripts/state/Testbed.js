@@ -1,4 +1,5 @@
 /* global define:false */
+/* global _:false */
 define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameState, Playmat, Keyboard) {
   'use strict';
 
@@ -44,6 +45,9 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
       case 'BrawlJoined':
         this.startBrawl(v.brawl);
         break;
+      case 'PlayerUpdate':
+        this.onPlayerUpdate(v);
+        break;
       default:
         GameState.prototype.onMessage.call(this, c, v);
         break;
@@ -53,6 +57,27 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
   Testbed.prototype.startBrawl = function(brawl) {
     this.playmat = new Playmat(this.game);
     this.playmat.setBrawl(brawl);
+  };
+
+  Testbed.prototype.onPlayerUpdate = function(update) {
+    var p = this.playmat;
+    if(p === undefined || p === null) {
+      throw 'Player update received with no active brawl.';
+    }
+    var board = p.boardsByPlayer[update.id];
+    if(board === undefined || board === null) {
+      throw 'Player update received with invalid id [' + update.id + '].';
+    }
+    _.each(update.mutations, function(m) {
+      switch(m.t) {
+        case 'g':
+          board.setActiveGems(m.v.gems);
+          break;
+        default:
+          console.log('Unhandled mutation [' + m.t + '].');
+          break;
+      }
+    });
   };
 
   return Testbed;
