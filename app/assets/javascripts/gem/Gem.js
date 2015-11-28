@@ -15,5 +15,11 @@ define(['gem/GemSprites'], function (GemSprites) {
   Gem.prototype = Phaser.Sprite.prototype;
   Gem.prototype.constructor = Gem;
 
+  Gem.prototype.updateModel = function(newModel) {
+    this.model = newModel;
+    var idx = GemSprites.spriteFor(this.model);
+    this.setFrame(idx);
+  };
+
   return Gem;
 });

@@ -83,8 +83,14 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Gamepad', 'utils/Gesture', 
           case 'g':
             board.setActiveGems(m.v.gems);
             break;
+          case 'm':
+            board.moveGem(m.v.x, m.v.y, m.v.xDelta, m.v.yDelta);
+            break;
+          case 'c':
+            board.changeGem(m.v.newGem, m.v.x, m.v.y);
+            break;
           case 'r':
-            board.removeGem(m.v.gems);
+            board.removeGem(m.v.x, m.v.y);
             break;
           default:
             console.log('Unhandled mutation [' + m.t + '].');
