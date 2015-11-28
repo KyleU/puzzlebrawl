@@ -33,6 +33,7 @@ object RequestMessageSerializers {
         case "ActiveGemsClockwise" => JsSuccess(ActiveGemsClockwise)
         case "ActiveGemsCounterClockwise" => JsSuccess(ActiveGemsCounterClockwise)
         case "ActiveGemsStep" => JsSuccess(ActiveGemsStep)
+        case "ActiveGemsDrop" => JsSuccess(ActiveGemsDrop)
 
         case _ => JsSuccess(MalformedRequest("UnknownType", s"c: $c, v: ${Json.stringify(v)}"))
       }

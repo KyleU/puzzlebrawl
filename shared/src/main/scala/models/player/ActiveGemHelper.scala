@@ -18,7 +18,7 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
     activeGems = Seq(GemLocation(gemStream.next, x, y), GemLocation(gemStream.next, x + 1, y))
   }
 
-  def dropActiveGems() = {
+  def activeGemsDrop() = {
     val orderedGems = activeGems.sortBy(g => g.y -> g.x)
     activeGems = Seq.empty
     orderedGems.flatMap(ag => board.drop(ag.gem, ag.x, ag.y))

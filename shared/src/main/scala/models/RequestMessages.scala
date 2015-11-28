@@ -23,3 +23,4 @@ case object ActiveGemsRight extends BrawlMessage
 case object ActiveGemsClockwise extends BrawlMessage
 case object ActiveGemsCounterClockwise extends BrawlMessage
 case object ActiveGemsStep extends BrawlMessage
+case object ActiveGemsDrop extends BrawlMessage

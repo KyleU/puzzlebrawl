@@ -1,6 +1,6 @@
 /* global define:false */
 /* global _:false */
-define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard', 'utils/Gamepad'], function (GameState, Playmat, Keyboard, Gamepad) {
+define(['state/GameState', 'playmat/Playmat', 'utils/Gamepad', 'utils/Gesture', 'utils/Keyboard'], function (GameState, Playmat, Gamepad, Gesture, Keyboard) {
   'use strict';
 
   function Testbed(game) {
@@ -18,6 +18,9 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard', 'utils/Gamepad']
 
     this.game.gamepad = new Gamepad(this.game);
     this.game.gamepad.init();
+
+    this.game.gesture = new Gesture(this.game);
+    this.game.gesture.init();
 
     var scenario;
     if(window.location.hash.length > 1) {
@@ -73,6 +76,9 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard', 'utils/Gamepad']
     }
     _.each(update.mutations, function(m) {
       switch(m.t) {
+        case 'a':
+          board.addGem(m.v.gem, m.v.x, m.v.y);
+          break;
         case 'g':
           board.setActiveGems(m.v.gems);
           break;

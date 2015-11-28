@@ -37,6 +37,9 @@ define([], function () {
       case 'active-step':
         this.game.send('ActiveGemsStep', {});
         break;
+      case 'active-drop':
+        this.game.send('ActiveGemsDrop', {});
+        break;
       default:
         console.log('Unhandled input [' + t + '].');
         break;

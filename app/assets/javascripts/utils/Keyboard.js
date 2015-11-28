@@ -17,6 +17,7 @@ define([], function () {
     g.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(input('active-clockwise'));
     g.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(input('active-counter-clockwise'));
 
+    g.input.keyboard.addKey(Phaser.Keyboard.PERIOD).onDown.add(input('active-step'));
     g.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(input('active-drop'));
 
     g.input.keyboard.addKey(Phaser.Keyboard.X).onDown.add(input('sandbox'));

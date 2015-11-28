@@ -28,7 +28,7 @@ class ConsoleGameInput(brawl: Brawl, client: ConsoleClient) extends ConsoleInput
         case char if char.charValue == 's' => withPlayer(_.activeGemsCounterClockwise())
         case char if char.charValue == '.' => withPlayer(_.activeGemsStep())
         case char if char.charValue == ' ' => withPlayer { p =>
-          p.dropActiveGems()
+          p.activeGemsDrop()
           p.board.fullTurn()
           p.createActiveGems()
         }

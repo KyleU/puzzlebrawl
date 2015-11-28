@@ -19,12 +19,12 @@ class TestActiveGemsDrop() extends Test() {
   }
 
   override def run() = {
-    val a = test.dropActiveGems()
+    val a = test.activeGemsDrop()
     test.createActiveGems()
-    val b = test.dropActiveGems()
+    val b = test.activeGemsDrop()
     test.createActiveGems()
     test.activeGemsRight()
-    val c = test.dropActiveGems()
+    val c = test.activeGemsDrop()
     Seq(a, b, c)
   }
 }
