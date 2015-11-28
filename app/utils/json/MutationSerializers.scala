@@ -1,11 +1,11 @@
 package utils.json
 
 import models.board.mutation.Mutation
-import models.board.mutation.Mutation.{ RemoveGem, ChangeGem, MoveGem, AddGem }
+import models.board.mutation.Mutation._
 import play.api.libs.json._
 
 object MutationSerializers {
-  import utils.json.BrawlSerializers.{ gemReads, gemWrites }
+  import utils.json.BrawlSerializers.{ gemReads, gemWrites, gemLocationReads, gemLocationWrites }
 
   implicit val addGemReads = Json.reads[AddGem]
   implicit val addGemWrites = Json.writes[AddGem]
@@ -18,6 +18,9 @@ object MutationSerializers {
 
   implicit val removeGemReads = Json.reads[RemoveGem]
   implicit val removeGemWrites = Json.writes[RemoveGem]
+
+  implicit val activeGemsUpdateReads = Json.reads[ActiveGemsUpdate]
+  implicit val activeGemsUpdateWrites = Json.writes[ActiveGemsUpdate]
 
   implicit val mutationReads = new Reads[Mutation] {
     override def reads(json: JsValue) = {
@@ -38,6 +41,7 @@ object MutationSerializers {
         case mg: MoveGem => "m" -> moveGemWrites.writes(mg)
         case cg: ChangeGem => "c" -> changeGemWrites.writes(cg)
         case rg: RemoveGem => "r" -> removeGemWrites.writes(rg)
+        case agu: ActiveGemsUpdate => "g" -> activeGemsUpdateWrites.writes(agu)
       }
       JsObject(Seq("t" -> JsString(v._1), "v" -> v._2))
     }

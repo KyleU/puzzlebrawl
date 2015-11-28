@@ -5,6 +5,7 @@ import play.api.libs.json._
 
 import utils.json.BrawlSerializers.brawlWrites
 import utils.json.BrawlSerializers.gemLocationWrites
+import utils.json.MutationSerializers.mutationWrites
 
 object ResponseMessageSerializers {
   private[this] val serverErrorWrites = Json.writes[ServerError]
@@ -14,7 +15,7 @@ object ResponseMessageSerializers {
 
   private[this] val brawlJoinedWrites = Json.writes[BrawlJoined]
 
-  private[this] val activeGemsUpdateWrites = Json.writes[ActiveGemsUpdate]
+  private[this] val playerUpdateWrites = Json.writes[PlayerUpdate]
 
   implicit val responseMessageWrites = Writes[ResponseMessage] { r: ResponseMessage =>
     val json = r match {
@@ -26,7 +27,7 @@ object ResponseMessageSerializers {
 
       case bj: BrawlJoined => brawlJoinedWrites.writes(bj)
 
-      case agu: ActiveGemsUpdate => activeGemsUpdateWrites.writes(agu)
+      case pu: PlayerUpdate => playerUpdateWrites.writes(pu)
 
       case _ => throw new IllegalArgumentException(s"Unhandled ResponseMessage type [${r.getClass.getSimpleName}].")
     }

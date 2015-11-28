@@ -1,7 +1,9 @@
 package models
 
+import java.util.UUID
+
+import models.board.mutation.Mutation
 import models.brawl.Brawl
-import models.gem.GemLocation
 
 sealed trait ResponseMessage
 trait ReversibleResponseMessage extends ResponseMessage
@@ -14,6 +16,6 @@ case class Disconnected(reason: String) extends ResponseMessage
 
 case class BrawlJoined(brawl: Brawl, elapsedMs: Int) extends ResponseMessage
 
-case class ActiveGemsUpdate(gems: Seq[GemLocation]) extends ResponseMessage
+case class PlayerUpdate(id: UUID, mutations: Seq[Mutation]) extends ResponseMessage
 
 case class MessageSet(messages: Seq[ResponseMessage]) extends ReversibleResponseMessage

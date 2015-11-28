@@ -1,6 +1,6 @@
 package models.player
 
-import models.ActiveGemsUpdate
+import models.board.mutation.Mutation.ActiveGemsUpdate
 import models.gem.GemLocation
 
 trait ActiveGemRotationHelper { this: Player =>

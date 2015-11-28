@@ -28,6 +28,15 @@ define([], function () {
       case 'active-right':
         this.game.send('ActiveGemsRight', {});
         break;
+      case 'active-clockwise':
+        this.game.send('ActiveGemsClockwise', {});
+        break;
+      case 'active-counter-clockwise':
+        this.game.send('ActiveGemsCounterClockwise', {});
+        break;
+      case 'active-step':
+        this.game.send('ActiveGemsStep', {});
+        break;
       default:
         console.log('Unhandled input [' + t + '].');
         break;

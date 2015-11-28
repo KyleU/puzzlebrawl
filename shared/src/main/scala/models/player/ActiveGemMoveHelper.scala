@@ -1,6 +1,6 @@
 package models.player
 
-import models.ActiveGemsUpdate
+import models.board.mutation.Mutation.ActiveGemsUpdate
 
 trait ActiveGemMoveHelper { this: Player =>
   def activeGemsLeft() = moveActiveGems(-1, 0)
