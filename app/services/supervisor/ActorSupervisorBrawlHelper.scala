@@ -21,7 +21,7 @@ trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
     val playerRecords = playerConnections.map { pc =>
       PlayerRecord(pc._2.userId, pc._2.name, Some(pc._1), Some(pc._2.actorRef))
     }
-    val actor = context.actorOf(BrawlService.props(scenario, playerRecords, finalSeed), s"game:$id")
+    val actor = context.actorOf(BrawlService.props(id, scenario, playerRecords, finalSeed), s"game:$id")
 
     playerConnections.foreach(c => c._2.activeBrawl = Some(id))
     brawls(id) = BrawlRecord(playerConnections.map(c => c._1 -> c._2.name), actor, DateUtils.now)

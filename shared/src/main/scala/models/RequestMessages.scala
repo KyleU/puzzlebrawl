@@ -17,3 +17,9 @@ case class JoinBrawl(id: UUID) extends RequestMessage
 case class ObserveBrawl(id: UUID, as: Option[UUID]) extends RequestMessage
 
 trait BrawlMessage extends RequestMessage
+
+case object ActiveGemsLeft extends BrawlMessage
+case object ActiveGemsRight extends BrawlMessage
+case object ActiveGemsClockwise extends BrawlMessage
+case object ActiveGemsCounterClockwise extends BrawlMessage
+case object ActiveGemsStep extends BrawlMessage

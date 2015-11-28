@@ -9,15 +9,18 @@ define([], function () {
 
   Keyboard.prototype.init = function() {
     var g = this.game;
+    function input(s) { return function() { g.onInput(s); }; }
 
-    var sandboxKey = g.input.keyboard.addKey(Phaser.Keyboard.X);
-    sandboxKey.onDown.add(function() { g.onInput('sandbox'); });
+    g.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(input('active-left'));
+    g.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(input('active-right'));
 
-    var dropKey = g.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    dropKey.onDown.add(function() { g.onInput('drop-active'); });
+    g.input.keyboard.addKey(Phaser.Keyboard.UP).onDown.add(input('active-clockwise'));
+    g.input.keyboard.addKey(Phaser.Keyboard.DOWN).onDown.add(input('active-counter-clockwise'));
 
-    var debugKey = g.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK);
-    debugKey.onDown.add(function() { g.onInput('toggle-debug'); });
+    g.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(input('active-drop'));
+
+    g.input.keyboard.addKey(Phaser.Keyboard.X).onDown.add(input('sandbox'));
+    g.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK).onDown.add(input('toggle-debug'));
   };
 
   Keyboard.prototype.enable = function() {

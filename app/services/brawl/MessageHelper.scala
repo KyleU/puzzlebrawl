@@ -16,17 +16,17 @@ trait MessageHelper { this: BrawlService =>
     self ! PoisonPill
   }
 
-  protected[this] def sendToAll(context: String, messages: Seq[ResponseMessage]): Unit = {
+  protected[this] def sendToAll(messages: Seq[ResponseMessage]): Unit = {
     if (messages.isEmpty) {
       log.info(s"No messages to send to all players for game [$scenario:$seed] in context [$context].")
     } else if (messages.tail.isEmpty) {
-      sendToAll(context, messages.headOption.getOrElse(throw new IllegalStateException()))
+      sendToAll(messages.headOption.getOrElse(throw new IllegalStateException()))
     } else {
-      sendToAll(context, MessageSet(messages))
+      sendToAll(MessageSet(messages))
     }
   }
 
-  protected[this] def sendToAll(context: String, message: ResponseMessage, registerUndoResponse: Boolean = true): Unit = {
+  protected[this] def sendToAll(message: ResponseMessage): Unit = {
     players.foreach(_.connectionActor.foreach(_ ! message))
     observerConnections.foreach(_._1.connectionActor.foreach(_ ! message))
   }
@@ -40,8 +40,14 @@ trait MessageHelper { this: BrawlService =>
         firstMoveMade = Some(time)
       }
       lastMoveMade = Some(time)
+      val player = brawl.playersById(br.userId)
       br.message match {
         case x if brawl.completed.isDefined => log.warn(s"Received brawl message [${x.getClass.getSimpleName}] for completed brawl [$brawl.id].")
+        case ActiveGemsLeft => player.activeGemsLeft().foreach(sendToAll)
+        case ActiveGemsRight => player.activeGemsRight().foreach(sendToAll)
+        case ActiveGemsClockwise => sendToAll(player.activeGemsClockwise())
+        case ActiveGemsCounterClockwise => sendToAll(player.activeGemsCounterClockwise())
+        case ActiveGemsStep => player.activeGemsStep().foreach(sendToAll)
         case r => log.warn(s"GameService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
       }
     } catch {

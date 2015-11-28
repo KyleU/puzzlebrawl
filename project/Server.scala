@@ -70,7 +70,7 @@ object Server {
     ideExcludedDirectories <<= (baseDirectory, target, crossTarget) { (b, t, ct) =>
       (t * "*").filter(_.isDirectory).filter(_ != ct).get ++
         (ct * "*").filter(_.isDirectory).filter(f => !(f.name.contains("twirl") || f.name.contains("routes"))).get ++
-        Seq(b / "logs")
+        Seq(b / "logs") ++ Seq(b / "public" / "lib")
     }
   ) ++ defaultScalariformSettings
 

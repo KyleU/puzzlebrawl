@@ -9,17 +9,11 @@ import org.joda.time.LocalDateTime
 import utils.DateUtils
 
 object BrawlService {
-  def props(scenario: String, players: Seq[PlayerRecord], seed: Int) = Props(classOf[BrawlService], scenario, players, seed)
+  def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int) = Props(classOf[BrawlService], id, scenario, players, seed)
 }
 
-case class BrawlService(scenario: String, players: Seq[PlayerRecord], seed: Int) extends BrawlHelper {
-  protected[this] lazy val brawl = {
-    val playerNames = players.map(_.name).distinct
-    if(playerNames.size != players.size) {
-      throw new IllegalStateException(s"Players [${players.map(_.name).mkString(", ")}] contains a duplicate name.")
-    }
-    newInstance(scenario, playerNames)
-  }
+case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int) extends BrawlHelper {
+  protected[this] lazy val brawl = newInstance(scenario)
 
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
 

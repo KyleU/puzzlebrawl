@@ -28,6 +28,12 @@ object RequestMessageSerializers {
 
         case "StartBrawl" => startBrawlReads.reads(v)
 
+        case "ActiveGemsLeft" => JsSuccess(ActiveGemsLeft)
+        case "ActiveGemsRight" => JsSuccess(ActiveGemsRight)
+        case "ActiveGemsClockwise" => JsSuccess(ActiveGemsClockwise)
+        case "ActiveGemsCounterClockwise" => JsSuccess(ActiveGemsCounterClockwise)
+        case "ActiveGemsStep" => JsSuccess(ActiveGemsStep)
+
         case _ => JsSuccess(MalformedRequest("UnknownType", s"c: $c, v: ${Json.stringify(v)}"))
       }
       jsResult match {

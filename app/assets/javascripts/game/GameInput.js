@@ -22,6 +22,12 @@ define([], function () {
       case 'toggle-debug':
         toggleDebug();
         break;
+      case 'active-left':
+        this.game.send('ActiveGemsLeft', {});
+        break;
+      case 'active-right':
+        this.game.send('ActiveGemsRight', {});
+        break;
       default:
         console.log('Unhandled input [' + t + '].');
         break;
