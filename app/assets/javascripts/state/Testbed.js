@@ -1,6 +1,6 @@
 /* global define:false */
 /* global _:false */
-define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameState, Playmat, Keyboard) {
+define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard', 'utils/Gamepad'], function (GameState, Playmat, Keyboard, Gamepad) {
   'use strict';
 
   function Testbed(game) {
@@ -15,6 +15,9 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Keyboard'], function (GameS
 
     this.game.keyboard = new Keyboard(this.game);
     this.game.keyboard.init();
+
+    this.game.gamepad = new Gamepad(this.game);
+    this.game.gamepad.init();
 
     var scenario;
     if(window.location.hash.length > 1) {

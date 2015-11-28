@@ -21,8 +21,8 @@ define(['gem/Gem'], function (Gem) {
     for(var y = 0; y < this.h; y++) {
       for(var x = 0; x < this.w; x++) {
         var g = model.spaces[x][y];
-        if(g !== null) {
-          this.addGem(new Gem(g, this.game), x, y);
+        if(g !== null && this.gems[g.id] === undefined) {
+          this.addGem(g, x, y);
         }
       }
     }
@@ -32,32 +32,34 @@ define(['gem/Gem'], function (Gem) {
   Board.prototype.constructor = Board;
 
   Board.prototype.addGem = function(gem, x, y) {
-    var original = this.gems[gem.model.id];
+    var original = this.gems[gem.id];
     if(original !== null && original !== undefined) {
-      throw 'Gem [' + gem.model.id + '] has already been added.';
+      throw 'Gem [' + gem.id + '] has already been added.';
     }
-    gem.x = x * 128;
-    gem.y = this.height - (y * 128);
-    this.gems[gem.model.id] = gem;
-    this.add(gem);
+    var g = new Gem(gem, this.game);
+    g.x = x * 128;
+    g.y = this.height - (y * 128);
+    this.gems[gem.id] = g;
+    this.add(g);
   };
 
   Board.prototype.moveGem = function(gem, x, y) {
-    var original = this.gems[gem.id];
-    if(original === null || original === undefined) {
-      throw 'Gem [' + gem.model.id + '] has not been added.';
+    var g = this.gems[gem.id];
+    if(g === null || g === undefined) {
+      throw 'Gem [' + gem.id + '] has not been added.';
     }
-    original.x = x * 128;
-    original.y = this.height - (y * 128);
+    var tween = this.game.add.tween(g);
+    tween.to({x: x * 128, y: this.height - (y * 128) }, 200, Phaser.Easing.Cubic.Out);
+    tween.start();
   };
 
   Board.prototype.removeGem = function(gem) {
-    var original = this.gems[gem.id];
-    if(original === null || original === undefined) {
-      throw 'Gem [' + gem.model.id + '] has not been added.';
+    var g = this.gems[gem.id];
+    if(g === null || g === undefined) {
+      throw 'Gem [' + gem.id + '] has not been added.';
     }
     this.gems[gem.id] = null;
-    this.remove(gem);
+    this.remove(g);
   };
 
   Board.prototype.setActiveGems = function(ags) {
@@ -65,7 +67,7 @@ define(['gem/Gem'], function (Gem) {
       var original = this.activeGems[agIdx];
       var ag = ags[agIdx];
       if(original === null || original === undefined) {
-        this.addGem(new Gem(ag.gem, this.game), ag.x, ag.y);
+        this.addGem(ag.gem, ag.x, ag.y);
       } else {
         if(original.id !== ag.id) {
           throw 'Incorrect active gem at index [' + agIdx + '].';

@@ -23,13 +23,5 @@ define([], function () {
     g.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK).onDown.add(input('toggle-debug'));
   };
 
-  Keyboard.prototype.enable = function() {
-    this.game.input.keyboard.enabled = true;
-  };
-
-  Keyboard.prototype.disable = function() {
-    this.game.input.keyboard.enabled = false;
-  };
-
   return Keyboard;
 });
