@@ -1,6 +1,8 @@
 /* global define:false */
 /* global _:false */
-define(['state/GameState', 'playmat/Playmat', 'utils/Gamepad', 'utils/Gesture', 'utils/Keyboard'], function (GameState, Playmat, Gamepad, Gesture, Keyboard) {
+define([
+  'gem/GemTextures', 'playmat/Playmat', 'state/GameState', 'utils/Gamepad', 'utils/Gesture', 'utils/Keyboard'
+], function (GemTextures, Playmat, GameState, Gamepad, Gesture, Keyboard) {
   'use strict';
 
   function Testbed(game) {
@@ -21,6 +23,8 @@ define(['state/GameState', 'playmat/Playmat', 'utils/Gamepad', 'utils/Gesture', 
 
     this.game.gesture = new Gesture(this.game);
     this.game.gesture.init();
+
+    this.game.gemTextures = new GemTextures(this.game);
 
     var scenario;
     if(window.location.hash.length > 1) {
