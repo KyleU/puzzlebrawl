@@ -1,4 +1,4 @@
-package services.brawl
+package models.scenario
 
 import java.util.UUID
 
@@ -8,11 +8,23 @@ import models.gem.GemStream
 import models.player.Player
 import models.test.brawl.Test
 import models.test.gem.MockGemStreams
+import models.user.PlayerRecord
 
 import scala.util.Random
 
-trait ScenarioHelper { this: BrawlService =>
-  def newInstance(scenario: String) = {
+object Scenario {
+  def all = Seq(
+    "testbed" -> "Testbed",
+    "allRed" -> "All Red",
+    "allGreen" -> "All Green",
+    "allBlue" -> "All Blue",
+    "allYellow" -> "All Yellow",
+    "allRedBlue" -> "All Red and Blue",
+    "allCrash" -> "All Crash",
+    "allWild" -> "All Wild"
+  )
+
+  def newInstance(scenario: String, seed: Int, players: Seq[PlayerRecord]) = {
     val playerNames = players.map(_.name).distinct
     if (playerNames.size != players.size) {
       throw new IllegalStateException(s"Players [${players.map(_.name).mkString(", ")}] contains a duplicate name.")
@@ -31,6 +43,11 @@ trait ScenarioHelper { this: BrawlService =>
           player.activeGemsCreate()
         }
         brawl
+      case "normal" =>
+        val id = UUID.randomUUID()
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
+        ps.foreach(_.activeGemsCreate())
+        Brawl(id, scenario, seed, ps)
       case x if x.startsWith("test") =>
         val testName = x.stripPrefix("test")
         val provider = Test.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))

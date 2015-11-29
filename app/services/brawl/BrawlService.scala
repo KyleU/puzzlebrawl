@@ -4,6 +4,7 @@ import java.util.UUID
 
 import akka.actor.Props
 import models._
+import models.scenario.Scenario
 import models.user.PlayerRecord
 import org.joda.time.LocalDateTime
 import utils.DateUtils
@@ -13,7 +14,7 @@ object BrawlService {
 }
 
 case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int) extends BrawlHelper {
-  protected[this] lazy val brawl = newInstance(scenario)
+  protected[this] lazy val brawl = Scenario.newInstance(scenario, seed, players)
 
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
 

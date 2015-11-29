@@ -19,13 +19,9 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <ul>
-              <li><a href="@routes.GameController.play()#allRed">Red</a></li>
-              <li><a href="@routes.GameController.play()#allGreen">Green</a></li>
-              <li><a href="@routes.GameController.play()#allBlue">Blue</a></li>
-              <li><a href="@routes.GameController.play()#allYellow">Yellow</a></li>
-              <li><a href="@routes.GameController.play()#allRedBlue">Red and Blue</a></li>
-              <li><a href="@routes.GameController.play()#allCrash">Crash</a></li>
-              <li><a href="@routes.GameController.play()#allWild">Wild</a></li>
+              @for(scenario <- models.scenario.Scenario.all) {
+                <li><a href="@routes.GameController.play()#@scenario._1">@scenario._2</a></li>
+              }
             </ul>
           </div>
         </div>

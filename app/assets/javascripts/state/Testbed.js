@@ -29,7 +29,7 @@ define([
     if(window.location.hash.length > 1) {
       scenario = window.location.hash.replace('#', '');
     } else {
-      scenario = 'testbed';
+      scenario = 'normal';
     }
 
     var self = this;

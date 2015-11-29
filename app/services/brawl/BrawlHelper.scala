@@ -9,7 +9,6 @@ trait BrawlHelper
     with Logging
     with ConnectionHelper
     with MessageHelper
-    with ScenarioHelper
     with TraceHelper { this: BrawlService =>
 
   protected[this] def elapsedSeconds = firstMoveMade.flatMap { first =>
