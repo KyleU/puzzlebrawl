@@ -14,17 +14,32 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
         <h4>Scenarios</h4>
         <div class="panel panel-default">
           <div class="panel-body">
             <div class="row">
-            @for(t <- models.test.brawl.Test.all) {
-              <div class="col-md-3">
-                <a href="@routes.GameController.play()#test@t.testName">@t.testName</a>
-              </div>
-            }
+              <ul>
+                <li><a href="@routes.GameController.play()#allRed">All Red</a></li>
+                <li><a href="@routes.GameController.play()#allGreen">All Green</a></li>
+                <li><a href="@routes.GameController.play()#allBlue">All Blue</a></li>
+                <li><a href="@routes.GameController.play()#allYellow">All Yellow</a></li>
+                <li><a href="@routes.GameController.play()#allCrash">All Crash</a></li>
+                <li><a href="@routes.GameController.play()#allWild">All Wild</a></li>
+              </ul>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h4>Tests</h4>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <ul>
+            @for(t <- models.test.brawl.Test.all) {
+              <li><a href="@routes.GameController.play()#test@t.testName">@t.testName</a></li>
+            }
+            </ul>
           </div>
         </div>
       </div>

@@ -76,7 +76,7 @@ define(['gem/Gem'], function (Gem) {
       var newLoc = ags[agIdx];
       this.activeGemLocations[agIdx] = [g[0], newLoc.x, newLoc.y];
       var tween = this.game.add.tween(g[0]);
-      tween.to({x: newLoc.x * 128, y: this.height - (newLoc.y * 128) }, 200, Phaser.Easing.Cubic.Out);
+      tween.to({ x: newLoc.x * 128, y: this.height - (newLoc.y * 128) }, 200, Phaser.Easing.Cubic.Out);
       tween.start();
     }
   };
@@ -93,7 +93,7 @@ define(['gem/Gem'], function (Gem) {
     }
     this.gemLocations[g[0].model.id] = [g[0], x + xDelta, y + yDelta];
     var tween = this.game.add.tween(g[0]);
-    tween.to({x: (x + xDelta) * 128, y: this.height - ((y + yDelta) * 128) }, 200, Phaser.Easing.Cubic.Out);
+    tween.to({ x: (x + xDelta) * 128, y: this.height - ((y + yDelta) * 128) }, 200, Phaser.Easing.Cubic.Out);
     tween.start();
   };
 
