@@ -15,7 +15,7 @@ define(['gem/GemSprites'], function(GemSprites) {
   function GemTextures(game) {
     this.game = game;
     this.gemImages = [];
-    for(var texIdx = 0; texIdx < 64; texIdx++) {
+    for(var texIdx = 0; texIdx < 80; texIdx++) {
       this.gemImages.push(new Phaser.Image(game, 0, 0, 'gems', texIdx));
     }
     this.gemTextures = {};

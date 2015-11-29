@@ -47,6 +47,7 @@ trait ScenarioHelper { this: BrawlService =>
           case "Green" => MockGemStreams.allGreen
           case "Blue" => MockGemStreams.allBlue
           case "Yellow" => MockGemStreams.allYellow
+          case "RedBlue" => MockGemStreams.allRedBlue
           case "Crash" => MockGemStreams.allCrash
           case "Wild" => MockGemStreams.allWild
           case _ => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")

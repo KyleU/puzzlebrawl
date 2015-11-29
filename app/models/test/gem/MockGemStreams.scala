@@ -51,6 +51,15 @@ object MockGemStreams {
     crashAdjustBlue =  Some(0.0)
   )
 
+  val allRedBlue = GemStream(
+    seed = 0,
+    gemAdjustWild =  Some(0.0),
+    gemAdjustGreen =  Some(0.0),
+    gemAdjustYellow =  Some(0.0),
+    crashAdjustGreen =  Some(0.0),
+    crashAdjustYellow =  Some(0.0)
+  )
+
   val allCrash = GemStream(
     seed = 0,
     gemAdjustWild =  Some(0.0),
