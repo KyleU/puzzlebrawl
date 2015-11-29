@@ -64,10 +64,10 @@ class AdminController @javax.inject.Inject() (
   }
 
   def observeBrawlAsAdmin(gameId: UUID) = withAdminSession("observe.brawl") { implicit request =>
-    Future.successful(Ok("TODO"))
+    Future.successful(Ok("TODO: " + gameId))
   }
 
   def observeBrawlAs(gameId: UUID, as: UUID) = withAdminSession("observe.brawl.as") { implicit request =>
-    Future.successful(Ok("TODO"))
+    Future.successful(Ok("TODO: " + gameId + " [" + as + "]"))
   }
 }

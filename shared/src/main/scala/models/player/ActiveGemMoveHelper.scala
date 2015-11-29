@@ -8,8 +8,8 @@ trait ActiveGemMoveHelper { this: Player =>
   def activeGemsStep() = moveActiveGems(0, -1)
 
   private[this] def moveActiveGems(xDelta: Int, yDelta: Int) = {
-    if(xDelta == 0 && yDelta == 0) {
-      throw new IllegalStateException(s"Call to move active gems without a change in position.")
+    if (xDelta == 0 && yDelta == 0) {
+      throw new IllegalStateException("Call to move active gems without a change in position.")
     }
     val newGems = activeGems.flatMap { g =>
       val newX = g.x + xDelta
@@ -21,7 +21,7 @@ trait ActiveGemMoveHelper { this: Player =>
         //throw new IllegalStateException(s"Cannot move gem ${g.gem} from [${g.x}, ${g.y}] to [$newX, $newY] which is occupied by [${board.at(newX, newY)}].")
       }
     }
-    if(activeGems.size == newGems.size) {
+    if (activeGems.size == newGems.size) {
       activeGems = newGems
       Some(ActiveGemsUpdate(newGems))
     } else {

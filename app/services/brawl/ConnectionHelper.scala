@@ -36,7 +36,7 @@ trait ConnectionHelper { this: BrawlService =>
 
     import scala.concurrent.duration._
 
-    val player = players.find(_.connectionId == connectionId).getOrElse(throw new IllegalArgumentException(s"Unknown connection [$connectionId]."))
+    val player = players.find(_.connectionId.contains(connectionId)).getOrElse(throw new IllegalArgumentException(s"Unknown connection [$connectionId]."))
     if (player.connectionId.contains(connectionId)) {
       log.info(s"Player connection [$connectionId] stopped.")
       player.connectionId = None
