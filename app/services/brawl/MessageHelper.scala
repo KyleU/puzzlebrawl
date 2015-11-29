@@ -11,7 +11,7 @@ trait MessageHelper { this: BrawlService =>
   }
 
   protected[this] def handleStopBrawl() {
-    log.info(s"Stopping game [${brawl.id}].")
+    log.info(s"Stopping brawl [${brawl.id}].")
     context.parent ! BrawlStopped(brawl.id)
     self ! PoisonPill
   }

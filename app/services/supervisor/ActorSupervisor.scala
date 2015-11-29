@@ -89,6 +89,9 @@ class ActorSupervisor extends InstrumentedActor with Logging with ActorSuperviso
     connections.remove(id) match {
       case Some(conn) =>
         connectionsCounter.dec()
+        conn.activeBrawl.foreach { bId =>
+          brawls(bId).actorRef ! ConnectionStopped(id)
+        }
         log.debug(s"Connection [$id] [${conn.actorRef.path}] stopped.")
       case None => log.warn(s"Connection [$id] stopped but is not registered.")
     }

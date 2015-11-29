@@ -62,7 +62,7 @@ trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
           cr.actorRef ! BrawlStopped(id)
         }
       }
-      log.debug(s"Game [$id] stopped.")
-    case None => log.warn(s"Attempted to stop missing game [$id].")
+      log.debug(s"Brawl [$id] stopped.")
+    case None => log.warn(s"Attempted to stop missing brawl [$id].")
   }
 }
