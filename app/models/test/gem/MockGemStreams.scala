@@ -3,7 +3,18 @@ package models.test.gem
 import models.gem.GemStream
 
 object MockGemStreams {
-  val allRed = GemStream(
+  def forString(s: String) = s match {
+    case "Red" => allRed()
+    case "Green" => allGreen()
+    case "Blue" => allBlue()
+    case "Yellow" => allYellow()
+    case "RedBlue" => allRedBlue()
+    case "Crash" => allCrash()
+    case "Wild" => allWild()
+    case _ => throw new IllegalArgumentException(s"Invalid mock gem stream [$s].")
+  }
+
+  private[this] def allRed() = GemStream(
     seed = 0,
     gemAdjustWild =  Some(0.0),
     gemAdjustCrash =  Some(0.0),
@@ -15,7 +26,7 @@ object MockGemStreams {
     crashAdjustYellow =  Some(0.0)
   )
 
-  val allGreen = GemStream(
+  private[this] def allGreen() = GemStream(
     seed = 0,
     gemAdjustWild =  Some(0.0),
     gemAdjustCrash =  Some(0.0),
@@ -27,7 +38,7 @@ object MockGemStreams {
     crashAdjustYellow =  Some(0.0)
   )
 
-  val allBlue = GemStream(
+  private[this] def allBlue() = GemStream(
     seed = 0,
     gemAdjustWild =  Some(0.0),
     gemAdjustCrash =  Some(0.0),
@@ -39,7 +50,7 @@ object MockGemStreams {
     crashAdjustYellow =  Some(0.0)
   )
 
-  val allYellow = GemStream(
+  private[this] def allYellow() = GemStream(
     seed = 0,
     gemAdjustWild =  Some(0.0),
     gemAdjustCrash =  Some(0.0),
@@ -51,7 +62,7 @@ object MockGemStreams {
     crashAdjustBlue =  Some(0.0)
   )
 
-  val allRedBlue = GemStream(
+  private[this] def allRedBlue() = GemStream(
     seed = 0,
     gemAdjustWild =  Some(0.0),
     gemAdjustGreen =  Some(0.0),
@@ -60,13 +71,13 @@ object MockGemStreams {
     crashAdjustYellow =  Some(0.0)
   )
 
-  val allCrash = GemStream(
+  private[this] def allCrash() = GemStream(
     seed = 0,
     gemAdjustWild =  Some(0.0),
     gemAdjustCrash = Some(10.0)
   )
 
-  val allWild = GemStream(
+  private[this] def allWild() = GemStream(
     seed = 0,
     gemAdjustWild =  Some(100.0)
   )

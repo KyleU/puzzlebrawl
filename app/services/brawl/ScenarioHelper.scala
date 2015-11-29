@@ -42,16 +42,7 @@ trait ScenarioHelper { this: BrawlService =>
       case x if x.startsWith("all") =>
         val testName = x.stripPrefix("all")
         val id = UUID.randomUUID()
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), testName match {
-          case "Red" => MockGemStreams.allRed
-          case "Green" => MockGemStreams.allGreen
-          case "Blue" => MockGemStreams.allBlue
-          case "Yellow" => MockGemStreams.allYellow
-          case "RedBlue" => MockGemStreams.allRedBlue
-          case "Crash" => MockGemStreams.allCrash
-          case "Wild" => MockGemStreams.allWild
-          case _ => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
-        }))
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), MockGemStreams.forString(testName)))
         val brawl = Brawl(id, scenario, seed, ps)
         for(p <- brawl.players) {
           p.activeGemsCreate()

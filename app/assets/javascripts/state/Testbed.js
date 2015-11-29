@@ -1,5 +1,4 @@
 /* global define:false */
-/* global _:false */
 define([
   'gem/GemTextures', 'playmat/Playmat', 'state/GameState', 'utils/Gamepad', 'utils/Gesture', 'utils/Keyboard'
 ], function (GemTextures, Playmat, GameState, Gamepad, Gesture, Keyboard) {
@@ -78,30 +77,7 @@ define([
     if(board === undefined || board === null) {
       throw 'Player update received with invalid id [' + update.id + '].';
     }
-    _.each(update.mutations, function(mSeq) {
-      _.each(mSeq, function(m) {
-        switch(m.t) {
-          case 'a':
-            board.addGem(m.v.gem, m.v.x, m.v.y);
-            break;
-          case 'g':
-            board.setActiveGems(m.v.gems);
-            break;
-          case 'm':
-            board.moveGem(m.v.x, m.v.y, m.v.xDelta, m.v.yDelta);
-            break;
-          case 'c':
-            board.changeGem(m.v.newGem, m.v.x, m.v.y);
-            break;
-          case 'r':
-            board.removeGem(m.v.x, m.v.y);
-            break;
-          default:
-            console.log('Unhandled mutation [' + m.t + '].');
-            break;
-        }
-      });
-    });
+    board.applyMutations(update.mutations);
   };
 
   return Testbed;
