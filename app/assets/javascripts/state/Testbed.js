@@ -1,4 +1,5 @@
 /* global define:false */
+/* global PuzzleBrawl:false */
 define([
   'gem/GemTextures', 'playmat/Playmat', 'state/GameState', 'utils/Gamepad', 'utils/Gesture', 'utils/Keyboard'
 ], function (GemTextures, Playmat, GameState, Gamepad, Gesture, Keyboard) {
@@ -35,12 +36,19 @@ define([
     var self = this;
     function startWhenConnected() {
       if(self.game.gameNetwork.connected) {
-        self.game.send('StartBrawl', {scenario: scenario});
+        self.game.send('StartBrawl', { scenario: scenario });
       } else {
         setTimeout(startWhenConnected, 20);
       }
     }
-    startWhenConnected();
+
+    if(scenario === 'offline') {
+      console.log('Starting offline game...');
+      var puzzleBrawl = new PuzzleBrawl();
+      console.log(puzzleBrawl);
+    } else {
+      startWhenConnected();
+    }
   };
 
   Testbed.prototype.resize = function() {

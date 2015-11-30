@@ -1,6 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
-define(['game/GameInput', 'game/GameNetwork', 'utils/Config', 'state/InitialState'], function (GameInput, GameNetwork, Config, InitialState) {
+/* global PuzzleBrawl:false */
+define(['game/GameInit', 'game/GameInput', 'game/GameNetwork'], function (GameInit, GameInput, GameNetwork) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -9,21 +10,12 @@ define(['game/GameInput', 'game/GameNetwork', 'utils/Config', 'state/InitialStat
   window.PhaserGlobal.hideBanner = true;
 
   function Game() {
+    Phaser.Game.call(this, GameInit.configOptions);
     this.connected = false;
     this.gameNetwork = new GameNetwork(this);
     this.gameInput = new GameInput(this);
-
-    var configOptions = {
-      width: '100%',
-      height: '100%',
-      renderer: Phaser.AUTO,
-      parent: 'game-container',
-      state: new InitialState(this),
-      transparent: true,
-      resolution: 2
-    };
-
-    Phaser.Game.call(this, configOptions);
+    this.localServer = this.createLocalServer();
+    this.gameInit = GameInit;
   }
 
   Game.prototype = Phaser.Game.prototype;
@@ -38,6 +30,17 @@ define(['game/GameInput', 'game/GameNetwork', 'utils/Config', 'state/InitialStat
         this.state.getCurrentState().onMessage(c, v);
         break;
     }
+  };
+
+  Game.prototype.createLocalServer = function() {
+    var ret = new PuzzleBrawl();
+    var self = this;
+    var callback = function(json) {
+      var ret = JSON.parse(json);
+      self.onMessage(ret.c, ret.v);
+    };
+    ret.register(callback);
+    return ret;
   };
 
   return Game;

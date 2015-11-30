@@ -18,7 +18,11 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
   }
 
   GameNetwork.prototype.send = function(c, v) {
-    this.ws.send(c, v);
+    if(Config.offline) {
+      this.game.localServer.receive(c, v);
+    } else {
+      this.ws.send(c, v);
+    }
   };
 
   GameNetwork.prototype.onConnect = function() {
