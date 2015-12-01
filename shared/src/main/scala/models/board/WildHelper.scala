@@ -1,24 +1,28 @@
 package models.board
 
-import models.board.mutation.Mutation
 import models.board.mutation.Mutation.RemoveGem
+import models.board.mutation.UpdateSegment
 import models.gem.Color
 
 trait WildHelper { this: Board =>
-  def processWilds(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
-    if (gem.color == Color.Wild) {
-      at(x, y - 1) match {
-        case Some(seed) => applyMutation(RemoveGem(x, y)) +: mapGems { (candidate, candidateX, candidateY) =>
-          if ((!candidate.crash.exists(x => x)) && candidate.color == seed.color) {
-            Seq(applyMutation(RemoveGem(candidateX, candidateY)))
-          } else {
-            Seq.empty
-          }
-        }.flatten
-        case None => Seq(applyMutation(RemoveGem(x, y)))
+  def processWilds() = {
+    val ret = mapGems { (gem, x, y) =>
+      if (gem.color == Color.Wild) {
+        at(x, y - 1) match {
+          case Some(seed) if seed.color == Color.Wild => Seq.empty
+          case Some(seed) => applyMutation(RemoveGem(x, y)) +: mapGems { (candidate, candidateX, candidateY) =>
+            if ((!candidate.crash.exists(x => x)) && candidate.color == seed.color) {
+              Seq(applyMutation(RemoveGem(candidateX, candidateY)))
+            } else {
+              Seq.empty
+            }
+          }.flatten
+          case None => Seq(applyMutation(RemoveGem(x, y)))
+        }
+      } else {
+        Seq.empty
       }
-    } else {
-      Seq.empty
     }
+    ret.map(r => UpdateSegment(r))
   }
 }

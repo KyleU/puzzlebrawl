@@ -1,6 +1,7 @@
 package models.test.brawl
 
 import models.board.mutation.Mutation.AddGem
+import models.board.mutation.UpdateSegment
 import models.gem.{ Color, Gem }
 
 object TestDrop extends Test.Provider {
@@ -21,7 +22,7 @@ class TestDrop() extends Test() {
     goal.board.applyMutation(AddGem(Gem(9, width = Some(2), height = Some(2)), 4, 0))
   }
 
-  override def run() = Seq(
+  override def run() = Seq(UpdateSegment(Seq(
     test.board.drop(Gem(0), 0),
     test.board.drop(Gem(1, Color.Green), 0),
     test.board.drop(Gem(2, Color.Blue), 0),
@@ -32,5 +33,5 @@ class TestDrop() extends Test() {
     test.board.drop(Gem(7, Color.Yellow, crash = Some(true)), 1),
     test.board.drop(Gem(8, Color.Wild), 2),
     test.board.drop(Gem(9, width = Some(2), height = Some(2)), 4)
-  )
+  ).flatten))
 }

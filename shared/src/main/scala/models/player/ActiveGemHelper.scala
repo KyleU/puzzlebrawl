@@ -1,6 +1,7 @@
 package models.player
 
 import models.board.mutation.Mutation.ActiveGemsUpdate
+import models.board.mutation.UpdateSegment
 import models.gem.GemLocation
 
 trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper { this: Player =>
@@ -17,12 +18,13 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
       throw new IllegalStateException(s"Cannot create active gems, as [${x + 1}, $y] is occupied by [${board.at(x + 1, y)}].")
     }
     activeGems = Seq(GemLocation(gemStream.next, x, y), GemLocation(gemStream.next, x + 1, y))
-    ActiveGemsUpdate(activeGems)
+    UpdateSegment(Seq(ActiveGemsUpdate(activeGems)))
   }
 
   def activeGemsDrop() = {
     val orderedGems = activeGems.sortBy(g => g.y -> g.x)
     activeGems = Seq.empty
-    orderedGems.flatMap(ag => board.drop(ag.gem, ag.x, ag.y))
+    val msgs = orderedGems.flatMap(ag => board.drop(ag.gem, ag.x, ag.y))
+    UpdateSegment(msgs)
   }
 }

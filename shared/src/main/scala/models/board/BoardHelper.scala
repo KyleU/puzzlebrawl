@@ -1,6 +1,6 @@
 package models.board
 
-import models.board.mutation.Mutation
+import models.board.mutation.UpdateSegment
 import models.gem.Gem
 
 import scala.annotation.tailrec
@@ -16,7 +16,7 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
   }
 
   @tailrec
-  final def fullTurn(carry: Seq[Seq[Mutation]] = Seq.empty): Seq[Seq[Mutation]] = {
+  final def fullTurn(carry: Seq[UpdateSegment] = Seq.empty): Seq[UpdateSegment] = {
     val timerActions = decrementTimers()
 
     val fuseActions = fuse()
@@ -43,15 +43,15 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
     }
 
     val ret = Seq(
-      Seq(timerActions),
+      timerActions.toSeq,
       fuseActions,
       wildsActions,
       postWildFuseActions,
       crashActions,
       postCrashFuseActions,
-      Seq(collapseActions),
+      collapseActions.toSeq,
       postCollapseFuseActions
-    ).flatten.filter(_.nonEmpty)
+    ).flatten
 
     if (ret.isEmpty) {
       carry

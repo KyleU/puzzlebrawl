@@ -1,16 +1,19 @@
 package models.board
 
-import models.board.mutation.Mutation
+import models.board.mutation.{ UpdateSegment, Mutation }
 import models.board.mutation.Mutation.RemoveGem
 import models.gem.Gem
 
 trait CrashHelper { this: Board =>
-  def crash(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
-    if (gem.crash.exists(x => x)) {
-      crashGem(gem, x, y)
-    } else {
-      Seq.empty
+  def crash(): Seq[UpdateSegment] = {
+    val ret = mapGems { (gem, x, y) =>
+      if (gem.crash.exists(x => x)) {
+        crashGem(gem, x, y)
+      } else {
+        Seq.empty
+      }
     }
+    ret.map(r => UpdateSegment(r))
   }
 
   private[this] def crashGem(gem: Gem, x: Int, y: Int) = {

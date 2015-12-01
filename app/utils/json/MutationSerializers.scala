@@ -1,6 +1,6 @@
 package utils.json
 
-import models.board.mutation.Mutation
+import models.board.mutation.{ UpdateSegment, Mutation }
 import models.board.mutation.Mutation._
 import play.api.libs.json._
 
@@ -46,4 +46,7 @@ object MutationSerializers {
       JsObject(Seq("t" -> JsString(v._1), "v" -> v._2))
     }
   }
+
+  implicit val updateSegmentReads = Json.reads[UpdateSegment]
+  implicit val updateSegmentWrites = Json.writes[UpdateSegment]
 }

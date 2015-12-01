@@ -21,6 +21,6 @@ class TestCrashLarge() extends Test() {
   }
 
   override def run() = {
-    test.board.crash() :+ test.board.collapse()
+    test.board.crash() ++ test.board.collapse().toSeq
   }
 }

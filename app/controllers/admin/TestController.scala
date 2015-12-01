@@ -1,7 +1,7 @@
 package controllers.admin
 
 import controllers.BaseController
-import models.board.mutation.Mutation
+import models.board.mutation.{ UpdateSegment, Mutation }
 import models.player.Player
 import models.test.brawl.Test
 import Test.TestError
@@ -25,7 +25,7 @@ object TestController {
     runMs: Int,
     original: Player,
     test: Player,
-    testMessages: Seq[Seq[Mutation]],
+    testMessages: Seq[UpdateSegment],
     goal: Player
   )
   implicit val writesResult = Json.writes[Result]

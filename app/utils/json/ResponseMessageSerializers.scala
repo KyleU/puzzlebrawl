@@ -6,6 +6,7 @@ import play.api.libs.json._
 import utils.json.BrawlSerializers.brawlWrites
 import utils.json.BrawlSerializers.gemLocationWrites
 import utils.json.MutationSerializers.mutationWrites
+import utils.json.MutationSerializers.updateSegmentWrites
 
 object ResponseMessageSerializers {
   private[this] val serverErrorWrites = Json.writes[ServerError]

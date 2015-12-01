@@ -2,7 +2,7 @@ package models
 
 import java.util.UUID
 
-import models.board.mutation.Mutation
+import models.board.mutation.{ UpdateSegment, Mutation }
 import models.brawl.Brawl
 
 sealed trait ResponseMessage
@@ -17,9 +17,9 @@ case class Disconnected(reason: String) extends ResponseMessage
 case class BrawlJoined(brawl: Brawl, elapsedMs: Int) extends ResponseMessage
 
 object PlayerUpdate {
-  def using(id: UUID, m: Mutation) = PlayerUpdate(id, Seq(Seq(m)))
-  def using(id: UUID, ms: Seq[Mutation]) = PlayerUpdate(id, Seq(ms))
+  def using(id: UUID, m: Mutation) = PlayerUpdate(id, Seq(UpdateSegment(Seq(m))))
+  def using(id: UUID, ms: Seq[Mutation]) = PlayerUpdate(id, Seq(UpdateSegment(ms)))
 }
-case class PlayerUpdate(id: UUID, mutations: Seq[Seq[Mutation]]) extends ResponseMessage
+case class PlayerUpdate(id: UUID, segments: Seq[UpdateSegment]) extends ResponseMessage
 
 case class MessageSet(messages: Seq[ResponseMessage]) extends ReversibleResponseMessage

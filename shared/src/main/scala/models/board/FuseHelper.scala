@@ -1,35 +1,38 @@
 package models.board
 
-import models.board.mutation.Mutation
-import models.board.mutation.Mutation.{ RemoveGem, ChangeGem }
+import models.board.mutation.Mutation.{ ChangeGem, RemoveGem }
+import models.board.mutation.UpdateSegment
 import models.gem.Gem
 
 trait FuseHelper { this: Board =>
-  def fuse(): Seq[Seq[Mutation]] = mapGems { (gem, x, y) =>
-    if (gem.crash.exists(x => x) || gem.timer.isDefined) {
-      Seq.empty
-    } else {
-      val (width, height) = largestSize(gem, x, y)
+  def fuse() = {
+    val ret = mapGems { (gem, x, y) =>
+      if (gem.crash.exists(x => x) || gem.timer.isDefined) {
+        Seq.empty
+      } else {
+        val (width, height) = largestSize(gem, x, y)
 
-      if (width > 1 && height > 1 && (width > gem.width.getOrElse(1) || height > gem.height.getOrElse(1))) {
-        val removals = (0 until height).flatMap { yOffset =>
-          (0 until width).flatMap { xOffset =>
-            val testGem = at(x + xOffset, y + yOffset)
-            if (testGem.isEmpty) {
-              None
-            } else if (testGem.contains(gem)) {
-              None
-            } else {
-              Some(applyMutation(RemoveGem(x + xOffset, y + yOffset)))
+        if (width > 1 && height > 1 && (width > gem.width.getOrElse(1) || height > gem.height.getOrElse(1))) {
+          val removals = (0 until height).flatMap { yOffset =>
+            (0 until width).flatMap { xOffset =>
+              val testGem = at(x + xOffset, y + yOffset)
+              if (testGem.isEmpty) {
+                None
+              } else if (testGem.contains(gem)) {
+                None
+              } else {
+                Some(applyMutation(RemoveGem(x + xOffset, y + yOffset)))
+              }
             }
           }
-        }
 
-        removals :+ applyMutation(ChangeGem(gem.copy(width = Some(width), height = Some(height)), x, y))
-      } else {
-        Seq.empty
+          removals :+ applyMutation(ChangeGem(gem.copy(width = Some(width), height = Some(height)), x, y))
+        } else {
+          Seq.empty
+        }
       }
     }
+    ret.map(m => UpdateSegment(m))
   }
 
   private[this] def largestSize(gem: Gem, x: Int, y: Int) = {

@@ -85,7 +85,7 @@ define([
     if(board === undefined || board === null) {
       throw 'Player update received with invalid id [' + update.id + '].';
     }
-    board.applyMutations(update.mutations);
+    board.applyMutations(update.segments);
   };
 
   return Testbed;

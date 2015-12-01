@@ -24,5 +24,5 @@ class TestTimer() extends Test() {
     goal.board.applyMutation(AddGem(Gem(0), 5, 0))
   }
 
-  override def run() = Seq(test.board.decrementTimers())
+  override def run() = test.board.decrementTimers().toSeq
 }

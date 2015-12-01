@@ -1,6 +1,6 @@
 package models.test.brawl
 
-import models.board.mutation.Mutation
+import models.board.mutation.{ UpdateSegment, Mutation }
 import models.brawl.Brawl
 import models.gem.Gem
 import play.api.libs.json.Json
@@ -60,7 +60,7 @@ abstract class Test(val seed: Option[Int] = None) {
   val test = brawl.players.find(_.name == "test").getOrElse(throw new IllegalStateException())
   val goal = brawl.players.find(_.name == "goal").getOrElse(throw new IllegalStateException())
 
-  def run(): Seq[Seq[Mutation]]
+  def run(): Seq[UpdateSegment]
 
   def init(): Unit
 

@@ -1,6 +1,7 @@
 package models.test.brawl
 
 import models.board.mutation.Mutation.AddGem
+import models.board.mutation.UpdateSegment
 
 object TestRandom extends Test.Provider {
   override def newInstance() = new TestRandom()
@@ -15,11 +16,11 @@ class TestRandom() extends Test() {
     }
   }
 
-  override def run() = Seq(
+  override def run() = Seq(UpdateSegment(
     (0 until test.board.height).flatMap { y =>
       (0 until test.board.width).map { x =>
         test.board.applyMutation(AddGem(test.gemStream.next, x, y))
       }
     }
-  )
+  ))
 }

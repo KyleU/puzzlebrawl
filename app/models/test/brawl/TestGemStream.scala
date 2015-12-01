@@ -1,6 +1,7 @@
 package models.test.brawl
 
 import models.board.mutation.Mutation.AddGem
+import models.board.mutation.UpdateSegment
 import models.gem.{ Gem, GemStream }
 
 import scala.util.Random
@@ -33,6 +34,6 @@ class TestGemStream() extends Test() {
       (0 until 6).map { x =>
         test.board.applyMutation(AddGem(stream.next, x, y))
       }
-    })
+    }).map(x => UpdateSegment(x))
   }
 }

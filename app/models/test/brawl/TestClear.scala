@@ -1,6 +1,7 @@
 package models.test.brawl
 
 import models.board.mutation.Mutation.AddGem
+import models.board.mutation.UpdateSegment
 
 object TestClear extends Test.Provider {
   override def newInstance() = new TestClear()
@@ -15,5 +16,5 @@ class TestClear() extends Test() {
     }
   }
 
-  override def run() = test.board.clear()
+  override def run() = test.board.clear().map(x => UpdateSegment(x))
 }
