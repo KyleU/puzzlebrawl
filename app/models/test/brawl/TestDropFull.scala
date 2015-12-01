@@ -13,6 +13,6 @@ class TestDropFull() extends Test() {
   }
 
   override def run() = {
-    (0 until test.board.height).map(i => test.board.drop(test.gemStream.next, 0)).map(x => UpdateSegment(x))
+    Seq(UpdateSegment("drop", (0 until test.board.height).flatMap(i => test.board.drop(test.gemStream.next, 0))))
   }
 }

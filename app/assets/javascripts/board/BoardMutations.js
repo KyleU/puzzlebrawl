@@ -5,8 +5,8 @@ define([], function () {
 
   var debug = true;
 
-  function applyMutation(board, mutation) {
-    switch(mutation.t) {
+  function applyMutation(board, m) {
+    switch(m.t) {
       case 'a':
         if(debug) { console.log('    Add: ' + JSON.stringify(m.v)); }
         board.addGem(m.v.gem, m.v.x, m.v.y);
@@ -34,7 +34,7 @@ define([], function () {
   }
 
   function applySegment(board, segment, idx) {
-    if(debug) { console.log('  Set [' + idx + '] (' + segment.mutations.length + ' mutations):'); }
+    if(debug) { console.log('  Segment [' + idx + ': ' + segment.category + '] (' + segment.mutations.length + ' mutations):'); }
     _.each(segment.mutations, function(mutation) {
       applyMutation(board, mutation);
     });
@@ -43,8 +43,8 @@ define([], function () {
   return {
     applyMutations: function(board, segments) {
       if(debug) {
-        var count = _.reduce(mutations, function(i, c){ return i + c.length; }, 0);
-        console.log('Processing [' + mutations.length + '] sets containing [' + count + '] mutations.');
+        var count = _.reduce(segments, function(i, c){ return i + c.length; }, 0);
+        console.log('Processing [' + segments.length + '] segments containing [' + count + '] mutations.');
       }
       _.each(segments, function(segment, idx) {
         applySegment(board, segment, idx);

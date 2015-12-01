@@ -61,7 +61,7 @@ object Scenario {
         val id = UUID.randomUUID()
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), MockGemStreams.forString(testName)))
         val brawl = Brawl(id, scenario, seed, ps)
-        for(p <- brawl.players) {
+        for (p <- brawl.players) {
           p.activeGemsCreate()
         }
         brawl

@@ -18,7 +18,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
   Playmat.prototype.constructor = Playmat;
 
   Playmat.prototype.setBrawl = function(brawl) {
-    Status.set('scenario', brawl.scenario);
+    Status.setScenario(brawl.scenario);
     var playmat = this;
     _.each(brawl.players, function(p) {
       var board = new Board(p.board, playmat.game);

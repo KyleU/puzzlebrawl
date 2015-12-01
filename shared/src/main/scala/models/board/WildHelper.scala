@@ -23,6 +23,6 @@ trait WildHelper { this: Board =>
         Seq.empty
       }
     }
-    ret.map(r => UpdateSegment(r))
+    ret.map(r => UpdateSegment("wild", r))
   }
 }

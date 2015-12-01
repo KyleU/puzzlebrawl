@@ -22,7 +22,7 @@ class TestDrop() extends Test() {
     goal.board.applyMutation(AddGem(Gem(9, width = Some(2), height = Some(2)), 4, 0))
   }
 
-  override def run() = Seq(UpdateSegment(Seq(
+  override def run() = Seq(UpdateSegment("drop", Seq(
     test.board.drop(Gem(0), 0),
     test.board.drop(Gem(1, Color.Green), 0),
     test.board.drop(Gem(2, Color.Blue), 0),

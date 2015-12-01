@@ -32,7 +32,7 @@ trait FuseHelper { this: Board =>
         }
       }
     }
-    ret.map(m => UpdateSegment(m))
+    ret.map(m => UpdateSegment("fuse", m))
   }
 
   private[this] def largestSize(gem: Gem, x: Int, y: Int) = {

@@ -43,11 +43,11 @@ trait MessageHelper { this: BrawlService =>
       val player = brawl.playersById(br.userId)
       br.message match {
         case x if brawl.completed.isDefined => log.warn(s"Received brawl message [${x.getClass.getSimpleName}] for completed brawl [$brawl.id].")
-        case ActiveGemsLeft => player.activeGemsLeft().foreach(m => sendToAll(PlayerUpdate.using(player.id, m)))
-        case ActiveGemsRight => player.activeGemsRight().foreach(m => sendToAll(PlayerUpdate.using(player.id, m)))
-        case ActiveGemsClockwise => sendToAll(PlayerUpdate.using(player.id, player.activeGemsClockwise()))
-        case ActiveGemsCounterClockwise => sendToAll(PlayerUpdate.using(player.id, player.activeGemsCounterClockwise()))
-        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate.using(player.id, m)))
+        case ActiveGemsLeft => player.activeGemsLeft().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
+        case ActiveGemsRight => player.activeGemsRight().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
+        case ActiveGemsClockwise => sendToAll(PlayerUpdate.using(player.id, "active", player.activeGemsClockwise()))
+        case ActiveGemsCounterClockwise => sendToAll(PlayerUpdate.using(player.id, "active", player.activeGemsCounterClockwise()))
+        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
         case ActiveGemsDrop =>
           val messages = player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()
           sendToAll(PlayerUpdate(player.id, messages))

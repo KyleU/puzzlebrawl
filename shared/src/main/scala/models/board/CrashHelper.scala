@@ -13,7 +13,10 @@ trait CrashHelper { this: Board =>
         Seq.empty
       }
     }
-    ret.map(r => UpdateSegment(r))
+    ret.map { r =>
+      val score = r.size * 100
+      UpdateSegment("crash", r, scoreDelta = Some(score))
+    }
   }
 
   private[this] def crashGem(gem: Gem, x: Int, y: Int) = {

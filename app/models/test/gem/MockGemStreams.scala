@@ -16,69 +16,69 @@ object MockGemStreams {
 
   private[this] def allRed() = GemStream(
     seed = 0,
-    gemAdjustWild =  Some(0.0),
-    gemAdjustCrash =  Some(0.0),
-    gemAdjustGreen =  Some(0.0),
-    gemAdjustBlue =  Some(0.0),
-    gemAdjustYellow =  Some(0.0),
-    crashAdjustGreen =  Some(0.0),
-    crashAdjustBlue =  Some(0.0),
-    crashAdjustYellow =  Some(0.0)
+    gemAdjustWild = Some(0.0),
+    gemAdjustCrash = Some(0.0),
+    gemAdjustGreen = Some(0.0),
+    gemAdjustBlue = Some(0.0),
+    gemAdjustYellow = Some(0.0),
+    crashAdjustGreen = Some(0.0),
+    crashAdjustBlue = Some(0.0),
+    crashAdjustYellow = Some(0.0)
   )
 
   private[this] def allGreen() = GemStream(
     seed = 0,
-    gemAdjustWild =  Some(0.0),
-    gemAdjustCrash =  Some(0.0),
-    gemAdjustRed =  Some(0.0),
-    gemAdjustBlue =  Some(0.0),
-    gemAdjustYellow =  Some(0.0),
-    crashAdjustRed =  Some(0.0),
-    crashAdjustBlue =  Some(0.0),
-    crashAdjustYellow =  Some(0.0)
+    gemAdjustWild = Some(0.0),
+    gemAdjustCrash = Some(0.0),
+    gemAdjustRed = Some(0.0),
+    gemAdjustBlue = Some(0.0),
+    gemAdjustYellow = Some(0.0),
+    crashAdjustRed = Some(0.0),
+    crashAdjustBlue = Some(0.0),
+    crashAdjustYellow = Some(0.0)
   )
 
   private[this] def allBlue() = GemStream(
     seed = 0,
-    gemAdjustWild =  Some(0.0),
-    gemAdjustCrash =  Some(0.0),
-    gemAdjustRed =  Some(0.0),
-    gemAdjustGreen =  Some(0.0),
-    gemAdjustYellow =  Some(0.0),
-    crashAdjustRed =  Some(0.0),
-    crashAdjustGreen =  Some(0.0),
-    crashAdjustYellow =  Some(0.0)
+    gemAdjustWild = Some(0.0),
+    gemAdjustCrash = Some(0.0),
+    gemAdjustRed = Some(0.0),
+    gemAdjustGreen = Some(0.0),
+    gemAdjustYellow = Some(0.0),
+    crashAdjustRed = Some(0.0),
+    crashAdjustGreen = Some(0.0),
+    crashAdjustYellow = Some(0.0)
   )
 
   private[this] def allYellow() = GemStream(
     seed = 0,
-    gemAdjustWild =  Some(0.0),
-    gemAdjustCrash =  Some(0.0),
-    gemAdjustRed =  Some(0.0),
-    gemAdjustGreen =  Some(0.0),
-    gemAdjustBlue =  Some(0.0),
-    crashAdjustRed =  Some(0.0),
-    crashAdjustGreen =  Some(0.0),
-    crashAdjustBlue =  Some(0.0)
+    gemAdjustWild = Some(0.0),
+    gemAdjustCrash = Some(0.0),
+    gemAdjustRed = Some(0.0),
+    gemAdjustGreen = Some(0.0),
+    gemAdjustBlue = Some(0.0),
+    crashAdjustRed = Some(0.0),
+    crashAdjustGreen = Some(0.0),
+    crashAdjustBlue = Some(0.0)
   )
 
   private[this] def allRedBlue() = GemStream(
     seed = 0,
-    gemAdjustWild =  Some(0.0),
-    gemAdjustGreen =  Some(0.0),
-    gemAdjustYellow =  Some(0.0),
-    crashAdjustGreen =  Some(0.0),
-    crashAdjustYellow =  Some(0.0)
+    gemAdjustWild = Some(0.0),
+    gemAdjustGreen = Some(0.0),
+    gemAdjustYellow = Some(0.0),
+    crashAdjustGreen = Some(0.0),
+    crashAdjustYellow = Some(0.0)
   )
 
   private[this] def allCrash() = GemStream(
     seed = 0,
-    gemAdjustWild =  Some(0.0),
+    gemAdjustWild = Some(0.0),
     gemAdjustCrash = Some(10.0)
   )
 
   private[this] def allWild() = GemStream(
     seed = 0,
-    gemAdjustWild =  Some(100.0)
+    gemAdjustWild = Some(100.0)
   )
 }

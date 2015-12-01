@@ -85,6 +85,9 @@ define([
     if(board === undefined || board === null) {
       throw 'Player update received with invalid id [' + update.id + '].';
     }
+    if(update.scoreDelta !== undefined && update.scoreDelta !== null && update.scoreDelta > 0) {
+      board.changeScore(update.scoreDelta);
+    }
     board.applyMutations(update.segments);
   };
 

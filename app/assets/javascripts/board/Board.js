@@ -1,7 +1,9 @@
 /* global define:false */
 /* global Phaser:false */
 /* global _:false */
-define(['gem/Gem', 'board/BoardGems', 'board/BoardActiveGems', 'board/BoardMutations'], function (Gem, BoardGems, BoardActiveGems, BoardMutations) {
+define([
+  'gem/Gem', 'board/BoardGems', 'board/BoardActiveGems', 'board/BoardMutations', 'board/BoardScore'
+], function (Gem, BoardGems, BoardActiveGems, BoardMutations, BoardScore) {
   'use strict';
 
   function Board(model, game) {
@@ -10,12 +12,13 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardActiveGems', 'board/BoardMutat
     this.h = model.height;
 
     this.activeGemLocations = [];
+
     this.gemLocations = {};
-
     Phaser.Group.call(this, game, null, 'board-' + model.key);
-    game.add.existing(this);
 
+    game.add.existing(this);
     this.bgTileSprite = new Phaser.TileSprite(game, 0, 0, 128 * this.w, 128 * this.h, 'board-bg-a');
+
     this.bgTileSprite.name = 'background';
     this.add(this.bgTileSprite);
 
@@ -27,10 +30,16 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardActiveGems', 'board/BoardMutat
         }
       }
     }
+
+    BoardScore.init(this, model.score);
   }
 
   Board.prototype = Phaser.Group.prototype;
   Board.prototype.constructor = Board;
+
+  Board.prototype.changeScore = function(delta) {
+    BoardScore.changeScore(this, delta);
+  };
 
   Board.prototype.at = function(x, y) {
     return _.find(this.gemLocations, function(gemLoc) {

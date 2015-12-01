@@ -30,10 +30,13 @@ class TestGemStream() extends Test() {
       gemAdjustBlue = Some(0),
       gemAdjustYellow = Some(0)
     )
-    Seq((0 until 12).flatMap { y =>
-      (0 until 6).map { x =>
-        test.board.applyMutation(AddGem(stream.next, x, y))
-      }
-    }).map(x => UpdateSegment(x))
+    Seq(UpdateSegment(
+      "stream",
+      Seq((0 until 12).flatMap { y =>
+        (0 until 6).map { x =>
+          test.board.applyMutation(AddGem(stream.next, x, y))
+        }
+      }).flatten
+    ))
   }
 }

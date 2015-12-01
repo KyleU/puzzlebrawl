@@ -17,6 +17,7 @@ class TestRandom() extends Test() {
   }
 
   override def run() = Seq(UpdateSegment(
+    "random",
     (0 until test.board.height).flatMap { y =>
       (0 until test.board.width).map { x =>
         test.board.applyMutation(AddGem(test.gemStream.next, x, y))

@@ -26,12 +26,12 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
   };
 
   GameNetwork.prototype.onConnect = function() {
-    Status.set('connection', 'Connected');
+    Status.setConnection('Connected');
     this.connected = true;
   };
 
   GameNetwork.prototype.onDisconnect = function() {
-    Status.set('connection', 'Disconnected');
+    Status.setConnection('Disconnected');
     this.connected = false;
 
     console.info('Connection closed. Attempting to reconnect in five seconds.');
@@ -43,7 +43,7 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
     switch(c) {
       case 'Pong':
         var delta = new Date().getTime() - v.timestamp;
-        Status.set('latency', delta);
+        Status.setLatency(delta);
         break;
       case 'SendDebugInfo':
         var data = DebugInfo.getDebugInfo(this.game);

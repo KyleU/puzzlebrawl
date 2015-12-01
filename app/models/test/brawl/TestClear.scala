@@ -16,5 +16,5 @@ class TestClear() extends Test() {
     }
   }
 
-  override def run() = test.board.clear().map(x => UpdateSegment(x))
+  override def run() = test.board.clear().map(x => UpdateSegment("clear", x))
 }

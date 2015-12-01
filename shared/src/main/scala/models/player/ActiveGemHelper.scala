@@ -18,13 +18,13 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
       throw new IllegalStateException(s"Cannot create active gems, as [${x + 1}, $y] is occupied by [${board.at(x + 1, y)}].")
     }
     activeGems = Seq(GemLocation(gemStream.next, x, y), GemLocation(gemStream.next, x + 1, y))
-    UpdateSegment(Seq(ActiveGemsUpdate(activeGems)))
+    UpdateSegment("active", Seq(ActiveGemsUpdate(activeGems)))
   }
 
   def activeGemsDrop() = {
     val orderedGems = activeGems.sortBy(g => g.y -> g.x)
     activeGems = Seq.empty
     val msgs = orderedGems.flatMap(ag => board.drop(ag.gem, ag.x, ag.y))
-    UpdateSegment(msgs)
+    UpdateSegment("drop", msgs)
   }
 }

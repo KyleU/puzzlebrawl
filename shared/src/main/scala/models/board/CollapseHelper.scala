@@ -25,6 +25,6 @@ trait CollapseHelper { this: Board =>
 
       moveIndex.map(idx => applyMutation(MoveGem(x, y, 0, idx - y))).toSeq
     }.flatten
-    if(ret.isEmpty) { None } else { Some(UpdateSegment(ret)) }
+    if (ret.isEmpty) { None } else { Some(UpdateSegment("collapse", ret)) }
   }
 }

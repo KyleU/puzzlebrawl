@@ -11,6 +11,6 @@ trait TimerHelper { this: Board =>
         case None => Seq.empty
       }
     }.flatten
-    if(ret.isEmpty) { None } else { Some(UpdateSegment(ret)) }
+    if (ret.isEmpty) { None } else { Some(UpdateSegment("timer", ret)) }
   }
 }
