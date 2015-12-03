@@ -9,16 +9,25 @@ object Dependencies {
     val postgresAsync = "com.github.mauricio" %% "postgresql-async" % "0.2.18"
   }
 
+  object Akka {
+    val actor = "com.typesafe.akka" %% "akka-actor" % "2.4.0"
+    val remote = "com.typesafe.akka" %% "akka-remote" % "2.4.0"
+    val logging = "com.typesafe.akka" %% "akka-slf4j" % "2.4.0"
+    val cluster = "com.typesafe.akka" %% "akka-cluster" % "2.4.0"
+    val clusterMetrics = "com.typesafe.akka" %% "akka-cluster-metrics" % "2.4.0"
+    val clusterTools = "com.typesafe.akka" %% "akka-cluster-tools" % "2.4.0"
+  }
+
   object Play {
     val playFilters = play.sbt.PlayImport.filters
     val playWs = play.sbt.PlayImport.ws
     val playJson = play.sbt.PlayImport.json
-    val playTest = "com.typesafe.play" %% "play-test" % "2.4.3"
+    val playTest = "com.typesafe.play" %% "play-test" % "2.4.4"
   }
 
   object WebJars {
-    val requireJs = "org.webjars" % "requirejs" % "2.1.20"
-    val bootstrap = "org.webjars" % "bootstrap" % "3.3.5"
+    val requireJs = "org.webjars" % "requirejs" % "2.1.22"
+    val bootstrap = "org.webjars" % "bootstrap" % "3.3.6"
     val underscore = "org.webjars" % "underscorejs" % "1.8.3"
     val d3 = "org.webjars" % "d3js" % "3.5.6"
     val nvd3 = "org.webjars" % "nvd3-community" % "1.7.0"
@@ -40,7 +49,7 @@ object Dependencies {
 
     val json = "io.dropwizard.metrics" % "metrics-json" % "3.1.2" withSources()
 
-    val jettyServlet = "org.eclipse.jetty" % "jetty-servlet" % "9.3.0.RC1" withSources()
+    val jettyServlet = "org.eclipse.jetty" % "jetty-servlet" % "9.3.6.v20151106" withSources()
     val servlets = "io.dropwizard.metrics" % "metrics-servlets" % "3.1.2" withSources() intransitive()
     val graphite = "io.dropwizard.metrics" % "metrics-graphite" % "3.1.2" withSources() intransitive()
   }

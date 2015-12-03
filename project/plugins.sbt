@@ -3,7 +3,7 @@ scalacOptions ++= Seq( "-unchecked", "-deprecation" )
 resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
 
 // The Play plugin
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.3")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.4")
 
 // SBT-Web plugins
 addSbtPlugin("com.typesafe.sbt" % "sbt-less" % "1.0.0")
@@ -22,7 +22,7 @@ addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.5")
 addSbtPlugin("com.vmunier" % "sbt-play-scalajs" % "0.2.8")
 
 // Benchmarking
-addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.2.4")
+addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.2.5")
 
 // Source Control
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.4")
