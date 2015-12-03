@@ -13,11 +13,13 @@ trait CrashHelper { this: Board =>
         Seq.empty
       }
     }
-    ret.map { r =>
-      val score = r.size * 100
-      UpdateSegment("crash", r, scoreDelta = Some(score))
+    ret.flatMap {
+      case r if r.isEmpty => None
+      case r => Some(UpdateSegment("crash", r, scoreDelta = Some(scoreFor(r))))
     }
   }
+
+  private[this] def scoreFor(r: Seq[Mutation]) = r.size * 100
 
   private[this] def crashGem(gem: Gem, x: Int, y: Int) = {
     if (!gem.crash.exists(x => x)) {
