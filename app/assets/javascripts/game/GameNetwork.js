@@ -1,5 +1,5 @@
 /* global define:false */
-define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], function (Config, DebugInfo, Status, Websocket) {
+define(['utils/Config', 'utils/DebugTrace', 'utils/Status', 'utils/Websocket'], function (Config, DebugTrace, Status, Websocket) {
   'use strict';
 
   function GameNetwork(game) {
@@ -45,9 +45,9 @@ define(['utils/Config', 'utils/DebugInfo', 'utils/Status', 'utils/Websocket'], f
         var delta = new Date().getTime() - v.timestamp;
         Status.setLatency(delta);
         break;
-      case 'SendDebugInfo':
-        var data = DebugInfo.getDebugInfo(this.game);
-        this.ws.send('DebugInfo', { 'data': JSON.stringify(data) });
+      case 'SendTrace':
+        var data = DebugTrace.getTrace(this.game);
+        this.ws.send('DebugRequest', { 'data': JSON.stringify(data) });
         break;
       default:
         this.game.onMessage(c, v);

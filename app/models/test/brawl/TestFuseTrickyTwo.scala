@@ -1,13 +1,15 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.gem.Gem
 
 object TestFuseTrickyTwo extends Test.Provider {
-  override def newInstance() = new TestFuseTrickyTwo()
+  override def newInstance(id: UUID) = new TestFuseTrickyTwo(id)
 }
 
-class TestFuseTrickyTwo() extends Test() {
+class TestFuseTrickyTwo(id: UUID) extends Test(id) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0, width = Some(4), height = Some(2)), 0, 0))
 

@@ -1,6 +1,8 @@
 package models.test.brawl
 
-import models.board.mutation.{ UpdateSegment, Mutation }
+import java.util.UUID
+
+import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
 import models.gem.Gem
 import play.api.libs.json.Json
@@ -12,7 +14,7 @@ object Test {
 
   trait Provider {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
-    def newInstance(): Test
+    def newInstance(id: UUID): Test
   }
 
   val all = Seq(
@@ -49,8 +51,9 @@ object Test {
   implicit val testErrorWrites = Json.writes[TestError]
 }
 
-abstract class Test(val seed: Option[Int] = None) {
+abstract class Test(id: UUID, val seed: Option[Int] = None) {
   val brawl = Brawl.blank(
+    id = id,
     scenario = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", ""),
     seed = seed.getOrElse(Math.abs(Random.nextInt())),
     playerNames = Seq("original", "test", "goal")

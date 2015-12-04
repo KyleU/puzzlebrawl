@@ -12,6 +12,7 @@ import utils.metrics.Instrumented
 
 import scala.concurrent.duration._
 import scala.concurrent.{ Await, Future }
+import scala.util.control.NonFatal
 
 object Database extends Logging with Instrumented with FutureMetrics {
   private[this] var factory: PostgreSQLConnectionFactory = _
@@ -39,7 +40,7 @@ object Database extends Logging with Instrumented with FutureMetrics {
       conn.getOrElse(pool).sendPreparedStatement(prependComment(statement, statement.sql), statement.values).map(_.rowsAffected.toInt)
     }
     ret.onFailure {
-      case x: Throwable => log.error(s"Error [${x.getClass.getSimpleName}] encountered while executing statement [$name].", x)
+      case NonFatal(x) => log.error(s"Error [${x.getClass.getSimpleName}] encountered while executing statement [$name].", x)
     }
     ret
   }
@@ -53,7 +54,7 @@ object Database extends Logging with Instrumented with FutureMetrics {
       }
     }
     ret.onFailure {
-      case x: Throwable => log.error(s"Error [${x.getClass.getSimpleName}] encountered while executing query [$name].", x)
+      case NonFatal(x) => log.error(s"Error [${x.getClass.getSimpleName}] encountered while executing query [$name].", x)
     }
     ret
   }
@@ -64,7 +65,7 @@ object Database extends Logging with Instrumented with FutureMetrics {
       conn.getOrElse(pool).sendQuery(prependComment(name, sql))
     }
     ret.onFailure {
-      case x: Throwable => log.error(s"Error [${x.getClass.getSimpleName}] encountered while executing raw query [$name].", x)
+      case NonFatal(x) => log.error(s"Error [${x.getClass.getSimpleName}] encountered while executing raw query [$name].", x)
     }
     ret
   }

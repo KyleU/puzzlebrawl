@@ -10,7 +10,7 @@ import scala.util.Random
 
 object Brawl {
   def blank(
-    id: UUID = UUID.randomUUID,
+    id: UUID,
     scenario: String = "Ad-hoc Test",
     seed: Int = Math.abs(Random.nextInt()),
     playerNames: Seq[String] = Seq("Player 1"),
@@ -22,7 +22,7 @@ object Brawl {
   }
 
   def random(playerNames: Seq[String] = Seq("Player 1"), width: Int = 6, height: Int = 12, initialDrops: Int = 0) = {
-    val game = blank(playerNames = playerNames, width = width, height = height)
+    val game = blank(UUID.randomUUID, playerNames = playerNames, width = width, height = height)
     (0 until initialDrops).foreach(_ => game.players.foreach { p =>
       p.board.drop(p.gemStream.next, Random.nextInt(width))
     })

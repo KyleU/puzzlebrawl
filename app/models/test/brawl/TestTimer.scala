@@ -1,13 +1,15 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.gem.Gem
 
 object TestTimer extends Test.Provider {
-  override def newInstance() = new TestTimer()
+  override def newInstance(id: UUID) = new TestTimer(id)
 }
 
-class TestTimer() extends Test() {
+class TestTimer(id: UUID) extends Test(id) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0, timer = Some(5)), 0, 0))
     test.board.applyMutation(AddGem(Gem(0, timer = Some(4)), 1, 0))

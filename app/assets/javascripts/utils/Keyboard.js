@@ -22,6 +22,7 @@ define([], function () {
 
     g.input.keyboard.addKey(Phaser.Keyboard.X).onDown.add(input('sandbox'));
     g.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK).onDown.add(input('toggle-debug'));
+    g.input.keyboard.addKey(Phaser.Keyboard.BACKWARD_SLASH).onDown.add(input('sync'));
   };
 
   return Keyboard;

@@ -1,13 +1,15 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 
 object TestRandom extends Test.Provider {
-  override def newInstance() = new TestRandom()
+  override def newInstance(id: UUID) = new TestRandom(id)
 }
 
-class TestRandom() extends Test() {
+class TestRandom(id: UUID) extends Test(id) {
   override def init() = {
     for (y <- 0 until goal.board.height) {
       for (x <- 0 until goal.board.width) {

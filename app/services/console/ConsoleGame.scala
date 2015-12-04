@@ -1,12 +1,17 @@
 package services.console
 
+import java.util.UUID
+
 import models.brawl.Brawl
 
 import scala.util.Random
 
 class ConsoleGame() {
   val numPlayers = 4
-  val game = Brawl.blank(playerNames = (0 until numPlayers).map(x => "Player " + (x + 1)))
+  val game = Brawl.blank(
+    id = UUID.randomUUID,
+    playerNames = (0 until numPlayers).map(x => "Player " + (x + 1))
+  )
   val client = new ConsoleClient(game)
 
   val input = new ConsoleGameInput(game, client)

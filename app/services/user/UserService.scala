@@ -52,7 +52,7 @@ object UserService extends Logging {
   }
 
   def remove(userId: UUID) = {
-    val start = System.currentTimeMillis
+    val startTime = System.nanoTime
     Database.transaction { conn =>
       for {
         requests <- RequestHistoryService.removeRequestsByUser(userId, Some(conn))
@@ -64,7 +64,7 @@ object UserService extends Logging {
           "users" -> users,
           "profiles" -> profiles,
           "requests" -> requests,
-          "timing" -> (System.currentTimeMillis - start).toInt
+          "timing" -> ((System.nanoTime - startTime) / 1000000).toInt
         )
       }
     }

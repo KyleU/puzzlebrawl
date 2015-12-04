@@ -76,9 +76,9 @@ class AdHocQueryController @javax.inject.Inject() (
         }
         case "run" =>
           Database.query(AdHocQueries.search("", "title", None)).flatMap { queries =>
-            val startTime = System.currentTimeMillis
+            val startTime = System.nanoTime
             Database.query(AdHocQueries.AdHocQueryExecute(form.sql, Seq.empty)).map { result =>
-              val executionTime = (System.currentTimeMillis - startTime).toInt
+              val executionTime = ((System.nanoTime - startTime) / 1000000).toInt
               val queryId = form.id.map(UUID.fromString)
               Ok(views.html.admin.report.adhoc(queryId, form.sql, result, executionTime, queries))
             }

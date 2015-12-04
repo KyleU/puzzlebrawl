@@ -3,7 +3,7 @@ define([], function() {
   'use strict';
 
   return {
-    getDebugInfo: function(game) {
+    getTrace: function(game) {
       return {
         'userAgent': window.navigator.userAgent,
         'gameHeight': game === null ? 0 : game.height,

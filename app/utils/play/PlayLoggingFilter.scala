@@ -25,7 +25,7 @@ object PlayLoggingFilter extends Filter with Logging with Instrumented {
   lazy val otherStatuses = metricRegistry.meter(s"${prefix}other")
 
   def apply(nextFilter: (RequestHeader) => Future[Result])(request: RequestHeader): Future[Result] = {
-    val startTime = System.currentTimeMillis
+    val startTime = System.nanoTime
     val context = requestsTimer.time()
     activeRequests.inc()
 
@@ -41,8 +41,7 @@ object PlayLoggingFilter extends Filter with Logging with Instrumented {
         if (request.path.startsWith("/assets")) {
           result
         } else {
-          val endTime = System.currentTimeMillis
-          val requestTime = endTime - startTime
+          val requestTime = (System.nanoTime - startTime) / 1000000
           log.info(s"${result.header.status} (${requestTime}ms): ${request.method} ${request.uri}")
           result.withHeaders("X-Request-Time-Ms" -> requestTime.toString)
         }

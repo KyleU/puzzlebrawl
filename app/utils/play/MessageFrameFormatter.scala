@@ -8,6 +8,8 @@ import utils.json.RequestMessageSerializers._
 import utils.json.ResponseMessageSerializers._
 import utils.json.{ RequestMessageSerializers, ResponseMessageSerializers }
 
+import scala.util.control.NonFatal
+
 object MessageFrameFormatter {
   private[this] def requestToJson(r: RequestMessage): JsValue = {
     throw new IllegalArgumentException(s"Attempted to serialize RequestMessage [$r] on server.")
@@ -36,7 +38,7 @@ object MessageFrameFormatter {
       val ret = try {
         Json.parse(s)
       } catch {
-        case x: Exception => JsObject(Seq("c" -> JsString("MalformedRequest"), "v" -> JsObject(Seq(
+        case NonFatal(x) => JsObject(Seq("c" -> JsString("MalformedRequest"), "v" -> JsObject(Seq(
           "reason" -> JsString("Invalid JSON"),
           "content" -> JsString(s)
         ))))

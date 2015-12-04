@@ -1,14 +1,16 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 import models.gem.{ Color, Gem }
 
 object TestDrop extends Test.Provider {
-  override def newInstance() = new TestDrop()
+  override def newInstance(id: UUID) = new TestDrop(id)
 }
 
-class TestDrop() extends Test() {
+class TestDrop(id: UUID) extends Test(id) {
   override def init() = {
     goal.board.applyMutation(AddGem(Gem(0), 0, 0))
     goal.board.applyMutation(AddGem(Gem(1, Color.Green), 0, 1))

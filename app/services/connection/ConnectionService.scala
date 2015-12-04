@@ -8,12 +8,12 @@ import models.user.User
 import utils.Config
 
 object ConnectionService {
-  def props(supervisor: ActorRef, user: User, out: ActorRef) = Props(new ConnectionService(supervisor, user, out))
+  def props(id: Option[UUID], supervisor: ActorRef, user: User, out: ActorRef) = {
+    Props(new ConnectionService(id.getOrElse(UUID.randomUUID), supervisor, user, out))
+  }
 }
 
-class ConnectionService(val supervisor: ActorRef, val user: User, val out: ActorRef) extends ConnectionServiceHelper {
-  protected[this] val id = UUID.randomUUID
-
+class ConnectionService(val id: UUID = UUID.randomUUID, val supervisor: ActorRef, val user: User, val out: ActorRef) extends ConnectionServiceHelper {
   protected[this] var userPreferences = user.preferences
 
   protected[this] var activeBrawlId: Option[UUID] = None
@@ -31,7 +31,7 @@ class ConnectionService(val supervisor: ActorRef, val user: User, val out: Actor
     case p: Ping => timeReceive(p) { out ! Pong(p.timestamp) }
     case GetVersion => timeReceive(GetVersion) { out ! VersionResponse(Config.version) }
     case sp: SetPreference => timeReceive(sp) { handleSetPreference(sp) }
-    case di: DebugInfo => timeReceive(di) { handleDebugInfo(di.data) }
+    case dr: DebugRequest => timeReceive(dr) { handleDebugRequest(dr.data) }
 
     case sb: StartBrawl => timeReceive(sb) { handleStartBrawl(sb.scenario, None) }
     case jb: JoinBrawl => timeReceive(jb) { handleJoinBrawl(jb.id) }

@@ -1,5 +1,7 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 import models.gem.{ Gem, GemStream }
@@ -7,10 +9,10 @@ import models.gem.{ Gem, GemStream }
 import scala.util.Random
 
 object TestGemStream extends Test.Provider {
-  override def newInstance() = new TestGemStream()
+  override def newInstance(id: UUID) = new TestGemStream(id)
 }
 
-class TestGemStream() extends Test() {
+class TestGemStream(id: UUID) extends Test(id) {
   override def init() = {
     for (y <- 0 until 12) {
       for (x <- 0 until 6) {

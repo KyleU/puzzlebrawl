@@ -1,3 +1,5 @@
+import java.util.UUID
+
 import models.test.brawl.Test
 import services.console.{ ConsoleTest, ConsoleGame }
 
@@ -10,7 +12,7 @@ object Console {
     } else {
       args.headOption match {
         case Some(testName) => Test.fromString(testName) match {
-          case Some(test) => ConsoleTest.run(test.newInstance(), args.contains("pause"))
+          case Some(test) => ConsoleTest.run(test.newInstance(UUID.randomUUID), args.contains("pause"))
           case None => if (Seq("*", "All", "all").contains(testName)) {
             allTests()
           } else {
@@ -23,7 +25,7 @@ object Console {
   }
 
   private[this] def allTests() = Test.all.foreach { provider =>
-    val test = provider.newInstance()
+    val test = provider.newInstance(UUID.randomUUID)
     test.init()
     test.cloneOriginal()
     val messages = test.run()

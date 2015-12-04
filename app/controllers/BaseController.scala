@@ -22,10 +22,10 @@ abstract class BaseController() extends Silhouette[User, CookieAuthenticator] wi
 
   def withAdminSession(action: String)(block: (SecuredRequest[AnyContent]) => Future[Result]) = SecuredAction.async { implicit request =>
     timing(action) {
-      val startTime = System.currentTimeMillis
+      val startTime = System.nanoTime
       if (request.identity.roles.contains(Role.Admin)) {
         block(request).map { r =>
-          val duration = (System.currentTimeMillis - startTime).toInt
+          val duration = ((System.nanoTime - startTime) / 1000000).toInt
           logRequest(request, request.identity.id, request.authenticator.loginInfo, duration, r.header.status)
           r
         }
@@ -37,12 +37,12 @@ abstract class BaseController() extends Silhouette[User, CookieAuthenticator] wi
 
   def withSession(action: String)(block: (SecuredRequest[AnyContent]) => Future[Result]) = UserAwareAction.async { implicit request =>
     timing(action) {
-      val startTime = System.currentTimeMillis
+      val startTime = System.nanoTime
       val response = request.identity match {
         case Some(user) =>
           val secured = SecuredRequest(user, request.authenticator.getOrElse(throw new IllegalStateException()), request)
           block(secured).map { r =>
-            val duration = (System.currentTimeMillis - startTime).toInt
+            val duration = ((System.nanoTime - startTime) / 1000000).toInt
             logRequest(secured, secured.identity.id, secured.authenticator.loginInfo, duration, r.header.status)
             r
           }
@@ -64,7 +64,7 @@ abstract class BaseController() extends Silhouette[User, CookieAuthenticator] wi
           } yield {
             env.eventBus.publish(SignUpEvent(user, request, request2Messages))
             env.eventBus.publish(LoginEvent(user, request, request2Messages))
-            val duration = (System.currentTimeMillis - startTime).toInt
+            val duration = ((System.nanoTime - startTime) / 1000000).toInt
             logRequest(request, user.id, authenticator.loginInfo, duration, authedResponse.header.status)
             authedResponse
           }

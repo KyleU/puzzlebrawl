@@ -10,12 +10,12 @@ object Dependencies {
   }
 
   object Akka {
-    val actor = "com.typesafe.akka" %% "akka-actor" % "2.4.0"
-    val remote = "com.typesafe.akka" %% "akka-remote" % "2.4.0"
-    val logging = "com.typesafe.akka" %% "akka-slf4j" % "2.4.0"
-    val cluster = "com.typesafe.akka" %% "akka-cluster" % "2.4.0"
-    val clusterMetrics = "com.typesafe.akka" %% "akka-cluster-metrics" % "2.4.0"
-    val clusterTools = "com.typesafe.akka" %% "akka-cluster-tools" % "2.4.0"
+    val actor = "com.typesafe.akka" %% "akka-actor" % "2.4.1"
+    val remote = "com.typesafe.akka" %% "akka-remote" % "2.4.1"
+    val logging = "com.typesafe.akka" %% "akka-slf4j" % "2.4.1"
+    val cluster = "com.typesafe.akka" %% "akka-cluster" % "2.4.1"
+    val clusterMetrics = "com.typesafe.akka" %% "akka-cluster-metrics" % "2.4.1"
+    val clusterTools = "com.typesafe.akka" %% "akka-cluster-tools" % "2.4.1"
   }
 
   object Play {
@@ -59,6 +59,6 @@ object Dependencies {
   }
 
   object Testing {
-    val akkaTestkit = "com.typesafe.akka" %% "akka-testkit" % "2.3.14"
+    val akkaTestkit = "com.typesafe.akka" %% "akka-testkit" % "2.4.1"
   }
 }

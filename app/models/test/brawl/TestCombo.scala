@@ -1,13 +1,15 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.gem.{ Color, Gem }
 
 object TestCombo extends Test.Provider {
-  override def newInstance() = new TestCombo()
+  override def newInstance(id: UUID) = new TestCombo(id)
 }
 
-class TestCombo() extends Test() {
+class TestCombo(id: UUID) extends Test(id) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0), 0, 0))
     test.board.applyMutation(AddGem(Gem(1), 1, 0))

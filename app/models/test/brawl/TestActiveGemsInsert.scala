@@ -1,13 +1,15 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.gem.{ Color, Gem, GemLocation }
 
 object TestActiveGemsInsert extends Test.Provider {
-  override def newInstance() = new TestActiveGemsInsert()
+  override def newInstance(id: UUID) = new TestActiveGemsInsert(id)
 }
 
-class TestActiveGemsInsert() extends Test() {
+class TestActiveGemsInsert(id: UUID) extends Test(id) {
   override def init() = {
     test.activeGems = Seq(GemLocation(Gem(0, color = Color.Yellow), 2, 11), GemLocation(Gem(1, color = Color.Blue), 3, 11))
 

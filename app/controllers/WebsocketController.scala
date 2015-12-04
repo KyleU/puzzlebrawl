@@ -27,7 +27,7 @@ class WebsocketController @javax.inject.Inject() (
     SecuredRequestHandler { securedRequest =>
       Future.successful(HandlerResult(Ok, Some(securedRequest.identity)))
     }.map {
-      case HandlerResult(r, Some(user)) => Right(ConnectionService.props(supervisor, user, _: ActorRef))
+      case HandlerResult(r, Some(user)) => Right(ConnectionService.props(None, supervisor, user, _: ActorRef))
       case HandlerResult(r, None) => Left(r)
     }
   }

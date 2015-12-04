@@ -1,13 +1,15 @@
 package models.test.brawl
 
+import java.util.UUID
+
 import models.board.mutation.Mutation.AddGem
 import models.gem.{ Color, Gem }
 
 object TestCollapse extends Test.Provider {
-  override def newInstance() = new TestCollapse()
+  override def newInstance(id: UUID) = new TestCollapse(id)
 }
 
-class TestCollapse() extends Test() {
+class TestCollapse(id: UUID) extends Test(id) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0, width = Some(2), height = Some(2)), 0, 1))
     test.board.applyMutation(AddGem(Gem(1, Color.Green), 1, 4))

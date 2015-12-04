@@ -4,6 +4,8 @@ import akka.actor.PoisonPill
 import models._
 import utils.DateUtils
 
+import scala.util.control.NonFatal
+
 trait MessageHelper { this: BrawlService =>
   protected[this] def handleStopBrawlIfEmpty() {
     val hasPlayer = players.exists(_.connectionId.isDefined) || observerConnections.exists(_._1.connectionId.isDefined)
@@ -54,7 +56,7 @@ trait MessageHelper { this: BrawlService =>
         case r => log.warn(s"GameService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
       }
     } catch {
-      case x: Exception =>
+      case NonFatal(x) =>
         log.error(s"Exception processing brawl request [$br].", x)
         sender() ! ServerError(x.getClass.getSimpleName, x.getMessage)
     }
@@ -73,7 +75,7 @@ trait MessageHelper { this: BrawlService =>
         case _ => log.warn(s"GameService received unhandled internal message [${im.getClass.getSimpleName}].")
       }
     } catch {
-      case x: Exception => log.error(s"Exception processing internal message [$im].", x)
+      case NonFatal(x) => log.error(s"Exception processing internal message [$im].", x)
     }
   }
 }

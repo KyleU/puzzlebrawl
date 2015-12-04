@@ -19,9 +19,6 @@ define([], function () {
 
   GameInput.prototype.onInput = function(t) {
     switch(t) {
-      case 'toggle-debug':
-        toggleDebug();
-        break;
       case 'active-left':
         this.game.send('ActiveGemsLeft', {});
         break;
@@ -39,6 +36,12 @@ define([], function () {
         break;
       case 'active-drop':
         this.game.send('ActiveGemsDrop', {});
+        break;
+      case 'toggle-debug':
+        toggleDebug();
+        break;
+      case 'sync':
+        this.game.send('DebugRequest', { data: 'sync' });
         break;
       default:
         console.log('Unhandled input [' + t + '].');

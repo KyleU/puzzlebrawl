@@ -12,6 +12,7 @@ object ResponseMessageSerializers {
   private[this] val serverErrorWrites = Json.writes[ServerError]
   private[this] val pongWrites = Json.writes[Pong]
   private[this] val versionResponseWrites = Json.writes[VersionResponse]
+  private[this] val debugResponseWrites = Json.writes[DebugResponse]
   private[this] val disconnectedWrites = Json.writes[Disconnected]
 
   private[this] val brawlJoinedWrites = Json.writes[BrawlJoined]
@@ -23,7 +24,9 @@ object ResponseMessageSerializers {
       case se: ServerError => serverErrorWrites.writes(se)
       case p: Pong => pongWrites.writes(p)
       case vr: VersionResponse => versionResponseWrites.writes(vr)
-      case SendDebugInfo => JsObject(Nil)
+
+      case SendTrace => JsObject(Nil)
+      case dr: DebugResponse => debugResponseWrites.writes(dr)
       case d: Disconnected => disconnectedWrites.writes(d)
 
       case bj: BrawlJoined => brawlJoinedWrites.writes(bj)

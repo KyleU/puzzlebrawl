@@ -1,5 +1,6 @@
 package models.benchmark
 
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 import models.brawl.Brawl
 import org.openjdk.jmh.annotations._
@@ -13,7 +14,7 @@ class BoardBenchmark {
   @Threads(6)
   @Fork(1)
   def creation() = {
-    val game = Brawl.blank()
+    val game = Brawl.blank(UUID.randomUUID)
     val p = game.players.headOption.getOrElse(throw new IllegalStateException())
     val board = p.board
     val gemStream = p.gemStream

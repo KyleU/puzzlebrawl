@@ -24,7 +24,7 @@ object Scenario {
     "allWild" -> "All Wild"
   )
 
-  def newInstance(scenario: String, seed: Int, players: Seq[PlayerRecord]) = {
+  def newInstance(id: UUID, scenario: String, seed: Int, players: Seq[PlayerRecord]) = {
     val playerNames = players.map(_.name).distinct
     if (playerNames.size != players.size) {
       throw new IllegalStateException(s"Players [${players.map(_.name).mkString(", ")}] contains a duplicate name.")
@@ -32,7 +32,6 @@ object Scenario {
 
     scenario match {
       case "testbed" =>
-        val id = UUID.randomUUID()
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
         val brawl = Brawl(id, scenario, seed, ps)
         brawl.players.foreach { player =>
@@ -44,26 +43,29 @@ object Scenario {
         }
         brawl
       case "normal" =>
-        val id = UUID.randomUUID()
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
       case x if x.startsWith("test") =>
         val testName = x.stripPrefix("test")
         val provider = Test.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
-        val test = provider.newInstance()
+        val test = provider.newInstance(id)
         test.init()
         test.cloneOriginal()
         test.run()
         test.brawl
       case x if x.startsWith("all") =>
         val testName = x.stripPrefix("all")
-        val id = UUID.randomUUID()
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), MockGemStreams.forString(testName)))
         val brawl = Brawl(id, scenario, seed, ps)
         for (p <- brawl.players) {
           p.activeGemsCreate()
         }
+        brawl
+      case "ai" =>
+        val ps = (0 until 8).map(i => Player(UUID.randomUUID, "User " + i, Board("User " + i, 6, 12), GemStream()))
+        val id = UUID.randomUUID()
+        val brawl = Brawl(id, "ai", seed, ps)
         brawl
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }

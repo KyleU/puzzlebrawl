@@ -14,7 +14,7 @@ object BrawlService {
 }
 
 case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int) extends BrawlHelper {
-  protected[this] lazy val brawl = Scenario.newInstance(scenario, seed, players)
+  protected[this] lazy val brawl = Scenario.newInstance(id, scenario, seed, players)
 
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
 
@@ -36,6 +36,12 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   override def receiveRequest = {
     case br: BrawlRequest => handleBrawlRequest(br)
     case im: InternalMessage => handleInternalMessage(im)
+    case DebugRequest(data) => handleDebugRequest(data)
     case x => throw new IllegalArgumentException(s"Brawl service received unknown message [$x].")
+  }
+
+  private[this] def handleDebugRequest(data: String) = data match {
+    case "sync" => sender() ! VersionResponse("0.1")
+    case _ => log.warn(s"Unhandled debug request [$data] for brawl [$id].")
   }
 }

@@ -8,7 +8,7 @@ object GemStream {
 }
 
 case class GemStream(
-    seed: Int,
+    seed: Int = Math.abs(Random.nextInt),
 
     gemAdjustWild: Option[Double] = None,
     gemAdjustCrash: Option[Double] = None,
