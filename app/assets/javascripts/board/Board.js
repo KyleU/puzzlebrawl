@@ -1,6 +1,5 @@
 /* global define:false */
 /* global Phaser:false */
-/* global _:false */
 define([
   'gem/Gem', 'board/BoardGems', 'board/BoardActiveGems', 'board/BoardMutations', 'board/BoardScore'
 ], function (Gem, BoardGems, BoardActiveGems, BoardMutations, BoardScore) {
@@ -10,10 +9,11 @@ define([
     this.key = model.key;
     this.w = model.width;
     this.h = model.height;
+    this.model = model;
 
     this.activeGemLocations = [];
 
-    this.gemLocations = {};
+    this.gems = {};
     Phaser.Group.call(this, game, null, 'board-' + model.key);
 
     game.add.existing(this);
@@ -25,7 +25,7 @@ define([
     for(var y = 0; y < this.h; y++) {
       for(var x = 0; x < this.w; x++) {
         var g = model.spaces[x][y];
-        if(g !== null && this.gemLocations[g.id] === undefined) {
+        if(g !== null) {
           this.addGem(g, x, y);
         }
       }
@@ -42,9 +42,46 @@ define([
   };
 
   Board.prototype.at = function(x, y) {
-    return _.find(this.gemLocations, function(gemLoc) {
-      return gemLoc[1] === x && gemLoc[2] === y;
-    });
+    return this.model.spaces[x][y];
+  };
+
+  Board.prototype.clear = function(x, y, width, height) {
+    var h = height;
+    if(height === undefined) { h = 1; }
+    var w = width;
+    if(width === undefined) { w = 1; }
+    for(var hIdx = 0; hIdx < h; hIdx++) {
+      for(var wIdx = 0; wIdx < w; wIdx++) {
+        this.model.spaces[x + wIdx][y + hIdx] = null;
+      }
+    }
+  };
+
+  Board.prototype.set = function(x, y, v) {
+    if(v.height === undefined) { v.height = 1; }
+    if(v.width === undefined) { v.width = 1; }
+
+    for(var hIdx = 0; hIdx < v.height; hIdx++) {
+      for(var wIdx = 0; wIdx < v.width; wIdx++) {
+        this.model.spaces[x + wIdx][y + hIdx] = v;
+      }
+    }
+    console.log(x, y, v);
+  };
+
+  Board.prototype.dump = function() {
+    var msg = '';
+    for(var hIdx = this.h - 1; hIdx >= 0; hIdx--) {
+      for(var wIdx = 0; wIdx < this.w; wIdx++) {
+        if(this.at(wIdx, hIdx) === null) {
+          msg += '.';
+        } else {
+          msg += 'O';
+        }
+      }
+      msg += '\n';
+    }
+    console.log(msg);
   };
 
   Board.prototype.applyMutations = function(mutations) {

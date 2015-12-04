@@ -1,14 +1,12 @@
 /* global define:false */
 /* global Phaser:false */
-define(['gem/GemSprites'], function (GemSprites) {
+define([], function () {
   'use strict';
 
   function Gem(model, game) {
-    this.model = model;
-
     Phaser.Sprite.call(this, game);
+    this.updateModel(model);
     this.name = 'gem-' + this.model.id;
-    this.setTexture(this.game.gemTextures.getTexture(this.model));
     this.anchor.setTo(0.0, 1.0);
   }
 

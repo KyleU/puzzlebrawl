@@ -18,6 +18,10 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
   Playmat.prototype.constructor = Playmat;
 
   Playmat.prototype.setBrawl = function(brawl) {
+    if(this.brawl !== undefined) {
+      throw 'Already using brawl [' + this.brawl.id + '].';
+    }
+    this.brawl = brawl;
     Status.setScenario(brawl.scenario);
     var playmat = this;
     _.each(brawl.players, function(p) {
