@@ -65,6 +65,13 @@ define([
       case 'PlayerUpdate':
         this.onPlayerUpdate(v);
         break;
+      case 'DebugResponse':
+        if(v.key === 'sync') {
+          this.sync(JSON.parse(v.data));
+        } else {
+          throw 'Unhandled debug [' + v.key + '].';
+        }
+        break;
       default:
         GameState.prototype.onMessage.call(this, c, v);
         break;
@@ -89,6 +96,10 @@ define([
       board.changeScore(update.scoreDelta);
     }
     board.applyMutations(update.segments);
+  };
+
+  Testbed.prototype.sync = function(compare) {
+    console.log(compare);
   };
 
   return Testbed;

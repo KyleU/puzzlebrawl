@@ -12,7 +12,7 @@ case class ServerError(reason: String, content: String) extends ResponseMessage
 case class Pong(timestamp: Long) extends ResponseMessage
 case class VersionResponse(version: String) extends ResponseMessage
 case object SendTrace extends ResponseMessage
-case class DebugResponse(data: String) extends ResponseMessage
+case class DebugResponse(key: String, data: String) extends ResponseMessage
 case class Disconnected(reason: String) extends ResponseMessage
 
 case class BrawlJoined(brawl: Brawl, elapsedMs: Int) extends ResponseMessage

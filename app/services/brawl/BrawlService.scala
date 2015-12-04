@@ -7,7 +7,9 @@ import models._
 import models.scenario.Scenario
 import models.user.PlayerRecord
 import org.joda.time.LocalDateTime
+import play.api.libs.json.Json
 import utils.DateUtils
+import utils.json.BrawlSerializers.brawlWrites
 
 object BrawlService {
   def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int) = Props(classOf[BrawlService], id, scenario, players, seed)
@@ -41,7 +43,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   }
 
   private[this] def handleDebugRequest(data: String) = data match {
-    case "sync" => sender() ! VersionResponse("0.1")
+    case "sync" => sender() ! DebugResponse("sync", Json.prettyPrint(Json.toJson(brawl)))
     case _ => log.warn(s"Unhandled debug request [$data] for brawl [$id].")
   }
 }
