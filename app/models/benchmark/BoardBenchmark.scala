@@ -2,6 +2,7 @@ package models.benchmark
 
 import java.util.UUID
 import java.util.concurrent.TimeUnit
+import models.board.mutation.Mutation.AddGem
 import models.brawl.Brawl
 import org.openjdk.jmh.annotations._
 
@@ -20,7 +21,9 @@ class BoardBenchmark {
     val gemStream = p.gemStream
 
     for (i <- 0 until 20) {
-      board.drop(gemStream.next, Random.nextInt(6))
+      val x = Random.nextInt(board.width)
+      board.applyMutation(AddGem(gemStream.next, x, board.height - 1))
+      board.drop(x, board.height - 1)
     }
 
     board.fuse()

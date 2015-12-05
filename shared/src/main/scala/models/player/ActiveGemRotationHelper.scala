@@ -1,6 +1,6 @@
 package models.player
 
-import models.board.mutation.Mutation.ActiveGemsUpdate
+import models.board.mutation.Mutation.MoveGem
 import models.gem.GemLocation
 
 trait ActiveGemRotationHelper { this: Player =>
@@ -36,29 +36,43 @@ trait ActiveGemRotationHelper { this: Player =>
       b.copy(x = b.x + bXDiff + xDelta, y = b.y + bYDiff + yDelta)
     )
 
-    activeGems = if (board.isValid(b.x + bXDiff, b.y + bYDiff)) {
-      Seq(a, b.copy(x = b.x + bXDiff, y = b.y + bYDiff))
+    val oldActiveGems = activeGems
+
+    val newActiveGems = if (board.isValid(b.x + bXDiff, b.y + bYDiff)) {
+      Some(Seq(a, b.copy(x = b.x + bXDiff, y = b.y + bYDiff)))
     } else {
       val first = if (bXDiff > 0) { withDelta(xDelta = -1) } else { withDelta(xDelta = 1) }
       val firstOk = !first.exists(g => !board.isValid(g.x, g.y))
       if (firstOk) {
-        first
+        Some(first)
       } else {
         val second = if (bXDiff > 0) { withDelta(xDelta = 1) } else { withDelta(xDelta = -1) }
         val secondOk = !second.exists(g => !board.isValid(g.x, g.y))
         if (secondOk) {
-          second
+          Some(second)
         } else {
           val down = withDelta(yDelta = -1)
           val downOk = !down.exists(g => !board.isValid(g.x, g.y))
           if (downOk) {
-            down
+            Some(down)
           } else {
-            Seq(a.copy(gem = b.gem), b.copy(gem = a.gem))
+            None //Seq(a.copy(gem = b.gem), b.copy(gem = a.gem))
           }
         }
       }
     }
-    ActiveGemsUpdate(activeGems)
+
+    newActiveGems.map { newGems =>
+      activeGems = newGems
+      oldActiveGems.flatMap { og =>
+        val ng = activeGems.find(_.gem.id == og.gem.id).getOrElse(throw new IllegalStateException())
+        val delta = (ng.x - og.x) -> (ng.y - og.y)
+        if (delta._1 > 0 || delta._2 > 0) {
+          Some(board.applyMutation(MoveGem(og.x, og.y, delta._1, delta._2)))
+        } else {
+          None
+        }
+      }
+    }
   }
 }

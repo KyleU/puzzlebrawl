@@ -1,6 +1,6 @@
 package models.player
 
-import models.board.mutation.Mutation.ActiveGemsUpdate
+import models.board.mutation.Mutation.MoveGem
 
 trait ActiveGemMoveHelper { this: Player =>
   def activeGemsLeft() = moveActiveGems(-1, 0)
@@ -23,7 +23,7 @@ trait ActiveGemMoveHelper { this: Player =>
     }
     if (activeGems.size == newGems.size) {
       activeGems = newGems
-      Some(ActiveGemsUpdate(newGems))
+      Some(newGems.map(g => board.applyMutation(MoveGem(g.x, g.y, xDelta, yDelta))))
     } else {
       None
     }

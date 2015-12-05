@@ -1,6 +1,7 @@
 package services.console
 
 import com.googlecode.lanterna.input.{ KeyStroke, KeyType }
+import models.board.mutation.Mutation.AddGem
 import models.brawl.Brawl
 import models.player.Player
 
@@ -10,7 +11,9 @@ class ConsoleGameInput(brawl: Brawl, client: ConsoleClient) extends ConsoleInput
   override def inputCharacter(input: KeyStroke): Boolean = input match {
     case x if x.getKeyType == KeyType.Enter =>
       brawl.players.foreach { player =>
-        player.board.drop(player.gemStream.next, Random.nextInt(player.board.width))
+        val x = Random.nextInt(player.board.width)
+        player.board.applyMutation(AddGem(player.gemStream.next, x, player.board.height - 1))
+        player.board.drop(x, player.board.height - 1)
       }
       client.render()
       true

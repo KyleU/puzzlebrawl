@@ -1,6 +1,5 @@
 /* global define:false */
 /* global Phaser:false */
-/* global _:false */
 define(['gem/Gem'], function (Gem) {
   'use strict';
 
@@ -10,25 +9,12 @@ define(['gem/Gem'], function (Gem) {
       if(original !== null && original !== undefined) {
         throw 'Gem [' + gem.id + '] has already been added.';
       }
-      var activeGem = _.find(board.activeGemLocations, function(ag) {
-        return ag[0].model.id === gem.id;
-      });
-
-      if(activeGem === undefined) {
-        board.set(x, y, gem);
-        var g = new Gem(gem, board.game);
-        g.x = x * 128;
-        g.y = board.height - (y * 128);
-        board.gems[gem.id] = g;
-        board.add(g);
-      } else {
-        board.activeGemLocations = _.reject(board.activeGemLocations, function(g) {
-          return g[0].model.id === gem.id;
-        });
-        board.gems[gem.id] = activeGem[0];
-        board.set(activeGem[1], activeGem[2], gem);
-        board.moveGem(activeGem[1], activeGem[2], x - activeGem[1], y - activeGem[2]);
-      }
+      board.set(x, y, gem);
+      var g = new Gem(gem, board.game);
+      g.x = x * 128;
+      g.y = board.height - (y * 128);
+      board.gems[gem.id] = g;
+      board.add(g);
     },
 
     changeGem: function(board, newGem, x, y) {

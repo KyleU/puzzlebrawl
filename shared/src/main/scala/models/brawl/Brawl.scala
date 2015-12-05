@@ -3,6 +3,7 @@ package models.brawl
 import java.util.{ Date, UUID }
 
 import models.board.Board
+import models.board.mutation.Mutation.AddGem
 import models.gem.GemStream
 import models.player.Player
 
@@ -24,7 +25,9 @@ object Brawl {
   def random(playerNames: Seq[String] = Seq("Player 1"), width: Int = 6, height: Int = 12, initialDrops: Int = 0) = {
     val game = blank(UUID.randomUUID, playerNames = playerNames, width = width, height = height)
     (0 until initialDrops).foreach(_ => game.players.foreach { p =>
-      p.board.drop(p.gemStream.next, Random.nextInt(width))
+      val x = Random.nextInt(p.board.width)
+      p.board.applyMutation(AddGem(p.gemStream.next, x, p.board.height - 1))
+      p.board.drop(x, p.board.height - 1)
     })
     game
   }

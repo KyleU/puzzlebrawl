@@ -19,9 +19,6 @@ object MutationSerializers {
   implicit val removeGemReads = Json.reads[RemoveGem]
   implicit val removeGemWrites = Json.writes[RemoveGem]
 
-  implicit val activeGemsUpdateReads = Json.reads[ActiveGemsUpdate]
-  implicit val activeGemsUpdateWrites = Json.writes[ActiveGemsUpdate]
-
   implicit val mutationReads = new Reads[Mutation] {
     override def reads(json: JsValue) = {
       val v = (json \ "v").as[JsObject]
@@ -41,7 +38,6 @@ object MutationSerializers {
         case mg: MoveGem => "m" -> moveGemWrites.writes(mg)
         case cg: ChangeGem => "c" -> changeGemWrites.writes(cg)
         case rg: RemoveGem => "r" -> removeGemWrites.writes(rg)
-        case agu: ActiveGemsUpdate => "g" -> activeGemsUpdateWrites.writes(agu)
       }
       JsObject(Seq("t" -> JsString(v._1), "v" -> v._2))
     }

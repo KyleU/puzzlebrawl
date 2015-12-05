@@ -1,6 +1,6 @@
 package models.player
 
-import models.board.mutation.Mutation.ActiveGemsUpdate
+import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 import models.gem.GemLocation
 
@@ -17,14 +17,20 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
     if (!board.isValid(x + 1, y)) {
       throw new IllegalStateException(s"Cannot create active gems, as [${x + 1}, $y] is occupied by [${board.at(x + 1, y)}].")
     }
-    activeGems = Seq(GemLocation(gemStream.next, x, y), GemLocation(gemStream.next, x + 1, y))
-    UpdateSegment("active", Seq(ActiveGemsUpdate(activeGems)))
+    val one = GemLocation(gemStream.next, x, y)
+    val two = GemLocation(gemStream.next, x + 1, y)
+    activeGems = Seq(one, two)
+    val msgs = Seq(
+      this.board.applyMutation(AddGem(one.gem, x, y)),
+      this.board.applyMutation(AddGem(one.gem, x, y))
+    )
+    UpdateSegment("active", msgs)
   }
 
   def activeGemsDrop() = {
     val orderedGems = activeGems.sortBy(g => g.y -> g.x)
     activeGems = Seq.empty
-    val msgs = orderedGems.flatMap(ag => board.drop(ag.gem, ag.x, ag.y))
+    val msgs = orderedGems.flatMap(ag => board.drop(ag.x, ag.y))
     UpdateSegment("drop", msgs)
   }
 }

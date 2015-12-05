@@ -11,10 +11,6 @@ define([], function () {
         if(debug) { console.log('    Add: ' + JSON.stringify(m.v)); }
         board.addGem(m.v.gem, m.v.x, m.v.y);
         break;
-      case 'g':
-        if(debug) { console.log('    SetActive: ' + JSON.stringify(m.v)); }
-        board.setActiveGems(m.v.gems);
-        break;
       case 'm':
         if(debug) { console.log('    Move: ' + JSON.stringify(m.v)); }
         board.moveGem(m.v.x, m.v.y, m.v.xDelta, m.v.yDelta);

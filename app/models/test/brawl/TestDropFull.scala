@@ -15,6 +15,8 @@ class TestDropFull(id: UUID) extends Test(id) {
   }
 
   override def run() = {
-    Seq(UpdateSegment("drop", (0 until test.board.height).flatMap(i => test.board.drop(test.gemStream.next, 0))))
+    Seq(UpdateSegment("drop", (0 until test.board.height).flatMap { i =>
+      test.board.applyMutation(AddGem(test.gemStream.next, 0, test.board.height - 1)) +: test.board.drop(0, 0)
+    }))
   }
 }

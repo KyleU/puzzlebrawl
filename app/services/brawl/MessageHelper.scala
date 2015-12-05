@@ -47,12 +47,10 @@ trait MessageHelper { this: BrawlService =>
         case x if brawl.completed.isDefined => log.warn(s"Received brawl message [${x.getClass.getSimpleName}] for completed brawl [$brawl.id].")
         case ActiveGemsLeft => player.activeGemsLeft().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
         case ActiveGemsRight => player.activeGemsRight().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
-        case ActiveGemsClockwise => sendToAll(PlayerUpdate.using(player.id, "active", player.activeGemsClockwise()))
-        case ActiveGemsCounterClockwise => sendToAll(PlayerUpdate.using(player.id, "active", player.activeGemsCounterClockwise()))
+        case ActiveGemsClockwise => player.activeGemsClockwise().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
+        case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
         case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
-        case ActiveGemsDrop =>
-          val messages = player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()
-          sendToAll(PlayerUpdate(player.id, messages))
+        case ActiveGemsDrop => sendToAll(PlayerUpdate(player.id, player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()))
         case r => log.warn(s"GameService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
       }
     } catch {

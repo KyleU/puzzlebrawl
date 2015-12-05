@@ -25,15 +25,34 @@ class TestDrop(id: UUID) extends Test(id) {
   }
 
   override def run() = Seq(UpdateSegment("drop", Seq(
-    test.board.drop(Gem(0), 0),
-    test.board.drop(Gem(1, Color.Green), 0),
-    test.board.drop(Gem(2, Color.Blue), 0),
-    test.board.drop(Gem(3, Color.Yellow), 0),
-    test.board.drop(Gem(4, crash = Some(true)), 1),
-    test.board.drop(Gem(5, Color.Green, crash = Some(true)), 1),
-    test.board.drop(Gem(6, Color.Blue, crash = Some(true)), 1),
-    test.board.drop(Gem(7, Color.Yellow, crash = Some(true)), 1),
-    test.board.drop(Gem(8, Color.Wild), 2),
-    test.board.drop(Gem(9, width = Some(2), height = Some(2)), 4)
+    Seq(test.board.applyMutation(AddGem(Gem(0), 0, test.board.height - 1))),
+    test.board.drop(0, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(1, Color.Green), 0, test.board.height - 1))),
+    test.board.drop(0, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(2, Color.Blue), 0, test.board.height - 1))),
+    test.board.drop(0, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(3, Color.Yellow), 0, test.board.height - 1))),
+    test.board.drop(0, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(4, crash = Some(true)), 1, test.board.height - 1))),
+    test.board.drop(1, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(5, Color.Green, crash = Some(true)), 1, test.board.height - 1))),
+    test.board.drop(1, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(6, Color.Blue, crash = Some(true)), 1, test.board.height - 1))),
+    test.board.drop(1, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(7, Color.Yellow, crash = Some(true)), 1, test.board.height - 1))),
+    test.board.drop(1, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(8, Color.Wild), 2, test.board.height - 1))),
+    test.board.drop(2, test.board.height - 1),
+
+    Seq(test.board.applyMutation(AddGem(Gem(9, width = Some(2), height = Some(2)), 4, test.board.height - 2))),
+    test.board.drop(4, test.board.height - 2)
   ).flatten))
 }

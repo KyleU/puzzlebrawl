@@ -1,8 +1,8 @@
 /* global define:false */
 /* global Phaser:false */
 define([
-  'gem/Gem', 'board/BoardGems', 'board/BoardActiveGems', 'board/BoardMutations', 'board/BoardScore'
-], function (Gem, BoardGems, BoardActiveGems, BoardMutations, BoardScore) {
+  'gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'board/BoardScore'
+], function (Gem, BoardGems, BoardMutations, BoardScore) {
   'use strict';
 
   function Board(model, game) {
@@ -10,8 +10,6 @@ define([
     this.w = model.width;
     this.h = model.height;
     this.model = model;
-
-    this.activeGemLocations = [];
 
     this.gems = {};
     Phaser.Group.call(this, game, null, 'board-' + model.key);
@@ -86,10 +84,6 @@ define([
 
   Board.prototype.applyMutations = function(mutations) {
     BoardMutations.applyMutations(this, mutations);
-  };
-
-  Board.prototype.setActiveGems = function(ags) {
-    BoardActiveGems.setActiveGems(this, ags);
   };
 
   Board.prototype.addGem = function(gem, x, y) {
