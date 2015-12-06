@@ -30,7 +30,7 @@ define([], function () {
       buttonDPadLeft.onDown.add(input('active-left'));
       buttonDPadRight.onDown.add(input('active-right'));
       buttonDPadUp.onDown.add(input('active-drop'));
-      buttonDPadDown.onDown.add(input('active-slide'));
+      buttonDPadDown.onDown.add(input('active-step'));
     }
   };
 

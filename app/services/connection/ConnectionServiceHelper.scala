@@ -15,7 +15,7 @@ trait ConnectionServiceHelper
     with Logging { this: ConnectionService =>
 
   protected[this] def handleStartBrawl(scenario: String, seed: Option[Int]) {
-    supervisor ! CreateBrawl(scenario, Seq(id), seed)
+    supervisor ! CreateBrawl(scenario, id, seed)
   }
 
   protected[this] def handleJoinBrawl(brawlId: UUID) = {

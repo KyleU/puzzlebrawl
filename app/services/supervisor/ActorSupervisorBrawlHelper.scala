@@ -13,11 +13,29 @@ import scala.util.Random
 trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
   private[this] def masterRng = new Random()
 
-  protected[this] def handleCreateBrawl(scenario: String, players: Seq[UUID], seed: Option[Int]) {
+  private[this] var pendingMultiplayerConnections = List.empty[(String, UUID)]
+
+  protected[this] def handleCreateBrawl(scenario: String, connectionId: UUID, seed: Option[Int]) {
+    if(scenario == "multiplayer") {
+      pendingMultiplayerConnections.headOption match {
+        case Some(pending) =>
+          log.info(s"Starting brawl for connections [${pending._2}, $connectionId] for scenario [$scenario].")
+          pendingMultiplayerConnections = pendingMultiplayerConnections.tail
+          createBrawl(scenario, Seq(pending._2, connectionId), seed)
+        case None =>
+          log.info(s"Queueing connection [$connectionId] for scenario [$scenario].")
+          pendingMultiplayerConnections = pendingMultiplayerConnections :+ ((scenario, connectionId))
+      }
+    } else {
+      createBrawl(scenario, Seq(connectionId), seed)
+    }
+  }
+
+  private[this] def createBrawl(scenario: String, connectionIds: Seq[UUID], seed: Option[Int]) = {
     val id = UUID.randomUUID
     val finalSeed = Math.abs(seed.getOrElse(masterRng.nextInt()))
 
-    val playerConnections = players.map(p => p -> connections(p))
+    val playerConnections = connectionIds.map(p => p -> connections(p))
     val playerRecords = playerConnections.map { pc =>
       PlayerRecord(pc._2.userId, pc._2.name, Some(pc._1), Some(pc._2.actorRef))
     }

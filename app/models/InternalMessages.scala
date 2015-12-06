@@ -14,7 +14,7 @@ case class ConnectionStopped(connectionId: UUID) extends InternalMessage
 case class AddPlayer(userId: UUID, name: String, connectionId: UUID, connectionActor: ActorRef) extends InternalMessage
 case class AddObserver(userId: UUID, name: String, connectionId: UUID, connectionActor: ActorRef, as: Option[UUID]) extends InternalMessage
 
-case class CreateBrawl(scenario: String, players: Seq[UUID], seed: Option[Int]) extends InternalMessage
+case class CreateBrawl(scenario: String, connectionId: UUID, seed: Option[Int]) extends InternalMessage
 case class BrawlStarted(id: UUID, brawlService: ActorRef, started: LocalDateTime) extends InternalMessage
 case class ConnectionBrawlJoin(id: UUID, connectionId: UUID) extends InternalMessage
 case class ConnectionBrawlObserve(id: UUID, connectionId: UUID, as: Option[UUID]) extends InternalMessage

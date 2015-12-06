@@ -16,8 +16,7 @@ import scala.util.Random
 object Scenario {
   def all = Seq(
     "testbed" -> "Testbed",
-    "createMultiplayer" -> "Create Multiplayer",
-    "joinMultiplayer" -> "Join Multiplayer",
+    "multiplayer" -> "Multiplayer Test",
     "allRed" -> "All Red",
     "allGreen" -> "All Green",
     "allBlue" -> "All Blue",
@@ -47,6 +46,10 @@ object Scenario {
           player.activeGemsCreate()
         }
         brawl
+      case "multiplayer" =>
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
+        ps.foreach(_.activeGemsCreate())
+        Brawl(id, scenario, seed, ps)
       case "normal" =>
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
         ps.foreach(_.activeGemsCreate())

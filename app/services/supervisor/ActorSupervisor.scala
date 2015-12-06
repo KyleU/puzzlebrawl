@@ -44,7 +44,7 @@ class ActorSupervisor extends InstrumentedActor with Logging with ActorSuperviso
     case cs: ConnectionStarted => timeReceive(cs) { handleConnectionStarted(cs.user, cs.connectionId, cs.conn) }
     case cs: ConnectionStopped => timeReceive(cs) { handleConnectionStopped(cs.connectionId) }
 
-    case cb: CreateBrawl => timeReceive(cb) { handleCreateBrawl(cb.scenario, cb.players, cb.seed) }
+    case cb: CreateBrawl => timeReceive(cb) { handleCreateBrawl(cb.scenario, cb.connectionId, cb.seed) }
     case cbj: ConnectionBrawlJoin => timeReceive(cbj) { handleConnectionBrawlJoin(cbj.id, cbj.connectionId) }
     case cbo: ConnectionBrawlObserve => timeReceive(cbo) { handleConnectionBrawlObserve(cbo.id, cbo.connectionId, cbo.as) }
     case bs: BrawlStopped => timeReceive(bs) { handleBrawlStopped(bs.id) }

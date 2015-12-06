@@ -25,6 +25,8 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     Status.setScenario(brawl.scenario);
     var playmat = this;
     _.each(brawl.players, function(p) {
+      var b = p.board;
+      if(p.score === undefined) { b.score = 0; } else { b.score = p.score; }
       var board = new Board(p.board, playmat.game);
       playmat.boards.push(board);
       playmat.boardsByPlayer[p.id] = board;
