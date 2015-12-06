@@ -74,19 +74,28 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
 
   private[this] def getResult(testName: String, test: Test) = {
     val initStart = DateUtils.nowMillis
-    test.init()
-    test.cloneOriginal()
-    val initMs = (DateUtils.nowMillis - initStart).toInt
-
-    val (runMs, testMessages, testErrors) = try {
-      val runStart = DateUtils.nowMillis
-      val msgs = test.run()
-      val runMs = (DateUtils.nowMillis - runStart).toInt
-      (runMs, msgs, test.getErrors)
+    val initError = try {
+      test.init()
+      test.cloneOriginal()
+      None
     } catch {
       case NonFatal(x) =>
-        log.warn(s"Test [$testName] has failed with exception [$x].", x)
-        (0, Seq.empty, Seq(Test.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}"))))
+        log.warn(s"Test [$testName] has failed initialization with exception [$x].", x)
+        Some((0, Seq.empty, Seq(Test.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}")))))
+    }
+    val initMs = (DateUtils.nowMillis - initStart).toInt
+
+    val (runMs, testMessages, testErrors) = initError.getOrElse {
+      try {
+        val runStart = DateUtils.nowMillis
+        val msgs = test.run()
+        val runMs = (DateUtils.nowMillis - runStart).toInt
+        (runMs, msgs, test.getErrors)
+      } catch {
+        case NonFatal(x) =>
+          log.warn(s"Test [$testName] has failed with exception [$x].", x)
+          (0, Seq.empty, Seq(Test.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}"))))
+      }
     }
 
     val status = testErrors.headOption.map(x => s"${testErrors.size} Errors").getOrElse("Success")

@@ -18,7 +18,6 @@ class TestWild(id: UUID) extends Test(id) {
     test.board.applyMutation(AddGem(Gem(4, Color.Blue), 5, 0))
     test.board.applyMutation(AddGem(Gem(5, Color.Wild), 1, 2))
 
-    goal.board.applyMutation(AddGem(Gem(2, crash = Some(true)), 3, 0))
     goal.board.applyMutation(AddGem(Gem(4, Color.Blue), 5, 0))
   }
 

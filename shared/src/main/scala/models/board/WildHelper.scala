@@ -11,7 +11,7 @@ trait WildHelper { this: Board =>
         at(x, y - 1) match {
           case Some(seed) if seed.color == Color.Wild => Seq.empty
           case Some(seed) => applyMutation(RemoveGem(x, y)) +: mapGems { (candidate, candidateX, candidateY) =>
-            if ((!candidate.crash.exists(x => x)) && candidate.color == seed.color) {
+            if (candidate.color == seed.color) {
               Seq(applyMutation(RemoveGem(candidateX, candidateY)))
             } else {
               Seq.empty

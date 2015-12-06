@@ -13,6 +13,9 @@ object MutationSerializers {
   implicit val moveGemReads = Json.reads[MoveGem]
   implicit val moveGemWrites = Json.writes[MoveGem]
 
+  implicit val moveGemsReads = Json.reads[MoveGems]
+  implicit val moveGemsWrites = Json.writes[MoveGems]
+
   implicit val changeGemReads = Json.reads[ChangeGem]
   implicit val changeGemWrites = Json.writes[ChangeGem]
 
@@ -25,6 +28,7 @@ object MutationSerializers {
       (json \ "t").as[String] match {
         case "a" => addGemReads.reads(v)
         case "m" => moveGemReads.reads(v)
+        case "x" => moveGemsReads.reads(v)
         case "c" => changeGemReads.reads(v)
         case "r" => removeGemReads.reads(v)
         case t => throw new IllegalArgumentException(s"Type [$t] is not a valid mutation.")
@@ -36,6 +40,7 @@ object MutationSerializers {
       val v = m match {
         case ag: AddGem => "a" -> addGemWrites.writes(ag)
         case mg: MoveGem => "m" -> moveGemWrites.writes(mg)
+        case mgs: MoveGems => "x" -> moveGemsWrites.writes(mgs)
         case cg: ChangeGem => "c" -> changeGemWrites.writes(cg)
         case rg: RemoveGem => "r" -> removeGemWrites.writes(rg)
       }

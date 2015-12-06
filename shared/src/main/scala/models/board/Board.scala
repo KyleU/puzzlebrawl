@@ -49,6 +49,7 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   def applyMutation(m: Mutation): Mutation = m match {
     case ag: AddGem => Add(this, ag)
     case mg: MoveGem => Move(this, mg)
+    case mgs: MoveGems => Move(this, mgs)
     case cg: ChangeGem => Change(this, cg)
     case rg: RemoveGem => Remove(this, rg)
   }

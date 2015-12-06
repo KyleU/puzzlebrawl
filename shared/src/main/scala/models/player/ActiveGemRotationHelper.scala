@@ -1,6 +1,6 @@
 package models.player
 
-import models.board.mutation.Mutation.MoveGem
+import models.board.mutation.Mutation.{ MoveGems, MoveGem }
 import models.gem.GemLocation
 
 trait ActiveGemRotationHelper { this: Player =>
@@ -62,16 +62,22 @@ trait ActiveGemRotationHelper { this: Player =>
       }
     }
 
-    newActiveGems.map { newGems =>
+    newActiveGems.flatMap { newGems =>
       activeGems = newGems
-      oldActiveGems.flatMap { og =>
-        val ng = activeGems.find(_.gem.id == og.gem.id).getOrElse(throw new IllegalStateException())
+      val mutations = newGems.flatMap { ng =>
+        val og = oldActiveGems.find(_.gem.id == ng.gem.id).getOrElse(throw new IllegalStateException())
         val delta = (ng.x - og.x) -> (ng.y - og.y)
         if (delta._1 > 0 || delta._2 > 0) {
-          Some(board.applyMutation(MoveGem(og.x, og.y, delta._1, delta._2)))
+          Some(MoveGem(og.x, og.y, delta._1, delta._2))
         } else {
           None
         }
+      }
+      if(mutations.isEmpty) {
+        None
+      } else {
+        val ret = board.applyMutation(MoveGems(mutations))
+        Some(ret)
       }
     }
   }
