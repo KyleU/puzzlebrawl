@@ -22,7 +22,7 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
     activeGems = Seq(one, two)
     val msgs = Seq(
       this.board.applyMutation(AddGem(one.gem, x, y)),
-      this.board.applyMutation(AddGem(one.gem, x, y))
+      this.board.applyMutation(AddGem(two.gem, x + 1, y))
     )
     UpdateSegment("active", msgs)
   }

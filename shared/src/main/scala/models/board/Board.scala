@@ -2,7 +2,7 @@ package models.board
 
 import models.board.mutation._
 import models.board.mutation.Mutation._
-import models.gem.Gem
+import models.gem.{ GemLocation, Gem }
 
 case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
@@ -17,11 +17,9 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     spaces(x)(y)
   }
 
-  def isValid(x: Int, y: Int) = if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
-    false
-  } else {
-    spaces(x)(y).isEmpty
-  }
+  def isValid(x: Int, y: Int): Boolean = (!(x < 0 || x > width - 1 || y < 0 || y > height - 1)) && spaces(x)(y).isEmpty
+
+  def isValid(x: Int, y: Int, exclude: Seq[GemLocation]): Boolean = isValid(x, y) || exclude.exists(g => g.x == x && g.y == y)
 
   def set(x: Int, y: Int, gem: Option[Gem]) = if (x < 0 || x > width - 1) {
     throw new IllegalArgumentException(s"Index [$x] is outside of width [$width].")
