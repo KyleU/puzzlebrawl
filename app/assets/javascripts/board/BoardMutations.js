@@ -40,15 +40,27 @@ define([], function () {
     });
   }
 
-  return {
-    applyMutations: function(board, segments) {
-      if(debug) {
-        var count = _.reduce(segments, function(i, c){ return i + c.length; }, 0);
-        console.log('Processing [' + segments.length + '] segments containing [' + count + '] mutations.');
-      }
-      _.each(segments, function(segment, idx) {
-        applySegment(board, segment, idx);
-      });
+  function applyMutations(board, segments, idx) {
+    var segmentIndex;
+    if(idx === undefined) {
+      segmentIndex = 0;
+    } else {
+      segmentIndex = idx;
     }
+    if(debug) {
+      var count = _.reduce(segments, function(i, c){ return i + c.length; }, 0);
+      console.log('Processing [' + segments.length + '] segments containing [' + count + '] mutations.');
+    }
+    if(segments.length > 0) {
+      applySegment(board, segments[0], segmentIndex);
+      var f = function() {
+        applyMutations(board, segments.splice(1), segmentIndex + 1);
+      };
+      setTimeout(f, 200);
+    }
+  }
+
+  return {
+    applyMutations: applyMutations
   };
 });

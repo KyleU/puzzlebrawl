@@ -75,6 +75,7 @@ define(['gem/Gem'], function (Gem) {
       if(g === null || g === undefined) {
         throw 'Gem at [' + x + ', ' + y + '] has not been added.';
       }
+
       var gem = board.gems[g.id];
       if(gem === null || gem === undefined) {
         throw 'Gem with id [' + g.id + '] has not been added.';
@@ -82,7 +83,13 @@ define(['gem/Gem'], function (Gem) {
 
       delete board.gems[g.id];
       board.clear(x, y, g.width, g.height);
-      board.remove(gem);
+
+      var tween = board.game.add.tween(gem);
+      tween.to({ alpha: 0 }, 200, Phaser.Easing.Cubic.Out);
+      tween.onComplete.add(function() {
+        board.remove(gem);
+      });
+      tween.start();
     }
   };
 });
