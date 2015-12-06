@@ -15,6 +15,10 @@ define([], function () {
         if(debug) { console.log('    Move: ' + JSON.stringify(m.v)); }
         board.moveGem(m.v.x, m.v.y, m.v.xDelta, m.v.yDelta);
         break;
+      case 'x':
+        if(debug) { console.log('    Moves: ' + JSON.stringify(m.v)); }
+        board.moveGems(m.v.moves);
+        break;
       case 'c':
         if(debug) { console.log('    Change: ' + JSON.stringify(m.v)); }
         board.changeGem(m.v.newGem, m.v.x, m.v.y);

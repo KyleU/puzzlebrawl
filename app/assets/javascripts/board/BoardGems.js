@@ -48,6 +48,28 @@ define(['gem/Gem'], function (Gem) {
       tween.start();
     },
 
+    moveGems: function(board, moves) {
+      var gems = [];
+      for(var gemMoveIdx = 0; gemMoveIdx < moves.length; gemMoveIdx++) {
+        var gemMove = moves[gemMoveIdx];
+        var gem = board.at(gemMove.x, gemMove.y);
+        if(gem === null) {
+          throw 'Move attempted from empty position [' + gemMove.x + ', ' + gemMove.y + '].';
+        }
+        board.clear(gemMove.x, gemMove.y, gem.width, gem.height);
+        gems.push(gem);
+      }
+
+      for(var moveIdx = 0; moveIdx < moves.length; moveIdx++) {
+        var move = moves[moveIdx];
+        var moveGem = gems[moveIdx];
+        board.set(move.x + move.xDelta, move.y + move.yDelta, moveGem);
+        var tween = board.game.add.tween(board.gems[moveGem.id]);
+        tween.to({x: (move.x + move.xDelta) * 128, y: board.height - ((move.y + move.yDelta) * 128)}, 200, Phaser.Easing.Cubic.Out);
+        tween.start();
+      }
+    },
+
     removeGem: function(board, x, y) {
       var g = board.at(x, y);
       if(g === null || g === undefined) {

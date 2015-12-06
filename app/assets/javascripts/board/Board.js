@@ -64,7 +64,6 @@ define([
         this.model.spaces[x + wIdx][y + hIdx] = v;
       }
     }
-    console.log(x, y, v);
   };
 
   Board.prototype.dump = function() {
@@ -96,6 +95,10 @@ define([
 
   Board.prototype.moveGem = function(x, y, xDelta, yDelta) {
     BoardGems.moveGem(this, x, y, xDelta, yDelta);
+  };
+
+  Board.prototype.moveGems = function(moves) {
+    BoardGems.moveGems(this, moves);
   };
 
   Board.prototype.removeGem = function(x, y) {
