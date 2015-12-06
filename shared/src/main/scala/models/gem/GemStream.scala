@@ -4,7 +4,7 @@ import scala.util.Random
 
 object GemStream {
   val baseWildGemChance = 0.01
-  val baseCrashGemChance = 0.1
+  val baseCrashGemChance = 0.15
 }
 
 case class GemStream(

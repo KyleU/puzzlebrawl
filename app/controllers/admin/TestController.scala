@@ -47,13 +47,6 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     if (name == "All") {
       val results = BrawlTest.all.map(x => getResult(x.testName, x.newInstance(UUID.randomUUID)))
       Future.successful(Ok(views.html.admin.test.testResultAll(results)))
-    } else if (name.startsWith("actor")) {
-      val result = name.substring(5) match {
-        case "Connection" => ConnectionServiceTest.testConnection()
-        case "Brawl" => BrawlServiceTest.testBrawl()
-        case x => throw new IllegalStateException(s"Unknown actor test [$x].")
-      }
-      Future.successful(Ok(views.html.admin.test.testResult(result)))
     } else {
       Future.successful {
         val test = BrawlTest.fromString(name).map { x =>

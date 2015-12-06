@@ -27,6 +27,6 @@ object ConnectionServiceTest extends Logging {
 
     val runMs = DateUtils.nowMillis - runStart
 
-    TestController.Result("connection", "ok", Seq.empty, initMs.toInt, runMs.toInt)
+    "Ok"
   }
 }

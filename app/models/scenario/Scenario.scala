@@ -16,6 +16,8 @@ import scala.util.Random
 object Scenario {
   def all = Seq(
     "testbed" -> "Testbed",
+    "createMultiplayer" -> "Create Multiplayer",
+    "joinMultiplayer" -> "Join Multiplayer",
     "allRed" -> "All Red",
     "allGreen" -> "All Green",
     "allBlue" -> "All Blue",
