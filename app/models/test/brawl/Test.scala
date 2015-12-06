@@ -20,6 +20,7 @@ object Test {
   val all = Seq(
     TestActiveGemsDrop,
     TestActiveGemsInsert,
+    TestActiveGemsRotate,
     TestClear,
     TestCollapse,
     TestCombo,

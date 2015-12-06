@@ -36,8 +36,6 @@ trait ActiveGemRotationHelper { this: Player =>
       b.copy(x = b.x + bXDiff + xDelta, y = b.y + bYDiff + yDelta)
     )
 
-    val oldActiveGems = activeGems
-
     val newActiveGems = if (board.isValid(b.x + bXDiff, b.y + bYDiff)) {
       Some(Seq(a, b.copy(x = b.x + bXDiff, y = b.y + bYDiff)))
     } else {
@@ -63,9 +61,8 @@ trait ActiveGemRotationHelper { this: Player =>
     }
 
     newActiveGems.flatMap { newGems =>
-      activeGems = newGems
       val mutations = newGems.flatMap { ng =>
-        val og = oldActiveGems.find(_.gem.id == ng.gem.id).getOrElse(throw new IllegalStateException())
+        val og = activeGems.find(_.gem.id == ng.gem.id).getOrElse(throw new IllegalStateException())
         val delta = (ng.x - og.x) -> (ng.y - og.y)
         if (delta._1 > 0 || delta._2 > 0) {
           Some(MoveGem(og.x, og.y, delta._1, delta._2))
@@ -77,6 +74,7 @@ trait ActiveGemRotationHelper { this: Player =>
         None
       } else {
         val ret = board.applyMutation(MoveGems(mutations))
+        activeGems = newGems
         Some(ret)
       }
     }
