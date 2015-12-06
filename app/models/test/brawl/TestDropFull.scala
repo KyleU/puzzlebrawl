@@ -5,11 +5,11 @@ import java.util.UUID
 import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 
-object TestDropFull extends Test.Provider {
+object TestDropFull extends BrawlTest.Provider {
   override def newInstance(id: UUID) = new TestDropFull(id)
 }
 
-class TestDropFull(id: UUID) extends Test(id) {
+class TestDropFull(id: UUID) extends BrawlTest(id) {
   override def init() = {
     (0 until goal.board.height).foreach(i => goal.board.applyMutation(AddGem(goal.gemStream.next, 0, i)))
   }

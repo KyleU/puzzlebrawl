@@ -1,11 +1,10 @@
-@import models.test.brawl.Test
 @()(implicit session: Session, flash: Flash)
 @layout.admin(s"${utils.Config.projectName} Tests", "test") {
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="text-large">@utils.Config.projectName Tests (<a href="@controllers.admin.routes.TestController.run("All")">Run All</a>)</div>
       <ul>
-        @for(test <- Test.all) {
+        @for(test <- models.test.brawl.BrawlTest.all) {
           <li><a href="@controllers.admin.routes.TestController.run(test.testName, false)">@test.testName</a></li>
         }
       </ul>

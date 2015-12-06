@@ -1,9 +1,9 @@
 package services.console
 
-import models.test.brawl.Test
+import models.test.brawl.BrawlTest
 
 object ConsoleTest {
-  def run(test: Test, pauseBeforeRun: Boolean) = {
+  def run(test: BrawlTest, pauseBeforeRun: Boolean) = {
     val testName = test.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
     test.init()
     test.cloneOriginal()
@@ -11,7 +11,7 @@ object ConsoleTest {
     val client = new ConsoleClient(test.brawl)
 
     if (pauseBeforeRun) {
-      client.addStatusLog(s"Test [$testName] initialized.")
+      client.addStatusLog(s"BrawlTest [$testName] initialized.")
       client.screen.readInput()
     }
     client.render()
@@ -21,9 +21,9 @@ object ConsoleTest {
 
     val errors = test.getErrors
     if (errors.isEmpty) {
-      client.addStatusLog(s"Test [$testName] completed successfully. Press any key to continue.")
+      client.addStatusLog(s"BrawlTest [$testName] completed successfully. Press any key to continue.")
     } else {
-      client.addStatusLog(s"Test [$testName] completed with [${errors.length}] errors. Press any key to continue.")
+      client.addStatusLog(s"BrawlTest [$testName] completed with [${errors.length}] errors. Press any key to continue.")
     }
 
     client.screen.readInput()

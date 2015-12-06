@@ -9,12 +9,12 @@ import play.api.libs.json.Json
 
 import scala.util.Random
 
-object Test {
+object BrawlTest {
   import utils.json.BrawlSerializers._
 
   trait Provider {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
-    def newInstance(id: UUID): Test
+    def newInstance(id: UUID): BrawlTest
   }
 
   val all = Seq(
@@ -52,7 +52,7 @@ object Test {
   implicit val testErrorWrites = Json.writes[TestError]
 }
 
-abstract class Test(id: UUID, val seed: Option[Int] = None) {
+abstract class BrawlTest(id: UUID, val seed: Option[Int] = None) {
   val brawl = Brawl.blank(
     id = id,
     scenario = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", ""),
@@ -78,7 +78,7 @@ abstract class Test(id: UUID, val seed: Option[Int] = None) {
         if (src == tgt) {
           None
         } else {
-          Some(Test.TestError(src, tgt, x, y))
+          Some(BrawlTest.TestError(src, tgt, x, y))
         }
       }
     }
@@ -88,7 +88,7 @@ abstract class Test(id: UUID, val seed: Option[Int] = None) {
       if (src == tgt) {
         None
       } else {
-        Some(Test.TestError(src.map(_.gem), tgt.map(_.gem), src.map(_.x).getOrElse(0), src.map(_.y).getOrElse(0)))
+        Some(BrawlTest.TestError(src.map(_.gem), tgt.map(_.gem), src.map(_.x).getOrElse(0), src.map(_.y).getOrElse(0)))
       }
     }
     spaceErrors ++ activeGemErrors

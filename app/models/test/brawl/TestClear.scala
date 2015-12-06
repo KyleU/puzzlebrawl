@@ -5,11 +5,11 @@ import java.util.UUID
 import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 
-object TestClear extends Test.Provider {
+object TestClear extends BrawlTest.Provider {
   override def newInstance(id: UUID) = new TestClear(id)
 }
 
-class TestClear(id: UUID) extends Test(id) {
+class TestClear(id: UUID) extends BrawlTest(id) {
   override def init() = {
     for (y <- 0 until test.board.height / 2) {
       for (x <- 0 until test.board.width) {

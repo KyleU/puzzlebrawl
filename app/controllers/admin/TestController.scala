@@ -7,9 +7,7 @@ import models.board.Board
 import models.board.mutation.UpdateSegment
 import models.gem.GemStream
 import models.player.Player
-import models.test.brawl.Test
-import Test.TestError
-import models.test.brawl.Test
+import models.test.brawl.BrawlTest
 import models.test.service.{ BrawlServiceTest, ConnectionServiceTest }
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
@@ -28,7 +26,7 @@ object TestController {
   case class Result(
     name: String,
     status: String,
-    errors: Seq[TestError],
+    errors: Seq[BrawlTest.TestError],
     initMs: Int,
     runMs: Int,
     original: Player = emptyPlayer("original"),
@@ -47,7 +45,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
 
   def run(name: String, json: Boolean) = withAdminSession("test.run") { implicit request =>
     if (name == "All") {
-      val results = Test.all.map(x => getResult(x.testName, x.newInstance(UUID.randomUUID)))
+      val results = BrawlTest.all.map(x => getResult(x.testName, x.newInstance(UUID.randomUUID)))
       Future.successful(Ok(views.html.admin.test.testResultAll(results)))
     } else if (name.startsWith("actor")) {
       val result = name.substring(5) match {
@@ -58,7 +56,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
       Future.successful(Ok(views.html.admin.test.testResult(result)))
     } else {
       Future.successful {
-        val test = Test.fromString(name).map { x =>
+        val test = BrawlTest.fromString(name).map { x =>
           x.testName -> x.newInstance(UUID.randomUUID)
         }.getOrElse(throw new IllegalArgumentException(s"Invalid test [$name]."))
         val result = getResult(test._1, test._2)
@@ -72,7 +70,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
     }
   }
 
-  private[this] def getResult(testName: String, test: Test) = {
+  private[this] def getResult(testName: String, test: BrawlTest) = {
     val initStart = DateUtils.nowMillis
     val initError = try {
       test.init()
@@ -80,8 +78,8 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
       None
     } catch {
       case NonFatal(x) =>
-        log.warn(s"Test [$testName] has failed initialization with exception [$x].", x)
-        Some((0, Seq.empty, Seq(Test.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}")))))
+        log.warn(s"BrawlTest [$testName] has failed initialization with exception [$x].", x)
+        Some((0, Seq.empty, Seq(BrawlTest.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}")))))
     }
     val initMs = (DateUtils.nowMillis - initStart).toInt
 
@@ -93,8 +91,8 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
         (runMs, msgs, test.getErrors)
       } catch {
         case NonFatal(x) =>
-          log.warn(s"Test [$testName] has failed with exception [$x].", x)
-          (0, Seq.empty, Seq(Test.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}"))))
+          log.warn(s"BrawlTest [$testName] has failed with exception [$x].", x)
+          (0, Seq.empty, Seq(BrawlTest.TestError(None, None, 0, 0, Some(s"${x.getClass.getSimpleName}: ${x.getMessage}"))))
       }
     }
 

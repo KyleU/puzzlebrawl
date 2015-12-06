@@ -31,7 +31,7 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <ul>
-            @for(t <- models.test.brawl.Test.all) {
+            @for(t <- models.test.brawl.BrawlTest.all) {
               <li><a href="@routes.GameController.play()#test@t.testName">@t.testName</a></li>
             }
             </ul>

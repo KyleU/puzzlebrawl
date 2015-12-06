@@ -4,11 +4,11 @@ import java.util.UUID
 
 import models.board.mutation.Mutation.AddGem
 
-object TestActiveGemsDrop extends Test.Provider {
+object TestActiveGemsDrop extends BrawlTest.Provider {
   override def newInstance(id: UUID) = new TestActiveGemsDrop(id)
 }
 
-class TestActiveGemsDrop(id: UUID) extends Test(id) {
+class TestActiveGemsDrop(id: UUID) extends BrawlTest(id) {
   override def init() = {
     test.activeGemsCreate()
 

@@ -3,7 +3,7 @@
 define([], function () {
   'use strict';
 
-  var debug = true;
+  var debug = false;
 
   function applyMutation(board, m) {
     switch(m.t) {

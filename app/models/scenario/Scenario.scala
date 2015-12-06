@@ -7,7 +7,7 @@ import models.board.mutation.Mutation.AddGem
 import models.brawl.Brawl
 import models.gem.GemStream
 import models.player.Player
-import models.test.brawl.Test
+import models.test.brawl.BrawlTest
 import models.test.gem.MockGemStreams
 import models.user.PlayerRecord
 
@@ -51,7 +51,7 @@ object Scenario {
         Brawl(id, scenario, seed, ps)
       case x if x.startsWith("test") =>
         val testName = x.stripPrefix("test")
-        val provider = Test.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
+        val provider = BrawlTest.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
         val test = provider.newInstance(id)
         test.init()
         test.cloneOriginal()

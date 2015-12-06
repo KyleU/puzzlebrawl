@@ -8,11 +8,11 @@ import models.gem.{ Gem, GemStream }
 
 import scala.util.Random
 
-object TestGemStream extends Test.Provider {
+object TestGemStream extends BrawlTest.Provider {
   override def newInstance(id: UUID) = new TestGemStream(id)
 }
 
-class TestGemStream(id: UUID) extends Test(id) {
+class TestGemStream(id: UUID) extends BrawlTest(id) {
   override def init() = {
     for (y <- 0 until 12) {
       for (x <- 0 until 6) {

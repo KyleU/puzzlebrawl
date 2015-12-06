@@ -5,11 +5,11 @@ import java.util.UUID
 import models.board.mutation.Mutation.AddGem
 import models.gem.{ Color, Gem }
 
-object TestWild extends Test.Provider {
+object TestWild extends BrawlTest.Provider {
   override def newInstance(id: UUID) = new TestWild(id)
 }
 
-class TestWild(id: UUID) extends Test(id) {
+class TestWild(id: UUID) extends BrawlTest(id) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0), 0, 0))
     test.board.applyMutation(AddGem(Gem(1, width = Some(2), height = Some(2)), 1, 0))

@@ -1,17 +1,17 @@
 import java.util.UUID
 
-import models.test.brawl.Test
+import models.test.brawl.BrawlTest
 import services.console.{ ConsoleTest, ConsoleGame }
 
 object Console {
-  private[this] val errorMsg = s"First argument must be one of [*, ${Test.all.map(_.testName).mkString(", ")}]."
+  private[this] val errorMsg = s"First argument must be one of [*, ${BrawlTest.all.map(_.testName).mkString(", ")}]."
 
   def main(args: Array[String]) {
     if (args.isEmpty) {
       new ConsoleGame()
     } else {
       args.headOption match {
-        case Some(testName) => Test.fromString(testName) match {
+        case Some(testName) => BrawlTest.fromString(testName) match {
           case Some(test) => ConsoleTest.run(test.newInstance(UUID.randomUUID), args.contains("pause"))
           case None => if (Seq("*", "All", "all").contains(testName)) {
             allTests()
@@ -24,7 +24,7 @@ object Console {
     }
   }
 
-  private[this] def allTests() = Test.all.foreach { provider =>
+  private[this] def allTests() = BrawlTest.all.foreach { provider =>
     val test = provider.newInstance(UUID.randomUUID)
     test.init()
     test.cloneOriginal()

@@ -6,11 +6,11 @@ import models.board.mutation.Mutation.AddGem
 
 import scala.util.Random
 
-object TestFullTurn extends Test.Provider {
+object TestFullTurn extends BrawlTest.Provider {
   override def newInstance(id: UUID) = new TestFullTurn(id)
 }
 
-class TestFullTurn(id: UUID) extends Test(id, seed = Some(Random.nextInt())) {
+class TestFullTurn(id: UUID) extends BrawlTest(id, seed = Some(Random.nextInt())) {
   override def init() = {
     for (y <- 0 until test.board.height) {
       for (x <- 0 until test.board.width) {

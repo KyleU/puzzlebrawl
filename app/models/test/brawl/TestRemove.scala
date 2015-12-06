@@ -6,11 +6,11 @@ import models.board.mutation.Mutation.{ AddGem, RemoveGem }
 import models.board.mutation.UpdateSegment
 import models.gem.{ Color, Gem }
 
-object TestRemove extends Test.Provider {
+object TestRemove extends BrawlTest.Provider {
   override def newInstance(id: UUID) = new TestRemove(id)
 }
 
-class TestRemove(id: UUID) extends Test(id) {
+class TestRemove(id: UUID) extends BrawlTest(id) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0, width = Some(2), height = Some(2)), 0, 0))
     test.board.applyMutation(AddGem(Gem(0, Color.Green), 2, 0))
