@@ -1,11 +1,9 @@
 /* global define:false */
 /* global Phaser:false */
-define([
-  'gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'board/BoardScore'
-], function (Gem, BoardGems, BoardMutations, BoardScore) {
+define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations'], function (Gem, BoardGems, BoardMutations) {
   'use strict';
 
-  function Board(model, game) {
+  function Board(model, owner, game) {
     this.key = model.key;
     this.w = model.width;
     this.h = model.height;
@@ -24,20 +22,14 @@ define([
       for(var x = 0; x < this.w; x++) {
         var g = model.spaces[x][y];
         if(g !== null) {
-          this.addGem(g, x, y);
+          BoardGems.addGem(this, g, x, y);
         }
       }
     }
-
-    BoardScore.init(this, model.score);
   }
 
   Board.prototype = Phaser.Group.prototype;
   Board.prototype.constructor = Board;
-
-  Board.prototype.changeScore = function(delta) {
-    BoardScore.changeScore(this, delta);
-  };
 
   Board.prototype.at = function(x, y) {
     return this.model.spaces[x][y];
@@ -66,43 +58,8 @@ define([
     }
   };
 
-  Board.prototype.dump = function() {
-    var msg = '';
-    for(var hIdx = this.h - 1; hIdx >= 0; hIdx--) {
-      for(var wIdx = 0; wIdx < this.w; wIdx++) {
-        if(this.at(wIdx, hIdx) === null) {
-          msg += '.';
-        } else {
-          msg += 'O';
-        }
-      }
-      msg += '\n';
-    }
-    console.log(msg);
-  };
-
   Board.prototype.applyMutations = function(mutations) {
     BoardMutations.applyMutations(this, mutations);
-  };
-
-  Board.prototype.addGem = function(gem, x, y) {
-    BoardGems.addGem(this, gem, x, y);
-  };
-
-  Board.prototype.changeGem = function(newGem, x, y) {
-    BoardGems.changeGem(this, newGem, x, y);
-  };
-
-  Board.prototype.moveGem = function(x, y, xDelta, yDelta) {
-    BoardGems.moveGem(this, x, y, xDelta, yDelta);
-  };
-
-  Board.prototype.moveGems = function(moves) {
-    BoardGems.moveGems(this, moves);
-  };
-
-  Board.prototype.removeGem = function(x, y) {
-    BoardGems.removeGem(this, x, y);
   };
 
   return Board;

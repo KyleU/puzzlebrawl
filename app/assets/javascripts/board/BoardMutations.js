@@ -1,6 +1,6 @@
 /* global define:false */
 /* global _:false */
-define([], function () {
+define(['board/BoardGems'], function (BoardGems) {
   'use strict';
 
   var debug = false;
@@ -9,23 +9,23 @@ define([], function () {
     switch(m.t) {
       case 'a':
         if(debug) { console.log('    Add: ' + JSON.stringify(m.v)); }
-        board.addGem(m.v.gem, m.v.x, m.v.y);
+        BoardGems.addGem(board, m.v.gem, m.v.x, m.v.y);
         break;
       case 'm':
         if(debug) { console.log('    Move: ' + JSON.stringify(m.v)); }
-        board.moveGem(m.v.x, m.v.y, m.v.xDelta, m.v.yDelta);
+        BoardGems.moveGem(board, m.v.x, m.v.y, m.v.xDelta, m.v.yDelta);
         break;
       case 'x':
         if(debug) { console.log('    Moves: ' + JSON.stringify(m.v)); }
-        board.moveGems(m.v.moves);
+        BoardGems.moveGems(board, m.v.moves);
         break;
       case 'c':
         if(debug) { console.log('    Change: ' + JSON.stringify(m.v)); }
-        board.changeGem(m.v.newGem, m.v.x, m.v.y);
+        BoardGems.changeGem(board, m.v.newGem, m.v.x, m.v.y);
         break;
       case 'r':
         if(debug) { console.log('    Remove: ' + JSON.stringify(m.v)); }
-        board.removeGem(m.v.x, m.v.y);
+        BoardGems.removeGem(board, m.v.x, m.v.y);
         break;
       default:
         console.log('Unhandled mutation [' + m.t + '].');

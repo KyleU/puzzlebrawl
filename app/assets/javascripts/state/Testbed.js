@@ -88,12 +88,12 @@ define([
     if(p === undefined || p === null) {
       throw 'Player update received with no active brawl.';
     }
-    var board = p.boardsByPlayer[update.id];
+    var board = p.players[update.id].board;
     if(board === undefined || board === null) {
       throw 'Player update received with invalid id [' + update.id + '].';
     }
     if(update.scoreDelta !== undefined && update.scoreDelta !== null && update.scoreDelta > 0) {
-      board.changeScore(update.scoreDelta);
+      p.changeScore(update.id, update.scoreDelta);
     }
     board.applyMutations(update.segments);
   };

@@ -9,7 +9,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     this.game.add.existing(this);
 
     this.boards = [];
-    this.boardsByPlayer = {};
+    this.players = {};
 
     this.resizer = new PlaymatResizer(this);
   };
@@ -25,14 +25,21 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     Status.setScenario(brawl.scenario);
     var playmat = this;
     _.each(brawl.players, function(p) {
-      var b = p.board;
-      if(p.score === undefined) { b.score = 0; } else { b.score = p.score; }
-      var board = new Board(p.board, playmat.game);
+      var board = new Board(p.board, p.id, playmat.game);
       playmat.boards.push(board);
-      playmat.boardsByPlayer[p.id] = board;
+      playmat.players[p.id] = {
+        id: p.id,
+        name: p.name,
+        score: p.score,
+        board: board
+      };
       playmat.add(board);
     });
     this.resizer.refreshLayout();
+  };
+
+  Playmat.prototype.changeScore = function(id, delta) {
+    console.log('Updating score for [' + id + '] by [' + delta + '] points.');
   };
 
   return Playmat;
