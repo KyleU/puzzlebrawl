@@ -13,14 +13,21 @@ define([], function () {
     var originalSize = [p.w, p.h];
 
     var xOffset = 32;
-    _.each(p.boards, function(board) {
-      board.x = xOffset;
-      board.y = 32;
-      xOffset += board.width + 32;
+    _.each(p.players, function(player) {
+      player.nameLabel.x = xOffset;
+      player.nameLabel.y = 32;
+
+      player.scoreLabel.x = xOffset + player.board.width;
+      player.scoreLabel.y = 32;
+
+      player.board.x = xOffset;
+      player.board.y = 112;
+
+      xOffset += player.board.width + 32;
     });
 
     p.w = xOffset;
-    p.h = 1600;
+    p.h = 1680;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.resize();

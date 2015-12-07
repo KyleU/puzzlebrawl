@@ -3,7 +3,7 @@
 define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations'], function (Gem, BoardGems, BoardMutations) {
   'use strict';
 
-  function Board(model, owner, game) {
+  function Board(model, game) {
     this.key = model.key;
     this.w = model.width;
     this.h = model.height;
@@ -21,7 +21,7 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations'], function (Gem, Bo
     for(var y = 0; y < this.h; y++) {
       for(var x = 0; x < this.w; x++) {
         var g = model.spaces[x][y];
-        if(g !== null) {
+        if(g !== null && this.gems[g.id] === undefined) {
           BoardGems.addGem(this, g, x, y);
         }
       }

@@ -8,7 +8,6 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     Phaser.Group.call(this, game, null, 'playmat');
     this.game.add.existing(this);
 
-    this.boards = [];
     this.players = {};
 
     this.resizer = new PlaymatResizer(this);
@@ -24,16 +23,26 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     this.brawl = brawl;
     Status.setScenario(brawl.scenario);
     var playmat = this;
+    var style = { font: '60px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
     _.each(brawl.players, function(p) {
-      var board = new Board(p.board, p.id, playmat.game);
-      playmat.boards.push(board);
+      var board = new Board(p.board, playmat.game);
+      playmat.add(board);
+
+      var nameLabel = new Phaser.Text(playmat.game, 0, 0, p.name, style);
+      playmat.add(nameLabel);
+
+      var scoreLabel = new Phaser.Text(playmat.game, 0, 0, p.score, style);
+      scoreLabel.anchor.set(1, 0);
+      playmat.add(scoreLabel);
+
       playmat.players[p.id] = {
         id: p.id,
         name: p.name,
+        nameLabel: nameLabel,
         score: p.score,
+        scoreLabel: scoreLabel,
         board: board
       };
-      playmat.add(board);
     });
     this.resizer.refreshLayout();
   };
