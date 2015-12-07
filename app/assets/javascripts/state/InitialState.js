@@ -11,6 +11,7 @@ define(['state/GameState', 'state/LoadingScreen'], function (GameState, LoadingS
   InitialState.prototype.constructor = InitialState;
 
   InitialState.prototype.preload = function() {
+    this.game.stage.disableVisibilityChange = true;
     //this.game.load.image('load-bar', this.assetRoot + 'images/load/bar.png');
   };
 
