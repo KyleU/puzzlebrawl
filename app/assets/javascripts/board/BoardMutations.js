@@ -33,28 +33,36 @@ define(['board/BoardGems'], function (BoardGems) {
     }
   }
 
-  function applySegment(board, segment, idx) {
+  function applySegment(board, segment, idx, scoreCallback) {
     if(debug) { console.log('  Segment [' + idx + ': ' + segment.category + '] (' + segment.mutations.length + ' mutations):'); }
+
+    var scoreDelta = 0;
     _.each(segment.mutations, function(mutation) {
+      if(mutation.v.score !== undefined) {
+        scoreDelta += mutation.v.score;
+      }
       applyMutation(board, mutation);
     });
+
+    if(scoreDelta !== 0) {
+      scoreCallback(scoreDelta);
+    }
   }
 
-  function applyMutations(board, segments, idx) {
-    var segmentIndex;
-    if(idx === undefined) {
-      segmentIndex = 0;
-    } else {
-      segmentIndex = idx;
-    }
+  function applyMutations(board, segments, scoreCallback, idx) {
     if(debug) {
       var count = _.reduce(segments, function(i, c){ return i + c.length; }, 0);
       console.log('Processing [' + segments.length + '] segments containing [' + count + '] mutations.');
     }
     if(segments.length > 0) {
-      applySegment(board, segments[0], segmentIndex);
+      board.game.isTweening = true;
+      var s = segments[0];
+      applySegment(board, s, idx, scoreCallback);
+      if(segments.length === 1) {
+        board.game.isTweening = false;
+      }
       var f = function() {
-        applyMutations(board, segments.splice(1), segmentIndex + 1);
+        applyMutations(board, segments.splice(1), scoreCallback, idx + 1);
       };
       setTimeout(f, 200);
     }

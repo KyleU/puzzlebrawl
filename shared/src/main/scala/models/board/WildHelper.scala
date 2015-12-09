@@ -1,5 +1,6 @@
 package models.board
 
+import models.Constants
 import models.board.mutation.Mutation.RemoveGem
 import models.board.mutation.UpdateSegment
 import models.gem.Color
@@ -12,12 +13,12 @@ trait WildHelper { this: Board =>
           case Some(seed) if seed.color == Color.Wild => Seq.empty
           case Some(seed) => applyMutation(RemoveGem(x, y)) +: mapGems { (candidate, candidateX, candidateY) =>
             if (candidate.color == seed.color) {
-              Seq(applyMutation(RemoveGem(candidateX, candidateY)))
+              Seq(applyMutation(RemoveGem(candidateX, candidateY, Some(Constants.wildPerGemScore))))
             } else {
               Seq.empty
             }
           }.flatten
-          case None => Seq(applyMutation(RemoveGem(x, y)))
+          case None => Seq(applyMutation(RemoveGem(x, y, Some(Constants.wildSoloDropScore))))
         }
       } else {
         Seq.empty

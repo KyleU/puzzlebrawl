@@ -1,7 +1,8 @@
 package models.board
 
-import models.board.mutation.{ UpdateSegment, Mutation }
+import models.Constants
 import models.board.mutation.Mutation.RemoveGem
+import models.board.mutation.UpdateSegment
 import models.gem.Gem
 
 trait CrashHelper { this: Board =>
@@ -15,11 +16,9 @@ trait CrashHelper { this: Board =>
     }
     ret.flatMap {
       case r if r.isEmpty => None
-      case r => Some(UpdateSegment("crash", r, scoreDelta = Some(scoreFor(r))))
+      case r => Some(UpdateSegment("crash", r))
     }
   }
-
-  private[this] def scoreFor(r: Seq[Mutation]) = r.size * 100
 
   private[this] def crashGem(gem: Gem, x: Int, y: Int) = {
     if (!gem.crash.exists(x => x)) {
@@ -46,7 +45,18 @@ trait CrashHelper { this: Board =>
 
     val run = check(gem, gem, x, y)
     if (run.size > 1) {
-      run.map(n => applyMutation(RemoveGem(n._2, n._3)))
+      run.map { n =>
+        val score = {
+          val w = n._1.width.getOrElse(1)
+          val h = n._1.height.getOrElse(1)
+          if(w != 1 || h != 1) {
+            w * h * Constants.largeGemScore
+          } else {
+            Constants.normalGemScore
+          }
+        }
+        applyMutation(RemoveGem(n._2, n._3, Some(score)))
+      }
     } else {
       Seq.empty
     }

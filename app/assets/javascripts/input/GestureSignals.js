@@ -10,6 +10,8 @@ define([], function () {
     this.onHold = new Phaser.Signal();
 
     this.onSwipe.add(this.swipeCallback, this, 0);
+    this.onTap.add(this.tapCallback, this, 0);
+    this.onHold.add(this.holdCallback, this, 0);
   };
 
   GestureSignals.prototype.swipeCallback = function(gestures, pointer) {
@@ -24,13 +26,21 @@ define([], function () {
       }
     } else if(Math.abs(yDiff) > (Math.abs(xDiff) * 2)) {
       if(yDiff > 0) {
-        this.game.onInput('active-step');
-      } else {
         this.game.onInput('active-drop');
+      } else {
+        this.game.onInput('active-step');
       }
     }
+  };
 
-    console.log(pointer, xDiff, yDiff);
+  GestureSignals.prototype.tapCallback = function(gestures, pointer) {
+    this.game.onInput('active-clockwise');
+    console.log(pointer);
+  };
+
+  GestureSignals.prototype.holdCallback = function(gestures, pointer) {
+    this.game.onInput('active-counter-clockwise');
+    console.log(pointer);
   };
 
   return GestureSignals;

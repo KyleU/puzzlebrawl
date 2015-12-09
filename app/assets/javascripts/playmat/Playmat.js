@@ -48,6 +48,9 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
   };
 
   Playmat.prototype.changeScore = function(id, delta) {
+    var player = this.players[id];
+    player.score += delta;
+    player.scoreLabel.text = player.score;
     console.log('Updating score for [' + id + '] by [' + delta + '] points.');
   };
 

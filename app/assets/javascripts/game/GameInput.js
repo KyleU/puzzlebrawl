@@ -18,34 +18,38 @@ define([], function () {
   }
 
   GameInput.prototype.onInput = function(t) {
-    switch(t) {
-      case 'active-left':
-        this.game.send('ActiveGemsLeft', {});
-        break;
-      case 'active-right':
-        this.game.send('ActiveGemsRight', {});
-        break;
-      case 'active-clockwise':
-        this.game.send('ActiveGemsClockwise', {});
-        break;
-      case 'active-counter-clockwise':
-        this.game.send('ActiveGemsCounterClockwise', {});
-        break;
-      case 'active-step':
-        this.game.send('ActiveGemsStep', {});
-        break;
-      case 'active-drop':
-        this.game.send('ActiveGemsDrop', {});
-        break;
-      case 'toggle-debug':
-        toggleDebug();
-        break;
-      case 'sync':
-        this.game.send('DebugRequest', { data: 'sync' });
-        break;
-      default:
-        console.log('Unhandled input [' + t + '].');
-        break;
+    if(!this.game.isTweening) {
+      switch(t) {
+        case 'active-left':
+          this.game.send('ActiveGemsLeft', {});
+          break;
+        case 'active-right':
+          this.game.send('ActiveGemsRight', {});
+          break;
+        case 'active-clockwise':
+          this.game.send('ActiveGemsClockwise', {});
+          break;
+        case 'active-counter-clockwise':
+          this.game.send('ActiveGemsCounterClockwise', {});
+          break;
+        case 'active-step':
+          this.game.send('ActiveGemsStep', {});
+          break;
+        case 'active-drop':
+          this.game.send('ActiveGemsDrop', {});
+          break;
+        case 'toggle-debug':
+          toggleDebug();
+          break;
+        case 'sync':
+          this.game.send('DebugRequest', { data: 'sync' });
+          break;
+        default:
+          console.log('Unhandled input [' + t + '].');
+          break;
+      }
+    } else {
+      console.log('Suppressed input [' + t + '] while tweening.');
     }
   };
 

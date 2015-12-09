@@ -43,7 +43,7 @@ define(['input/GestureSignals'], function (GestureSignals) {
   };
 
   Gesture.TIMES = {
-    HOLD: 150,
+    HOLD: 250,
     SWIPE: 250
   };
 

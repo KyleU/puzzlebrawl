@@ -58,8 +58,8 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations'], function (Gem, Bo
     }
   };
 
-  Board.prototype.applyMutations = function(mutations) {
-    BoardMutations.applyMutations(this, mutations);
+  Board.prototype.applyMutations = function(segments, scoreCallback) {
+    BoardMutations.applyMutations(this, segments, scoreCallback, 0);
   };
 
   return Board;
