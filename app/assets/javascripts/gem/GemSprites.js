@@ -25,7 +25,7 @@ define([], function () {
     } else if(gem.timer !== undefined) {
       return parseInt(gem.timer);
     } else {
-      if(gem.width > 0 || gem.height > 0) {
+      if(gem.width > 1 || gem.height > 1) {
         if(y === 0) {
           if(x === 0) {
             return 12; // bl
