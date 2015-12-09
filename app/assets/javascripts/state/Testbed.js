@@ -51,6 +51,10 @@ define([
     }
   };
 
+  Testbed.prototype.render = function() {
+    //this.game.gesture.renderDebug();
+  };
+
   Testbed.prototype.resize = function() {
     if(this.playmat !== undefined) {
       this.playmat.resizer.resize();

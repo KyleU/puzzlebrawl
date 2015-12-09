@@ -79,7 +79,7 @@ trait ActiveGemRotationHelper { this: Player =>
           if (downOk) {
             Some(down)
           } else {
-            None //Seq(a.copy(gem = b.gem), b.copy(gem = a.gem))
+            Some(Seq(a.copy(gem = b.gem), b.copy(gem = a.gem)))
           }
         }
       }

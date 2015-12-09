@@ -18,6 +18,9 @@ define([], function () {
     var buttonA = pad.getButton(Phaser.Gamepad.XBOX360_A);
     var buttonB = pad.getButton(Phaser.Gamepad.XBOX360_B);
 
+    var buttonRT = pad.getButton(Phaser.Gamepad.XBOX360_RIGHT_TRIGGER);
+    var buttonLT = pad.getButton(Phaser.Gamepad.XBOX360_LEFT_TRIGGER);
+
     var buttonDPadLeft = pad.getButton(Phaser.Gamepad.XBOX360_DPAD_LEFT);
     var buttonDPadRight = pad.getButton(Phaser.Gamepad.XBOX360_DPAD_RIGHT);
     var buttonDPadUp = pad.getButton(Phaser.Gamepad.XBOX360_DPAD_UP);
@@ -26,6 +29,9 @@ define([], function () {
     if(buttonA !== null) {
       buttonA.onDown.add(input('active-clockwise'));
       buttonB.onDown.add(input('active-counter-clockwise'));
+
+      buttonRT.onDown.add(input('active-clockwise'));
+      buttonLT.onDown.add(input('active-counter-clockwise'));
 
       buttonDPadLeft.onDown.add(input('active-left'));
       buttonDPadRight.onDown.add(input('active-right'));
