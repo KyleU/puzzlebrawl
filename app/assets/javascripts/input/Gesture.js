@@ -13,7 +13,7 @@ define(['input/GestureSignals'], function (GestureSignals) {
     for(var addIdx = 0; addIdx < 4; addIdx++) {
       g.input.addPointer();
     }
-    this.pointers = [g.input.mousePointer, g.input.pointer1, g.input.pointer2, g.input.pointer3, g.input.pointer4, g.input.pointer5, g.input.pointer6];
+    this.pointers = [ /* g.input.mousePointer, */ g.input.pointer1, g.input.pointer2, g.input.pointer3, g.input.pointer4, g.input.pointer5, g.input.pointer6];
     this.statuses = [];
     for(var pIdx = 0; pIdx < this.pointers.length; pIdx++) {
       this.statuses[pIdx] = {

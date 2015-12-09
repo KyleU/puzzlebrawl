@@ -52,6 +52,7 @@ define([
   };
 
   Testbed.prototype.update = function() {
+    this.game.gamepad.update();
     this.game.gesture.update();
   };
 
