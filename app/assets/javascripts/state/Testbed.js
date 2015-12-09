@@ -1,8 +1,8 @@
 /* global define:false */
 /* global PuzzleBrawl:false */
 define([
-  'gem/GemTextures', 'playmat/Playmat', 'state/GameState', 'utils/Gamepad', 'utils/Gesture', 'utils/Keyboard'
-], function (GemTextures, Playmat, GameState, Gamepad, Gesture, Keyboard) {
+  'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'state/GameState'
+], function (GemTextures, Gamepad, Gesture, Keyboard, Playmat, GameState) {
   'use strict';
 
   function Testbed(game) {
@@ -49,6 +49,10 @@ define([
     } else {
       startWhenConnected();
     }
+  };
+
+  Testbed.prototype.update = function() {
+    this.game.gesture.update();
   };
 
   Testbed.prototype.render = function() {
