@@ -1,39 +1,24 @@
 /* global define:false */
 /* global Phaser:false */
-define([], function () {
+define(['input/GestureSignals'], function (GestureSignals) {
   'use strict';
 
   var Gesture = function(game) {
     this.game = game;
-
-    this.onSwipe = new Phaser.Signal();
-    this.onTap = new Phaser.Signal();
-    this.onHold = new Phaser.Signal();
+    this.signals = new GestureSignals(game);
   };
 
   Gesture.prototype.init = function() {
     var g = this.game;
-    g.input.addPointer();
-    g.input.addPointer();
-    g.input.addPointer();
-    g.input.addPointer();
-
-    this.pointers = [
-      g.input.mousePointer,
-      g.input.pointer1,
-      g.input.pointer2,
-      g.input.pointer3,
-      g.input.pointer4,
-      g.input.pointer5,
-      g.input.pointer6
-    ];
-
+    for(var addIdx = 0; addIdx < 4; addIdx++) {
+      g.input.addPointer();
+    }
+    this.pointers = [g.input.mousePointer, g.input.pointer1, g.input.pointer2, g.input.pointer3, g.input.pointer4, g.input.pointer5, g.input.pointer6];
     this.statuses = [];
     for(var pIdx = 0; pIdx < this.pointers.length; pIdx++) {
       this.statuses[pIdx] = {
         swipeDispatched: false,
         holdDispatched: false,
-
         isTouching: false,
         isHolding: false
       };
@@ -68,8 +53,7 @@ define([], function () {
 
   Gesture.prototype.cancelTouch = function(pointer, status) {
     if (status.isTouching) {
-      console.log('Tap!', pointer);
-      this.onTap.dispatch(this, pointer.positionDown);
+      this.signals.onTap.dispatch(this, pointer);
     }
 
     status.isTouching = false;
@@ -79,15 +63,12 @@ define([], function () {
 
   Gesture.prototype.updateSwipe = function(pointer, status, distance, duration) {
     if (!status.swipeDispatched && distance > 150 &&  duration > 100 && duration < Gesture.TIMES.SWIPE) {
-      console.log('Swipe!', pointer);
-      this.onSwipe.dispatch(this, pointer.positionDown);
+      this.signals.onSwipe.dispatch(this, pointer);
       status.swipeDispatched = true;
     }
   };
 
   Gesture.prototype.updateTouch = function(pointer, status, distance, duration) {
-    var positionDown = pointer.positionDown;
-
     if (distance < 10) {
       if (duration < Gesture.TIMES.HOLD) {
         status.isTouching = true;
@@ -97,9 +78,7 @@ define([], function () {
 
         if (!status.holdDispatched) {
           status.holdDispatched = true;
-
-          console.log('Hold!', pointer);
-          this.onHold.dispatch(this, positionDown);
+          this.signals.onHold.dispatch(this, pointer);
         }
       }
     } else {
