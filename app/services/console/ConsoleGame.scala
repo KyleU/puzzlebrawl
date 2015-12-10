@@ -11,7 +11,7 @@ class ConsoleGame() {
   val numPlayers = 4
   val game = Brawl.blank(
     id = UUID.randomUUID,
-    playerNames = (0 until numPlayers).map(x => "Player " + (x + 1))
+    players = (0 until numPlayers).map(x => (UUID.randomUUID, "Player " + (x + 1)))
   )
   val client = new ConsoleClient(game)
 

@@ -57,7 +57,7 @@ abstract class BrawlTest(id: UUID, val seed: Option[Int] = None) {
     id = id,
     scenario = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", ""),
     seed = seed.getOrElse(Math.abs(Random.nextInt())),
-    playerNames = Seq("original", "test", "goal")
+    players = Seq(UUID.randomUUID -> "original", UUID.randomUUID -> "test", UUID.randomUUID -> "goal")
   )
 
   val original = brawl.players.find(_.name == "original").getOrElse(throw new IllegalStateException())

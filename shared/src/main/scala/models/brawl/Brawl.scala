@@ -14,16 +14,16 @@ object Brawl {
     id: UUID,
     scenario: String = "Ad-hoc Test",
     seed: Int = Math.abs(Random.nextInt()),
-    playerNames: Seq[String] = Seq("Player 1"),
+    players: Seq[(UUID, String)] = Seq(UUID.randomUUID -> "Player 1"),
     width: Int = 6,
     height: Int = 12
   ) = {
-    val players = playerNames.map(name => Player(UUID.randomUUID, name, Board(name, width, height), gemStream = GemStream(seed)))
-    Brawl(id, scenario, seed, players)
+    val ps = players.map(x => Player(x._1, x._2, Board(x._2, width, height), gemStream = GemStream(seed)))
+    Brawl(id, scenario, seed, ps)
   }
 
-  def random(playerNames: Seq[String] = Seq("Player 1"), width: Int = 6, height: Int = 12, initialDrops: Int = 0) = {
-    val game = blank(UUID.randomUUID, playerNames = playerNames, width = width, height = height)
+  def random(players: Seq[(UUID, String)] = Seq(UUID.randomUUID -> "Player 1"), width: Int = 6, height: Int = 12, initialDrops: Int = 0) = {
+    val game = blank(UUID.randomUUID, players = players, width = width, height = height)
     (0 until initialDrops).foreach(_ => game.players.foreach { p =>
       val x = Random.nextInt(p.board.width)
       p.board.applyMutation(AddGem(p.gemStream.next, x, p.board.height - 1))

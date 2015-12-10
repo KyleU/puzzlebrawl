@@ -42,10 +42,10 @@ define([
       }
     }
 
+    this.offlineService = new PuzzleBrawl();
     if(scenario === 'offline') {
       console.log('Starting offline game...');
-      var puzzleBrawl = new PuzzleBrawl();
-      console.log(puzzleBrawl);
+      this.game.send('StartBrawl', { scenario: scenario });
     } else {
       startWhenConnected();
     }
@@ -54,10 +54,6 @@ define([
   Testbed.prototype.update = function() {
     this.game.gamepad.update();
     this.game.gesture.update();
-  };
-
-  Testbed.prototype.render = function() {
-    //this.game.gesture.renderDebug();
   };
 
   Testbed.prototype.resize = function() {
