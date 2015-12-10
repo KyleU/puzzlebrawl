@@ -34,12 +34,14 @@ object PuzzleBrawl extends js.JSApp {
     case "ActiveGemsStep" => activePlayer.foreach(p => p.activeGemsStep().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
     case "ActiveGemsDrop" => activePlayer.foreach(p => send(PlayerUpdate(p.id, p.activeGemsDrop() +: p.board.fullTurn() :+ p.activeGemsCreate())))
 
+    case "DebugRequest" => handleDebugRequest(v.data.toString)
+
     case _ => throw new IllegalStateException(s"Invalid message [$c].")
   }
 
   protected def send(rm: ResponseMessage): Unit = {
-    val json = JsonSerializers.write(rm)
-    sendCallback(JsonSerializers.write(json))
+    val json = ResponseMessageSerializers.write(rm)
+    sendCallback(BaseSerializers.write(json))
   }
 
   private[this] def handleStartBrawl(scenario: String) = {
@@ -52,5 +54,12 @@ object PuzzleBrawl extends js.JSApp {
     activeBrawl = Some(brawl)
     activePlayer = brawl.players.find(p => p.id == userId)
     send(BrawlJoined(brawl, 0))
+  }
+
+  private[this] def handleDebugRequest(data: String) = data match {
+    case "sync" =>
+      send(DebugResponse("sync", "Ok!"))
+    case _ =>
+      throw new IllegalArgumentException(s"Unhandled debug request [$data].")
   }
 }
