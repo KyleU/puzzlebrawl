@@ -1,7 +1,6 @@
 package utils.json
 
 import models.board.Board
-import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
 import models.gem.{ GemLocation, GemStream, Color, Gem }
 import models.player.Player

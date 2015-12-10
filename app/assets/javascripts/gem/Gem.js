@@ -5,6 +5,9 @@ define([], function () {
 
   function Gem(model, game) {
     Phaser.Sprite.call(this, game);
+    if(model.color === undefined) {
+      model.color = 'r';
+    }
     this.updateModel(model);
     this.name = 'gem-' + this.model.id;
     this.anchor.setTo(0.0, 1.0);

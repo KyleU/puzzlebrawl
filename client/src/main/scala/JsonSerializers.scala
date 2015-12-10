@@ -1,5 +1,7 @@
 import models._
 import models.board.Board
+import models.board.mutation.Mutation
+import models.board.mutation.Mutation._
 import models.brawl.Brawl
 import models.gem.{ Color, Gem, GemLocation, GemStream }
 import models.player.Player
@@ -20,12 +22,12 @@ object JsonSerializers {
     case None => Js.Null
   }
 
-  implicit val colorWrites = Writer[Color] { case c => Js.Str(c.charVal.toString) }
+  private implicit val colorWrites = Writer[Color] { case c => Js.Str(c.charVal.toString) }
 
   private implicit val gemWriter = Writer[Gem] { case g => writeJs(g) }
   private implicit val gemLocationWriter = Writer[GemLocation] { case gl => writeJs(gl) }
 
-  implicit val spacesWrites = Writer[Array[Array[Option[Gem]]]] { case spaces =>
+  private implicit val spacesWrites = Writer[Array[Array[Option[Gem]]]] { case spaces =>
     val arr = Js.Arr(spaces.map { col =>
       Js.Arr(col.map {
         case Some(gem) => writeJs(gem)
@@ -53,6 +55,16 @@ object JsonSerializers {
   private implicit val brawlWriter = Writer[Brawl] { case b => writeJs(b) }
   private implicit val brawlJoinedWriter = Writer[BrawlJoined] { case bj => writeJs(bj) }
 
+  implicit val mutationWrites = Writer[Mutation] { case m =>
+    val v = m match {
+      case ag: AddGem => "a" -> writeJs(ag)
+      case mg: MoveGem => "m" -> writeJs(mg)
+      case mgs: MoveGems => "x" -> Js.Arr(Js.Str("MoveGems"), Js.Obj("moves" -> Js.Arr(mgs.moves.map(move => writeJs(move).asInstanceOf[Js.Arr].value(1)): _*)))
+      case cg: ChangeGem => "c" -> writeJs(cg)
+      case rg: RemoveGem => "r" -> writeJs(rg)
+    }
+    Js.Obj("t" -> Js.Str(v._1), "v" -> v._2.asInstanceOf[Js.Arr].value(1))
+  }
 
   private implicit val responseMessageWriter: Writer[ResponseMessage] = Writer[ResponseMessage] {
     case rm =>

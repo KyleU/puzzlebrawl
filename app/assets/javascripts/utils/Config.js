@@ -10,7 +10,7 @@ define(function () {
   }
 
   return {
-    offline: false,
+    offline: true,
     wsUrl: wsUrl
   };
 });
