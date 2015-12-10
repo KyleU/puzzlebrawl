@@ -1,4 +1,5 @@
 import models._
+import models.board.mutation.UpdateSegment
 import upickle._
 import upickle.legacy._
 

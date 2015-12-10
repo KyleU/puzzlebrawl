@@ -2,6 +2,7 @@ package models.scenario
 
 import java.util.UUID
 
+import models.Constants
 import models.board.Board
 import models.board.mutation.Mutation.AddGem
 import models.brawl.Brawl
@@ -35,7 +36,7 @@ object Scenario {
 
     scenario match {
       case "testbed" =>
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
         val brawl = Brawl(id, scenario, seed, ps)
         brawl.players.foreach { player =>
           (0 until 20).foreach { i =>
@@ -48,11 +49,11 @@ object Scenario {
         }
         brawl
       case "multiplayer" =>
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
       case "normal" =>
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), GemStream(seed)))
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
       case x if x.startsWith("test") =>
@@ -65,14 +66,16 @@ object Scenario {
         test.brawl
       case x if x.startsWith("all") =>
         val testName = x.stripPrefix("all")
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, 6, 12), MockGemStreams.forString(testName)))
+        val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, w, h), MockGemStreams.forString(testName)))
         val brawl = Brawl(id, scenario, seed, ps)
         for (p <- brawl.players) {
           p.activeGemsCreate()
         }
         brawl
       case "ai" =>
-        val ps = (0 until 8).map(i => Player(UUID.randomUUID, "User " + i, Board("User " + i, 6, 12), GemStream()))
+        val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
+        val ps = (0 until 8).map(i => Player(UUID.randomUUID, "User " + i, Board("User " + i, w, h), GemStream()))
         val id = UUID.randomUUID()
         val brawl = Brawl(id, "ai", seed, ps)
         brawl

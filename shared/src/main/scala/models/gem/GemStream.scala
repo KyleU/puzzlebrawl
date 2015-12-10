@@ -1,11 +1,8 @@
 package models.gem
 
-import scala.util.Random
+import models.Constants
 
-object GemStream {
-  val baseWildGemChance = 0.01
-  val baseCrashGemChance = 0.15
-}
+import scala.util.Random
 
 case class GemStream(
     seed: Int = Math.abs(Random.nextInt),
@@ -26,8 +23,8 @@ case class GemStream(
   private[this] val r = new Random(seed)
   private[this] var nextId = 0
 
-  private[this] val wildChance = GemStream.baseWildGemChance * gemAdjustWild.getOrElse(1.0)
-  private[this] val crashChance = GemStream.baseCrashGemChance * gemAdjustCrash.getOrElse(1.0)
+  private[this] val wildChance = Constants.GemStream.baseWildGemChance * gemAdjustWild.getOrElse(1.0)
+  private[this] val crashChance = Constants.GemStream.baseCrashGemChance * gemAdjustCrash.getOrElse(1.0)
 
   val baseChanceValue = 100.0
 

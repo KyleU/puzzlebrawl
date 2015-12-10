@@ -41,6 +41,7 @@ object PuzzleBrawl extends js.JSApp {
 
   protected def send(rm: ResponseMessage): Unit = {
     val json = ResponseMessageSerializers.write(rm)
+
     sendCallback(BaseSerializers.write(json))
   }
 

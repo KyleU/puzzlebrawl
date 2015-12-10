@@ -13,12 +13,12 @@ trait WildHelper { this: Board =>
           case Some(seed) if seed.color == Color.Wild => Seq.empty
           case Some(seed) => applyMutation(RemoveGem(x, y)) +: mapGems { (candidate, candidateX, candidateY) =>
             if (candidate.color == seed.color) {
-              Seq(applyMutation(RemoveGem(candidateX, candidateY, Some(Constants.wildPerGemScore))))
+              Seq(applyMutation(RemoveGem(candidateX, candidateY, Some(Constants.Scoring.wildPerGemScore))))
             } else {
               Seq.empty
             }
           }.flatten
-          case None => Seq(applyMutation(RemoveGem(x, y, Some(Constants.wildSoloDropScore))))
+          case None => Seq(applyMutation(RemoveGem(x, y, Some(Constants.Scoring.wildSoloDropScore))))
         }
       } else {
         Seq.empty

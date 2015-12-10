@@ -50,9 +50,9 @@ trait CrashHelper { this: Board =>
           val w = n._1.width.getOrElse(1)
           val h = n._1.height.getOrElse(1)
           if(w != 1 || h != 1) {
-            w * h * Constants.largeGemScore
+            w * h * Constants.Scoring.largeGemScore
           } else {
-            Constants.normalGemScore
+            Constants.Scoring.normalGemScore
           }
         }
         applyMutation(RemoveGem(n._2, n._3, Some(score)))

@@ -4,6 +4,7 @@ import upickle._
 import upickle.legacy._
 
 import BrawlSerializers.gemWriter
+import BaseSerializers.intOptionWriter
 
 object MutationSerializers {
   implicit val mutationWriter = Writer[Mutation] { case m =>
