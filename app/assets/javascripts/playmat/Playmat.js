@@ -31,7 +31,12 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
       var nameLabel = new Phaser.Text(playmat.game, 0, 0, p.name, style);
       playmat.add(nameLabel);
 
-      var scoreLabel = new Phaser.Text(playmat.game, 0, 0, p.score, style);
+      var score = p.score;
+      if(score === undefined) {
+        score = 0;
+      }
+
+      var scoreLabel = new Phaser.Text(playmat.game, 0, 0, score, style);
       scoreLabel.anchor.set(1, 0);
       playmat.add(scoreLabel);
 
@@ -39,7 +44,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
         id: p.id,
         name: p.name,
         nameLabel: nameLabel,
-        score: p.score,
+        score: score,
         scoreLabel: scoreLabel,
         board: board
       };
