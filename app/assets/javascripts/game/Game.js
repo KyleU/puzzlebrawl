@@ -27,7 +27,8 @@ define(['game/GameInit', 'game/GameInput', 'game/GameNetwork'], function (GameIn
   Game.prototype.onMessage = function(c, v) {
     switch(c) {
       default:
-        this.state.getCurrentState().onMessage(c, v);
+        var state = this.state.getCurrentState();
+        state.onMessage(c, v);
         break;
     }
   };

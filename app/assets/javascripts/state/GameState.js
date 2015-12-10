@@ -1,7 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
 /* global _:false */
-define([], function () {
+define(['utils/Status'], function (Status) {
   'use strict';
 
   function GameState(id, game) {
@@ -18,6 +18,10 @@ define([], function () {
 
   GameState.prototype.onMessage = function(c, v) {
     switch(c) {
+      case 'Pong':
+        var delta = new Date().getTime() - v.timestamp;
+        Status.setLatency(delta);
+        break;
       case 'MessageSet':
         var self = this;
         _.each(v.messages, function(message) {

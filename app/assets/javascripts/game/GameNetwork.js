@@ -41,10 +41,6 @@ define(['utils/Config', 'utils/DebugTrace', 'utils/Status', 'utils/Websocket'], 
 
   GameNetwork.prototype.onMessage = function(c, v) {
     switch(c) {
-      case 'Pong':
-        var delta = new Date().getTime() - v.timestamp;
-        Status.setLatency(delta);
-        break;
       case 'SendTrace':
         var data = DebugTrace.getTrace(this.game);
         this.ws.send('DebugRequest', { 'data': JSON.stringify(data) });
