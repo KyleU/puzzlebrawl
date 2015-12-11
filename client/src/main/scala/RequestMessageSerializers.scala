@@ -62,4 +62,7 @@ object RequestMessageSerializers {
       case _ => throw new IllegalStateException()
     }
   }
+
+  def read(json: Js.Value) = readJs[RequestMessage](json)
+  def write(rm: RequestMessage) = writeJs(rm)
 }

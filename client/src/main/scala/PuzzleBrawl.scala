@@ -3,27 +3,38 @@ import java.util.UUID
 import models._
 import models.brawl.Brawl
 import models.player.Player
-import upickle.Js
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
 
 @JSExport
 class PuzzleBrawl {
+  val networkStatus = "offline" // TODO "proxy", "blend"
+
   private[this] val userId = UUID.randomUUID
   private[this] var activeBrawl: Option[Brawl] = None
   private[this] var activePlayer: Option[Player] = None
 
-  private[this] var connecting = false
-  private[this] var connected = false
-  private[this] val socket = new NetworkSocket(onSocketConnect, onSocketMessage)
-  socket.open()
+  private[this] val socket = if(networkStatus == "offline") {
+    None
+  } else {
+    val s = new NetworkSocket(onSocketConnect, onSocketMessage)
+    s.open()
+    Some(s)
+  }
 
   private[this] var sendCallback: js.Function1[String, Unit] = _
 
   @JSExport
   def register(callback: js.Function1[String, Unit]) = {
     sendCallback = callback
+  }
+
+  @JSExport
+  def start() = networkStatus match {
+    case "offline" => handleStartBrawl("offline")
+    case "proxy" => // TODO
+    case "blend" => // TODO
   }
 
   @JSExport
@@ -49,12 +60,15 @@ class PuzzleBrawl {
     sendCallback(BaseSerializers.write(json))
   }
 
-  protected def onSocketConnect() = {
-    println(s"Socket connected.")
+  protected def onSocketConnect(): Unit = activeBrawl match {
+    case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
+    case None => start()
   }
 
-  protected def onSocketMessage(c: String, v: Js.Obj) = {
-    println(s"Message [$c] received from socket.")
+  protected def onSocketMessage(s: String) = networkStatus match {
+    case "offline" => println(s"Message [$s] received from socket.") // TODO
+    case "proxy" => println(s"Message [$s] received from socket.") // TODO
+    case "blend" => println(s"Message [$s] received from socket.") // TODO
   }
 
   private[this] def handleStartBrawl(scenario: String) = {

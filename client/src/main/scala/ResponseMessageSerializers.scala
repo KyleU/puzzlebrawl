@@ -53,5 +53,5 @@ object ResponseMessageSerializers {
   }
 
   def read(json: Js.Value) = readJs[ResponseMessage](json)
-  def write(rm: ResponseMessage) = responseMessageWriter.write(rm)
+  def write(rm: ResponseMessage) = writeJs(rm)
 }

@@ -27,7 +27,7 @@ define(['game/GameInput', 'state/InitialState'], function (GameInput, InitialSta
   Game.prototype = Phaser.Game.prototype;
   Game.prototype.constructor = Game;
 
-  Game.prototype.send = function(c, v) { this.localServer.send(c, v); };
+  Game.prototype.send = function(c, v) { this.localServer.receive(c, v); };
   Game.prototype.onInput = function(t) { this.gameInput.onInput(t); };
 
   Game.prototype.onMessage = function(c, v) {

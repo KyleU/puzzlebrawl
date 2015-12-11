@@ -31,4 +31,5 @@ object BaseSerializers {
   }
 
   def write(j: Js.Value) = json.write(j)
+  def read(s: String) = json.read(s)
 }

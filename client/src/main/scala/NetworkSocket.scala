@@ -1,13 +1,9 @@
-import models.RequestMessage
 import org.scalajs.dom.raw._
-import upickle.Js
 
-class NetworkSocket(onConnect: () => Unit, onMessage: (String, Js.Obj) => Unit) {
+class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
   private[this] var connecting = false
   private[this] var connected = false
   private[this] var ws: Option[WebSocket] = None
-
-  println("NetworkSocket started.")
 
   def open() = if(connected) {
     throw new IllegalStateException("Already connected.")
@@ -17,8 +13,9 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String, Js.Obj) => Unit) 
     openSocket(url)
   }
 
-  def send(c: String, v: RequestMessage) {
-    println("Send [" + c + "]!")
+  def send(s: String) = ws match {
+    case Some(socket) => socket.send(s)
+    case None => throw new IllegalStateException()
   }
 
   private[this] val url = {
@@ -29,32 +26,36 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String, Js.Obj) => Unit) 
 
   private[this] def openSocket(url: String) = {
     connecting = true
-    println(s"Connecting websocket to [$url].")
     val socket = new WebSocket(url)
-    socket.onopen = { (event: Event) =>
-      connecting = false
-      connected = true
-      onConnect()
-      event
-    }
-    socket.onerror = { (event: ErrorEvent) =>
-      println("Error!")
-      event
-    }
+    socket.onopen = { (event: Event) => onConnectEvent(event) }
+    socket.onerror = { (event: ErrorEvent) => onErrorEvent(event) }
     socket.onmessage = { (event: MessageEvent) => onMessageEvent(event) }
-    socket.onclose = { (event: Event) =>
-      connecting = false
-      connected = false
-      println("Close!")
-      event
-    }
+    socket.onclose = { (event: Event) => onCloseEvent(event) }
     ws = Some(socket)
+  }
+
+  private[this] def onConnectEvent(event: Event) = {
+    connecting = false
+    connected = true
+    onConnect()
+    event
+  }
+
+  private[this] def onErrorEvent(event: ErrorEvent) = {
+    println(s"Error [$event]!")
+    event
   }
 
   private[this] def onMessageEvent(event: MessageEvent) = {
     val msg = event.data.toString
-    println(s"Message [$msg] received.")
-    onMessage("TODO", Js.Obj())
+    onMessage(msg)
+    event
+  }
+
+  private[this] def onCloseEvent(event: Event) = {
+    connecting = false
+    connected = false
+    println("Close!")
     event
   }
 }

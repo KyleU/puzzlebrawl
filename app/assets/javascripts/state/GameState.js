@@ -33,7 +33,7 @@ define(['utils/Status'], function (Status) {
         });
         break;
       default:
-        console.warn('Unhandled message [' + c + ']: ' + JSON.stringify(v));
+        console.warn('Unhandled message [' + c + '] in state [' + this.id + ']: ' + JSON.stringify(v));
     }
   };
 

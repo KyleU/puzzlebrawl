@@ -24,6 +24,8 @@ define([
     this.game.gesture.init();
 
     this.game.gemTextures = new GemTextures(this.game);
+
+    this.game.localServer.start();
   };
 
   Testbed.prototype.update = function() {
