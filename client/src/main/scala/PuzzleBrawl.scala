@@ -3,16 +3,21 @@ import java.util.UUID
 import models._
 import models.brawl.Brawl
 import models.player.Player
+import upickle.Js
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
 
-object PuzzleBrawl extends js.JSApp {
+@JSExport
+class PuzzleBrawl {
   private[this] val userId = UUID.randomUUID
   private[this] var activeBrawl: Option[Brawl] = None
   private[this] var activePlayer: Option[Player] = None
 
-  override def main() = {}
+  private[this] var connecting = false
+  private[this] var connected = false
+  private[this] val socket = new NetworkSocket(onSocketConnect, onSocketMessage)
+  socket.open()
 
   private[this] var sendCallback: js.Function1[String, Unit] = _
 
@@ -41,8 +46,15 @@ object PuzzleBrawl extends js.JSApp {
 
   protected def send(rm: ResponseMessage): Unit = {
     val json = ResponseMessageSerializers.write(rm)
-
     sendCallback(BaseSerializers.write(json))
+  }
+
+  protected def onSocketConnect() = {
+    println(s"Socket connected.")
+  }
+
+  protected def onSocketMessage(c: String, v: Js.Obj) = {
+    println(s"Message [$c] received from socket.")
   }
 
   private[this] def handleStartBrawl(scenario: String) = {
@@ -58,9 +70,7 @@ object PuzzleBrawl extends js.JSApp {
   }
 
   private[this] def handleDebugRequest(data: String) = data match {
-    case "sync" =>
-      send(DebugResponse("sync", "Ok!"))
-    case _ =>
-      throw new IllegalArgumentException(s"Unhandled debug request [$data].")
+    case "sync" => send(DebugResponse("sync", "Ok!"))
+    case _ => throw new IllegalArgumentException(s"Unhandled debug request [$data].")
   }
 }

@@ -6,7 +6,7 @@ requirejs.config({
   }
 });
 
-requirejs(['PuzzleBrawl'], function(PuzzleBrawl) {
+requirejs(['game/Game'], function(Game) {
   'use strict';
-  window.puzzlebrawl = new PuzzleBrawl();
+  window.game = new Game();
 });

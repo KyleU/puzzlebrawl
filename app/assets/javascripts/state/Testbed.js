@@ -1,5 +1,4 @@
 /* global define:false */
-/* global PuzzleBrawl:false */
 define([
   'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'state/GameState'
 ], function (GemTextures, Gamepad, Gesture, Keyboard, Playmat, GameState) {
@@ -25,30 +24,6 @@ define([
     this.game.gesture.init();
 
     this.game.gemTextures = new GemTextures(this.game);
-
-    var scenario;
-    if(window.location.hash.length > 1) {
-      scenario = window.location.hash.replace('#', '');
-    } else {
-      scenario = 'normal';
-    }
-
-    var self = this;
-    function startWhenConnected() {
-      if(self.game.gameNetwork.connected) {
-        self.game.send('StartBrawl', { scenario: scenario });
-      } else {
-        setTimeout(startWhenConnected, 20);
-      }
-    }
-
-    this.offlineService = new PuzzleBrawl();
-    if(scenario === 'offline') {
-      console.log('Starting offline game...');
-      this.game.send('StartBrawl', { scenario: scenario });
-    } else {
-      startWhenConnected();
-    }
   };
 
   Testbed.prototype.update = function() {

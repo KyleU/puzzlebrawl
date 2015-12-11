@@ -1,7 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
 /* global PuzzleBrawl:false */
-define(['game/GameInit', 'game/GameInput', 'game/GameNetwork'], function (GameInit, GameInput, GameNetwork) {
+define(['game/GameInput', 'state/InitialState'], function (GameInput, InitialState) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -10,18 +10,24 @@ define(['game/GameInit', 'game/GameInput', 'game/GameNetwork'], function (GameIn
   window.PhaserGlobal.hideBanner = true;
 
   function Game() {
-    Phaser.Game.call(this, GameInit.configOptions);
+    Phaser.Game.call(this, {
+      width: '100%',
+      height: '100%',
+      renderer: Phaser.AUTO,
+      parent: 'game-container',
+      state: new InitialState(this),
+      transparent: true,
+      resolution: 2
+    });
     this.connected = false;
-    this.gameNetwork = new GameNetwork(this);
     this.gameInput = new GameInput(this);
     this.localServer = this.createLocalServer();
-    this.gameInit = GameInit;
   }
 
   Game.prototype = Phaser.Game.prototype;
   Game.prototype.constructor = Game;
 
-  Game.prototype.send = function(c, v) { this.gameNetwork.send(c, v); };
+  Game.prototype.send = function(c, v) { this.localServer.send(c, v); };
   Game.prototype.onInput = function(t) { this.gameInput.onInput(t); };
 
   Game.prototype.onMessage = function(c, v) {
