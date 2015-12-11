@@ -1,8 +1,8 @@
 import org.scalajs.dom.raw._
 
 class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
-  private[this] var connecting = false
-  private[this] var connected = false
+  var connecting = false
+  var connected = false
   private[this] var ws: Option[WebSocket] = None
 
   def open() = if(connected) {
