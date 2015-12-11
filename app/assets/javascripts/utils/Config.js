@@ -10,7 +10,15 @@ define(function () {
   }
 
   return {
-    offline: true,
-    wsUrl: wsUrl
+    offline: false,
+    wsUrl: wsUrl,
+
+    input: {
+      tapMaxDistancePx: 10,
+      holdTimeMs: 250,
+      swipeMinTimeMs: 50,
+      swipeMaxTimeMs: 250,
+      swipeDistancePx: 100
+    }
   };
 });

@@ -1,6 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
-define(['input/GestureSignals'], function (GestureSignals) {
+define(['input/GestureSignals', 'utils/Config'], function (GestureSignals, Config) {
   'use strict';
 
   var Gesture = function(game) {
@@ -43,11 +43,6 @@ define(['input/GestureSignals'], function (GestureSignals) {
     }
   };
 
-  Gesture.TIMES = {
-    HOLD: 250,
-    SWIPE: 250
-  };
-
   Gesture.prototype.cancelSwipe = function(status) {
     status.swipeDispatched = false;
   };
@@ -63,15 +58,16 @@ define(['input/GestureSignals'], function (GestureSignals) {
   };
 
   Gesture.prototype.updateSwipe = function(pointer, status, distance, duration) {
-    if (!status.swipeDispatched && distance > 150 &&  duration > 100 && duration < Gesture.TIMES.SWIPE) {
+    var ci = Config.input;
+    if (!status.swipeDispatched && distance > ci.swipeDistancePx && duration > ci.swipeMinTimeMs && duration < ci.swipeMaxTimeMs) {
       this.signals.onSwipe.dispatch(this, pointer);
       status.swipeDispatched = true;
     }
   };
 
   Gesture.prototype.updateTouch = function(pointer, status, distance, duration) {
-    if (distance < 10) {
-      if (duration < Gesture.TIMES.HOLD) {
+    if (distance < Config.input.tapMaxDistancePx) {
+      if (duration < Config.input.holdTimeMs) {
         status.isTouching = true;
       } else {
         status.isTouching = false;

@@ -39,7 +39,24 @@ object BrawlSerializers {
     })
   }
 
-  implicit val boardReads = Json.reads[Board]
+  private[this] val internalBoardReader = Json.reads[Board]
+  implicit val boardReads = new Reads[Board] {
+    override def reads(json: JsValue) = internalBoardReader.reads(json) match {
+      case JsSuccess(board, _) => Json.fromJson[Array[Array[Option[Gem]]]](json) match {
+        case JsSuccess(spaces, _) =>
+          spaces.indices.foreach { x =>
+            spaces.head.indices.foreach { y =>
+              if(spaces(x)(y).isDefined) {
+                board.set(x, y, spaces(x)(y))
+              }
+            }
+          }
+          JsSuccess(board)
+        case se: JsError => se
+      }
+      case e: JsError => e
+    }
+  }
   implicit val boardWrites = new Writes[Board] {
     override def writes(o: Board) = {
       val json = Json.writes[Board].writes(o)
