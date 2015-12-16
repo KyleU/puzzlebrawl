@@ -16,7 +16,7 @@ trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
   private[this] var pendingMultiplayerConnections = List.empty[(String, UUID)]
 
   protected[this] def handleCreateBrawl(scenario: String, connectionId: UUID, seed: Option[Int]) {
-    if(scenario == "multiplayer") {
+    if (scenario == "multiplayer") {
       pendingMultiplayerConnections.headOption match {
         case Some(pending) =>
           log.info(s"Starting brawl for connections [${pending._2}, $connectionId] for scenario [$scenario].")

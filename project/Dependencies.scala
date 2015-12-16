@@ -22,14 +22,14 @@ object Dependencies {
     val playFilters = play.sbt.PlayImport.filters
     val playWs = play.sbt.PlayImport.ws
     val playJson = play.sbt.PlayImport.json
-    val playTest = "com.typesafe.play" %% "play-test" % "2.4.4"
+    val playTest = "com.typesafe.play" %% "play-test" % "2.4.6"
   }
 
   object WebJars {
     val requireJs = "org.webjars" % "requirejs" % "2.1.22"
     val bootstrap = "org.webjars" % "bootstrap" % "3.3.6"
     val underscore = "org.webjars" % "underscorejs" % "1.8.3"
-    val d3 = "org.webjars" % "d3js" % "3.5.6"
+    val d3 = "org.webjars" % "d3js" % "3.5.10"
     val nvd3 = "org.webjars" % "nvd3-community" % "1.7.0"
   }
 

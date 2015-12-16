@@ -17,43 +17,47 @@ object BrawlSerializers {
   private implicit val gemLocationWriter = Writer[GemLocation] { case gl => writeJs(gl) }
   private implicit val gemLocationReader = Reader[GemLocation] { case json => readJs[GemLocation](json) }
 
-  private implicit val spacesWriter = Writer[Array[Array[Option[Gem]]]] { case spaces =>
-    Js.Arr(spaces.map { col =>
-      Js.Arr(col.map {
-        case Some(gem) => writeJs(gem)
-        case None => Js.Null
+  private implicit val spacesWriter = Writer[Array[Array[Option[Gem]]]] {
+    case spaces =>
+      Js.Arr(spaces.map { col =>
+        Js.Arr(col.map {
+          case Some(gem) => writeJs(gem)
+          case None => Js.Null
+        }: _*)
       }: _*)
-    }: _*)
   }
-  private implicit val spacesReader = Reader[Array[Array[Option[Gem]]]] { case js: Js.Arr =>
-    js.value.toArray.map {
-      case arr: Js.Arr => arr.value.toArray.map(s => readJs[Option[Gem]](s))
-      case _ => throw new IllegalStateException()
-    }
+  private implicit val spacesReader = Reader[Array[Array[Option[Gem]]]] {
+    case js: Js.Arr =>
+      js.value.toArray.map {
+        case arr: Js.Arr => arr.value.toArray.map(s => readJs[Option[Gem]](s))
+        case _ => throw new IllegalStateException()
+      }
   }
 
-  private implicit val boardWriter = Writer[Board] { case b =>
-    val json = writeJs(b)
-    val spaces = writeJs(b.getSpacesCopy)
-    val seq = json match {
-      case o: Js.Obj => o.value ++ Seq("spaces" -> spaces)
-      case _ => throw new IllegalStateException()
-    }
-    Js.Obj(seq: _*)
+  private implicit val boardWriter = Writer[Board] {
+    case b =>
+      val json = writeJs(b)
+      val spaces = writeJs(b.getSpacesCopy)
+      val seq = json match {
+        case o: Js.Obj => o.value ++ Seq("spaces" -> spaces)
+        case _ => throw new IllegalStateException()
+      }
+      Js.Obj(seq: _*)
   }
-  private implicit val boardReader = Reader[Board] { case json: Js.Obj =>
-    val board = readJs[Board](json)
-    val spacesJson = json.value.find(_._1 == "spaces").getOrElse(throw new IllegalStateException("Missing spaces"))._2
-    val spaces = readJs[Array[Array[Option[Gem]]]](spacesJson)
-    spaces.indices.foreach { x =>
-      spaces.indices.foreach { y =>
-        val space = spaces(x)(y)
-        if(space.isDefined) {
-          board.set(x, y, space)
+  private implicit val boardReader = Reader[Board] {
+    case json: Js.Obj =>
+      val board = readJs[Board](json)
+      val spacesJson = json.value.find(_._1 == "spaces").getOrElse(throw new IllegalStateException("Missing spaces"))._2
+      val spaces = readJs[Array[Array[Option[Gem]]]](spacesJson)
+      spaces.indices.foreach { x =>
+        spaces.indices.foreach { y =>
+          val space = spaces(x)(y)
+          if (space.isDefined) {
+            board.set(x, y, space)
+          }
         }
       }
-    }
-    board
+      board
   }
 
   private implicit val gemStreamWriter = Writer[GemStream] { case gs => writeJs(gs) }

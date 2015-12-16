@@ -32,7 +32,7 @@ trait FuseHelper { this: Board =>
         }
       }
     }
-    ret.flatMap(m => if(m.isEmpty) { None } else { Some(UpdateSegment("fuse", m)) })
+    ret.flatMap(m => if (m.isEmpty) { None } else { Some(UpdateSegment("fuse", m)) })
   }
 
   private[this] def largestSize(gem: Gem, x: Int, y: Int) = {

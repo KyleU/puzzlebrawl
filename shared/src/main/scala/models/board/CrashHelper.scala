@@ -49,7 +49,7 @@ trait CrashHelper { this: Board =>
         val score = {
           val w = n._1.width.getOrElse(1)
           val h = n._1.height.getOrElse(1)
-          if(w != 1 || h != 1) {
+          if (w != 1 || h != 1) {
             w * h * Constants.Scoring.largeGemScore
           } else {
             Constants.Scoring.normalGemScore

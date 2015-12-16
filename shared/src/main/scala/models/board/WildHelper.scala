@@ -24,6 +24,6 @@ trait WildHelper { this: Board =>
         Seq.empty
       }
     }
-    ret.flatMap(r => if(r.isEmpty) { None } else { Some(UpdateSegment("wild", r)) })
+    ret.flatMap(r => if (r.isEmpty) { None } else { Some(UpdateSegment("wild", r)) })
   }
 }

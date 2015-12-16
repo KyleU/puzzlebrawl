@@ -29,14 +29,15 @@ object Move {
       }
       gem -> start
     }
-    ms.moves.zipWithIndex.foreach { case (m, i) =>
-      val gem = gems(i)
-      for (y <- 0 until gem._1.height.getOrElse(1)) {
-        for (x <- 0 until gem._1.width.getOrElse(1)) {
-          val src = (gem._2._1 + x, gem._2._2 + y)
-          b.set(src._1 + m.xDelta, src._2 + m.yDelta, Some(gem._1))
+    ms.moves.zipWithIndex.foreach {
+      case (m, i) =>
+        val gem = gems(i)
+        for (y <- 0 until gem._1.height.getOrElse(1)) {
+          for (x <- 0 until gem._1.width.getOrElse(1)) {
+            val src = (gem._2._1 + x, gem._2._2 + y)
+            b.set(src._1 + m.xDelta, src._2 + m.yDelta, Some(gem._1))
+          }
         }
-      }
     }
     ms
   }

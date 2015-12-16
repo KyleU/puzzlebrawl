@@ -43,7 +43,7 @@ trait ActiveGemRotationHelper { this: Player =>
           None
         }
       }
-      if(mutations.isEmpty) {
+      if (mutations.isEmpty) {
         None
       } else {
         val ret = board.applyMutation(MoveGems(mutations))

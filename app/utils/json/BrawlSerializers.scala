@@ -46,7 +46,7 @@ object BrawlSerializers {
         case JsSuccess(spaces, _) =>
           spaces.indices.foreach { x =>
             spaces.head.indices.foreach { y =>
-              if(spaces(x)(y).isDefined) {
+              if (spaces(x)(y).isDefined) {
                 board.set(x, y, spaces(x)(y))
               }
             }

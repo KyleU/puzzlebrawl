@@ -5,9 +5,9 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
   var connected = false
   private[this] var ws: Option[WebSocket] = None
 
-  def open() = if(connected) {
+  def open() = if (connected) {
     throw new IllegalStateException("Already connected.")
-  } else if(connecting) {
+  } else if (connecting) {
     throw new IllegalStateException("Already connecting.")
   } else {
     openSocket(url)

@@ -19,7 +19,7 @@ class PuzzleBrawl {
     }
   }
 
-  val networkStatus = if(scenario == "offline") {
+  val networkStatus = if (scenario == "offline") {
     "offline"
   } else {
     "proxy" // TODO "blend"
@@ -31,7 +31,7 @@ class PuzzleBrawl {
 
   private[this] var pendingStart = false
 
-  private[this] val socket = if(networkStatus == "offline") {
+  private[this] val socket = if (networkStatus == "offline") {
     None
   } else {
     val s = new NetworkSocket(onSocketConnect, onSocketMessage)
@@ -49,7 +49,7 @@ class PuzzleBrawl {
   @JSExport
   def start() = networkStatus match {
     case "offline" => handleStartBrawl("offline")
-    case "proxy" => if(socket.exists(_.connected)) {
+    case "proxy" => if (socket.exists(_.connected)) {
       val json = RequestMessageSerializers.write(StartBrawl(scenario))
       socket.foreach(_.send(BaseSerializers.write(json)))
     } else {
@@ -59,7 +59,7 @@ class PuzzleBrawl {
   }
 
   @JSExport
-  def receive(c: String, v: js.Dynamic): Unit = if(networkStatus == "proxy") {
+  def receive(c: String, v: js.Dynamic): Unit = if (networkStatus == "proxy") {
     this.socket match {
       case Some(sock) => sock.send(s"""{"c": "$c", "v": ${JSON.stringify(v)} }""")
       case None => throw new IllegalStateException()
@@ -90,7 +90,7 @@ class PuzzleBrawl {
 
   protected def onSocketConnect(): Unit = activeBrawl match {
     case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
-    case None => if(this.pendingStart) {
+    case None => if (this.pendingStart) {
       start()
     }
   }
@@ -102,7 +102,7 @@ class PuzzleBrawl {
   }
 
   private[this] def handleStartBrawl(scenario: String) = {
-    if(scenario != "offline") {
+    if (scenario != "offline") {
       throw new IllegalStateException(s"Can't handle scenario [$scenario].")
     }
     val players = Seq(userId -> "Offline User")
