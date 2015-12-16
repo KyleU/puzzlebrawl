@@ -13,7 +13,7 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations'], function (Gem, Bo
     Phaser.Group.call(this, game, null, 'board-' + model.key);
 
     game.add.existing(this);
-    this.bgTileSprite = new Phaser.TileSprite(game, 0, 0, 128 * this.w, 128 * this.h, 'board-bg-a');
+    this.bgTileSprite = new Phaser.TileSprite(game, 0, 0, 256 * this.w, 256 * this.h, 'board-bg-a');
 
     this.bgTileSprite.name = 'background';
     this.add(this.bgTileSprite);

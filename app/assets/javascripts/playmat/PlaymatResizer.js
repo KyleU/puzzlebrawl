@@ -27,7 +27,7 @@ define([], function () {
     });
 
     p.w = xOffset;
-    p.h = 1680;
+    p.h = (12 * 256) + 144;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.resize();

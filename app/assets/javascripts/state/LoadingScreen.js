@@ -10,7 +10,7 @@ define(['state/GameState', 'state/Testbed'], function (GameState, Testbed) {
   LoadingScreen.prototype.constructor = LoadingScreen;
 
   LoadingScreen.prototype.preload = function() {
-    this.game.load.spritesheet('gems', 'assets/images/game/gems.png', 128, 128);
+    this.game.load.spritesheet('gems', 'assets/images/game/gems.png', 256, 256);
     this.game.load.image('board-bg-a', 'assets/images/board/bg-a.png');
 
     var testbed = new Testbed(this.game);

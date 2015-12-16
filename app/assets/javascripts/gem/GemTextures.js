@@ -43,11 +43,11 @@ define(['gem/GemSprites'], function(GemSprites) {
       var width, height;
       if(gem.width === undefined) { width = 1; } else { width = gem.width; }
       if(gem.height === undefined) { height = 1; } else { height = gem.height; }
-      var bd = this.game.add.bitmapData(width * 128, height * 128);
+      var bd = this.game.add.bitmapData(width * 256, height * 256);
       for(var x = 0; x < width; x++) {
         for(var y = 0; y < height; y++) {
           var texIdx = GemSprites.spriteFor(gem, x, y);
-          bd.copy(this.gemImages[texIdx], 0, 0, 128, 128, x * 128, (height - y - 1) * 128);
+          bd.copy(this.gemImages[texIdx], 0, 0, 256, 256, x * 256, (height - y - 1) * 256);
         }
       }
 

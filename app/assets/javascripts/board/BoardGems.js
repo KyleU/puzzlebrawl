@@ -11,8 +11,8 @@ define(['gem/Gem'], function (Gem) {
       }
       board.set(x, y, gem);
       var g = new Gem(gem, board.game);
-      g.x = x * 128;
-      g.y = board.height - (y * 128);
+      g.x = x * 256;
+      g.y = board.height - (y * 256);
       board.gems[gem.id] = g;
       board.add(g);
     },
@@ -44,7 +44,7 @@ define(['gem/Gem'], function (Gem) {
       board.clear(x, y, g.width, g.height);
       board.set(x + xDelta, y + yDelta, g);
       var tween = board.game.add.tween(gem);
-      tween.to({x: (x + xDelta) * 128, y: board.height - ((y + yDelta) * 128)}, 200, Phaser.Easing.Cubic.Out);
+      tween.to({x: (x + xDelta) * 256, y: board.height - ((y + yDelta) * 256)}, 200, Phaser.Easing.Cubic.Out);
       tween.start();
     },
 
@@ -65,7 +65,7 @@ define(['gem/Gem'], function (Gem) {
         var moveGem = gems[moveIdx];
         board.set(move.x + move.xDelta, move.y + move.yDelta, moveGem);
         var tween = board.game.add.tween(board.gems[moveGem.id]);
-        tween.to({x: (move.x + move.xDelta) * 128, y: board.height - ((move.y + move.yDelta) * 128)}, 200, Phaser.Easing.Cubic.Out);
+        tween.to({x: (move.x + move.xDelta) * 256, y: board.height - ((move.y + move.yDelta) * 256)}, 200, Phaser.Easing.Cubic.Out);
         tween.start();
       }
     },
