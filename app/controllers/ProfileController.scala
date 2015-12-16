@@ -1,6 +1,6 @@
 package controllers
 
-import models.database.queries.auth.{ UserQueries, ProfileQueries }
+import models.queries.auth.{ UserQueries, ProfileQueries }
 import models.user.Avatars
 import play.api.i18n.MessagesApi
 import play.api.libs.concurrent.Execution.Implicits.defaultContext

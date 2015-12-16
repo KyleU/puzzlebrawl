@@ -1,7 +1,7 @@
 package services.scheduled
 
 import models.audit.DailyMetric
-import models.database.queries.report.ReportQueries
+import models.queries.report.ReportQueries
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.audit.DailyMetricService
 import services.database.Database

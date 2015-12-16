@@ -3,7 +3,7 @@ package services.history
 import java.util.UUID
 
 import com.github.mauricio.async.db.Connection
-import models.database.queries.history.BrawlHistoryQueries
+import models.queries.history.BrawlHistoryQueries
 import models.history.BrawlHistory
 import org.joda.time.LocalDateTime
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
