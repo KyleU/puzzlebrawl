@@ -13,7 +13,6 @@ class HomeController @javax.inject.Inject() (
     override val env: AuthenticationEnvironment,
     emailService: EmailService
 ) extends BaseController {
-
   def fakeIndex() = withSession("index") { implicit request =>
     Future.successful(Ok("puzzlebrawl.com"))
   }

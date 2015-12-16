@@ -15,3 +15,5 @@ dist
 /.settings
 
 buildinfo.properties
+
+offline/assets
