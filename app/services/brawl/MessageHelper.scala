@@ -45,12 +45,29 @@ trait MessageHelper { this: BrawlService =>
       val player = brawl.playersById(br.userId)
       br.message match {
         case x if brawl.completed.isDefined => log.warn(s"Received brawl message [${x.getClass.getSimpleName}] for completed brawl [$brawl.id].")
-        case ActiveGemsLeft => player.activeGemsLeft().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
-        case ActiveGemsRight => player.activeGemsRight().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
-        case ActiveGemsClockwise => player.activeGemsClockwise().foreach(ms => sendToAll(PlayerUpdate.using(player.id, "active", ms)))
-        case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(ms => sendToAll(PlayerUpdate.using(player.id, "active", ms)))
-        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate.using(player.id, "active", m)))
-        case ActiveGemsDrop => sendToAll(PlayerUpdate(player.id, player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()))
+        case ActiveGemsLeft => player.activeGemsLeft().foreach { m =>
+          player.board.moveCount += 1
+          sendToAll(PlayerUpdate.using(player.id, "active", m))
+        }
+        case ActiveGemsRight => player.activeGemsRight().foreach { m =>
+          player.board.moveCount += 1
+          sendToAll(PlayerUpdate.using(player.id, "active", m))
+        }
+        case ActiveGemsClockwise => player.activeGemsClockwise().foreach { ms =>
+          player.board.moveCount += 1
+          sendToAll(PlayerUpdate.using(player.id, "active", ms))
+        }
+        case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach { ms =>
+          player.board.moveCount += 1
+          sendToAll(PlayerUpdate.using(player.id, "active", ms))
+        }
+        case ActiveGemsStep => player.activeGemsStep().foreach { m =>
+          player.board.moveCount += 1
+          sendToAll(PlayerUpdate.using(player.id, "active", m))
+        }
+        case ActiveGemsDrop =>
+          player.board.moveCount += 1
+          sendToAll(PlayerUpdate(player.id, player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()))
         case r => log.warn(s"GameService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
       }
     } catch {
@@ -61,7 +78,7 @@ trait MessageHelper { this: BrawlService =>
   }
 
   protected[this] def handleInternalMessage(im: InternalMessage) = {
-    //log.debug("Handling [" + im.getClass.getSimpleName.stripSuffix("$") + "] internal message for game [" + id + "].")
+    log.debug("Handling [" + im.getClass.getSimpleName.stripSuffix("$") + "] internal message for game [" + id + "].")
     try {
       im match {
         case ap: AddPlayer => timeReceive(ap) { handleAddPlayer(ap.userId, ap.name, ap.connectionId, ap.connectionActor) }

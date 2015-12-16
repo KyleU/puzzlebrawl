@@ -8,6 +8,7 @@ trait BrawlHelper
     extends InstrumentedActor
     with Logging
     with ConnectionHelper
+    with HistoryHelper
     with MessageHelper
     with TraceHelper { this: BrawlService =>
 

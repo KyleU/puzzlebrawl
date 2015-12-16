@@ -5,6 +5,9 @@ import models.board.mutation.Mutation._
 import models.gem.{ GemLocation, Gem }
 
 case class Board(key: String, width: Int, height: Int) extends BoardHelper {
+  var gemCount = 0
+  var moveCount = 0
+
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
   for (x <- 0 until width; y <- 0 until height) {
     spaces(x)(y) = None

@@ -1,0 +1,9 @@
+@(q: String, sortBy: String, count: Int, page: Int, brawls: Seq[models.history.BrawlHistory])(implicit session: Session, flash: Flash, identity: models.user.User)
+@views.html.admin.list(
+  "game", "Games", "explore", count, page, brawls.size, q,
+  searchAction = controllers.admin.routes.BrawlHistoryController.brawlList(),
+  prevLink = controllers.admin.routes.BrawlHistoryController.brawlList(q, sortBy, page - 1),
+  nextLink = controllers.admin.routes.BrawlHistoryController.brawlList(q, sortBy, page + 1)
+) {
+  @brawlListTable(sortBy, brawls)
+}

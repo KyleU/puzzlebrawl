@@ -12,9 +12,11 @@ object TestScratchpad extends BrawlTest.Provider {
 class TestScratchpad(id: UUID) extends BrawlTest(id) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0, width = Some(2), height = Some(2)), 0, 0))
-    test.board.applyMutation(AddGem(Gem(1, width = Some(2), height = Some(2)), 0, 2))
+    test.board.applyMutation(AddGem(Gem(2), 2, 0))
+    test.board.applyMutation(AddGem(Gem(3), 2, 1))
+    test.board.applyMutation(AddGem(Gem(4, width = Some(2), height = Some(2)), 3, 0))
 
-    goal.board.applyMutation(AddGem(Gem(0, width = Some(2), height = Some(4)), 0, 0))
+    goal.board.applyMutation(AddGem(Gem(0, width = Some(5), height = Some(2)), 0, 0))
   }
 
   override def run() = test.board.fuse()

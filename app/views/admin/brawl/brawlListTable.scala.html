@@ -1,0 +1,37 @@
+@(sortBy: String, brawls: Seq[models.history.BrawlHistory])
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      @utils.play.ViewUtils.th("game-id", "Game ID", sortBy)
+      @utils.play.ViewUtils.th("seed", "Seed", sortBy)
+      @utils.play.ViewUtils.th("scenario", "Scenario", sortBy)
+      @utils.play.ViewUtils.th("status", "Status", sortBy)
+      @utils.play.ViewUtils.th("players", "Players", sortBy)
+      @utils.play.ViewUtils.th("gems", "Gems", sortBy)
+      @utils.play.ViewUtils.th("moves", "Moves", sortBy)
+      @utils.play.ViewUtils.th("started", "Started", sortBy)
+      @utils.play.ViewUtils.th("completed", "Completed", sortBy)
+      @utils.play.ViewUtils.th("logged", "Logged", sortBy)
+    </tr>
+  </thead>
+  <tbody>
+  @for(b <- brawls) {
+    <tr>
+      <td title="@b.id">@b.id.toString.substring(0, 8)</td>
+      <td>@b.seed</td>
+      <td>@b.scenario</td>
+      <td>@b.status</td>
+      <td>@for(player <- b.players) {
+        @defining(controllers.admin.routes.UserController.userDetail(player)) { url =>
+          @Html(s"""<a href="$url"><div title="${player.toString}">${player.toString.substring(0, 8)}</div></a>""")
+        }
+      }</td>
+      <td>@b.gems</td>
+      <td>@b.moves</td>
+      <td>@b.started.toString("yyyy-MM-dd HH:mm:ss")</td>
+      <td>@b.completed.map(_.toString("yyyy-MM-dd HH:mm:ss"))</td>
+      <td>@b.logged.map(x => "Yes").getOrElse("No")</td>
+    </tr>
+  }
+  </tbody>
+</table>
