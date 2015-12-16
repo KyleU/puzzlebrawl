@@ -1,10 +1,8 @@
 package models.ddl
 
-import models.database.Statement
-
-case object CreateDailyMetricsTable extends Statement {
-  override val sql = """
-    create table daily_metrics
+case object CreateDailyMetricsTable extends CreateTableStatement("daily_metrics") {
+  override val sql = s"""
+    create table $tableName
     (
        day date not null,
        metric character varying(128) not null,

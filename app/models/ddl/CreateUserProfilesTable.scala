@@ -1,10 +1,8 @@
 package models.ddl
 
-import models.database.Statement
-
-case object CreateUserProfilesTable extends Statement {
-  override val sql = """
-    create table user_profiles (
+case object CreateUserProfilesTable extends CreateTableStatement("user_profiles") {
+  override val sql = s"""
+    create table $tableName (
       provider character varying(64) not null,
       key text not null,
       email character varying(256),
@@ -15,8 +13,8 @@ case object CreateUserProfilesTable extends Statement {
       created timestamp not null
     ) with (oids=false);
 
-    create index user_profiles_email_idx on user_profiles using btree (email collate pg_catalog."default");
+    create index user_profiles_email_idx on $tableName using btree (email collate pg_catalog."default");
 
-    alter table user_profiles add constraint user_profiles_provider_key_idx unique (provider, key);
+    alter table $tableName add constraint user_profiles_provider_key_idx unique (provider, key);
   """
 }

@@ -1,10 +1,8 @@
 package models.ddl
 
-import models.database.Statement
-
-case object CreateOAuth1InfoTable extends Statement {
-  override val sql = """
-    create table oauth1_info
+case object CreateOAuth1InfoTable extends CreateTableStatement("oauth1_info") {
+  override val sql = s"""
+    create table $tableName
     (
        provider character varying(64) not null,
        key text not null,

@@ -10,36 +10,37 @@ import scala.concurrent.Future
 
 object Schema extends Logging {
   val tables = Seq(
-    "users" -> CreateUsersTable,
+    CreateUsersTable,
 
-    "user_profiles" -> CreateUserProfilesTable,
-    "password_info" -> CreatePasswordInfoTable,
-    "oauth1_info" -> CreateOAuth1InfoTable,
-    "oauth2_info" -> CreateOAuth2InfoTable,
-    "openid_info" -> CreateOpenIdInfoTable,
-    "session_info" -> CreateSessionInfoTable,
+    CreateUserProfilesTable,
+    CreatePasswordInfoTable,
+    CreateOAuth1InfoTable,
+    CreateOAuth2InfoTable,
+    CreateOpenIdInfoTable,
+    CreateSessionInfoTable,
 
-    "requests" -> CreateRequestsTable,
-    "client_trace" -> CreateClientTraceTable,
+    CreateBrawlsTable,
+    CreateRequestsTable,
+    CreateClientTraceTable,
 
-    "user_feedback" -> CreateUserFeedbackTable,
-    "user_feedback_notes" -> CreateUserFeedbackNotesTable,
+    CreateUserFeedbackTable,
+    CreateUserFeedbackNotesTable,
 
-    "daily_metrics" -> CreateDailyMetricsTable,
+    CreateDailyMetricsTable,
 
-    "adhoc_queries" -> CreateAdHocQueriesTable
+    CreateAdHocQueriesTable
   )
 
   def update() = {
     val tableFuture = tables.foldLeft(Future.successful(Unit)) { (f, t) =>
       f.flatMap { u =>
-        Database.query(DdlQueries.DoesTableExist(t._1)).flatMap { exists =>
+        Database.query(DdlQueries.DoesTableExist(t.tableName)).flatMap { exists =>
           if (exists) {
             Future.successful(Unit)
           } else {
-            log.info(s"Creating missing table [${t._1}].")
-            val name = s"CreateTable-${t._1}"
-            Database.raw(name, t._2.sql).map(x => Unit)
+            log.info(s"Creating missing table [${t.tableName}].")
+            val name = s"CreateTable-${t.tableName}"
+            Database.raw(name, t.sql).map(x => Unit)
           }
         }
       }
@@ -52,7 +53,7 @@ object Schema extends Logging {
 
   def wipe() = {
     log.warn("Wiping database schema.")
-    val tableNames = tables.reverse.map(_._1)
+    val tableNames = tables.reverse.map(_.tableName)
     Database.execute(DdlQueries.TruncateTables(tableNames)).map(x => tableNames)
   }
 

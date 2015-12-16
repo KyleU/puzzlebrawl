@@ -33,6 +33,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
       player.connectionActor.foreach(_ ! BrawlStarted(brawl.id, self, DateUtils.fromMillis(brawl.started)))
       player.connectionActor.foreach(_ ! BrawlJoined(brawl, 0))
     }
+    insertHistory()
   }
 
   override def receiveRequest = {

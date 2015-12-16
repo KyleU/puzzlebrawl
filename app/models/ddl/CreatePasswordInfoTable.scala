@@ -1,10 +1,8 @@
 package models.ddl
 
-import models.database.Statement
-
-case object CreatePasswordInfoTable extends Statement {
-  override val sql = """
-    create table password_info
+case object CreatePasswordInfoTable extends CreateTableStatement("password_info") {
+  override val sql = s"""
+    create table $tableName
     (
        provider character varying(64) not null,
        key text not null,
