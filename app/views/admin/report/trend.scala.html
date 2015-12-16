@@ -1,6 +1,6 @@
 @(metrics: Seq[(org.joda.time.LocalDate, Map[models.audit.DailyMetric.Metric, Long])], chartData: String)(
     implicit session: Session, flash: Flash
-)@layout.admin(
+)@views.html.admin.layout.admin(
   utils.Config.projectName + " Trend Report",
   "reports",
   scripts = Seq(

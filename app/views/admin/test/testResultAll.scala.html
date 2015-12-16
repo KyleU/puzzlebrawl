@@ -1,5 +1,5 @@
 @(results: Seq[controllers.admin.TestController.Result])(implicit session: Session, flash: Flash)
-@layout.admin(s"${utils.Config.projectName} Tests", "test") {
+@views.html.admin.layout.admin(s"${utils.Config.projectName} Tests", "test") {
   <div class="panel panel-default">
     <div class="panel-body">
       @defining(results.count(_.errors.nonEmpty)) { errorCount =>

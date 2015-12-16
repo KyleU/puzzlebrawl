@@ -8,7 +8,6 @@ import models.board.mutation.UpdateSegment
 import models.gem.GemStream
 import models.player.Player
 import models.test.brawl.BrawlTest
-import models.test.service.{ BrawlServiceTest, ConnectionServiceTest }
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
 import services.user.AuthenticationEnvironment
@@ -57,7 +56,7 @@ class TestController @javax.inject.Inject() (override val messagesApi: MessagesA
         if (json) {
           Ok(Json.toJson(result))
         } else {
-          Ok(views.html.layout.admin(s"${utils.Config.projectName} [$name] Test", "test")(html))
+          Ok(views.html.admin.layout.admin(s"${utils.Config.projectName} [$name] Test", "test")(html))
         }
       }
     }

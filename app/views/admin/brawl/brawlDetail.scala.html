@@ -1,5 +1,5 @@
 @(brawlHistory: models.history.BrawlHistory)(implicit session: Session, flash: Flash, identity: models.user.User)
-@views.html.layout.admin(s"${utils.Config.projectName} Game Detail", "explore") {
+@views.html.admin.layout.admin(s"${utils.Config.projectName} Game Detail", "explore") {
   <div class="panel panel-default">
     <div class="panel-body">
       <pre>@brawlHistory</pre>

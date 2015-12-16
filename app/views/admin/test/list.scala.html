@@ -1,5 +1,5 @@
 @()(implicit session: Session, flash: Flash)
-@layout.admin(s"${utils.Config.projectName} Tests", "test") {
+@views.html.admin.layout.admin(s"${utils.Config.projectName} Tests", "test") {
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="text-large">@utils.Config.projectName Tests (<a href="@controllers.admin.routes.TestController.run("All")">Run All</a>)</div>
