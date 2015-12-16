@@ -1,14 +1,13 @@
 package controllers.admin
 
 import controllers.BaseController
-import play.api.i18n.MessagesApi
 import services.audit.LogService
-import services.user.AuthenticationEnvironment
+import utils.ApplicationContext
 
 import scala.concurrent.Future
 
 @javax.inject.Singleton
-class LogController @javax.inject.Inject() (override val messagesApi: MessagesApi, override val env: AuthenticationEnvironment) extends BaseController {
+class LogController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   def list() = withAdminSession("log.list") { implicit request =>
     val files = LogService.listFiles()
     Future.successful(Ok(views.html.admin.log.logList(files)))

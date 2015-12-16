@@ -6,17 +6,14 @@ import com.mohiva.play.silhouette.impl.exceptions.IdentityNotFoundException
 import com.mohiva.play.silhouette.impl.providers.{ CommonSocialProfile, CommonSocialProfileBuilder, SocialProvider }
 import controllers.BaseController
 import models.user.{ User, UserForms }
-import play.api.i18n.{ Messages, MessagesApi }
+import play.api.i18n.Messages
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import services.user.AuthenticationEnvironment
+import utils.ApplicationContext
 
 import scala.concurrent.Future
 
 @javax.inject.Singleton
-class AuthenticationController @javax.inject.Inject() (
-    override val messagesApi: MessagesApi,
-    override val env: AuthenticationEnvironment
-) extends BaseController {
+class AuthenticationController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   def signInForm = withSession("form") { implicit request =>
     Future.successful(Ok(views.html.auth.signin(request.identity, UserForms.signInForm)))
   }

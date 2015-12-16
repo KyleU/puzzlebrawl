@@ -6,23 +6,19 @@ import akka.pattern.ask
 import akka.util.Timeout
 import controllers.BaseController
 import models._
-import play.api.i18n.MessagesApi
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.database.Schema
 import services.scheduled.ScheduledTask
 import services.supervisor.ActorSupervisor
-import services.user.{ UserService, AuthenticationEnvironment }
+import services.user.UserService
+import utils.ApplicationContext
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.util.Random
 
 @javax.inject.Singleton
-class AdminController @javax.inject.Inject() (
-    override val messagesApi: MessagesApi,
-    override val env: AuthenticationEnvironment,
-    scheduledTask: ScheduledTask
-) extends BaseController {
+class AdminController @javax.inject.Inject() (override val ctx: ApplicationContext, scheduledTask: ScheduledTask) extends BaseController {
   implicit val timeout = Timeout(10.seconds)
 
   def index = withAdminSession("index") { implicit request =>

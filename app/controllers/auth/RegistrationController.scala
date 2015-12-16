@@ -4,19 +4,15 @@ import com.mohiva.play.silhouette.api.{ LoginEvent, LoginInfo, SignUpEvent }
 import com.mohiva.play.silhouette.impl.providers.{ CommonSocialProfile, CredentialsProvider }
 import controllers.BaseController
 import models.user.{ RegistrationData, UserForms }
-import play.api.i18n.{ Messages, MessagesApi }
+import play.api.i18n.Messages
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.AnyContent
-import services.user.AuthenticationEnvironment
+import utils.ApplicationContext
 
 import scala.concurrent.Future
 
 @javax.inject.Singleton
-class RegistrationController @javax.inject.Inject() (
-    override val messagesApi: MessagesApi,
-    override val env: AuthenticationEnvironment
-) extends BaseController {
-
+class RegistrationController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   def registrationForm = withSession("form") { implicit request =>
     Future.successful(Ok(views.html.auth.register(request.identity, UserForms.registrationForm)))
   }

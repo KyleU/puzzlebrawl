@@ -5,17 +5,15 @@ import models.audit.DailyMetric
 import models.queries.history.RequestLogQueries
 import models.queries.report.ReportQueries
 import org.joda.time.LocalDate
-import play.api.i18n.MessagesApi
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.audit.DailyMetricService
 import services.database.Database
-import services.user.AuthenticationEnvironment
-import utils.DateUtils
+import utils.{ ApplicationContext, DateUtils }
 
 import scala.concurrent.Future
 
 @javax.inject.Singleton
-class ReportController @javax.inject.Inject() (override val messagesApi: MessagesApi, override val env: AuthenticationEnvironment) extends BaseController {
+class ReportController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   def email(d: LocalDate = DateUtils.today) = withAdminSession("email") { implicit request =>
     for {
       tables <- Database.query(ReportQueries.ListTables)

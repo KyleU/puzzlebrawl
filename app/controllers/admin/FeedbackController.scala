@@ -3,16 +3,15 @@ package controllers.admin
 import java.util.UUID
 
 import controllers.BaseController
-import models.queries.audit.{ UserFeedbackQueries, UserFeedbackNoteQueries }
-import play.api.i18n.MessagesApi
+import models.queries.audit.{ UserFeedbackNoteQueries, UserFeedbackQueries }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.database.Database
-import services.user.AuthenticationEnvironment
+import utils.ApplicationContext
 
 import scala.concurrent.Future
 
 @javax.inject.Singleton
-class FeedbackController @javax.inject.Inject() (override val messagesApi: MessagesApi, override val env: AuthenticationEnvironment) extends BaseController {
+class FeedbackController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   def feedbackList(q: String, sortBy: String, page: Int) = withAdminSession("list") { implicit request =>
     for {
       count <- Database.query(UserFeedbackQueries.searchCount(q))

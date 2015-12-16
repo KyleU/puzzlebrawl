@@ -4,21 +4,15 @@ import java.util.UUID
 
 import models.audit.UserFeedback
 import models.queries.audit.UserFeedbackQueries
-import play.api.i18n.MessagesApi
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.database.Database
 import services.email.EmailService
-import services.user.AuthenticationEnvironment
-import utils.DateUtils
+import utils.{ ApplicationContext, DateUtils }
 
 import scala.concurrent.Future
 
 @javax.inject.Singleton
-class FeedbackController @javax.inject.Inject() (
-    override val messagesApi: MessagesApi,
-    override val env: AuthenticationEnvironment,
-    emailService: EmailService
-) extends BaseController {
+class FeedbackController @javax.inject.Inject() (override val ctx: ApplicationContext, emailService: EmailService) extends BaseController {
   def feedbackForm = withSession("form") { implicit request =>
     Future.successful(Ok(views.html.feedback(request.identity)))
   }

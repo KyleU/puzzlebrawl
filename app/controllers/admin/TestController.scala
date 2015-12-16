@@ -8,10 +8,8 @@ import models.board.mutation.UpdateSegment
 import models.gem.GemStream
 import models.player.Player
 import models.test.brawl.BrawlTest
-import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
-import services.user.AuthenticationEnvironment
-import utils.DateUtils
+import utils.{ ApplicationContext, DateUtils }
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal
@@ -37,7 +35,7 @@ object TestController {
 }
 
 @javax.inject.Singleton
-class TestController @javax.inject.Inject() (override val messagesApi: MessagesApi, override val env: AuthenticationEnvironment) extends BaseController {
+class TestController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   def list() = withAdminSession("test.list") { implicit request =>
     Future.successful(Ok(views.html.admin.test.list()))
   }

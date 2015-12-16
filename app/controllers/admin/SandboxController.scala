@@ -2,13 +2,10 @@ package controllers.admin
 
 import akka.util.Timeout
 import controllers.BaseController
-import play.api.i18n.MessagesApi
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import services.scheduled.ScheduledTask
-
 import services.sandbox._
-import services.user.AuthenticationEnvironment
-import utils.DateUtils
+import services.scheduled.ScheduledTask
+import utils.{ ApplicationContext, DateUtils }
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
@@ -23,11 +20,7 @@ object SandboxController {
 }
 
 @javax.inject.Singleton
-class SandboxController @javax.inject.Inject() (
-    override val messagesApi: MessagesApi,
-    override val env: AuthenticationEnvironment,
-    scheduledTask: ScheduledTask
-) extends BaseController {
+class SandboxController @javax.inject.Inject() (override val ctx: ApplicationContext, scheduledTask: ScheduledTask) extends BaseController {
   implicit val timeout = Timeout(10.seconds)
 
   def defaultSandbox() = sandbox("list")
