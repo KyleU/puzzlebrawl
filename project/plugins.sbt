@@ -24,6 +24,8 @@ addSbtPlugin("com.vmunier" % "sbt-play-scalajs" % "0.2.8")
 // Benchmarking
 addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.2.5")
 
+addSbtPlugin("io.gatling" % "gatling-sbt" % "2.1.7")
+
 // Source Control
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.4")
 

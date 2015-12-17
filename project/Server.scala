@@ -1,12 +1,10 @@
-import _root_.sbtide.Keys._
+import sbtide.Keys._
 import com.typesafe.sbt.jshint.Import.JshintKeys
 import sbt._
 import sbt.Keys._
 import sbt.Project.projectToRef
 
 import playscalajs.PlayScalaJS.autoImport._
-import pl.project13.scala.sbt.JmhPlugin
-
 import com.typesafe.sbt.digest.Import._
 import com.typesafe.sbt.GitVersioning
 import com.typesafe.sbt.gzip.Import._
@@ -27,10 +25,11 @@ object Server {
     import Dependencies._
     Seq(
       Cache.ehCache, Database.postgresAsync, Mail.mailer, Miscellaneous.lanterna,
-      Akka.actor, Akka.logging, Play.playFilters, Play.playWs, Play.playTest, Authentication.silhouette,
+      Akka.actor, Akka.logging,
+      Play.playFilters, Play.playWs, Play.playTest, Authentication.silhouette,
       Metrics.metrics, Metrics.healthChecks, Metrics.json, Metrics.jvm, Metrics.ehcache, Metrics.jettyServlet, Metrics.servlets, Metrics.graphite,
       WebJars.requireJs, WebJars.bootstrap, WebJars.underscore, WebJars.d3, WebJars.nvd3,
-      Testing.akkaTestkit
+      Testing.akkaTestkit, Testing.gatlingCore, Testing.gatlingCharts
     )
   }
 
@@ -79,10 +78,9 @@ object Server {
     id = Shared.projectId,
     base = file(".")
   )
+    .enablePlugins(GitVersioning)
     .enablePlugins(SbtWeb)
     .enablePlugins(play.sbt.PlayScala)
-    .enablePlugins(GitVersioning)
-    .enablePlugins(JmhPlugin)
     .settings(serverSettings: _*)
     .aggregate(projectToRef(Client.client))
     .aggregate(Shared.sharedJvm)

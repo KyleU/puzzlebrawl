@@ -60,5 +60,7 @@ object Dependencies {
 
   object Testing {
     val akkaTestkit = "com.typesafe.akka" %% "akka-testkit" % "2.4.1"
+    val gatlingCore = "io.gatling" % "gatling-test-framework" % "2.1.7" % "test"
+    val gatlingCharts = "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.1.7" % "test"
   }
 }
