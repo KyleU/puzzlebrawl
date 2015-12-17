@@ -1,3 +1,5 @@
+package json
+
 import models._
 import upickle._
 import upickle.legacy._

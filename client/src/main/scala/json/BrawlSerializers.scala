@@ -1,3 +1,5 @@
+package json
+
 import models.board.Board
 import models.brawl.Brawl
 import models.gem.{ Color, Gem, GemLocation, GemStream }

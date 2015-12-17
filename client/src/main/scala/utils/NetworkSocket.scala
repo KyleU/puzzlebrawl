@@ -1,3 +1,5 @@
+package utils
+
 import org.scalajs.dom.raw._
 
 class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {

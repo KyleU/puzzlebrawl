@@ -1,3 +1,5 @@
+package json
+
 import models.board.mutation.Mutation
 import models.board.mutation.Mutation._
 import upickle._
