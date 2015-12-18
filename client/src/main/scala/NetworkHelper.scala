@@ -6,10 +6,10 @@ import scala.scalajs.js
 import scala.scalajs.js.JSON
 
 trait NetworkHelper { this: PuzzleBrawl =>
-  val networkStatus = scenario match {
+  lazy val networkStatus = scenario match {
     case "offline" => "offline"
     case "normal" => "proxy"
-    case _ => "blend"
+    case _ => "proxy" //"blend"
   }
 
   protected[this] val socket = if (networkStatus == "offline") {
