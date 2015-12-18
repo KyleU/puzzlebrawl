@@ -12,7 +12,7 @@ object Console {
     } else {
       args.headOption match {
         case Some(testName) => BrawlTest.fromString(testName) match {
-          case Some(test) => ConsoleTest.run(test.newInstance(UUID.randomUUID), args.contains("pause"))
+          case Some(test) => ConsoleTest.run(test.newInstance(UUID.randomUUID, UUID.randomUUID), args.contains("pause"))
           case None => if (Seq("*", "All", "all").contains(testName)) {
             allTests()
           } else {
@@ -25,7 +25,7 @@ object Console {
   }
 
   private[this] def allTests() = BrawlTest.all.foreach { provider =>
-    val test = provider.newInstance(UUID.randomUUID)
+    val test = provider.newInstance(UUID.randomUUID, UUID.randomUUID)
     test.init()
     test.cloneOriginal()
     val messages = test.run()

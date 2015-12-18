@@ -44,7 +44,7 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
   }
 
   private[this] def onErrorEvent(event: ErrorEvent) = {
-    println(s"Error [$event]!")
+    scala.scalajs.js.Dynamic.global.console.log(s"Error [$event]!")
     event
   }
 
@@ -57,7 +57,7 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
   private[this] def onCloseEvent(event: Event) = {
     connecting = false
     connected = false
-    println("Close!")
+    scala.scalajs.js.Dynamic.global.console.log("Close!")
     event
   }
 }

@@ -42,12 +42,12 @@ class TestController @javax.inject.Inject() (override val ctx: ApplicationContex
 
   def run(name: String, json: Boolean) = withAdminSession("test.run") { implicit request =>
     if (name == "All") {
-      val results = BrawlTest.all.map(x => getResult(x.testName, x.newInstance(UUID.randomUUID)))
+      val results = BrawlTest.all.map(x => getResult(x.testName, x.newInstance(request.identity.id, UUID.randomUUID)))
       Future.successful(Ok(views.html.admin.test.testResultAll(results)))
     } else {
       Future.successful {
         val test = BrawlTest.fromString(name).map { x =>
-          x.testName -> x.newInstance(UUID.randomUUID)
+          x.testName -> x.newInstance(request.identity.id, UUID.randomUUID)
         }.getOrElse(throw new IllegalArgumentException(s"Invalid test [$name]."))
         val result = getResult(test._1, test._2)
         val html = views.html.admin.test.testResult(result)

@@ -9,6 +9,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     this.game.add.existing(this);
 
     this.players = {};
+    this.self = null;
 
     this.resizer = new PlaymatResizer(this);
   };
@@ -16,10 +17,11 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
   Playmat.prototype = Object.create(Phaser.Group.prototype);
   Playmat.prototype.constructor = Playmat;
 
-  Playmat.prototype.setBrawl = function(brawl) {
+  Playmat.prototype.setBrawl = function(self, brawl) {
     if(this.brawl !== undefined) {
       throw 'Already using brawl [' + this.brawl.id + '].';
     }
+    this.self = self;
     this.brawl = brawl;
     Status.setScenario(brawl.scenario);
     var playmat = this;

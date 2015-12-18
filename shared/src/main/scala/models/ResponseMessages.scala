@@ -15,7 +15,7 @@ case object SendTrace extends ResponseMessage
 case class DebugResponse(key: String, data: String) extends ResponseMessage
 case class Disconnected(reason: String) extends ResponseMessage
 
-case class BrawlJoined(brawl: Brawl, elapsedMs: Int) extends ResponseMessage
+case class BrawlJoined(self: UUID, brawl: Brawl, elapsedMs: Int) extends ResponseMessage
 
 object PlayerUpdate {
   def using(id: UUID, category: String, m: Mutation) = PlayerUpdate(id, Seq(UpdateSegment(category, Seq(m))))

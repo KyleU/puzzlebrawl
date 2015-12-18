@@ -19,7 +19,7 @@ class PuzzleBrawl extends NetworkHelper with MessageHelper {
     }
   }
 
-  protected[this] val userId = UUID.randomUUID
+  protected[this] val userId = UUID.randomUUID // TODO
   protected[this] var activeBrawl: Option[Brawl] = None
   protected[this] var activePlayer: Option[Player] = None
 

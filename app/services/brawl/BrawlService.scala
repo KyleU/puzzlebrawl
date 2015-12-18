@@ -31,7 +31,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
     log.info(s"Starting brawl scenario [$scenario] for [${players.map(p => p.userId + ": " + p.name).mkString(", ")}] with seed [$seed].")
     players.foreach { player =>
       player.connectionActor.foreach(_ ! BrawlStarted(brawl.id, self, DateUtils.fromMillis(brawl.started)))
-      player.connectionActor.foreach(_ ! BrawlJoined(brawl, 0))
+      player.connectionActor.foreach(_ ! BrawlJoined(player.userId, brawl, 0))
     }
     insertHistory()
   }

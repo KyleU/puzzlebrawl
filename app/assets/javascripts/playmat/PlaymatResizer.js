@@ -10,10 +10,36 @@ define([], function () {
 
   PlaymatResizer.prototype.refreshLayout = function() {
     var p = this.playmat;
+    var selfId = this.playmat.self;
+    if(selfId === null) {
+      throw 'No self id.';
+    }
+
     var originalSize = [p.w, p.h];
 
+    var splitPlayers = _.partition(p.players, function(player) { return player.id === selfId; });
+
+    if(splitPlayers.length !== 2 || splitPlayers[0].length !== 1) {
+      throw 'Incomplete board definitions';
+    }
+
+    var self = splitPlayers[0][0];
+    var others = splitPlayers[1];
+
     var xOffset = 32;
-    _.each(p.players, function(player) {
+
+    self.nameLabel.x = xOffset;
+    self.nameLabel.y = 32;
+
+    self.scoreLabel.x = xOffset + self.board.width;
+    self.scoreLabel.y = 32;
+
+    self.board.x = xOffset;
+    self.board.y = 112;
+
+    xOffset += self.board.width + 32;
+
+    _.each(others, function(player) {
       player.nameLabel.x = xOffset;
       player.nameLabel.y = 32;
 

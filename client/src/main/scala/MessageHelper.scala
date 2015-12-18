@@ -17,7 +17,7 @@ trait MessageHelper { this: PuzzleBrawl =>
     brawl.players.foreach(_.activeGemsCreate())
     activeBrawl = Some(brawl)
     activePlayer = brawl.players.find(p => p.id == userId)
-    send(BrawlJoined(brawl, 0))
+    send(BrawlJoined(userId, brawl, 0))
   }
 
   protected[this] def handleDebugRequest(data: String) = data match {

@@ -60,6 +60,6 @@ trait NetworkHelper { this: PuzzleBrawl =>
   protected[this] def onSocketMessage(s: String) = networkStatus match {
     case "offline" => throw new IllegalStateException()
     case "proxy" => sendCallback(s)
-    case "blend" => println(s"Message [$s] received from socket.") // TODO
+    case "blend" => scala.scalajs.js.Dynamic.global.console.log(s"Message [$s] received from socket.") // TODO
   }
 }

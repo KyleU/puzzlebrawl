@@ -6,10 +6,10 @@ import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 
 object TestDropFull extends BrawlTest.Provider {
-  override def newInstance(id: UUID) = new TestDropFull(id)
+  override def newInstance(id: UUID, self: UUID) = new TestDropFull(id, self)
 }
 
-class TestDropFull(id: UUID) extends BrawlTest(id) {
+class TestDropFull(id: UUID, self: UUID) extends BrawlTest(id, self) {
   override def init() = {
     (0 until goal.board.height).foreach(i => goal.board.applyMutation(AddGem(goal.gemStream.next, 0, i)))
   }

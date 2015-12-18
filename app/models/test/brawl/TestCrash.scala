@@ -6,10 +6,10 @@ import models.board.mutation.Mutation.AddGem
 import models.gem.{ Color, Gem }
 
 object TestCrash extends BrawlTest.Provider {
-  override def newInstance(id: UUID) = new TestCrash(id)
+  override def newInstance(id: UUID, self: UUID) = new TestCrash(id, self)
 }
 
-class TestCrash(id: UUID) extends BrawlTest(id) {
+class TestCrash(id: UUID, self: UUID) extends BrawlTest(id, self) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0), 0, 0))
     test.board.applyMutation(AddGem(Gem(1, crash = Some(true)), 1, 0))

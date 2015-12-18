@@ -6,10 +6,10 @@ import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 
 object TestRandom extends BrawlTest.Provider {
-  override def newInstance(id: UUID) = new TestRandom(id)
+  override def newInstance(id: UUID, self: UUID) = new TestRandom(id, self)
 }
 
-class TestRandom(id: UUID) extends BrawlTest(id) {
+class TestRandom(id: UUID, self: UUID) extends BrawlTest(id, self) {
   override def init() = {
     for (y <- 0 until goal.board.height) {
       for (x <- 0 until goal.board.width) {

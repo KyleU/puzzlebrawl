@@ -42,7 +42,7 @@ define([
   Testbed.prototype.onMessage = function(c, v) {
     switch(c) {
       case 'BrawlJoined':
-        this.startBrawl(v.brawl);
+        this.startBrawl(v.self, v.brawl);
         break;
       case 'PlayerUpdate':
         this.onPlayerUpdate(v);
@@ -60,9 +60,9 @@ define([
     }
   };
 
-  Testbed.prototype.startBrawl = function(brawl) {
+  Testbed.prototype.startBrawl = function(self, brawl) {
     this.playmat = new Playmat(this.game);
-    this.playmat.setBrawl(brawl);
+    this.playmat.setBrawl(self, brawl);
   };
 
   Testbed.prototype.onPlayerUpdate = function(update) {

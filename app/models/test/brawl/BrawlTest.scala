@@ -14,7 +14,7 @@ object BrawlTest {
 
   trait Provider {
     val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
-    def newInstance(id: UUID): BrawlTest
+    def newInstance(id: UUID, self: UUID): BrawlTest
   }
 
   val all = Seq(
@@ -52,12 +52,12 @@ object BrawlTest {
   implicit val testErrorWrites = Json.writes[TestError]
 }
 
-abstract class BrawlTest(id: UUID, val seed: Option[Int] = None) {
+abstract class BrawlTest(id: UUID, self: UUID, val seed: Option[Int] = None) {
   val brawl = Brawl.blank(
     id = id,
     scenario = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", ""),
     seed = seed.getOrElse(Math.abs(Random.nextInt())),
-    players = Seq(UUID.randomUUID -> "original", UUID.randomUUID -> "test", UUID.randomUUID -> "goal")
+    players = Seq(self -> "original", UUID.randomUUID -> "test", UUID.randomUUID -> "goal")
   )
 
   val original = brawl.players.find(_.name == "original").getOrElse(throw new IllegalStateException())

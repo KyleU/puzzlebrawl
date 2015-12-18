@@ -5,10 +5,10 @@ import java.util.UUID
 import models.board.mutation.Mutation.AddGem
 
 object TestActiveGemsDrop extends BrawlTest.Provider {
-  override def newInstance(id: UUID) = new TestActiveGemsDrop(id)
+  override def newInstance(id: UUID, self: UUID) = new TestActiveGemsDrop(id, self)
 }
 
-class TestActiveGemsDrop(id: UUID) extends BrawlTest(id) {
+class TestActiveGemsDrop(id: UUID, self: UUID) extends BrawlTest(id, self) {
   override def init() = {
     test.activeGemsCreate()
 

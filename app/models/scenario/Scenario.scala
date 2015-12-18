@@ -59,7 +59,7 @@ object Scenario {
       case x if x.startsWith("test") =>
         val testName = x.stripPrefix("test")
         val provider = BrawlTest.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
-        val test = provider.newInstance(id)
+        val test = provider.newInstance(id, players.head.userId)
         test.init()
         test.cloneOriginal()
         test.run()

@@ -6,10 +6,10 @@ import models.board.mutation.Mutation.AddGem
 import models.gem.Gem
 
 object TestTimer extends BrawlTest.Provider {
-  override def newInstance(id: UUID) = new TestTimer(id)
+  override def newInstance(id: UUID, self: UUID) = new TestTimer(id, self)
 }
 
-class TestTimer(id: UUID) extends BrawlTest(id) {
+class TestTimer(id: UUID, self: UUID) extends BrawlTest(id, self) {
   override def init() = {
     test.board.applyMutation(AddGem(Gem(0, timer = Some(5)), 0, 0))
     test.board.applyMutation(AddGem(Gem(0, timer = Some(4)), 1, 0))
