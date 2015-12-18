@@ -4,12 +4,28 @@
 define([], function () {
   'use strict';
 
+  var targetAspectRatios = [
+    16 / 9,
+    4 / 3,
+    3 / 4,
+    9 / 16
+  ];
+
   var PlaymatResizer = function(playmat) {
     this.playmat = playmat;
   };
 
+  PlaymatResizer.prototype.closestAspectRatio = function() {
+    var world = this.playmat.game.world;
+    var aspectRatio = world.width / world.height;
+    console.log(targetAspectRatios, aspectRatio);
+  };
+
   PlaymatResizer.prototype.refreshLayout = function() {
     var p = this.playmat;
+
+    this.closestAspectRatio();
+
     var selfId = this.playmat.self;
     if(selfId === null) {
       throw 'No self id.';
@@ -26,7 +42,7 @@ define([], function () {
     var self = splitPlayers[0][0];
     var others = splitPlayers[1];
 
-    var xOffset = 32;
+    var xOffset = 64;
 
     self.nameLabel.x = xOffset;
     self.nameLabel.y = 32;
@@ -35,9 +51,9 @@ define([], function () {
     self.scoreLabel.y = 32;
 
     self.board.x = xOffset;
-    self.board.y = 112;
+    self.board.y = 192;
 
-    xOffset += self.board.width + 32;
+    xOffset += self.board.width + 128;
 
     _.each(others, function(player) {
       player.nameLabel.x = xOffset;
@@ -47,13 +63,13 @@ define([], function () {
       player.scoreLabel.y = 32;
 
       player.board.x = xOffset;
-      player.board.y = 112;
+      player.board.y = 192;
 
-      xOffset += player.board.width + 32;
+      xOffset += player.board.width + 64;
     });
 
     p.w = xOffset;
-    p.h = (12 * 256) + 144;
+    p.h = (12 * 256) + 256;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.resize();

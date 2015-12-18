@@ -7,14 +7,14 @@ object Constants {
   }
 
   object GemStream {
-    val baseWildGemChance = 0.01
-    val baseCrashGemChance = 0.15
+    val baseWildGemInterval = 50
+    val baseCrashGemChance = 0.2
   }
 
   object Scoring {
     val normalGemScore = 100
-    val largeGemScore = 150
-    val wildPerGemScore = 50
+    val largeGemScore = 200
+    val wildPerGemScore = 80
     val wildSoloDropScore = 1000
   }
 }
