@@ -1,6 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
-define(['gem/GemSprites'], function(GemSprites) {
+define(['gem/GemSprites', 'utils/Config'], function(GemSprites, Config) {
   'use strict';
 
   function keyFor(gem) {
@@ -43,11 +43,11 @@ define(['gem/GemSprites'], function(GemSprites) {
       var width, height;
       if(gem.width === undefined) { width = 1; } else { width = gem.width; }
       if(gem.height === undefined) { height = 1; } else { height = gem.height; }
-      var bd = this.game.add.bitmapData(width * 256, height * 256);
+      var bd = this.game.add.bitmapData(width * Config.tile.size, height * Config.tile.size);
       for(var x = 0; x < width; x++) {
         for(var y = 0; y < height; y++) {
           var texIdx = GemSprites.spriteFor(gem, x, y);
-          bd.copy(this.gemImages[texIdx], 0, 0, 256, 256, x * 256, (height - y - 1) * 256);
+          bd.copy(this.gemImages[texIdx], 0, 0, Config.tile.size, Config.tile.size, x * Config.tile.size, (height - y - 1) * Config.tile.size);
         }
       }
 

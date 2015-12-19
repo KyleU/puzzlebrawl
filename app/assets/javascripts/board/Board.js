@@ -1,6 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
-define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations'], function (Gem, BoardGems, BoardMutations) {
+define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config'], function (Gem, BoardGems, BoardMutations, Config) {
   'use strict';
 
   function Board(model, game) {
@@ -13,7 +13,7 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations'], function (Gem, Bo
     Phaser.Group.call(this, game, null, 'board-' + model.key);
 
     game.add.existing(this);
-    this.bgTileSprite = new Phaser.TileSprite(game, 0, 0, 256 * this.w, 256 * this.h, 'board-bg');
+    this.bgTileSprite = new Phaser.TileSprite(game, 0, 0, Config.tile.size * this.w, Config.tile.size * this.h, 'board-bg');
 
     this.bgTileSprite.name = 'background';
     this.add(this.bgTileSprite);

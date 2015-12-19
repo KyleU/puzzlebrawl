@@ -1,5 +1,5 @@
 /* global define:false */
-define(['state/GameState', 'state/Testbed'], function (GameState, Testbed) {
+define(['state/GameState', 'state/Testbed', 'utils/Config'], function (GameState, Testbed, Config) {
   'use strict';
 
   function LoadingScreen(game) {
@@ -10,7 +10,7 @@ define(['state/GameState', 'state/Testbed'], function (GameState, Testbed) {
   LoadingScreen.prototype.constructor = LoadingScreen;
 
   LoadingScreen.prototype.preload = function() {
-    this.game.load.spritesheet('gems', 'assets/images/game/gems.png', 256, 256);
+    this.game.load.spritesheet('gems', 'assets/images/game/gems.png', Config.tile.size, Config.tile.size);
     this.game.load.image('board-bg', 'assets/images/board/bg-a.png');
 
     var testbed = new Testbed(this.game);

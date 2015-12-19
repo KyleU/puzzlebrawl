@@ -1,6 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
-define(['gem/Gem'], function (Gem) {
+define(['gem/Gem', 'utils/Config'], function (Gem, Config) {
   'use strict';
 
   return {
@@ -11,8 +11,8 @@ define(['gem/Gem'], function (Gem) {
       }
       board.set(x, y, gem);
       var g = new Gem(gem, board.game);
-      g.x = x * 256;
-      g.y = board.height - (y * 256);
+      g.x = x * Config.tile.size;
+      g.y = board.height - (y * Config.tile.size);
       board.gems[gem.id] = g;
       board.add(g);
     },
@@ -44,7 +44,7 @@ define(['gem/Gem'], function (Gem) {
       board.clear(x, y, g.width, g.height);
       board.set(x + xDelta, y + yDelta, g);
       var tween = board.game.add.tween(gem);
-      tween.to({x: (x + xDelta) * 256, y: board.height - ((y + yDelta) * 256)}, 200, Phaser.Easing.Cubic.Out);
+      tween.to({x: (x + xDelta) * Config.tile.size, y: board.height - ((y + yDelta) * Config.tile.size)}, 200, Phaser.Easing.Cubic.Out);
       tween.start();
     },
 
@@ -65,7 +65,7 @@ define(['gem/Gem'], function (Gem) {
         var moveGem = gems[moveIdx];
         board.set(move.x + move.xDelta, move.y + move.yDelta, moveGem);
         var tween = board.game.add.tween(board.gems[moveGem.id]);
-        tween.to({x: (move.x + move.xDelta) * 256, y: board.height - ((move.y + move.yDelta) * 256)}, 200, Phaser.Easing.Cubic.Out);
+        tween.to({x: (move.x + move.xDelta) * Config.tile.size, y: board.height - ((move.y + move.yDelta) * Config.tile.size)}, 200, Phaser.Easing.Cubic.Out);
         tween.start();
       }
     },

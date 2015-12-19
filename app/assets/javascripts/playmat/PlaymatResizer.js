@@ -1,7 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
 /* global _:false */
-define([], function () {
+define(['utils/Config'], function (Config) {
   'use strict';
 
   var targetAspectRatios = [
@@ -52,9 +52,9 @@ define([], function () {
     self.scoreLabel.y = 32;
 
     self.board.x = xOffset;
-    self.board.y = 192;
+    self.board.y = 128;
 
-    xOffset += self.board.width + 128;
+    xOffset += self.board.width + 64;
 
     _.each(others, function(player) {
       player.nameLabel.x = xOffset;
@@ -64,13 +64,13 @@ define([], function () {
       player.scoreLabel.y = 32;
 
       player.board.x = xOffset;
-      player.board.y = 192;
+      player.board.y = 128;
 
       xOffset += player.board.width + 64;
     });
 
     p.w = xOffset;
-    p.h = (12 * 256) + 256;
+    p.h = (12 * Config.tile.size) + Config.tile.size + 32;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.resize();

@@ -3,6 +3,10 @@ define(function () {
   'use strict';
 
   return {
+    tile: {
+      size: 128
+    },
+
     input: {
       tapMaxDistancePx: 10,
       holdTimeMs: 250,

@@ -25,7 +25,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     this.brawl = brawl;
     Status.setScenario(brawl.scenario);
     var playmat = this;
-    var style = { font: '120px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
+    var style = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
     _.each(brawl.players, function(p) {
       var board = new Board(p.board, playmat.game);
       playmat.add(board);
