@@ -11,7 +11,7 @@ define(['state/GameState', 'state/Testbed', 'utils/Config'], function (GameState
 
   LoadingScreen.prototype.preload = function() {
     this.game.load.spritesheet('gems', 'assets/images/game/gems.png', Config.tile.size, Config.tile.size);
-    this.game.load.image('board-bg', 'assets/images/board/bg-a.png');
+    this.game.load.image('board-bg', 'assets/images/board/bg-e.png');
 
     var testbed = new Testbed(this.game);
     this.game.state.add('testbed', testbed);

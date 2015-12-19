@@ -43,16 +43,16 @@ define(['utils/Config'], function (Config) {
     var self = splitPlayers[0][0];
     var others = splitPlayers[1];
 
-    var xOffset = 64;
+    var xOffset = Config.tile.size / 2;
 
     self.nameLabel.x = xOffset;
-    self.nameLabel.y = 32;
+    self.nameLabel.y = 16;
 
     self.scoreLabel.x = xOffset + self.board.width;
-    self.scoreLabel.y = 32;
+    self.scoreLabel.y = 16;
 
     self.board.x = xOffset;
-    self.board.y = 128;
+    self.board.y = 96;
 
     xOffset += self.board.width + 64;
 
@@ -64,13 +64,13 @@ define(['utils/Config'], function (Config) {
       player.scoreLabel.y = 32;
 
       player.board.x = xOffset;
-      player.board.y = 128;
+      player.board.y = 96;
 
-      xOffset += player.board.width + 64;
+      xOffset += player.board.width + (Config.tile.size / 2);
     });
 
     p.w = xOffset;
-    p.h = (12 * Config.tile.size) + Config.tile.size + 32;
+    p.h = (12 * Config.tile.size) + Config.tile.size;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.resize();
