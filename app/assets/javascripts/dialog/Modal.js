@@ -1,60 +1,38 @@
 /* global define:false */
-/* global Phaser:false */
-define([], function () {
-  'use strict';
+define([], function() {
+  var modalElement = document.getElementById('modal-dialog');
+  var backdropElement = document.getElementById('modal-backdrop');
+  var contentElement = document.getElementById('modal-content');
+  var closeElement = document.getElementById('modal-close');
+  var continueElement = document.getElementById('modal-button-continue');
+  var titleElement = document.getElementById('modal-title');
+  var bodyElement = document.getElementById('modal-body');
 
-  var initialized = false;
-  var active = false;
+  var Modal = {
+    show: function(title, body) {
+      contentElement.style.marginTop = (window.innerHeight / 2 - 200) + 'px';
+      contentElement.style.marginLeft = (window.innerWidth / 2 - 200) + 'px';
 
-  var headerStyle = { font: '120px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
-  var bodyStyle = { font: '120px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
+      titleElement.innerText = title;
+      bodyElement.innerText = body;
+      bodyElement.scrollTop = 0;
 
-  var group = null;
-  var headerText = null;
-  var bodyText = null;
+      modalElement.className = 'on';
+    },
 
-  function init(game) {
-    if(initialized) {
-      throw 'Modal already initialized.';
+    hide: function() {
+      modalElement.className = 'off';
     }
-    group = new Phaser.Group(game, null, 'modal-dialog');
-
-    headerText = new Phaser.Text(game, 0, 0, 'Modal Header', headerStyle);
-    headerText.name = 'modal-header-text';
-    headerText.visible = false;
-    group.add(headerText);
-
-    bodyText = new Phaser.Text(game, 0, 0, 'Modal Body', bodyStyle);
-    bodyText.name = 'modal-body-text';
-    bodyText.visible = false;
-    group.add(bodyText);
-
-    game.add.existing(group);
-
-    initialized = true;
-  }
-
-  function show(s) {
-    if(active) {
-      throw 'Modal already active.';
-    }
-    headerText.visible = true;
-    bodyText.visible = true;
-    active = true;
-  }
-
-  function hide() {
-    if(!active) {
-      throw 'Modal not active.';
-    }
-    headerText.visible = false;
-    bodyText.visible = false;
-    active = false;
-  }
-
-  return {
-    init: init,
-    show: show,
-    hide: hide
   };
+
+  function f() {
+    Modal.hide();
+    return true;
+  }
+
+  closeElement.onclick = f;
+  continueElement.onclick = f;
+  backdropElement.onclick = f;
+
+  return Modal;
 });

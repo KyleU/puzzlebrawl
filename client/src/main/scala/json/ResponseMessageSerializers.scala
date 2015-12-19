@@ -25,6 +25,7 @@ object ResponseMessageSerializers {
           case "MessageSet" => readJs[MessageSet](o)
           case "BrawlJoined" => readJs[BrawlJoined](o)
           case "PlayerUpdate" => readJs[PlayerUpdate](o)
+          case "ServerError" => readJs[ServerError](o)
           case _ => throw new IllegalStateException()
         }
         case _ => throw new IllegalStateException()
@@ -38,9 +39,9 @@ object ResponseMessageSerializers {
         case vr: VersionResponse => writeJs(vr)
         case p: Pong => writeJs(p)
         case ms: MessageSet => writeJs(ms)
-
         case bj: BrawlJoined => writeJs(bj)
         case pu: PlayerUpdate => writeJs(pu)
+        case se: ServerError => writeJs(se)
 
         case _ => throw new IllegalStateException(s"Invalid Message [${rm.getClass.getName}].")
       }

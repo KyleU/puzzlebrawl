@@ -5,6 +5,7 @@ import utils.NetworkSocket
 import scala.scalajs.js
 import scala.scalajs.js.JSON
 import scala.scalajs.js.timers._
+import scala.util.control.NonFatal
 
 trait NetworkHelper { this: PuzzleBrawl =>
   val connectionEl = org.scalajs.dom.document.getElementById("status-connection")
@@ -42,20 +43,24 @@ trait NetworkHelper { this: PuzzleBrawl =>
       case None => throw new IllegalStateException()
     }
   } else if (networkStatus == "offline") {
-    c match {
-      case "GetVersion" => handleVersionResponse()
-      case "Ping" => handlePing(JsonUtils.getLong(v.timestamp))
-      case "StartBrawl" => handleStartBrawl(v.scenario.toString)
-      case "DebugRequest" => handleDebugRequest(v.data.toString)
+    try {
+      c match {
+        case "GetVersion" => handleVersionResponse()
+        case "Ping" => handlePing(JsonUtils.getLong(v.timestamp))
+        case "StartBrawl" => handleStartBrawl(v.scenario.toString)
+        case "DebugRequest" => handleDebugRequest(v.data.toString)
 
-      case "ActiveGemsLeft" => activePlayer.foreach(p => p.activeGemsLeft().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
-      case "ActiveGemsRight" => activePlayer.foreach(p => p.activeGemsRight().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
-      case "ActiveGemsClockwise" => activePlayer.foreach(p => p.activeGemsClockwise().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
-      case "ActiveGemsCounterClockwise" => activePlayer.foreach(p => p.activeGemsCounterClockwise().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
-      case "ActiveGemsStep" => activePlayer.foreach(p => p.activeGemsStep().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
-      case "ActiveGemsDrop" => activePlayer.foreach(p => send(PlayerUpdate(p.id, p.activeGemsDrop() +: p.board.fullTurn() :+ p.activeGemsCreate())))
+        case "ActiveGemsLeft" => activePlayer.foreach(p => p.activeGemsLeft().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
+        case "ActiveGemsRight" => activePlayer.foreach(p => p.activeGemsRight().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
+        case "ActiveGemsClockwise" => activePlayer.foreach(p => p.activeGemsClockwise().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
+        case "ActiveGemsCounterClockwise" => activePlayer.foreach(p => p.activeGemsCounterClockwise().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
+        case "ActiveGemsStep" => activePlayer.foreach(p => p.activeGemsStep().foreach(m => send(PlayerUpdate.using(userId, "active", m))))
+        case "ActiveGemsDrop" => activePlayer.foreach(p => send(PlayerUpdate(p.id, p.activeGemsDrop() +: p.board.fullTurn() :+ p.activeGemsCreate())))
 
-      case _ => throw new IllegalStateException(s"Invalid message [$c].")
+        case _ => throw new IllegalStateException(s"Invalid message [$c].")
+      }
+    } catch {
+      case NonFatal(x) => send(ServerError(x.getClass.getSimpleName, x.getMessage))
     }
   }
 

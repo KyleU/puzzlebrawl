@@ -25,8 +25,6 @@ define([
 
     this.game.gemTextures = new GemTextures(this.game);
 
-    Modal.init(this.game);
-
     this.game.localServer.start();
   };
 
@@ -55,6 +53,9 @@ define([
         } else {
           throw 'Unhandled debug response [' + v.key + '].';
         }
+        break;
+      case 'ServerError':
+        Modal.show('Server Error', v.reason + ': ' + v.content);
         break;
       default:
         GameState.prototype.onMessage.call(this, c, v);
