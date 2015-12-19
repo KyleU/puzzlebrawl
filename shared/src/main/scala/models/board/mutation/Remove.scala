@@ -16,6 +16,6 @@ object Remove {
         }
       }
     }
-    RemoveGem(startX, startY, m.score)
+    RemoveGem(startX, startY)
   }
 }

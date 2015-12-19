@@ -16,7 +16,13 @@ trait CrashHelper { this: Board =>
     }
     ret.flatMap {
       case r if r.isEmpty => None
-      case r => Some(UpdateSegment("crash", r))
+      case r =>
+        val base = r.map(x => scoreFor(x._1)).sum
+        val bonus = (r.map(_._1).sum - 1) / 10
+        val charge = Some(((base * Constants.Charging.normalGemCharge) + (bonus * Constants.Charging.bonusGemCharge)).toInt)
+        val scoreDelta = Some(((base * Constants.Scoring.normalGemScore) + (bonus * Constants.Scoring.bonusGemScore)).toInt)
+        val mutations = r.map(_._2)
+        Some(UpdateSegment("crash", mutations, charge = charge, scoreDelta = scoreDelta))
     }
   }
 
@@ -46,19 +52,20 @@ trait CrashHelper { this: Board =>
     val run = check(gem, gem, x, y)
     if (run.size > 1) {
       run.map { n =>
-        val score = {
-          val w = n._1.width.getOrElse(1)
-          val h = n._1.height.getOrElse(1)
-          if (w != 1 || h != 1) {
-            w * h * Constants.Scoring.largeGemScore
-          } else {
-            Constants.Scoring.normalGemScore
-          }
-        }
-        applyMutation(RemoveGem(n._2, n._3, Some(score)))
+        n._1.size -> applyMutation(RemoveGem(n._2, n._3))
       }
     } else {
       Seq.empty
     }
+  }
+
+  private[this] def scoreFor(size: Int) = size match {
+    case x if x < 4 => size.toDouble
+    case x if x < 9 => size * 2.0
+    case x if x < 16 => size * 2.5
+    case x if x < 25 => size * 3.0
+    case x if x < 36 => size * 3.5
+    case x if x < 49 => size * 4.0
+    case _ => size * 5.0
   }
 }

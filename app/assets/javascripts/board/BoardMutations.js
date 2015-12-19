@@ -36,16 +36,12 @@ define(['board/BoardGems'], function (BoardGems) {
   function applySegment(board, segment, idx, scoreCallback) {
     if(debug) { console.log('  Segment [' + idx + ': ' + segment.category + '] (' + segment.mutations.length + ' mutations):'); }
 
-    var scoreDelta = 0;
     _.each(segment.mutations, function(mutation) {
-      if(mutation.v.score !== undefined) {
-        scoreDelta += mutation.v.score;
-      }
       applyMutation(board, mutation);
     });
 
-    if(scoreDelta !== 0) {
-      scoreCallback(scoreDelta);
+    if(segment.scoreDelta !== undefined) {
+      scoreCallback(segment.scoreDelta);
     }
   }
 

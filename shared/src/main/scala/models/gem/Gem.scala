@@ -8,6 +8,8 @@ case class Gem(
     width: Option[Int] = None,
     height: Option[Int] = None
 ) {
+  lazy val size = width.getOrElse(1) * height.getOrElse(1)
+
   override def toString = {
     val crashAppend = if (crash.exists(x => x)) { ", crash" } else { "" }
     val timerAppend = timer.map(t => ", timer " + t).getOrElse("")
