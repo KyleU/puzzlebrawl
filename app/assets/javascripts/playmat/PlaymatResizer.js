@@ -5,10 +5,10 @@ define([], function () {
   'use strict';
 
   var targetAspectRatios = [
-    16 / 9,
-    4 / 3,
+    9 / 16,
     3 / 4,
-    9 / 16
+    4 / 3,
+    16 / 9
   ];
 
   var PlaymatResizer = function(playmat) {
@@ -18,7 +18,8 @@ define([], function () {
   PlaymatResizer.prototype.closestAspectRatio = function() {
     var world = this.playmat.game.world;
     var aspectRatio = world.width / world.height;
-    console.log(targetAspectRatios, aspectRatio);
+    var closestRatio = Phaser.ArrayUtils.findClosest(aspectRatio, targetAspectRatios);
+    console.log(targetAspectRatios, aspectRatio, closestRatio);
   };
 
   PlaymatResizer.prototype.refreshLayout = function() {

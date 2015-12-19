@@ -16,7 +16,7 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
   }
 
   @tailrec
-  final def fullTurn(carry: Seq[UpdateSegment] = Seq.empty): Seq[UpdateSegment] = {
+  final def fullTurn(carry: Seq[UpdateSegment] = Seq.empty, combo: Int = 1): Seq[UpdateSegment] = {
     val timerActions = decrementTimers()
 
     val fuseActions = fuse()
@@ -56,7 +56,7 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
     if (ret.isEmpty) {
       carry
     } else {
-      fullTurn(carry ++ ret)
+      fullTurn(carry ++ ret, combo + 1)
     }
   }
 }
