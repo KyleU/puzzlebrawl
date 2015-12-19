@@ -4,8 +4,11 @@ import utils.NetworkSocket
 
 import scala.scalajs.js
 import scala.scalajs.js.JSON
+import scala.scalajs.js.timers._
 
 trait NetworkHelper { this: PuzzleBrawl =>
+  val connectionEl = org.scalajs.dom.document.getElementById("status-connection")
+
   lazy val networkStatus = scenario match {
     case "offline" => "offline"
     case "normal" => "proxy"
@@ -21,6 +24,17 @@ trait NetworkHelper { this: PuzzleBrawl =>
   }
 
   protected[this] var sendCallback: js.Function1[String, Unit] = _
+
+  private def sendPing(): Unit = {
+    socket.foreach { s =>
+      if(s.connected) {
+        socket.get.send(s"""{ "c": "Ping", "v": { "timestamp": ${System.currentTimeMillis} } }""")
+      }
+    }
+    setTimeout(10000)(sendPing())
+  }
+
+  setTimeout(1000)(sendPing())
 
   protected[this] def messageReceived(c: String, v: js.Dynamic) = if (networkStatus == "proxy") {
     this.socket match {
@@ -50,14 +64,18 @@ trait NetworkHelper { this: PuzzleBrawl =>
     sendCallback(BaseSerializers.write(json))
   }
 
-  protected[this] def onSocketConnect(): Unit = activeBrawl match {
-    case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
-    case None => if (this.pendingStart) {
-      start()
+  protected[this] def onSocketConnect(): Unit = {
+    connectionEl.textContent = "Connected"
+
+    activeBrawl match {
+      case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
+      case None => if (this.pendingStart) {
+        start()
+      }
     }
   }
 
-  protected[this] def onSocketMessage(s: String) = networkStatus match {
+  protected[this] def onSocketMessage(s: String): Unit = networkStatus match {
     case "offline" => throw new IllegalStateException()
     case "proxy" => sendCallback(s)
     case "blend" => scala.scalajs.js.Dynamic.global.console.log(s"Message [$s] received from socket.") // TODO
