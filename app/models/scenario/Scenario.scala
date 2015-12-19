@@ -4,15 +4,12 @@ import java.util.UUID
 
 import models.Constants
 import models.board.Board
-import models.board.mutation.Mutation.AddGem
 import models.brawl.Brawl
 import models.gem.{ Color, Gem, GemStream }
 import models.player.Player
 import models.test.brawl.BrawlTest
 import models.test.gem.MockGemStreams
 import models.user.PlayerRecord
-
-import scala.util.Random
 
 object Scenario {
   def all = Seq(
@@ -36,11 +33,7 @@ object Scenario {
     }
 
     scenario match {
-      case "normal" =>
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
-        ps.foreach(_.activeGemsCreate())
-        Brawl(id, scenario, seed, ps)
-      case "multiplayer" =>
+      case "normal" | "multiplayer" =>
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
@@ -49,19 +42,6 @@ object Scenario {
         val ps = (0 until 8).map(i => Player(UUID.randomUUID, "User " + i, Board("User " + i, w, h), GemStream()))
         val id = UUID.randomUUID()
         val brawl = Brawl(id, "ai", seed, ps)
-        brawl
-      case "testbed" =>
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
-        val brawl = Brawl(id, scenario, seed, ps)
-        brawl.players.foreach { player =>
-          (0 until 20).foreach { i =>
-            val x = Random.nextInt(player.board.width)
-            player.board.applyMutation(AddGem(player.gemStream.next, x, player.board.height - 1))
-            player.board.drop(x, player.board.height - 1)
-          }
-          player.board.fullTurn()
-          player.activeGemsCreate()
-        }
         brawl
       case "fixed" =>
         val ps = players.map { p =>
@@ -77,14 +57,6 @@ object Scenario {
         }
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
-      case x if x.startsWith("test") =>
-        val testName = x.stripPrefix("test")
-        val provider = BrawlTest.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
-        val test = provider.newInstance(id, players.head.userId)
-        test.init()
-        test.cloneOriginal()
-        test.run()
-        test.brawl
       case x if x.startsWith("all") =>
         val testName = x.stripPrefix("all")
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
@@ -92,6 +64,11 @@ object Scenario {
         val brawl = Brawl(id, scenario, seed, ps)
         brawl.players.foreach(_.activeGemsCreate())
         brawl
+
+      case "testbed" => ScenarioTestHelper.testbedBrawl(id, seed, players)
+
+      case x if x.startsWith("test") => ScenarioTestHelper.testBrawl(id, scenario.stripPrefix("test"), seed, players)
+
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }
   }

@@ -1,7 +1,7 @@
 /* global define:false */
 define([
-  'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'state/GameState'
-], function (GemTextures, Gamepad, Gesture, Keyboard, Playmat, GameState) {
+  'dialog/Modal', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'state/GameState'
+], function (Modal, GemTextures, Gamepad, Gesture, Keyboard, Playmat, GameState) {
   'use strict';
 
   function Testbed(game) {
@@ -24,6 +24,8 @@ define([
     this.game.gesture.init();
 
     this.game.gemTextures = new GemTextures(this.game);
+
+    Modal.init(this.game);
 
     this.game.localServer.start();
   };

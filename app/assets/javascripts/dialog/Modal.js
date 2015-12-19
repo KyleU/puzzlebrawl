@@ -19,10 +19,14 @@ define([], function () {
     }
     group = new Phaser.Group(game, null, 'modal-dialog');
 
-    headerText = new Phaser.Text(game, 0, 0, 'Test Header', headerStyle);
+    headerText = new Phaser.Text(game, 0, 0, 'Modal Header', headerStyle);
+    headerText.name = 'modal-header-text';
+    headerText.visible = false;
     group.add(headerText);
 
-    bodyText = new Phaser.Text(game, 0, 0, 'Test Body', bodyStyle);
+    bodyText = new Phaser.Text(game, 0, 0, 'Modal Body', bodyStyle);
+    bodyText.name = 'modal-body-text';
+    bodyText.visible = false;
     group.add(bodyText);
 
     game.add.existing(group);
@@ -34,11 +38,23 @@ define([], function () {
     if(active) {
       throw 'Modal already active.';
     }
+    headerText.visible = true;
+    bodyText.visible = true;
     active = true;
+  }
+
+  function hide() {
+    if(!active) {
+      throw 'Modal not active.';
+    }
+    headerText.visible = false;
+    bodyText.visible = false;
+    active = false;
   }
 
   return {
     init: init,
-    show: show
+    show: show,
+    hide: hide
   };
 });

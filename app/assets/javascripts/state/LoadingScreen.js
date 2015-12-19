@@ -1,5 +1,5 @@
 /* global define:false */
-define(['dialog/Modal', 'state/GameState', 'state/Testbed'], function (Modal, GameState, Testbed) {
+define(['state/GameState', 'state/Testbed'], function (GameState, Testbed) {
   'use strict';
 
   function LoadingScreen(game) {
@@ -19,8 +19,6 @@ define(['dialog/Modal', 'state/GameState', 'state/Testbed'], function (Modal, Ga
 
   LoadingScreen.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
-
-    Modal.init(this.game);
 
     this.game.state.start('testbed');
   };
