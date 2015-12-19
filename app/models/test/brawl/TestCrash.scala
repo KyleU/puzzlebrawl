@@ -29,6 +29,6 @@ class TestCrash(id: UUID, self: UUID) extends BrawlTest(id, self) {
   }
 
   override def run() = {
-    test.board.crash() ++ test.board.collapse().toSeq
+    test.board.crash(None) ++ test.board.collapse().toSeq
   }
 }

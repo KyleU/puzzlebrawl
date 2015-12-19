@@ -6,7 +6,7 @@ import models.board.mutation.UpdateSegment
 import models.gem.Gem
 
 trait CrashHelper { this: Board =>
-  def crash(): Seq[UpdateSegment] = {
+  def crash(combo: Option[Int]): Seq[UpdateSegment] = {
     val ret = mapGems { (gem, x, y) =>
       if (gem.crash.exists(x => x)) {
         crashGem(gem, x, y)
@@ -22,7 +22,7 @@ trait CrashHelper { this: Board =>
         val charge = Some(((base * Constants.Charging.normalGemCharge) + (bonus * Constants.Charging.bonusGemCharge)).toInt)
         val scoreDelta = Some(((base * Constants.Scoring.normalGemScore) + (bonus * Constants.Scoring.bonusGemScore)).toInt)
         val mutations = r.map(_._2)
-        Some(UpdateSegment("crash", mutations, charge = charge, scoreDelta = scoreDelta))
+        Some(UpdateSegment("crash", mutations, combo = combo, charge = charge, scoreDelta = scoreDelta))
     }
   }
 
