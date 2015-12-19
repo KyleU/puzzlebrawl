@@ -6,7 +6,7 @@ import models.board.mutation.UpdateSegment
 import models.gem.Color
 
 trait WildHelper { this: Board =>
-  def processWilds(combo: Option[Int]) = {
+  def processWilds() = {
     val ret = mapGems { (gem, x, y) =>
       if (gem.color == Color.Wild) {
         at(x, y - 1) match {
@@ -31,9 +31,9 @@ trait WildHelper { this: Board =>
         val (charge, scoreDelta) = if(r.tail.isEmpty) {
           (Some(Constants.Charging.wildSoloDropCharge), Some(Constants.Scoring.wildSoloDropScore))
         } else {
-          (Some((r.length * Constants.Charging.wildPerGemCharge).toInt), Some(r.length * Constants.Scoring.wildPerGemScore))
+          (Some(r.length * Constants.Charging.wildPerGemCharge), Some(r.length * Constants.Scoring.wildPerGemScore))
         }
-        Some(UpdateSegment("wild", r, combo = combo, charge = charge, scoreDelta = scoreDelta))
+        Some(UpdateSegment("wild", r, charge = charge, scoreDelta = scoreDelta))
       }
     }
   }

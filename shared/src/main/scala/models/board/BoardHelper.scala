@@ -23,7 +23,7 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
 
     val fuseActions = fuse()
 
-    val wildsActions = processWilds(comboOpt)
+    val wildsActions = processWilds()
 
     val crashActions = if (wildsActions.isEmpty) {
       crash(comboOpt)

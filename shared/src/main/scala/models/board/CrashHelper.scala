@@ -17,10 +17,19 @@ trait CrashHelper { this: Board =>
     ret.flatMap {
       case r if r.isEmpty => None
       case r =>
-        val base = r.map(x => scoreFor(x._1)).sum
-        val bonus = (r.map(_._1).sum - 1) / 10
-        val charge = Some(((base * Constants.Charging.normalGemCharge) + (bonus * Constants.Charging.bonusGemCharge)).toInt)
-        val scoreDelta = Some(((base * Constants.Scoring.normalGemScore) + (bonus * Constants.Scoring.bonusGemScore)).toInt)
+        val base = r.map(x => pointsFor(x._1)).sum
+        val comboBonus = comboBonusFor(combo)
+        val gemBonus = (r.map(_._1).sum - 1) / 10
+        val charge = Some(
+          (base * Constants.Charging.normalGemCharge) +
+          (gemBonus * Constants.Charging.bonusGemCharge) +
+          (comboBonus * Constants.Charging.bonusGemCharge)
+        )
+        val scoreDelta = Some(
+          (base * Constants.Scoring.normalGemScore) +
+          (gemBonus * Constants.Scoring.bonusGemScore) +
+          (comboBonus * Constants.Scoring.bonusGemScore)
+        ).map(_.toInt)
         val mutations = r.map(_._2)
         Some(UpdateSegment("crash", mutations, combo = combo, charge = charge, scoreDelta = scoreDelta))
     }
@@ -59,7 +68,7 @@ trait CrashHelper { this: Board =>
     }
   }
 
-  private[this] def scoreFor(size: Int) = size match {
+  private[this] def pointsFor(size: Int) = size match {
     case x if x < 4 => size.toDouble
     case x if x < 9 => size * 2.0
     case x if x < 16 => size * 2.5
@@ -67,5 +76,12 @@ trait CrashHelper { this: Board =>
     case x if x < 36 => size * 3.5
     case x if x < 49 => size * 4.0
     case _ => size * 5.0
+  }
+
+  private[this] def comboBonusFor(combo: Option[Int]) = combo match {
+    case None | Some(1) => 0
+    case Some(2) => 2
+    case Some(3) => 4
+    case Some(n) => 4 + ((n - 3) * 6)
   }
 }
