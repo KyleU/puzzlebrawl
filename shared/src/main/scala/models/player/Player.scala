@@ -10,5 +10,6 @@ case class Player(
   board: Board,
   gemStream: GemStream,
   var score: Int = 0,
-  var activeGems: Seq[GemLocation] = Seq.empty
+  var activeGems: Seq[GemLocation] = Seq.empty,
+  var target: Option[UUID] = None
 ) extends ActiveGemHelper

@@ -27,6 +27,8 @@ object RequestMessageSerializers {
 
         case "StartBrawl" => readJs[StartBrawl](v)
 
+        case "SelectTarget" => readJs[SelectTarget](v)
+
         case "ActiveGemsLeft" => ActiveGemsLeft
         case "ActiveGemsRight" => ActiveGemsRight
         case "ActiveGemsClockwise" => ActiveGemsClockwise
@@ -46,13 +48,10 @@ object RequestMessageSerializers {
         case p: Ping => writeJs(p)
         case GetVersion => Js.Obj
         case dr: DebugRequest => writeJs(dr)
-
         case sp: SetPreference => writeJs(sp)
-
         case sb: StartBrawl => writeJs(sb)
-
+        case st: SelectTarget => writeJs(st)
         case _: ActiveGemsMessage => Js.Obj
-
         case _ => throw new IllegalStateException(s"Invalid Message [${rm.getClass.getName}].")
       }
       val jsArray = jsVal match { case arr: Js.Arr => arr; case _ => throw new IllegalArgumentException(jsVal.toString) }

@@ -7,7 +7,6 @@ import models.board.Board
 import models.brawl.Brawl
 import models.gem.{ Color, Gem, GemStream }
 import models.player.Player
-import models.test.brawl.BrawlTest
 import models.test.gem.MockGemStreams
 import models.user.PlayerRecord
 
@@ -15,6 +14,7 @@ object Scenario {
   def all = Seq(
     "testbed" -> "Testbed",
     "offline" -> "Offline",
+    "ai" -> "AI Test",
     "multiplayer" -> "Multiplayer Test",
     "fixed" -> "Fixed Gem Stream",
     "allRed" -> "All Red",
@@ -39,8 +39,9 @@ object Scenario {
         Brawl(id, scenario, seed, ps)
       case "ai" =>
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
-        val ps = (0 until 8).map(i => Player(UUID.randomUUID, "User " + i, Board("User " + i, w, h), GemStream()))
-        val id = UUID.randomUUID()
+        val ais = (0 until (8 - players.size)).map(i => Player(UUID.randomUUID, "AI " + i, Board("AI " + i, w, h), GemStream(seed)))
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))) ++ ais
+        ps.foreach(_.activeGemsCreate())
         val brawl = Brawl(id, "ai", seed, ps)
         brawl
       case "fixed" =>
@@ -64,11 +65,8 @@ object Scenario {
         val brawl = Brawl(id, scenario, seed, ps)
         brawl.players.foreach(_.activeGemsCreate())
         brawl
-
       case "testbed" => ScenarioTestHelper.testbedBrawl(id, seed, players)
-
       case x if x.startsWith("test") => ScenarioTestHelper.testBrawl(id, scenario.stripPrefix("test"), seed, players)
-
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }
   }
