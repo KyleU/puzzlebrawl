@@ -54,7 +54,7 @@ define(['utils/Config'], function (Config) {
     self.board.x = xOffset;
     self.board.y = 96;
 
-    xOffset += self.board.width + 64;
+    xOffset += self.board.width + (Config.tile.size / 4);
 
     _.each(others, function(player) {
       player.nameLabel.x = xOffset;
@@ -69,7 +69,7 @@ define(['utils/Config'], function (Config) {
       player.board.width = (player.board.w * Config.tile.size) / 2;//others.length;
       player.board.height = (player.board.h * Config.tile.size) / 2;//others.length;
 
-      xOffset += player.board.width + (Config.tile.size / 2);
+      xOffset += player.board.width + (Config.tile.size / 4);
     });
 
     p.w = xOffset;

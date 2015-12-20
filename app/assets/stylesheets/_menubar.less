@@ -1,7 +1,7 @@
 #status-container {
   position: fixed;
   top: 0;
-  height: 48px;
+  height: 32px;
   width: 100%;
   background-color: #444444;
 }
@@ -10,23 +10,23 @@
   float: left;
   width: 108px;
   #status-scenario {
-    margin: 15px 0 0 15px;
+    margin: 6px 0 0 6px;
   }
 }
 
 #status-connection {
   float: right;
-  width: 32px;
-  height: 32px;
-  margin: 8px;
+  width: 24px;
+  height: 24px;
+  margin: 6px 4px 0 4px;
   background: url(../images/ui/lights.png) no-repeat;
-  background-size: 96px 32px;
-  background-position-x: -32px;
+  background-size: 72px 24px;
+  background-position-x: -24px;
   &.connected {
     background-position-x: 0;
   }
   &.error {
-    background-position-x: -64px;
+    background-position-x: -48px;
   }
 }
 
@@ -35,12 +35,12 @@
   width: 64px;
   text-align: right;
   #status-latency {
-    margin-top: 15px;
+    margin-top: 8px;
   }
 }
 
 #title {
-  margin-top: 15px;
+  margin-top: 8px;
   text-align: center;
   font-weight: bold;
 }
