@@ -66,7 +66,8 @@ trait NetworkHelper { this: PuzzleBrawl =>
 
   protected[this] def send(rm: ResponseMessage): Unit = {
     val json = ResponseMessageSerializers.write(rm)
-    sendCallback(BaseSerializers.write(json))
+    val s = BaseSerializers.write(json)
+    sendCallback(s)
   }
 
   protected[this] def onSocketConnect(): Unit = {

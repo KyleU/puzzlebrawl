@@ -40,8 +40,12 @@ define(['board/BoardGems'], function (BoardGems) {
       applyMutation(board, mutation);
     });
 
-    if(segment.scoreDelta !== undefined) {
-      scoreCallback(segment.scoreDelta);
+    var sd = segment.scoreDelta;
+    if(sd !== undefined) {
+      if(sd instanceof Array) {
+        sd = sd[0];
+      }
+      scoreCallback(sd);
     }
   }
 
@@ -51,10 +55,12 @@ define(['board/BoardGems'], function (BoardGems) {
       console.log('Processing [' + segments.length + '] segments containing [' + count + '] mutations.');
     }
     if(segments.length > 0) {
-      board.game.isTweening = true;
+      if(board.owner === board.playmat.self) {
+        board.game.isTweening = true;
+      }
       var s = segments[0];
       applySegment(board, s, idx, scoreCallback);
-      if(segments.length === 1) {
+      if(segments.length === 1 && board.owner === board.playmat.self) {
         board.game.isTweening = false;
       }
       var f = function() {
