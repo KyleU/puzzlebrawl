@@ -16,11 +16,12 @@ case class StartBrawl(scenario: String) extends RequestMessage
 case class JoinBrawl(id: UUID) extends RequestMessage
 case class ObserveBrawl(id: UUID, as: Option[UUID]) extends RequestMessage
 
-trait BrawlMessage extends RequestMessage
+sealed trait BrawlMessage extends RequestMessage
 
 case class SelectTarget(t: UUID) extends BrawlMessage
 
-trait ActiveGemsMessage extends BrawlMessage
+sealed trait ActiveGemsMessage extends BrawlMessage
+
 case object ActiveGemsLeft extends ActiveGemsMessage
 case object ActiveGemsRight extends ActiveGemsMessage
 case object ActiveGemsClockwise extends ActiveGemsMessage

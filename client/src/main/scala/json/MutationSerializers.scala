@@ -19,6 +19,7 @@ object MutationSerializers {
         ))
         case cg: ChangeGem => "c" -> writeJs(cg)
         case rg: RemoveGem => "r" -> writeJs(rg)
+        case tc: TargetChanged=> "t" -> writeJs(tc)
       }
       Js.Obj("t" -> Js.Str(v._1), "v" -> v._2.asInstanceOf[Js.Arr].value(1))
   }
@@ -36,6 +37,7 @@ object MutationSerializers {
           case "x" => readJs[MoveGems](o)
           case "c" => readJs[ChangeGem](o)
           case "r" => readJs[RemoveGem](o)
+          case "t" => readJs[TargetChanged](o)
           case _ => throw new IllegalStateException()
         }
         case _ => throw new IllegalStateException()

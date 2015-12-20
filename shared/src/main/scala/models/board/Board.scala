@@ -53,6 +53,7 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     case mgs: MoveGems => Move(this, mgs)
     case cg: ChangeGem => Change(this, cg)
     case rg: RemoveGem => Remove(this, rg)
+    case tc: TargetChanged => throw new IllegalStateException()
   }
 
   def cloneTo(board: Board) = for (y <- 0 until height) {

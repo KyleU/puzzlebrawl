@@ -12,18 +12,18 @@ import models.user.PlayerRecord
 
 object Scenario {
   def all = Seq(
-    "testbed" -> "Testbed",
-    "offline" -> "Offline",
-    "ai" -> "AI Test",
-    "multiplayer" -> "Multiplayer Test",
-    "fixed" -> "Fixed Gem Stream",
-    "allRed" -> "All Red",
-    "allGreen" -> "All Green",
-    "allBlue" -> "All Blue",
-    "allYellow" -> "All Yellow",
-    "allRedBlue" -> "All Red and Blue",
-    "allCrash" -> "All Crash",
-    "allWild" -> "All Wild"
+    "Testbed" -> "Testbed",
+    "Offline" -> "Offline",
+    "AI Test" -> "AI Test",
+    "Multiplayer" -> "Multiplayer Test",
+    "Fixed" -> "Fixed Gem Stream",
+    "All Red" -> "All Red",
+    "All Green" -> "All Green",
+    "All Blue" -> "All Blue",
+    "All Yellow" -> "All Yellow",
+    "All Red/Blue" -> "All Red and Blue",
+    "All Crash" -> "All Crash",
+    "All Wild" -> "All Wild"
   )
 
   def newInstance(id: UUID, scenario: String, seed: Int, players: Seq[PlayerRecord]) = {
@@ -33,18 +33,18 @@ object Scenario {
     }
 
     scenario match {
-      case "normal" | "multiplayer" =>
+      case "Normal" | "Multiplayer" =>
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
-      case "ai" =>
+      case "AI Test" =>
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
         val ais = (0 until (5 - players.size)).map(i => Player(UUID.randomUUID, "AI " + (i + 1), Board("AI " + (i + 1), w, h), GemStream(seed), script = Some("tutorial")))
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))) ++ ais
         ps.foreach(_.activeGemsCreate())
-        val brawl = Brawl(id, "ai", seed, ps)
+        val brawl = Brawl(id, "AI Test", seed, ps)
         brawl
-      case "fixed" =>
+      case "Fixed" =>
         val ps = players.map { p =>
           val gs = new FixedGemStream(Seq(
             Gem(0), Gem(1),
@@ -58,15 +58,15 @@ object Scenario {
         }
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
-      case x if x.startsWith("all") =>
-        val testName = x.stripPrefix("all")
+      case x if x.startsWith("All ") =>
+        val testName = x.stripPrefix("All ")
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, w, h), MockGemStreams.forString(testName)))
         val brawl = Brawl(id, scenario, seed, ps)
         brawl.players.foreach(_.activeGemsCreate())
         brawl
-      case "testbed" => ScenarioTestHelper.testbedBrawl(id, seed, players)
-      case x if x.startsWith("test") => ScenarioTestHelper.testBrawl(id, scenario.stripPrefix("test"), seed, players)
+      case "Testbed" => ScenarioTestHelper.testbedBrawl(id, seed, players)
+      case x if x.startsWith("Test") => ScenarioTestHelper.testBrawl(id, scenario.stripPrefix("Test"), seed, players)
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }
   }

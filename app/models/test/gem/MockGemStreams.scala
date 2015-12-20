@@ -8,7 +8,7 @@ object MockGemStreams {
     case "Green" => allGreen()
     case "Blue" => allBlue()
     case "Yellow" => allYellow()
-    case "RedBlue" => allRedBlue()
+    case "Red/Blue" => allRedBlue()
     case "Crash" => allCrash()
     case "Wild" => allWild()
     case _ => throw new IllegalArgumentException(s"Invalid mock gem stream [$s].")
