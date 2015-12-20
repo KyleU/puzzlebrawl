@@ -5,11 +5,23 @@ import services.email.EmailService
 import utils.Logging
 
 import scala.concurrent.Future
-import scala.util.control.NonFatal
+
+object ScheduledTask {
+  trait Task {
+    def run(): Future[(String, Option[String])]
+  }
+}
 
 @javax.inject.Singleton
 class ScheduledTask @javax.inject.Inject() (emailService: EmailService) extends Logging with Runnable {
   private[this] var running = false
+
+  private[this] val tasks = Seq(
+    new MetricsUpdate(),
+    new EmailReport(emailService),
+    new RowCountUpdate(),
+    new TableReaper()
+  )
 
   override def run() = go(false)
 
@@ -20,23 +32,18 @@ class ScheduledTask @javax.inject.Inject() (emailService: EmailService) extends 
       Future.successful(Nil)
     } else {
       running = true
-      val startTime = System.nanoTime
-      val f = Future.sequence(Seq(
-        MetricsUpdate.updateMetrics(),
-        EmailReport.sendReportIfNeeded(emailService)
-      // updateCounts()
-      // reapTables()
-      ))
+      val startMs = System.currentTimeMillis
+      val f = Future.sequence(tasks.map(_.run()))
       f.onFailure {
-        case NonFatal(x) =>
-          log.warn("Exception encountered running scheduled tasks.", x)
+        case t: Throwable =>
+          log.warn("Exception encountered running scheduled tasks.", t)
           running = false;
       }
       f.onSuccess {
         case _ => running = false
       }
       f.map { ret =>
-        val duration = (System.nanoTime - startTime) / 1000000
+        val duration = System.currentTimeMillis - startMs
         val actions = ret.filter(_._2.isDefined)
         val msgStart = s"Completed [${ret.size}] scheduled tasks in [${duration}ms]"
         if (actions.nonEmpty) {
