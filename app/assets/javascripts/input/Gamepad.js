@@ -35,6 +35,13 @@ define(['input/GamepadSignals'], function (GamepadSignals) {
         pad.getButton(Phaser.Gamepad.XBOX360_DPAD_RIGHT).onDown.add(input('active-right'));
         pad.getButton(Phaser.Gamepad.XBOX360_DPAD_UP).onDown.add(input('active-step'));
         pad.getButton(Phaser.Gamepad.XBOX360_DPAD_DOWN).onDown.add(input('active-drop'));
+
+        pad.getButton(Phaser.Gamepad.XBOX360_LEFT_BUMPER).onDown.add(function() {
+          console.log('Previous target.');
+        });
+        pad.getButton(Phaser.Gamepad.XBOX360_RIGHT_BUMPER).onDown.add(function() {
+          console.log('Next target.');
+        });
       }
     }
 

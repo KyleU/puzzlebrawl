@@ -58,10 +58,10 @@ define(['utils/Config'], function (Config) {
 
     _.each(others, function(player) {
       player.nameLabel.x = xOffset;
-      player.nameLabel.y = 32;
+      player.nameLabel.y = 16;
 
       player.scoreLabel.x = xOffset + player.board.width;
-      player.scoreLabel.y = 32;
+      player.scoreLabel.y = 16;
 
       player.board.x = xOffset;
       player.board.y = 96;

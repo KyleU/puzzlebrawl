@@ -35,7 +35,6 @@ define([], function () {
 
   GestureSignals.prototype.tapCallback = function(gestures, pointer) {
     this.game.onInput('active-clockwise');
-    console.log(pointer);
   };
 
   GestureSignals.prototype.holdCallback = function(gestures, pointer) {

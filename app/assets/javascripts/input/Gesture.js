@@ -14,7 +14,7 @@ define(['input/GestureSignals', 'utils/Config'], function (GestureSignals, Confi
       g.input.addPointer();
     }
     // Previously included [game.input.mousePointer]
-    this.pointers = [ g.input.pointer1, g.input.pointer2, g.input.pointer3, g.input.pointer4, g.input.pointer5, g.input.pointer6];
+    this.pointers = [g.input.mousePointer, g.input.pointer1, g.input.pointer2, g.input.pointer3, g.input.pointer4, g.input.pointer5, g.input.pointer6];
     this.statuses = [];
     for(var pIdx = 0; pIdx < this.pointers.length; pIdx++) {
       this.statuses[pIdx] = {
