@@ -261,7 +261,7 @@ Debug.prototype._createMenuHead = function () {
         type = (r === Phaser.WEBGL ? 'WebGL' : (r === Phaser.HEADLESS ? 'Headless' : 'Canvas'));
 
     ui.addClass(div, 'pdebug-head');
-    ui.setText(div, 'Phaser Debug (' + type + '):');
+    ui.setText(div, 'Puzzle Brawl (' + type + '):');
 
     return div;
 };

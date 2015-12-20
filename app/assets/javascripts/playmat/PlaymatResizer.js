@@ -60,11 +60,14 @@ define(['utils/Config'], function (Config) {
       player.nameLabel.x = xOffset;
       player.nameLabel.y = 16;
 
-      player.scoreLabel.x = xOffset + player.board.width;
+      player.scoreLabel.x = xOffset + (player.board.width / 2);//others.length);
       player.scoreLabel.y = 16;
 
       player.board.x = xOffset;
       player.board.y = 96;
+
+      player.board.width = (player.board.w * Config.tile.size) / 2;//others.length;
+      player.board.height = (player.board.h * Config.tile.size) / 2;//others.length;
 
       xOffset += player.board.width + (Config.tile.size / 2);
     });

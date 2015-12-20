@@ -26,6 +26,8 @@ define([
     this.game.gemTextures = new GemTextures(this.game);
 
     this.game.localServer.start();
+
+    this.game.playmat = new Playmat(this.game);
   };
 
   Testbed.prototype.update = function() {
@@ -34,9 +36,7 @@ define([
   };
 
   Testbed.prototype.resize = function() {
-    if(this.playmat !== undefined) {
-      this.playmat.resizer.resize();
-    }
+    this.game.playmat.resizer.resize();
   };
 
   Testbed.prototype.onMessage = function(c, v) {
@@ -49,7 +49,7 @@ define([
         break;
       case 'DebugResponse':
         if(v.key === 'sync') {
-          BrawlSync.check(this.playmat.brawl, JSON.parse(v.data));
+          BrawlSync.check(this.game.playmat.brawl, JSON.parse(v.data));
         } else {
           throw 'Unhandled debug response [' + v.key + '].';
         }
@@ -64,12 +64,11 @@ define([
   };
 
   Testbed.prototype.startBrawl = function(self, brawl) {
-    this.playmat = new Playmat(this.game);
-    this.playmat.setBrawl(self, brawl);
+    this.game.playmat.setBrawl(self, brawl);
   };
 
   Testbed.prototype.onPlayerUpdate = function(update) {
-    var p = this.playmat;
+    var p = this.game.playmat;
     if(p === undefined || p === null) {
       throw 'Player update received with no active brawl.';
     }
