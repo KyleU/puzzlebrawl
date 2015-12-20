@@ -1,5 +1,5 @@
 /* global define:false */
-define(['utils/Status'], function (Status) {
+define([], function () {
   'use strict';
 
   var latency;

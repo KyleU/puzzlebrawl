@@ -2,7 +2,7 @@ package utils
 
 import org.scalajs.dom.raw._
 
-class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
+class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit, onError: (String) => Unit, onClose: () => Unit) {
   var connecting = false
   var connected = false
   private[this] var ws: Option[WebSocket] = None
@@ -44,7 +44,7 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
   }
 
   private[this] def onErrorEvent(event: ErrorEvent) = {
-    scala.scalajs.js.Dynamic.global.console.log(s"Error [$event]!")
+    onError(event.message)
     event
   }
 
@@ -57,7 +57,7 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit) {
   private[this] def onCloseEvent(event: Event) = {
     connecting = false
     connected = false
-    scala.scalajs.js.Dynamic.global.console.log("Close!")
+    onClose()
     event
   }
 }

@@ -3,21 +3,8 @@
 )@layout.basic(title = utils.Config.projectName, bodyClass = Some("dark")) {
   <div id="game-container"></div>
 
-  <ul id="status-container">
-    <li>Connection: <span id="status-connection">Starting...</span></li>
-    <li>Latency: <span id="status-latency">Unknown</span></li>
-    <li>Scenario: <span id="status-scenario">None</span></li>
-  </ul>
-
-  <div id="modal-dialog" class="off">
-    <div id="modal-backdrop"></div>
-    <div id="modal-content">
-      <div id="modal-close"><div>&times;</div></div>
-      <div id="modal-title"></div>
-      <div id="modal-body"></div>
-      <div id="modal-button-continue">Continue</div>
-    </div>
-  </div>
+  @menubar()
+  @modal()
 
   @if(debug) {
     <script src="@routes.Assets.versioned("lib/phaser/js/phaser-arcade-physics.js")"></script>

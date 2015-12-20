@@ -19,7 +19,7 @@ trait NetworkHelper { this: PuzzleBrawl =>
   protected[this] val socket = if (networkStatus == "offline") {
     None
   } else {
-    val s = new NetworkSocket(onSocketConnect, onSocketMessage)
+    val s = new NetworkSocket(onSocketConnect, onSocketMessage, onSocketError, onSocketClose)
     s.open()
     Some(s)
   }
@@ -71,7 +71,8 @@ trait NetworkHelper { this: PuzzleBrawl =>
   }
 
   protected[this] def onSocketConnect(): Unit = {
-    connectionEl.textContent = "Connected"
+    connectionEl.classList.remove("error")
+    connectionEl.classList.add("connected")
 
     activeBrawl match {
       case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
@@ -79,6 +80,16 @@ trait NetworkHelper { this: PuzzleBrawl =>
         start()
       }
     }
+  }
+
+  protected[this] def onSocketError(error: String): Unit = {
+    connectionEl.classList.remove("connected")
+    connectionEl.classList.add("error")
+  }
+
+  protected[this] def onSocketClose(): Unit = {
+    connectionEl.classList.remove("connected")
+    connectionEl.classList.add("error")
   }
 
   protected[this] def onSocketMessage(s: String): Unit = networkStatus match {
