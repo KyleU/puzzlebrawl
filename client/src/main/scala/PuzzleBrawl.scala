@@ -13,7 +13,7 @@ class PuzzleBrawl extends NetworkHelper with MessageHelper {
   lazy val scenario = {
     val hash = org.scalajs.dom.document.location.hash
     if (Option(hash).isEmpty || hash.isEmpty) {
-      "normal"
+      "Normal"
     } else {
       hash.stripPrefix("#")
     }

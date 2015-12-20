@@ -80,7 +80,7 @@ define(['utils/Config'], function (Config) {
     }
   };
 
-  var menubarHeight = 48;
+  var menubarHeight = 32;
 
   PlaymatResizer.prototype.resize = function() {
     var p = this.playmat;
