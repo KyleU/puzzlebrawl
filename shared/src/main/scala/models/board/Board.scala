@@ -5,8 +5,10 @@ import models.board.mutation.Mutation._
 import models.gem.{ GemLocation, Gem }
 
 case class Board(key: String, width: Int, height: Int) extends BoardHelper {
-  var gemCount = 0
-  var moveCount = 0
+  private[this] var gemCount = 0
+  private[this] var moveCount = 0
+  private[this] var firstMoveMade: Option[Long] = None
+  private[this] var lastMoveMade: Option[Long] = None
 
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
   for (x <- 0 until width; y <- 0 until height) {
@@ -60,6 +62,18 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     for (x <- 0 until width) {
       board.set(x, y, at(x, y))
     }
+  }
+
+  def getGemCount = moveCount
+  def incrementGemCount() = gemCount += 1
+
+  def getMoveCount = moveCount
+  def incrementMoveCount(time: Long) = {
+    moveCount += 1
+    if(firstMoveMade.isEmpty) {
+      firstMoveMade = Some(time)
+    }
+    lastMoveMade = Some(time)
   }
 
   def clear() = mapGems((gem, x, y) => Seq(applyMutation(RemoveGem(x, y))))
