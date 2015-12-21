@@ -24,7 +24,7 @@ class SimpleSimulation extends Simulation {
   val brawlRequest = http("Brawl Page").get("/play").check(status.is(200))
 
   val wsOpen = ws("Open Websocket").open(wsUrl)
-  val wsStartBrawl = ws("StartBrawl Message").sendText(jsonFor("StartBrawl", """{ "scenario": "normal" }""")).check(wsAwait.within(2.seconds).expect(1))
+  val wsStartBrawl = ws("StartBrawl Message").sendText(jsonFor("StartBrawl", """{ "scenario": "Normal" }""")).check(wsAwait.within(2.seconds).expect(1))
   val wsActiveLeft = ws("ActiveGemsLeft Message").sendText(jsonFor("ActiveGemsLeft", "{}")).check(wsAwait.within(2.seconds).expect(1))
   val wsActiveRight = ws("ActiveGemsRight Message").sendText(jsonFor("ActiveGemsRight", "{}")).check(wsAwait.within(2.seconds).expect(1))
   val wsActiveDrop = ws("ActiveGemsDrop Message").sendText(jsonFor("ActiveGemsDrop", "{}")).check(wsAwait.within(2.seconds).expect(1))
@@ -46,6 +46,6 @@ class SimpleSimulation extends Simulation {
   def jsonFor(c: String, v: String) = s"""{ "c": "$c", "v": $v }"""
 
   setUp(scn.inject(
-    rampUsers(100) over 10.seconds
+    rampUsers(1000) over 10.seconds
   ).protocols(httpConf))
 }

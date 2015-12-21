@@ -16,7 +16,7 @@ import scala.util.control.NonFatal
 
 object Database extends Logging with Instrumented with FutureMetrics {
   private[this] var factory: PostgreSQLConnectionFactory = _
-  private[this] val poolConfig = new PoolConfiguration(maxObjects = 100, maxIdle = 10, maxQueueSize = 1000)
+  private[this] val poolConfig = new PoolConfiguration(maxObjects = 20, maxIdle = 20, maxQueueSize = 10000)
   private[this] var pool: ConnectionPool[PostgreSQLConnection] = _
   private[this] def prependComment(obj: Object, sql: String) = s"/* ${obj.getClass.getSimpleName.replace("$", "")} */ $sql"
 

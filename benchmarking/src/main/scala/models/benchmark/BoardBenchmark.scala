@@ -27,7 +27,7 @@ class BoardBenchmark {
     }
 
     board.fuse()
-    board.crash()
+    board.crash(None)
     board.collapse()
   }
 }
