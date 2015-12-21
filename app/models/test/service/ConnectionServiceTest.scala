@@ -1,20 +1,20 @@
 package models.test.service
 
 import akka.testkit.TestProbe
-import controllers.admin.TestController
 import models.{ VersionResponse, GetVersion, Pong, Ping }
 import models.user.User
 import services.connection.ConnectionService
-import services.supervisor.ActorSupervisor
-import utils.{ DateUtils, Logging }
+import utils.{ ApplicationContext, DateUtils, Logging }
 
 object ConnectionServiceTest extends Logging {
+  lazy val ctx = play.api.Play.current.injector.instanceOf(classOf[ApplicationContext])
+
   def testConnection() = {
     implicit val system = play.api.Play.current.actorSystem
     val testProbe = TestProbe()
 
     val initStart = DateUtils.nowMillis
-    val conn = system.actorOf(ConnectionService.props(None, ActorSupervisor.instance, User.mock, testProbe.ref))
+    val conn = system.actorOf(ConnectionService.props(None, ctx.supervisor, User.mock, testProbe.ref))
     val initMs = DateUtils.nowMillis - initStart
 
     val runStart = DateUtils.nowMillis

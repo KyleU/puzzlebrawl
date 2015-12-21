@@ -9,7 +9,6 @@ import play.api.Mode
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.database.{ Database, Schema }
 import services.scheduled.ScheduledTask
-import services.supervisor.ActorSupervisor
 import utils.metrics.Instrumented
 
 import scala.concurrent.Future
@@ -31,8 +30,6 @@ trait ApplicationContextHelper { this: ApplicationContext =>
 
     Database.open(config.databaseConfiguration)
     Schema.update()
-
-    ActorSupervisor.instance
 
     scheduleTask()
 

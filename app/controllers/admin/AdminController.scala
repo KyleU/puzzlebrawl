@@ -32,7 +32,7 @@ class AdminController @javax.inject.Inject() (override val ctx: ApplicationConte
   }
 
   def status = withAdminSession("status") { implicit request =>
-    (ActorSupervisor.instance ask GetSystemStatus).map {
+    (ctx.supervisor ask GetSystemStatus).map {
       case x: SystemStatus => Ok(views.html.admin.activity.status(x))
     }
   }
@@ -48,7 +48,7 @@ class AdminController @javax.inject.Inject() (override val ctx: ApplicationConte
   }
 
   def observeRandomBrawl() = withAdminSession("observe.random") { implicit request =>
-    (ActorSupervisor.instance ask GetSystemStatus).map {
+    (ctx.supervisor ask GetSystemStatus).map {
       case ss: SystemStatus => if (ss.brawls.isEmpty) {
         Ok("No brawls available.")
       } else {

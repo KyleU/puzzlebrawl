@@ -5,7 +5,6 @@ import models.{ RequestMessage, ResponseMessage }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.{ AnyContentAsEmpty, Request, WebSocket }
 import services.connection.ConnectionService
-import services.supervisor.ActorSupervisor
 import utils.ApplicationContext
 import utils.web.MessageFrameFormatter
 
@@ -18,14 +17,12 @@ class WebsocketController @javax.inject.Inject() (override val ctx: ApplicationC
 
   import mff.{ requestFormatter, responseFormatter }
 
-  val supervisor = ActorSupervisor.instance
-
   def connect() = WebSocket.tryAcceptWithActor[RequestMessage, ResponseMessage] { request =>
     implicit val req = Request(request, AnyContentAsEmpty)
     SecuredRequestHandler { securedRequest =>
       Future.successful(HandlerResult(Ok, Some(securedRequest.identity)))
     }.map {
-      case HandlerResult(r, Some(user)) => Right(ConnectionService.props(None, supervisor, user, _: ActorRef))
+      case HandlerResult(r, Some(user)) => Right(ConnectionService.props(None, ctx.supervisor, user, _: ActorRef))
       case HandlerResult(r, None) => Left(r)
     }
   }

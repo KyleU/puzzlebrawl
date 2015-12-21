@@ -7,23 +7,15 @@ import akka.actor._
 import models._
 import models.user.User
 import org.joda.time.LocalDateTime
-import play.api.libs.concurrent.Akka
-import utils.{ Config, DateUtils, Logging }
+import utils.{ ApplicationContext, Config, DateUtils, Logging }
 import utils.metrics.{ InstrumentedActor, MetricsServletActor }
 
 object ActorSupervisor extends Logging {
-  lazy val instance = {
-    import play.api.Play.current
-    val instanceRef = Akka.system.actorOf(Props[ActorSupervisor], "supervisor")
-    log.info(s"Actor Supervisor [${instanceRef.path.toString}] started for [${Config.projectId}].")
-    instanceRef
-  }
-
   case class BrawlRecord(connections: Seq[(UUID, String)], actorRef: ActorRef, started: LocalDateTime)
   case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeBrawl: Option[UUID], started: LocalDateTime)
 }
 
-class ActorSupervisor extends InstrumentedActor with Logging with ActorSupervisorBrawlHelper {
+class ActorSupervisor(ctx: ApplicationContext) extends InstrumentedActor with Logging with ActorSupervisorBrawlHelper {
   import ActorSupervisor._
 
   protected[this] val connections = collection.mutable.HashMap.empty[UUID, ConnectionRecord]
@@ -33,8 +25,7 @@ class ActorSupervisor extends InstrumentedActor with Logging with ActorSuperviso
   protected[this] val brawlsCounter = metrics.counter("active-brawls")
 
   override def preStart() {
-    val config = play.api.Play.current.injector.instanceOf(classOf[Config])
-    context.actorOf(MetricsServletActor.props(config), "metrics-servlet")
+    context.actorOf(MetricsServletActor.props(ctx.config), "metrics-servlet")
   }
 
   override def supervisorStrategy: SupervisorStrategy = OneForOneStrategy() {
