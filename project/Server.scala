@@ -20,13 +20,14 @@ import play.sbt.routes.RoutesKeys.routesGenerator
 import com.sksamuel.scapegoat.sbt.ScapegoatSbtPlugin.autoImport._
 import com.typesafe.sbt.SbtScalariform.{ ScalariformKeys, defaultScalariformSettings }
 
+import tut.Plugin._
+
 object Server {
   private[this] val dependencies = {
     import Dependencies._
     Seq(
       Cache.ehCache, Database.postgresAsync, Mail.mailer, Miscellaneous.lanterna,
-      Akka.actor, Akka.logging,
-      Play.playFilters, Play.playWs, Play.playTest, Authentication.silhouette,
+      Akka.actor, Akka.logging, Play.playFilters, Play.playWs, Play.playTest, Authentication.silhouette,
       Metrics.metrics, Metrics.healthChecks, Metrics.json, Metrics.jvm, Metrics.ehcache, Metrics.jettyServlet, Metrics.servlets, Metrics.graphite,
       WebJars.requireJs, WebJars.bootstrap, WebJars.underscore, WebJars.d3, WebJars.nvd3,
       Testing.akkaTestkit, Testing.gatlingCore, Testing.gatlingCharts
@@ -66,13 +67,15 @@ object Server {
     scapegoatDisabledInspections := Seq("DuplicateImport"),
     ScalariformKeys.preferences := ScalariformKeys.preferences.value,
 
+    tutSourceDirectory := baseDirectory.value / "doc",
+
     // IntelliJ import fixes
     ideExcludedDirectories <<= (baseDirectory, target, crossTarget) { (b, t, ct) =>
       (t * "*").filter(_.isDirectory).filter(_ != ct).get ++
         (ct * "*").filter(_.isDirectory).filter(f => !(f.name.contains("twirl") || f.name.contains("routes"))).get ++
         Seq(b / "logs") ++ Seq(b / "public" / "lib")
     }
-  ) ++ defaultScalariformSettings
+  )
 
   lazy val server = Project(
     id = Shared.projectId,
@@ -81,6 +84,8 @@ object Server {
     .enablePlugins(GitVersioning)
     .enablePlugins(SbtWeb)
     .enablePlugins(play.sbt.PlayScala)
+    .settings(defaultScalariformSettings: _*)
+    .settings(tutSettings: _*)
     .settings(serverSettings: _*)
     .aggregate(projectToRef(Client.client))
     .aggregate(Shared.sharedJvm)

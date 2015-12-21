@@ -9,7 +9,7 @@ import models.user.PlayerRecord
 import org.joda.time.LocalDateTime
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
-import utils.DateUtils
+import utils.{ Config, DateUtils }
 import utils.json.BrawlSerializers.brawlWrites
 
 object BrawlService {
@@ -39,7 +39,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
     }
     insertHistory()
     val playersString = players.map(x => x.userId + " (" + x.name + ")").mkString(", ")
-    val msg = s"Brawl `$id` started with seed `$seed` using scenario `$scenario` for players `$playersString`."
+    val msg = s"Brawl `$id` started on `${Config.hostname}` with seed `$seed` using scenario `$scenario` for players `$playersString`."
     notificationCallback(msg)
     schedule = {
       import scala.concurrent.duration._
@@ -47,7 +47,11 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
     }
   }
 
-  override def postStop() = schedule.map(_.cancel())
+  override def postStop() = {
+    val msg = s"Game conpletion report for `$id`:\n  TODO"
+    notificationCallback(msg)
+    schedule.map(_.cancel())
+  }
 
   override def receiveRequest = {
     case br: BrawlRequest => handleBrawlRequest(br)

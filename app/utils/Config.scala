@@ -1,5 +1,7 @@
 package utils
 
+import java.net.InetAddress
+
 import _root_.play.api.Play
 import com.github.mauricio.async.db.Configuration
 
@@ -7,6 +9,7 @@ object Config {
   val projectId = "puzzlebrawl"
   val projectName = "Puzzle Brawl"
   val version = "0.1"
+  val hostname = InetAddress.getLocalHost.getHostName
   val pageSize = 100
 }
 
