@@ -28,6 +28,7 @@ object ApplicationContext {
 class ApplicationContext @javax.inject.Inject() (
     val env: AuthenticationEnvironment,
     val messagesApi: MessagesApi,
+    val config: Config,
     val lifecycle: ApplicationLifecycle
 ) extends ApplicationContextHelper with Logging {
   start()

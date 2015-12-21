@@ -3,6 +3,7 @@ package utils.metrics
 import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 
+import akka.actor.Props
 import com.codahale.metrics.graphite.{ Graphite, GraphiteReporter }
 import com.codahale.metrics.{ MetricFilter, JmxReporter }
 import com.codahale.metrics.servlets.AdminServlet
@@ -10,21 +11,25 @@ import org.eclipse.jetty.server.{ ServerConnector, Server }
 import org.eclipse.jetty.servlet.ServletContextHandler
 import utils.{ Logging, Config }
 
-class MetricsServletActor extends InstrumentedActor with Logging {
+object MetricsServletActor {
+  def props(config: Config) = Props(classOf[MetricsServletActor], config)
+}
+
+class MetricsServletActor(config: Config) extends InstrumentedActor with Logging {
   private[this] var jmxReporter: Option[JmxReporter] = None
   private[this] var graphiteReporter: Option[GraphiteReporter] = None
   private[this] var httpServer: Option[Server] = None
 
   override def preStart(): Unit = {
-    if (Config.jmxEnabled) {
+    if (config.jmxEnabled) {
       log.info("Reporting metrics over JMX.")
       jmxReporter = Some(JmxReporter.forRegistry(Instrumented.metricRegistry).build())
       jmxReporter.foreach(r => r.start())
     }
 
-    if (Config.graphiteEnabled) {
-      log.info(s"Starting Graphite reporter for [${Config.graphiteServer}:${Config.graphitePort}].")
-      val graphiteServer = new Graphite(new InetSocketAddress(Config.graphiteServer, Config.graphitePort))
+    if (config.graphiteEnabled) {
+      log.info(s"Starting Graphite reporter for [${config.graphiteServer}:${config.graphitePort}].")
+      val graphiteServer = new Graphite(new InetSocketAddress(config.graphiteServer, config.graphitePort))
       graphiteReporter = Some(
         GraphiteReporter.forRegistry(Instrumented.metricRegistry)
           .convertRatesTo(TimeUnit.SECONDS)
@@ -35,8 +40,8 @@ class MetricsServletActor extends InstrumentedActor with Logging {
       graphiteReporter.foreach(r => r.start(1, TimeUnit.MINUTES))
     }
 
-    if (Config.servletEnabled) {
-      log.info(s"Starting metrics servlet at [http://0.0.0.0:${Config.servletPort}/].")
+    if (config.servletEnabled) {
+      log.info(s"Starting metrics servlet at [http://0.0.0.0:${config.servletPort}/].")
       httpServer = Some(createJettyServer())
       httpServer.foreach(s => s.start())
     }
@@ -75,7 +80,7 @@ class MetricsServletActor extends InstrumentedActor with Logging {
 
     val connector = new ServerConnector(server)
     connector.setHost("0.0.0.0")
-    connector.setPort(Config.servletPort)
+    connector.setPort(config.servletPort)
     server.addConnector(connector)
 
     val handler = new ServletContextHandler()

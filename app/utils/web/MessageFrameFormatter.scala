@@ -3,14 +3,13 @@ package utils.web
 import models.{ MalformedRequest, MessageSet, RequestMessage, ResponseMessage }
 import play.api.libs.json._
 import play.api.mvc.WebSocket.FrameFormatter
-import utils.Config
 import utils.json.RequestMessageSerializers._
 import utils.json.ResponseMessageSerializers._
 import utils.json.{ RequestMessageSerializers, ResponseMessageSerializers }
 
 import scala.util.control.NonFatal
 
-object MessageFrameFormatter {
+class MessageFrameFormatter(debug: Boolean) {
   private[this] def requestToJson(r: RequestMessage): JsValue = {
     throw new IllegalArgumentException(s"Attempted to serialize RequestMessage [$r] on server.")
   }
@@ -33,7 +32,7 @@ object MessageFrameFormatter {
   }
 
   private[this] val jsValueFrame: FrameFormatter[JsValue] = {
-    val toStr = if (Config.debug) { Json.prettyPrint _ } else { Json.stringify _ }
+    val toStr = if (debug) { Json.prettyPrint _ } else { Json.stringify _ }
     FrameFormatter.stringFrame.transform(toStr, { (s: String) =>
       val ret = try {
         Json.parse(s)

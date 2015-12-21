@@ -8,14 +8,14 @@ import models._
 import models.user.User
 import org.joda.time.LocalDateTime
 import play.api.libs.concurrent.Akka
-import utils.{ DateUtils, Logging }
+import utils.{ Config, DateUtils, Logging }
 import utils.metrics.{ InstrumentedActor, MetricsServletActor }
 
 object ActorSupervisor extends Logging {
   lazy val instance = {
     import play.api.Play.current
     val instanceRef = Akka.system.actorOf(Props[ActorSupervisor], "supervisor")
-    log.info(s"Actor Supervisor [${instanceRef.path.toString}] started for [${utils.Config.projectId}].")
+    log.info(s"Actor Supervisor [${instanceRef.path.toString}] started for [${Config.projectId}].")
     instanceRef
   }
 
@@ -33,7 +33,8 @@ class ActorSupervisor extends InstrumentedActor with Logging with ActorSuperviso
   protected[this] val brawlsCounter = metrics.counter("active-brawls")
 
   override def preStart() {
-    context.actorOf(Props[MetricsServletActor], "metrics-servlet")
+    val config = play.api.Play.current.injector.instanceOf(classOf[Config])
+    context.actorOf(MetricsServletActor.props(config), "metrics-servlet")
   }
 
   override def supervisorStrategy: SupervisorStrategy = OneForOneStrategy() {

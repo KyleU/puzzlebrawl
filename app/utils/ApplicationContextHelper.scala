@@ -29,7 +29,7 @@ trait ApplicationContextHelper { this: ApplicationContext =>
     SharedMetricRegistries.remove("default")
     SharedMetricRegistries.add("default", Instrumented.metricRegistry)
 
-    Database.open(Config.databaseConfiguration)
+    Database.open(config.databaseConfiguration)
     Schema.update()
 
     ActorSupervisor.instance

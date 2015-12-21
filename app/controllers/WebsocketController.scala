@@ -13,8 +13,10 @@ import scala.concurrent.Future
 
 @javax.inject.Singleton
 class WebsocketController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
-  import MessageFrameFormatter._
   import play.api.Play.current
+  val mff = new MessageFrameFormatter(ctx.config.debug)
+
+  import mff.{ requestFormatter, responseFormatter }
 
   val supervisor = ActorSupervisor.instance
 

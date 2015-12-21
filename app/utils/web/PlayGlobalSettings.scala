@@ -1,21 +1,21 @@
 package utils.web
 
-import akka.actor.ActorSystem
 import play.api.Play.current
 import play.api.mvc.{ RequestHeader, Results, WithFilters }
-import play.api.{ Application, GlobalSettings, Mode }
+import play.api.{ GlobalSettings, Mode }
 import play.filters.gzip.GzipFilter
-import services.scheduled.ScheduledTask
 import utils.Logging
 
 import scala.concurrent.Future
 
 object PlayGlobalSettings extends WithFilters(PlayLoggingFilter, new GzipFilter()) with GlobalSettings with Logging {
+  lazy val debug = play.api.Play.isProd(play.api.Play.current)
+
   override def onError(request: RequestHeader, ex: Throwable) = if (current.mode == Mode.Dev) {
     super.onError(request, ex)
   } else {
     Future.successful(
-      Results.InternalServerError(views.html.error.serverError(request.path, Some(ex))(request.session, request.flash))
+      Results.InternalServerError(views.html.error.serverError(request.path, Some(ex), debug)(request.session, request.flash))
     )
   }
 

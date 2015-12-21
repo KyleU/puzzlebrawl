@@ -9,7 +9,7 @@ import models.gem.GemStream
 import models.player.Player
 import models.test.brawl.BrawlTest
 import play.api.libs.json.Json
-import utils.{ ApplicationContext, DateUtils }
+import utils.{ Config, ApplicationContext, DateUtils }
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal
@@ -54,7 +54,7 @@ class TestController @javax.inject.Inject() (override val ctx: ApplicationContex
         if (json) {
           Ok(Json.toJson(result))
         } else {
-          Ok(views.html.admin.layout.admin(s"${utils.Config.projectName} [$name] Test", "test")(html))
+          Ok(views.html.admin.layout.admin(s"${Config.projectName} [$name] Test", "test")(html))
         }
       }
     }
