@@ -13,10 +13,12 @@ import utils.DateUtils
 import utils.json.BrawlSerializers.brawlWrites
 
 object BrawlService {
-  def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int) = Props(classOf[BrawlService], id, scenario, players, seed)
+  def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) = {
+    Props(classOf[BrawlService], id, scenario, players, seed, notificationCallback)
+  }
 }
 
-case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int) extends BrawlHelper {
+case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) extends BrawlHelper {
   protected[this] lazy val brawl = Scenario.newInstance(id, scenario, seed, players)
 
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
@@ -36,6 +38,9 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
       player.connectionActor.foreach(_ ! BrawlJoined(player.userId, brawl, 0))
     }
     insertHistory()
+    val playersString = players.map(x => x.userId + " (" + x.name + ")").mkString(", ")
+    val msg = s"Brawl `$id` started with seed `$seed` using scenario `$scenario` for players `$playersString`."
+    notificationCallback(msg)
     schedule = {
       import scala.concurrent.duration._
       Some(context.system.scheduler.schedule(2.seconds, 100.milliseconds, self, BrawlUpdate))

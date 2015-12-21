@@ -7,15 +7,16 @@ import akka.actor._
 import models._
 import models.user.User
 import org.joda.time.LocalDateTime
-import utils.{ ApplicationContext, Config, DateUtils, Logging }
-import utils.metrics.{ InstrumentedActor, MetricsServletActor }
+import services.audit.NotificationService
+import utils.metrics.MetricsServletActor
+import utils.{ ApplicationContext, DateUtils, Logging }
 
 object ActorSupervisor extends Logging {
   case class BrawlRecord(connections: Seq[(UUID, String)], actorRef: ActorRef, started: LocalDateTime)
   case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeBrawl: Option[UUID], started: LocalDateTime)
 }
 
-class ActorSupervisor(ctx: ApplicationContext) extends InstrumentedActor with Logging with ActorSupervisorBrawlHelper {
+class ActorSupervisor(val ctx: ApplicationContext) extends ActorSupervisorHelper {
   import ActorSupervisor._
 
   protected[this] val connections = collection.mutable.HashMap.empty[UUID, ConnectionRecord]

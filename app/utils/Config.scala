@@ -28,6 +28,10 @@ class Config @javax.inject.Inject() (val cnf: play.api.Configuration) {
   // Admin
   val adminEmail = cnf.getString("admin.email").getOrElse(throw new IllegalStateException("Missing admin email."))
 
+  // Notifications
+  val slackEnabled = cnf.getBoolean("slack.enabled").getOrElse(false)
+  val slackUrl = cnf.getString("slack.url").getOrElse("no_url_provided")
+
   // Metrics
   val jmxEnabled = cnf.getBoolean("metrics.jmx.enabled").getOrElse(true)
   val graphiteEnabled = cnf.getBoolean("metrics.graphite.enabled").getOrElse(false)
@@ -35,8 +39,4 @@ class Config @javax.inject.Inject() (val cnf: play.api.Configuration) {
   val graphitePort = cnf.getInt("metrics.graphite.port").getOrElse(2003)
   val servletEnabled = cnf.getBoolean("metrics.servlet.enabled").getOrElse(true)
   val servletPort = cnf.getInt("metrics.servlet.port").getOrElse(9001)
-
-  // Notifications
-  val slackEnabled = cnf.getBoolean("slack.enabled").getOrElse(false)
-  val slackUrl = cnf.getString("slack.url").getOrElse("no_url_provided")
 }

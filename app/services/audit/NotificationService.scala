@@ -11,7 +11,7 @@ import scala.concurrent.Future
 class NotificationService @javax.inject.Inject() (ws: WSClient, config: Config) extends Logging {
   private[this] val defaultIcon = "https://pbs.twimg.com/profile_images/635681866180227073/jtiU5PPb.jpg"
 
-  def alert(msg: String, channel: String = "#service-alerts", username: String = "Reverse Giraffe", iconUrl: String = defaultIcon) = if (config.slackEnabled) {
+  def alert(msg: String, channel: String = "#general", username: String = "Reverse Giraffe", iconUrl: String = defaultIcon) = if (config.slackEnabled) {
     val body = JsObject(Seq(
       "channel" -> JsString(channel),
       "username" -> JsString(username),
@@ -25,12 +25,12 @@ class NotificationService @javax.inject.Inject() (ws: WSClient, config: Config) 
       if (x.status == 200) {
         "OK"
       } else {
-        log.warn("Unable to post to Slack: " + x)
+        log.warn("Unable to post to Slack (" + x.status + "): [" + x.body + "].")
         "ERROR"
       }
     }
     ret.onFailure {
-      case x => log.warn("Unable to post to Slack: " + x)
+      case x => log.warn("Unable to post to Slack.", x)
     }
     ret
   } else {

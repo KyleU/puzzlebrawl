@@ -20,8 +20,8 @@ object BrawlServiceTest extends Logging {
     val connId = UUID.randomUUID
     val conn = system.actorOf(ConnectionService.props(Some(connId), ctx.supervisor, User.mock, testProbe.ref))
     val playerRecords = Seq(PlayerRecord(User.mock.id, "Test User", Some(connId), Some(conn)))
-    val brawl = system.actorOf(BrawlService.props(UUID.randomUUID, "Normal", playerRecords, 0))
-    val initMs = DateUtils.nowMillis - initStart
+
+    system.actorOf(BrawlService.props(UUID.randomUUID, "Normal", playerRecords, 0, s => {}))
 
     testProbe.expectMsgClass(classOf[BrawlJoined])
 
@@ -37,8 +37,6 @@ object BrawlServiceTest extends Logging {
 
     conn ! ActiveGemsDrop
     testProbe.expectMsgClass(classOf[PlayerUpdate])
-
-    val runMs = DateUtils.nowMillis - runStart
 
     "Ok!"
   }
