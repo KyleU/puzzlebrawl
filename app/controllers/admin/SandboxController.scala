@@ -12,10 +12,12 @@ import scala.concurrent.duration._
 
 object SandboxController {
   val sandboxes = Seq(
-    "scratchpad" -> "A one-off I don't feel like putting anwhere else.",
-    "scheduled-task" -> "Run the scheduled task.",
-    "error-mail" -> "Send the error email.",
-    "backfill-metrics" -> "Backfill missing daily metrics."
+    Scratchpad,
+    RunScheduledTask,
+    SendErrorEmail,
+    BackfillMetrics,
+    RemoveUsers,
+    HtmlSandbox
   )
 }
 
@@ -25,22 +27,18 @@ class SandboxController @javax.inject.Inject() (override val ctx: ApplicationCon
 
   def defaultSandbox() = sandbox("list")
 
-  def sandbox(key: String) = withAdminSession(key) { implicit request =>
-    val ret = key match {
-      case "scratchpad" => Scratchpad.run()
-      case "scheduled-task" => runScheduledTask()
-      case "error-mail" => runErrorMail()
-      case "backfill-metrics" => BackfillMetrics.run()
-      case x => throw new IllegalArgumentException(s"Invalid sandbox [$x].")
-    }
-    ret.map {
-      case s: String => Ok(s)
-      case other => Ok("?: " + other.getClass.getName)
-    }
-  }
+  RunScheduledTask.scheduledTask = Some(scheduledTask)
 
-  private[this] def runScheduledTask() = scheduledTask.go(true).map { ret =>
-    ret.map(x => s"${x._1}: ${x._2.getOrElse("No progress")}").mkString("\n")
+  def sandbox(key: String) = withAdminSession(key) { implicit request =>
+    implicit val identity = request.identity
+    val sandbox = SandboxController.sandboxes.find(_.id == key).getOrElse(throw new IllegalStateException())
+    if (sandbox == HtmlSandbox) {
+      Future.successful(Ok(views.html.admin.test.sandbox(java.util.UUID.randomUUID())))
+    } else {
+      sandbox.run(ctx).map { result =>
+        Ok(result)
+      }
+    }
   }
 
   private[this] def runErrorMail() = Future.successful(

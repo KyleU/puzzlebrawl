@@ -1,0 +1,13 @@
+@(id: java.util.UUID)(implicit session: Session, flash: Flash, identity: models.user.User)
+@views.html.admin.layout.admin("Sandbox", "") {
+  <h3>Sandbox</h3>
+  <script>
+    var url = "http://test.com";
+    var data = { a: 1, b: 2 };
+    $.ajax(url, {
+      data : JSON.stringify(data),
+      contentType : 'application/json',
+      type : 'POST'
+    });
+  </script>
+}
