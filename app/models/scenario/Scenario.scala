@@ -39,7 +39,9 @@ object Scenario {
         Brawl(id, scenario, seed, ps)
       case "AI Test" =>
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
-        val ais = (0 until (5 - players.size)).map(i => Player(UUID.randomUUID, "AI " + (i + 1), Board("AI " + (i + 1), w, h), GemStream(seed), script = Some("tutorial")))
+        val ais = (0 until (5 - players.size)).map { i =>
+          Player(UUID.randomUUID, "AI " + (i + 1), Board("AI " + (i + 1), w, h), GemStream(seed), script = Some("tutorial"))
+        }
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))) ++ ais
         ps.foreach(_.activeGemsCreate())
         val brawl = Brawl(id, "AI Test", seed, ps)

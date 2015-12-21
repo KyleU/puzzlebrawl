@@ -2,11 +2,12 @@ package services.brawl
 
 import java.util.UUID
 
-import akka.actor.Props
+import akka.actor.{ Cancellable, Props }
 import models._
 import models.scenario.Scenario
 import models.user.PlayerRecord
 import org.joda.time.LocalDateTime
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
 import utils.DateUtils
 import utils.json.BrawlSerializers.brawlWrites
@@ -26,6 +27,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   protected[this] var lastMoveMade: Option[LocalDateTime] = None
 
   protected[this] var status = "started"
+  private[this] var schedule: Option[Cancellable] = None
 
   override def preStart() = {
     log.info(s"Starting brawl scenario [$scenario] for [${players.map(p => p.userId + ": " + p.name).mkString(", ")}] with seed [$seed].")
@@ -34,7 +36,13 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
       player.connectionActor.foreach(_ ! BrawlJoined(player.userId, brawl, 0))
     }
     insertHistory()
+    schedule = {
+      import scala.concurrent.duration._
+      Some(context.system.scheduler.schedule(2.seconds, 100.milliseconds, self, BrawlUpdate))
+    }
   }
+
+  override def postStop() = schedule.map(_.cancel())
 
   override def receiveRequest = {
     case br: BrawlRequest => handleBrawlRequest(br)
