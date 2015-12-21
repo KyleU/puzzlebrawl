@@ -1,6 +1,7 @@
 package services.brawl
 
 import models._
+import models.board.mutation.UpdateSegment
 import models.player.Player
 import utils.DateUtils
 
@@ -27,27 +28,30 @@ trait BrawlMessageHelper { this: BrawlService =>
         case x if brawl.completed.isDefined => log.warn(s"Received brawl message [${x.getClass.getSimpleName}] for completed brawl [$brawl.id].")
         case ActiveGemsLeft => player.activeGemsLeft().foreach { m =>
           incrementMoveCount(player)
-          sendToAll(PlayerUpdate.using(player.id, "active", m))
+          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(m)))))
         }
         case ActiveGemsRight => player.activeGemsRight().foreach { m =>
           incrementMoveCount(player)
-          sendToAll(PlayerUpdate.using(player.id, "active", m))
+          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(m)))))
         }
         case ActiveGemsClockwise => player.activeGemsClockwise().foreach { ms =>
           incrementMoveCount(player)
-          sendToAll(PlayerUpdate.using(player.id, "active", ms))
+          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(ms)))))
         }
         case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach { ms =>
           incrementMoveCount(player)
-          sendToAll(PlayerUpdate.using(player.id, "active", ms))
+          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(ms)))))
         }
         case ActiveGemsStep => player.activeGemsStep().foreach { m =>
           incrementMoveCount(player)
-          sendToAll(PlayerUpdate.using(player.id, "active", m))
+          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(m)))))
         }
         case ActiveGemsDrop =>
           incrementMoveCount(player)
-          sendToAll(PlayerUpdate(player.id, player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()))
+          val messages = player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()
+          sendToAll(PlayerUpdate(player.id, messages))
+        case ResignBrawl =>
+          log.info(s"Player [${player.id}] has resigned from brawl [$id].")
         case r =>
           log.warn(s"GameService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
       }

@@ -31,6 +31,7 @@ object RequestMessageSerializers {
         case "StartBrawl" => startBrawlReads.reads(v)
 
         case "SelectTarget" => selectTargetReads.reads(v)
+        case "ResignBrawl" => JsSuccess(ResignBrawl)
 
         case "ActiveGemsLeft" => JsSuccess(ActiveGemsLeft)
         case "ActiveGemsRight" => JsSuccess(ActiveGemsRight)
