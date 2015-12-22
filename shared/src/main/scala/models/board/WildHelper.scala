@@ -28,7 +28,7 @@ trait WildHelper { this: Board =>
       if (r.isEmpty) {
         None
       } else {
-        val (charge, scoreDelta) = if(r.tail.isEmpty) {
+        val (charge, scoreDelta) = if (r.tail.isEmpty) {
           (Some(Constants.Charging.wildSoloDropCharge), Some(Constants.Scoring.wildSoloDropScore))
         } else {
           (Some(r.length * Constants.Charging.wildPerGemCharge), Some(r.length * Constants.Scoring.wildPerGemScore))

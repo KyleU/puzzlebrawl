@@ -70,7 +70,7 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   def getMoveCount = moveCount
   def incrementMoveCount(time: Long) = {
     moveCount += 1
-    if(firstMoveMade.isEmpty) {
+    if (firstMoveMade.isEmpty) {
       firstMoveMade = Some(time)
     }
     lastMoveMade = Some(time)

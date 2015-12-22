@@ -22,13 +22,13 @@ trait CrashHelper { this: Board =>
         val gemBonus = (r.map(_._1).sum - 1) / 10
         val charge = Some(
           (base * Constants.Charging.normalGemCharge) +
-          (gemBonus * Constants.Charging.bonusGemCharge) +
-          (comboBonus * Constants.Charging.bonusGemCharge)
+            (gemBonus * Constants.Charging.bonusGemCharge) +
+            (comboBonus * Constants.Charging.bonusGemCharge)
         )
         val scoreDelta = Some(
           (base * Constants.Scoring.normalGemScore) +
-          (gemBonus * Constants.Scoring.bonusGemScore) +
-          (comboBonus * Constants.Scoring.bonusGemScore)
+            (gemBonus * Constants.Scoring.bonusGemScore) +
+            (comboBonus * Constants.Scoring.bonusGemScore)
         ).map(_.toInt)
         val mutations = r.map(_._2)
         Some(UpdateSegment("crash", mutations, combo = combo, charge = charge, scoreDelta = scoreDelta))

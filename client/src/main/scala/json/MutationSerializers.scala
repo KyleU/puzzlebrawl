@@ -19,7 +19,7 @@ object MutationSerializers {
         ))
         case cg: ChangeGem => "c" -> writeJs(cg)
         case rg: RemoveGem => "r" -> writeJs(rg)
-        case tc: TargetChanged=> "t" -> writeJs(tc)
+        case tc: TargetChanged => "t" -> writeJs(tc)
       }
       Js.Obj("t" -> Js.Str(v._1), "v" -> v._2.asInstanceOf[Js.Arr].value(1))
   }
