@@ -24,13 +24,13 @@ trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper {
       this.board.applyMutation(AddGem(one.gem, x, y)),
       this.board.applyMutation(AddGem(two.gem, x + 1, y))
     )
-    UpdateSegment("active", msgs)
+    UpdateSegment("active-create", msgs)
   }
 
   def activeGemsDrop() = {
     val orderedGems = activeGems.sortBy(g => g.y -> g.x)
     activeGems = Seq.empty
     val msgs = orderedGems.flatMap(ag => board.drop(ag.x, ag.y))
-    UpdateSegment("drop", msgs)
+    UpdateSegment("active-drop", msgs)
   }
 }

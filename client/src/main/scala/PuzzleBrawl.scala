@@ -32,7 +32,7 @@ class PuzzleBrawl extends NetworkHelper with MessageHelper {
 
   @JSExport
   def start() = networkStatus match {
-    case "offline" => handleStartBrawl("offline")
+    case "offline" => handleStartBrawl("Offline")
     case "proxy" => if (socket.exists(_.connected)) {
       val json = RequestMessageSerializers.write(StartBrawl(scenario))
       socket.foreach(_.send(BaseSerializers.write(json)))

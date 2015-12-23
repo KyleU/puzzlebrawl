@@ -1,7 +1,7 @@
 package services.brawl
 
 import models._
-import models.board.mutation.UpdateSegment
+import models.board.mutation.{ Mutation, UpdateSegment }
 import models.player.Player
 import utils.DateUtils
 
@@ -24,28 +24,18 @@ trait BrawlMessageHelper { this: BrawlService =>
       brawlMessages += ((br.message, br.userId, time))
       val player = brawl.playersById(br.userId)
 
+      def sendMove(m: Mutation, key: String = "active-move") = {
+        incrementMoveCount(player)
+        sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment(key, Seq(m)))))
+      }
+
       br.message match {
         case x if brawl.completed.isDefined => log.warn(s"Received brawl message [${x.getClass.getSimpleName}] for completed brawl [$brawl.id].")
-        case ActiveGemsLeft => player.activeGemsLeft().foreach { m =>
-          incrementMoveCount(player)
-          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(m)))))
-        }
-        case ActiveGemsRight => player.activeGemsRight().foreach { m =>
-          incrementMoveCount(player)
-          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(m)))))
-        }
-        case ActiveGemsClockwise => player.activeGemsClockwise().foreach { ms =>
-          incrementMoveCount(player)
-          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(ms)))))
-        }
-        case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach { ms =>
-          incrementMoveCount(player)
-          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(ms)))))
-        }
-        case ActiveGemsStep => player.activeGemsStep().foreach { m =>
-          incrementMoveCount(player)
-          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active", Seq(m)))))
-        }
+        case ActiveGemsLeft => player.activeGemsLeft().foreach(m => sendMove(m))
+        case ActiveGemsRight => player.activeGemsRight().foreach(m => sendMove(m))
+        case ActiveGemsClockwise => player.activeGemsClockwise().foreach(m => sendMove(m))
+        case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(m => sendMove(m))
+        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendMove(m, "active-step"))
         case ActiveGemsDrop =>
           incrementMoveCount(player)
           val messages = player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()

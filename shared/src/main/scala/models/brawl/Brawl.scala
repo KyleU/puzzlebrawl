@@ -12,7 +12,7 @@ import scala.util.Random
 object Brawl {
   def blank(
     id: UUID,
-    scenario: String = "Ad-hoc Test",
+    scenario: String,
     seed: Int = Math.abs(Random.nextInt()),
     players: Seq[(UUID, String)] = Seq(UUID.randomUUID -> "Player 1"),
     width: Int = 6,
@@ -22,8 +22,8 @@ object Brawl {
     Brawl(id, scenario, seed, ps)
   }
 
-  def random(players: Seq[(UUID, String)] = Seq(UUID.randomUUID -> "Player 1"), width: Int = 6, height: Int = 12, initialDrops: Int = 0) = {
-    val game = blank(UUID.randomUUID, players = players, width = width, height = height)
+  def random(scenario: String, players: Seq[(UUID, String)] = Seq(UUID.randomUUID -> "Player 1"), width: Int = 6, height: Int = 12, initialDrops: Int = 0) = {
+    val game = blank(UUID.randomUUID, players = players, scenario = scenario, width = width, height = height)
     (0 until initialDrops).foreach(_ => game.players.foreach { p =>
       val x = Random.nextInt(p.board.width)
       p.board.applyMutation(AddGem(p.gemStream.next, x, p.board.height - 1))

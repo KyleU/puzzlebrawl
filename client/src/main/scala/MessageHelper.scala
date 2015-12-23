@@ -21,19 +21,19 @@ trait MessageHelper { this: PuzzleBrawl =>
       case "StartBrawl" => handleStartBrawl(v.scenario.toString)
 
       case "ActiveGemsLeft" => activePlayer.foreach(p => p.activeGemsLeft().foreach { m =>
-        send(PlayerUpdate(p.id, Seq(UpdateSegment("active", Seq(m)))))
+        send(PlayerUpdate(p.id, Seq(UpdateSegment("active-move", Seq(m)))))
       })
       case "ActiveGemsRight" => activePlayer.foreach(p => p.activeGemsRight().foreach { m =>
-        send(PlayerUpdate(p.id, Seq(UpdateSegment("active", Seq(m)))))
+        send(PlayerUpdate(p.id, Seq(UpdateSegment("active-move", Seq(m)))))
       })
       case "ActiveGemsClockwise" => activePlayer.foreach(p => p.activeGemsClockwise().foreach { m =>
-        send(PlayerUpdate(p.id, Seq(UpdateSegment("active", Seq(m)))))
+        send(PlayerUpdate(p.id, Seq(UpdateSegment("active-move", Seq(m)))))
       })
       case "ActiveGemsCounterClockwise" => activePlayer.foreach(p => p.activeGemsCounterClockwise().foreach { m =>
-        send(PlayerUpdate(p.id, Seq(UpdateSegment("active", Seq(m)))))
+        send(PlayerUpdate(p.id, Seq(UpdateSegment("active-move", Seq(m)))))
       })
       case "ActiveGemsStep" => activePlayer.foreach(p => p.activeGemsStep().foreach { m =>
-        send(PlayerUpdate(p.id, Seq(UpdateSegment("active", Seq(m)))))
+        send(PlayerUpdate(p.id, Seq(UpdateSegment("active-step", Seq(m)))))
       })
       case "ActiveGemsDrop" => activePlayer.foreach { p =>
         send(PlayerUpdate(p.id, p.activeGemsDrop() +: p.board.fullTurn() :+ p.activeGemsCreate()))
@@ -48,11 +48,11 @@ trait MessageHelper { this: PuzzleBrawl =>
   }
 
   protected[this] def handleStartBrawl(scenario: String) = {
-    if (scenario != "offline") {
+    if (scenario != "Offline") {
       throw new IllegalStateException(s"Can't handle scenario [$scenario].")
     }
     val players = Seq(userId -> "Offline User")
-    val brawl = Brawl.blank(UUID.randomUUID, players = players)
+    val brawl = Brawl.blank(UUID.randomUUID, "Offline", players = players)
     brawl.players.foreach(_.activeGemsCreate())
     activeBrawl = Some(brawl)
     activePlayer = brawl.players.find(p => p.id == userId)
