@@ -7,6 +7,6 @@ import scala.concurrent.Future
 @javax.inject.Singleton
 class GameController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   def play() = withSession("play") { implicit request =>
-    Future.successful(Ok(views.html.game.gameplay(request.identity, debug = true)))
+    Future.successful(Ok(views.html.game.gameplay(utils.Config.projectName, request.identity, debug = true)))
   }
 }

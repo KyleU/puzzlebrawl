@@ -12,6 +12,8 @@ object RequestMessageSerializers {
   private[this] val setPreferenceReads = Json.reads[SetPreference]
 
   private[this] val startBrawlReads = Json.reads[StartBrawl]
+  private[this] val joinBrawlReads = Json.reads[JoinBrawl]
+  private[this] val observeBrawlReads = Json.reads[ObserveBrawl]
 
   private[this] val selectTargetReads = Json.reads[SelectTarget]
 
@@ -29,6 +31,8 @@ object RequestMessageSerializers {
         case "SetPreference" => setPreferenceReads.reads(v)
 
         case "StartBrawl" => startBrawlReads.reads(v)
+        case "JoinBrawl" => joinBrawlReads.reads(v)
+        case "ObserveBrawl" => observeBrawlReads.reads(v)
 
         case "SelectTarget" => selectTargetReads.reads(v)
         case "ResignBrawl" => JsSuccess(ResignBrawl)

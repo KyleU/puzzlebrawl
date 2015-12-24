@@ -12,11 +12,7 @@ import scala.scalajs.js.annotation.JSExport
 class PuzzleBrawl extends NetworkHelper with MessageHelper {
   lazy val scenario = {
     val hash = org.scalajs.dom.document.location.hash
-    if (Option(hash).isEmpty || hash.isEmpty) {
-      "Normal"
-    } else {
-      hash.stripPrefix("#")
-    }
+    if (Option(hash).isEmpty || hash.isEmpty) { "Normal" } else { hash.stripPrefix("#") }
   }
 
   protected[this] val userId = UUID.randomUUID // TODO
@@ -32,10 +28,14 @@ class PuzzleBrawl extends NetworkHelper with MessageHelper {
 
   @JSExport
   def start() = networkStatus match {
-    case "offline" => handleStartBrawl("Offline")
+    case "offline" => handleStartBrawl(scenario)
     case "proxy" => if (socket.exists(_.connected)) {
-      val json = RequestMessageSerializers.write(StartBrawl(scenario))
-      socket.foreach(_.send(BaseSerializers.write(json)))
+      val initialMessage = scenario match {
+        case x if x.startsWith("observe") => RequestMessageSerializers.write(ObserveBrawl(UUID.fromString(x.substring(x.indexOf("-") + 1)), None))
+        case x if x.startsWith("join") => RequestMessageSerializers.write(JoinBrawl(UUID.fromString(x.substring(x.indexOf("-") + 1))))
+        case x => RequestMessageSerializers.write(StartBrawl(x))
+      }
+      socket.foreach(_.send(BaseSerializers.write(initialMessage)))
     } else {
       this.pendingStart = true
     }

@@ -5,6 +5,7 @@ import upickle._
 import upickle.legacy._
 
 import BrawlSerializers._
+import BaseSerializers._
 
 object RequestMessageSerializers {
   private implicit val requestMessageReader: Reader[RequestMessage] = Reader[RequestMessage] {
@@ -26,6 +27,8 @@ object RequestMessageSerializers {
         case "SetPreference" => readJs[SetPreference](v)
 
         case "StartBrawl" => readJs[StartBrawl](v)
+        case "JoinBrawl" => readJs[JoinBrawl](v)
+        case "ObserveBrawl" => readJs[ObserveBrawl](v)
 
         case "SelectTarget" => readJs[SelectTarget](v)
         case "ResignBrawl" => ResignBrawl
@@ -51,6 +54,8 @@ object RequestMessageSerializers {
         case dr: DebugRequest => writeJs(dr)
         case sp: SetPreference => writeJs(sp)
         case sb: StartBrawl => writeJs(sb)
+        case jb: JoinBrawl => writeJs(jb)
+        case ob: ObserveBrawl => writeJs(ob)
         case st: SelectTarget => writeJs(st)
         case ResignBrawl => Js.Obj
         case _: ActiveGemsMessage => Js.Obj

@@ -1,5 +1,7 @@
 package json
 
+import java.util.UUID
+
 import upickle._
 import upickle.legacy._
 
@@ -19,6 +21,15 @@ object BaseSerializers {
   }
   implicit val intOptionReader = Reader[Option[Int]] {
     case Js.Num(i) => Some(i.toInt)
+    case _ => None
+  }
+
+  implicit val uuidOptionWriter = Writer[Option[UUID]] {
+    case Some(uuid) => Js.Str(uuid.toString)
+    case None => Js.Null
+  }
+  implicit val uuidOptionReader = Reader[Option[UUID]] {
+    case Js.Str(uuid) => Some(UUID.fromString(uuid))
     case _ => None
   }
 
