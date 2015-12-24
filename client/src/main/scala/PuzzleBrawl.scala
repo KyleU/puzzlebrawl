@@ -31,7 +31,13 @@ class PuzzleBrawl extends NetworkHelper with MessageHelper {
     case "offline" => handleStartBrawl(scenario)
     case "proxy" => if (socket.exists(_.connected)) {
       val initialMessage = scenario match {
-        case x if x.startsWith("observe") => RequestMessageSerializers.write(ObserveBrawl(UUID.fromString(x.substring(x.indexOf("-") + 1)), None))
+        case x if x.startsWith("observe") => x.substring(x.indexOf("-") + 1) match {
+          case id if id.contains('(') =>
+            val gameId = UUID.fromString(id.substring(0, id.indexOf('(')))
+            val as = UUID.fromString(id.substring(id.indexOf('(') + 1).dropRight(1))
+            RequestMessageSerializers.write(ObserveBrawl(gameId, Some(as)))
+          case id => RequestMessageSerializers.write(ObserveBrawl(UUID.fromString(id), None))
+        }
         case x if x.startsWith("join") => RequestMessageSerializers.write(JoinBrawl(UUID.fromString(x.substring(x.indexOf("-") + 1))))
         case x => RequestMessageSerializers.write(StartBrawl(x))
       }
