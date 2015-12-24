@@ -16,4 +16,4 @@ dist
 
 buildinfo.properties
 
-offline/assets
+/offline/cordova/
