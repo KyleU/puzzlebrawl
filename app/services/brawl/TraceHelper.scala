@@ -11,7 +11,7 @@ trait TraceHelper { this: BrawlService =>
     val playerStrings = players.map { player =>
       player.connectionId match {
         case Some(cId) =>
-          val observeUrl = controllers.admin.routes.AdminController.observeBrawlAs(brawl.id, player.userId).url
+          val observeUrl = controllers.admin.routes.ObserveController.observeBrawlAs(brawl.id, player.userId).url
           val traceLink = s"""<a class="btn btn-default" href="${connUrl(cId)}" class="trace-link">Trace Connection</a>"""
           val observeLink = s"""<a class="btn btn-default" href="$observeUrl" target="_blank">Observe game as [${player.name}]</a>"""
           s"User:${player.userId}: ${player.name}<br />Connection: $cId<br />$traceLink$observeLink<br />"

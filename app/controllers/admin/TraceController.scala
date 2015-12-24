@@ -33,7 +33,7 @@ class TraceController @javax.inject.Inject() (override val ctx: ApplicationConte
     implicit val identity = request.identity
     (ctx.supervisor ask BrawlTrace(brawlId)).map {
       case tr: TraceResponse =>
-        val buttons = Seq("Observe As Admin" -> controllers.admin.routes.AdminController.observeBrawlAsAdmin(brawlId).url)
+        val buttons = Seq("Observe As Admin" -> controllers.admin.routes.ObserveController.observeBrawlAsAdmin(brawlId).url)
         Ok(views.html.admin.activity.trace("Brawl", tr, buttons))
       case se: ServerError => Ok(s"${se.reason}: ${se.content}")
     }
