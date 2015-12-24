@@ -56,18 +56,20 @@ define(['utils/Config'], function (Config) {
 
     xOffset += self.board.width + (Config.tile.size / 4);
 
+    var othersDivisor = 1;//others.length
+
     _.each(others, function(player) {
       player.nameLabel.x = xOffset;
       player.nameLabel.y = 16;
 
-      player.scoreLabel.x = xOffset + (player.board.width / 2);//others.length);
+      player.scoreLabel.x = xOffset + (player.board.width / othersDivisor);
       player.scoreLabel.y = 16;
 
       player.board.x = xOffset;
       player.board.y = 96;
 
-      player.board.width = (player.board.w * Config.tile.size) / 2;//others.length;
-      player.board.height = (player.board.h * Config.tile.size) / 2;//others.length;
+      player.board.width = (player.board.w * Config.tile.size) / othersDivisor;
+      player.board.height = (player.board.h * Config.tile.size) / othersDivisor;
 
       xOffset += player.board.width + (Config.tile.size / 4);
     });

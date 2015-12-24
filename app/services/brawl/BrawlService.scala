@@ -49,7 +49,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   override def postStop() = {
     val msg = s"Game completion report for `$id`:\n  " + players.map { p =>
       val bp = brawl.playersById(p.userId)
-      s"${p.userId} (${p.name}): ${bp.board.getMoveCount} moves, ${bp.board.getGemCount} gems."
+      s"`${p.userId}` (${p.name}): ${bp.board.getMoveCount} moves, ${bp.board.getGemCount} gems."
     }.mkString("\n  ")
     notificationCallback(msg)
     schedule.map(_.cancel())
