@@ -27,6 +27,10 @@ define(['board/BoardGems'], function (BoardGems) {
         if(debug) { console.log('    Remove: ' + JSON.stringify(m.v)); }
         BoardGems.removeGem(board, m.v.x, m.v.y);
         break;
+      case 't':
+        if(debug) { console.log('    Target: ' + JSON.stringify(m.v)); }
+        console.log('Target changed: [' + JSON.stringify(m.v) + '].');
+        break;
       default:
         console.log('Unhandled mutation [' + m.t + '].');
         break;

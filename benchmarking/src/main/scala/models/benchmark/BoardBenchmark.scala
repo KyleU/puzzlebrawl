@@ -15,7 +15,7 @@ class BoardBenchmark {
   @Threads(6)
   @Fork(1)
   def creation() = {
-    val game = Brawl.blank(UUID.randomUUID)
+    val game = Brawl.blank(UUID.randomUUID, "Test")
     val p = game.players.headOption.getOrElse(throw new IllegalStateException())
     val board = p.board
     val gemStream = p.gemStream

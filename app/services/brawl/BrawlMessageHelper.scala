@@ -1,6 +1,7 @@
 package services.brawl
 
 import models._
+import models.board.mutation.Mutation.TargetChanged
 import models.board.mutation.{ Mutation, UpdateSegment }
 import models.player.Player
 import utils.DateUtils
@@ -40,10 +41,14 @@ trait BrawlMessageHelper { this: BrawlService =>
           incrementMoveCount(player)
           val messages = player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()
           sendToAll(PlayerUpdate(player.id, messages))
-        case ResignBrawl =>
-          log.info(s"Player [${player.id}] has resigned from brawl [$id].")
-        case r =>
-          log.warn(s"GameService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
+
+        case st: SelectTarget =>
+          player.target = Some(st.target)
+          sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("target", Seq(TargetChanged(st.target))))))
+
+        case ResignBrawl => log.info(s"Player [${player.id}] has resigned from brawl [$id].")
+
+        case r => log.warn(s"BrawlService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
       }
     } catch {
       case NonFatal(x) =>
