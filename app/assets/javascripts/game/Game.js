@@ -1,7 +1,9 @@
 /* global define:false */
 /* global Phaser:false */
 /* global PuzzleBrawl:false */
-define(['game/GameInput', 'state/InitialState'], function (GameInput, InitialState) {
+define([
+  'game/GameInput', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'state/InitialState'
+], function (GameInput, GemTextures, Gamepad, Gesture, Keyboard, Playmat, InitialState) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -20,12 +22,34 @@ define(['game/GameInput', 'state/InitialState'], function (GameInput, InitialSta
       resolution: 2
     });
     this.connected = false;
+    this.initialized = false;
     this.gameInput = new GameInput(this);
     this.localServer = this.createLocalServer();
   }
 
   Game.prototype = Phaser.Game.prototype;
   Game.prototype.constructor = Game;
+
+  Game.prototype.init = function() {
+    if(this.initialized) {
+      throw 'Game already initialized.';
+    }
+
+    this.keyboard = new Keyboard(this);
+    this.keyboard.init();
+
+    this.gamepad = new Gamepad(this);
+    this.gamepad.init();
+
+    this.gesture = new Gesture(this);
+    this.gesture.init();
+
+    this.gemTextures = new GemTextures(this);
+
+    this.playmat = new Playmat(this);
+
+    this.localServer.start();
+  };
 
   Game.prototype.send = function(c, v) { this.localServer.receive(c, v); };
   Game.prototype.onInput = function(t, param) { this.gameInput.onInput(t, param); };

@@ -1,7 +1,5 @@
 /* global define:false */
-define([
-  'dialog/Modal', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'state/GameState', 'utils/BrawlSync'
-], function (Modal, GemTextures, Gamepad, Gesture, Keyboard, Playmat, GameState, BrawlSync) {
+define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, GameState, BrawlSync) {
   'use strict';
 
   function Testbed(game) {
@@ -13,21 +11,7 @@ define([
 
   Testbed.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
-
-    this.game.keyboard = new Keyboard(this.game);
-    this.game.keyboard.init();
-
-    this.game.gamepad = new Gamepad(this.game);
-    this.game.gamepad.init();
-
-    this.game.gesture = new Gesture(this.game);
-    this.game.gesture.init();
-
-    this.game.gemTextures = new GemTextures(this.game);
-
-    this.game.playmat = new Playmat(this.game);
-
-    this.game.localServer.start();
+    this.game.init();
   };
 
   Testbed.prototype.update = function() {
