@@ -15,30 +15,21 @@ define([], function () {
   };
 
   GestureSignals.prototype.swipeCallback = function(gestures, pointer) {
-    var xDiff = pointer.position.x - pointer.positionDown.x;
-    var yDiff = pointer.position.y - pointer.positionDown.y;
-
-    if(Math.abs(xDiff) > (Math.abs(yDiff) * 2)) {
-      if(xDiff > 0) {
-        this.game.onInput('active-right');
-      } else {
-        this.game.onInput('active-left');
-      }
-    } else if(Math.abs(yDiff) > (Math.abs(xDiff) * 2)) {
-      if(yDiff > 0) {
-        this.game.onInput('active-drop');
-      } else {
-        this.game.onInput('active-step');
-      }
+    if(this.game.playmat !== undefined) {
+      this.game.playmat.input.onSwipe(pointer);
     }
   };
 
   GestureSignals.prototype.tapCallback = function(gestures, pointer) {
-    this.game.onInput('active-clockwise');
+    if(this.game.playmat !== undefined) {
+      this.game.playmat.input.onTap(pointer);
+    }
   };
 
   GestureSignals.prototype.holdCallback = function(gestures, pointer) {
-    this.game.onInput('active-counter-clockwise');
+    if(this.game.playmat !== undefined) {
+      this.game.playmat.input.onHold(pointer);
+    }
   };
 
   return GestureSignals;

@@ -28,7 +28,7 @@ define(['game/GameInput', 'state/InitialState'], function (GameInput, InitialSta
   Game.prototype.constructor = Game;
 
   Game.prototype.send = function(c, v) { this.localServer.receive(c, v); };
-  Game.prototype.onInput = function(t) { this.gameInput.onInput(t); };
+  Game.prototype.onInput = function(t, param) { this.gameInput.onInput(t, param); };
 
   Game.prototype.onMessage = function(c, v) {
     switch(c) {

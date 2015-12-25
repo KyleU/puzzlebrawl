@@ -1,7 +1,13 @@
 /* global define:false */
 /* global Phaser:false */
 /* global _:false */
-define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], function (Board, Gem, PlaymatResizer, Status) {
+define([
+  'board/Board',
+  'gem/Gem',
+  'playmat/PlaymatInput',
+  'playmat/PlaymatResizer',
+  'utils/Status'
+], function (Board, Gem, PlaymatInput, PlaymatResizer, Status) {
   'use strict';
 
   var Playmat = function(game) {
@@ -11,6 +17,7 @@ define(['board/Board', 'gem/Gem', 'playmat/PlaymatResizer', 'utils/Status'], fun
     this.players = {};
     this.self = null;
 
+    this.input = new PlaymatInput(this);
     this.resizer = new PlaymatResizer(this);
   };
 

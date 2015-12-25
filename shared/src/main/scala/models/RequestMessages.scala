@@ -18,7 +18,7 @@ case class ObserveBrawl(id: UUID, as: Option[UUID]) extends RequestMessage
 
 sealed trait BrawlMessage extends RequestMessage
 
-case class SelectTarget(t: UUID) extends BrawlMessage
+case class SelectTarget(target: UUID) extends BrawlMessage
 case object ResignBrawl extends BrawlMessage
 
 sealed trait ActiveGemsMessage extends BrawlMessage

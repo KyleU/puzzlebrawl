@@ -9,7 +9,7 @@ define([], function () {
 
   Keyboard.prototype.init = function() {
     var g = this.game;
-    function input(s) { return function() { g.onInput(s); }; }
+    function input(s, param) { return function() { g.onInput(s, param); }; }
 
     g.input.keyboard.addKey(Phaser.Keyboard.LEFT).onDown.add(input('active-left'));
     g.input.keyboard.addKey(Phaser.Keyboard.RIGHT).onDown.add(input('active-right'));
@@ -29,7 +29,7 @@ define([], function () {
 
     g.input.keyboard.addKey(Phaser.Keyboard.X).onDown.add(input('sandbox'));
     g.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK).onDown.add(input('toggle-debug'));
-    g.input.keyboard.addKey(Phaser.Keyboard.BACKWARD_SLASH).onDown.add(input('sync'));
+    g.input.keyboard.addKey(Phaser.Keyboard.BACKWARD_SLASH).onDown.add(input('debug', 'sync'));
   };
 
   return Keyboard;

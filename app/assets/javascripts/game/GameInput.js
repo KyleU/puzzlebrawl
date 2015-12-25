@@ -17,7 +17,7 @@ define([], function () {
     }
   }
 
-  GameInput.prototype.onInput = function(t) {
+  GameInput.prototype.onInput = function(t, param) {
     if(!this.game.isTweening) {
       switch(t) {
         case 'active-left':
@@ -38,11 +38,14 @@ define([], function () {
         case 'active-drop':
           this.game.send('ActiveGemsDrop', {});
           break;
+        case 'target-select':
+          this.game.send('SelectTarget', { target: param });
+          break;
         case 'toggle-debug':
           toggleDebug();
           break;
-        case 'sync':
-          this.game.send('DebugRequest', { data: 'sync' });
+        case 'debug':
+          this.game.send('DebugRequest', { data: param });
           break;
         default:
           console.log('Unhandled input [' + t + '].');
