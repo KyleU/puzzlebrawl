@@ -4,8 +4,6 @@
   title = utils.Config.projectName + " Profile",
   scripts = Seq(routes.Assets.versioned("javascripts/profile.js").url)
 ) {
-  @layout.menu(user)
-
   <div class="profile">
     @if(user.isGuest) {
       <p>

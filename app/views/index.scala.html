@@ -1,9 +1,7 @@
 @(user: models.user.User)(
   implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
 )@layout.bootstrap(title = utils.Config.projectName, stylesheets = Seq(routes.Assets.versioned("stylesheets/static.min.css").url)) {
-  @layout.menu(user)
-
-  <div class="container">
+  <div id="index-content" class="container">
     <div class="row">
       <div class="col-md-12">
         <div class="jumbotron">
