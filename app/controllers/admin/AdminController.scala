@@ -17,17 +17,13 @@ import scala.concurrent.duration._
 class AdminController @javax.inject.Inject() (override val ctx: ApplicationContext, scheduledTask: ScheduledTask) extends BaseController {
   implicit val timeout = Timeout(10.seconds)
 
-  def index = withAdminSession("index") { implicit request =>
-    Future.successful(Ok(views.html.admin.index()))
-  }
-
   def enable = withSession("admin.enable") { implicit request =>
     UserService.enableAdmin(request.identity).map { response =>
       Ok(response)
     }
   }
 
-  def status = withAdminSession("status") { implicit request =>
+  def index = withAdminSession("index") { implicit request =>
     (ctx.supervisor ask GetSystemStatus).map {
       case x: SystemStatus => Ok(views.html.admin.activity.status(x))
     }

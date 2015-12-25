@@ -1,7 +1,7 @@
 @(section: String)(implicit session: Session, flash: Flash)
 <ul class="nav navbar-nav">
   <li @if(section == "activity") { class="active" }>
-  <a href="@controllers.admin.routes.AdminController.status()">Activity</a>
+  <a href="@controllers.admin.routes.AdminController.index()">Activity</a>
   </li>
   <li @if(section == "explore") { class="active" }>
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Explore <span class="caret"></span></a>

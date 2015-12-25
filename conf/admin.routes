@@ -4,7 +4,6 @@ GET         /enable                      controllers.admin.AdminController.enabl
 GET         /sandbox                     controllers.admin.SandboxController.defaultSandbox()
 GET         /sandbox/:key                controllers.admin.SandboxController.sandbox(key)
 
-GET         /status                      controllers.admin.AdminController.status
 GET         /wipe                        controllers.admin.AdminController.wipeSchema(key)
 
 GET         /trace/connection/:id        controllers.admin.TraceController.traceConnection(id: java.util.UUID)
