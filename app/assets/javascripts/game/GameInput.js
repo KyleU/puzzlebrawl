@@ -44,6 +44,12 @@ define([], function () {
         case 'toggle-debug':
           toggleDebug();
           break;
+        case 'target-previous':
+          this.game.playmat.targets.selectPreviousTarget();
+          break;
+        case 'target-next':
+          this.game.playmat.targets.selectNextTarget();
+          break;
         case 'debug':
           this.game.send('DebugRequest', { data: param });
           break;

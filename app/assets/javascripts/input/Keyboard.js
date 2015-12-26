@@ -20,12 +20,8 @@ define([], function () {
     g.input.keyboard.addKey(Phaser.Keyboard.PERIOD).onDown.add(input('active-step'));
     g.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(input('active-drop'));
 
-    g.input.keyboard.addKey(Phaser.Keyboard.OPEN_BRACKET).onDown.add(function() {
-      console.log('Previous target.');
-    });
-    g.input.keyboard.addKey(Phaser.Keyboard.CLOSED_BRACKET).onDown.add(function() {
-      console.log('Next target.');
-    });
+    g.input.keyboard.addKey(Phaser.Keyboard.OPEN_BRACKET).onDown.add(input('target-previous'));
+    g.input.keyboard.addKey(Phaser.Keyboard.CLOSED_BRACKET).onDown.add(input('target-next'));
 
     g.input.keyboard.addKey(Phaser.Keyboard.X).onDown.add(input('sandbox'));
     g.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK).onDown.add(input('toggle-debug'));

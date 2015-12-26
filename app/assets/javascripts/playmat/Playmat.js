@@ -51,15 +51,21 @@ define([
       playmat.players[p.id] = {
         id: p.id,
         name: p.name,
-        nameLabel: nameLabel,
         score: score,
-        scoreLabel: scoreLabel,
         board: board,
-        target: p.target
+        target: p.target,
+
+        nameLabel: nameLabel,
+        scoreLabel: scoreLabel
       };
     });
-    this.resizer.refreshLayout();
-    this.targets.refreshTargets();
+
+    playmat.otherPlayers = _.filter(playmat.players, function(p) {
+      return p.id !== playmat.self;
+    });
+
+    playmat.resizer.refreshLayout();
+    playmat.targets.refreshTarget();
   };
 
   Playmat.prototype.changeScore = function(id, delta) {
