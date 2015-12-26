@@ -2,12 +2,8 @@
 /* global Phaser:false */
 /* global _:false */
 define([
-  'board/Board',
-  'gem/Gem',
-  'playmat/PlaymatInput',
-  'playmat/PlaymatResizer',
-  'utils/Status'
-], function (Board, Gem, PlaymatInput, PlaymatResizer, Status) {
+  'board/Board', 'gem/Gem', 'playmat/PlaymatInput', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets', 'utils/Status'
+], function (Board, Gem, PlaymatInput, PlaymatResizer, PlaymatTargets, Status) {
   'use strict';
 
   var Playmat = function(game) {
@@ -19,6 +15,7 @@ define([
 
     this.input = new PlaymatInput(this);
     this.resizer = new PlaymatResizer(this);
+    this.targets = new PlaymatTargets(this);
   };
 
   Playmat.prototype = Object.create(Phaser.Group.prototype);
@@ -57,10 +54,12 @@ define([
         nameLabel: nameLabel,
         score: score,
         scoreLabel: scoreLabel,
-        board: board
+        board: board,
+        target: p.target
       };
     });
     this.resizer.refreshLayout();
+    this.targets.refreshTargets();
   };
 
   Playmat.prototype.changeScore = function(id, delta) {

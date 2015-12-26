@@ -47,4 +47,12 @@ case class Brawl(
   if (playersById.size != players.size) {
     throw new IllegalStateException(s"Brawl cannot have duplicate players: [${players.map(_.name).mkString(", ")}]")
   }
+
+  if(players.size > 1) {
+    players.zipWithIndex.foreach { player =>
+      if (player._1.target.isEmpty) {
+        player._1.target = Some(players((player._2 + 1) % players.length).id)
+      }
+    }
+  }
 }

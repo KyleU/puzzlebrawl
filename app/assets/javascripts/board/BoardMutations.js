@@ -29,7 +29,7 @@ define(['board/BoardGems'], function (BoardGems) {
         break;
       case 't':
         if(debug) { console.log('    Target: ' + JSON.stringify(m.v)); }
-        console.log('Target changed: [' + JSON.stringify(m.v) + '].');
+        board.game.playmat.targets.setTarget(board.owner, m.v.t);
         break;
       default:
         console.log('Unhandled mutation [' + m.t + '].');

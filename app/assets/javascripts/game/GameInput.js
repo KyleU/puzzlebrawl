@@ -39,7 +39,7 @@ define([], function () {
           this.game.send('ActiveGemsDrop', {});
           break;
         case 'target-select':
-          this.game.send('SelectTarget', { target: param });
+          this.game.playmat.targets.selectTarget(param);
           break;
         case 'toggle-debug':
           toggleDebug();
