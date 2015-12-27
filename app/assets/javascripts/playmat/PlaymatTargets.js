@@ -16,7 +16,7 @@ define([], function () {
     }
 
     var self = this.playmat.players[this.playmat.self];
-    if(self.target !== undefined) {
+    if(self.target !== undefined && this.playmat.otherPlayers.length > 1) {
       var tgtBoard = this.playmat.players[self.target].board;
       this.sprite.x = tgtBoard.x;
       this.sprite.y = tgtBoard.y;
@@ -28,8 +28,15 @@ define([], function () {
     if(this.playmat.self === tgt) {
       throw 'Cannot select self.';
     }
-    if(this.playmat.players[this.playmat.self].target !== tgt) {
-      this.playmat.game.send('SelectTarget', { target: tgt });
+    var target = tgt;
+    if(typeof target === 'number') {
+      if(target >= this.playmat.otherPlayers.length) {
+        return;
+      }
+      target = this.playmat.otherPlayers[target].id;
+    }
+    if(this.playmat.players[this.playmat.self].target !== target) {
+      this.playmat.game.send('SelectTarget', { target: target });
     }
   };
 

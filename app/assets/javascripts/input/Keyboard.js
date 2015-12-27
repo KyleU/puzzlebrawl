@@ -20,6 +20,15 @@ define([], function () {
     g.input.keyboard.addKey(Phaser.Keyboard.PERIOD).onDown.add(input('active-step'));
     g.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR).onDown.add(input('active-drop'));
 
+    g.input.keyboard.addKey(Phaser.Keyboard.ONE).onDown.add(input('target-select', 0));
+    g.input.keyboard.addKey(Phaser.Keyboard.TWO).onDown.add(input('target-select', 1));
+    g.input.keyboard.addKey(Phaser.Keyboard.THREE).onDown.add(input('target-select', 2));
+    g.input.keyboard.addKey(Phaser.Keyboard.FOUR).onDown.add(input('target-select', 3));
+    g.input.keyboard.addKey(Phaser.Keyboard.FIVE).onDown.add(input('target-select', 4));
+    g.input.keyboard.addKey(Phaser.Keyboard.SIX).onDown.add(input('target-select', 5));
+    g.input.keyboard.addKey(Phaser.Keyboard.SEVEN).onDown.add(input('target-select', 6));
+    g.input.keyboard.addKey(Phaser.Keyboard.EIGHT).onDown.add(input('target-select', 7));
+
     g.input.keyboard.addKey(Phaser.Keyboard.OPEN_BRACKET).onDown.add(input('target-previous'));
     g.input.keyboard.addKey(Phaser.Keyboard.CLOSED_BRACKET).onDown.add(input('target-next'));
 
