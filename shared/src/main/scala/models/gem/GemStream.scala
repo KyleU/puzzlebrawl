@@ -18,8 +18,7 @@ case class GemStream(
     crashAdjustRed: Option[Double] = None,
     crashAdjustGreen: Option[Double] = None,
     crashAdjustBlue: Option[Double] = None,
-    crashAdjustYellow: Option[Double] = None
-) {
+    crashAdjustYellow: Option[Double] = None) {
   private[this] val r = new Random(seed)
   private[this] var nextId = 0
 

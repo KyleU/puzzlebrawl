@@ -6,7 +6,6 @@ import controllers.BaseController
 import models._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.database.Schema
-import services.scheduled.ScheduledTask
 import services.user.UserService
 import utils.ApplicationContext
 
@@ -14,7 +13,7 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 
 @javax.inject.Singleton
-class AdminController @javax.inject.Inject() (override val ctx: ApplicationContext, scheduledTask: ScheduledTask) extends BaseController {
+class AdminController @javax.inject.Inject() (override val ctx: ApplicationContext) extends BaseController {
   implicit val timeout = Timeout(10.seconds)
 
   def enable = withSession("admin.enable") { implicit request =>

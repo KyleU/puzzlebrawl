@@ -16,8 +16,7 @@ object Brawl {
     seed: Int = Math.abs(Random.nextInt()),
     players: Seq[(UUID, String)] = Seq(UUID.randomUUID -> "Player 1"),
     width: Int = 6,
-    height: Int = 12
-  ) = {
+    height: Int = 12) = {
     val ps = players.map(x => Player(x._1, x._2, Board(x._2, width, height), gemStream = GemStream(seed)))
     Brawl(id, scenario, seed, ps)
   }
@@ -39,8 +38,7 @@ case class Brawl(
     seed: Int,
     players: Seq[Player],
     started: Long = new Date().getTime,
-    var completed: Option[Long] = None
-) {
+    var completed: Option[Long] = None) {
   private[this] val rng = new Random(seed)
 
   val playersById = players.map(p => p.id -> p).toMap
@@ -48,7 +46,7 @@ case class Brawl(
     throw new IllegalStateException(s"Brawl cannot have duplicate players: [${players.map(_.name).mkString(", ")}]")
   }
 
-  if(players.size > 1) {
+  if (players.size > 1) {
     players.zipWithIndex.foreach { player =>
       if (player._1.target.isEmpty) {
         player._1.target = Some(players((player._2 + 1) % players.length).id)

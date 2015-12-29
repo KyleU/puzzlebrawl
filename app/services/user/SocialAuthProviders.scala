@@ -1,7 +1,6 @@
 package services.user
 
-import com.mohiva.play.silhouette.api.repositories.AuthInfoRepository
-import com.mohiva.play.silhouette.api.util.{ Clock, HTTPLayer, IDGenerator, PasswordHasher }
+import com.mohiva.play.silhouette.api.util.{ Clock, HTTPLayer, IDGenerator }
 import com.mohiva.play.silhouette.impl.providers._
 import com.mohiva.play.silhouette.impl.providers.oauth1.TwitterProvider
 import com.mohiva.play.silhouette.impl.providers.oauth1.secrets.{ CookieSecretProvider, CookieSecretSettings }
@@ -23,12 +22,9 @@ object SocialAuthProviders {
 class SocialAuthProviders(
     config: Configuration,
     httpLayer: HTTPLayer,
-    hasher: PasswordHasher,
-    authInfoService: AuthInfoRepository,
     credentials: CredentialsProvider,
     idGenerator: IDGenerator,
-    clock: Clock
-) {
+    clock: Clock) {
   private[this] val oAuth1TokenSecretProvider = new CookieSecretProvider(CookieSecretSettings(
     cookieName = config.getString("silhouette.oauth1TokenSecretProvider.cookieName").getOrElse(throw new IllegalArgumentException()),
     cookiePath = config.getString("silhouette.oauth1TokenSecretProvider.cookiePath").getOrElse(throw new IllegalArgumentException()),

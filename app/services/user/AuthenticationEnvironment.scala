@@ -34,7 +34,7 @@ class AuthenticationEnvironment @javax.inject.Inject() (val wsClient: WSClient) 
 
   val credentials = new CredentialsProvider(authInfoService, hasher, Seq(hasher))
 
-  private[this] val sap = new SocialAuthProviders(play.api.Play.current.configuration, httpLayer, hasher, authInfoService, credentials, idGenerator, clock)
+  private[this] val sap = new SocialAuthProviders(play.api.Play.current.configuration, httpLayer, credentials, idGenerator, clock)
 
   val authProvider = new BasicAuthProvider(authInfoService, hasher, Nil)
 

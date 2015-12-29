@@ -32,8 +32,7 @@ class EmailService @javax.inject.Inject() (mailerClient: MailerClient, config: C
     color: String,
     metrics: Map[DailyMetric.Metric, Long],
     totals: Map[DailyMetric.Metric, Long],
-    tableCounts: Seq[(String, Long)]
-  ) = {
+    tableCounts: Seq[(String, Long)]) = {
     val html = views.html.admin.report.emailReport(d, color, metrics, totals, tableCounts).toString()
     sendMessage(adminFrom, config.adminEmail, s"${Config.projectName} report for [$d]", adminTextMessage, html)
     DailyMetricService.setMetric(d, DailyMetric.ReportSent, 1L)

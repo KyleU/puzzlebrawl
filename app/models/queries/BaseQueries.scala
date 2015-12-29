@@ -23,15 +23,20 @@ trait BaseQueries[T] {
   """)
 
   protected def getSql(
-    whereClause: Option[String] = None, groupBy: Option[String] = None, orderBy: Option[String] = None, limit: Option[Int] = None, offset: Option[Int] = None
-  ) = BaseQueries.trim(s"""
-    select ${columns.mkString(", ")} from $tableName
-    ${whereClause.map(x => s" where $x").getOrElse("")}
-    ${groupBy.map(x => s" group by $x").getOrElse("")}
-    ${orderBy.map(x => s" order by $x").getOrElse("")}
-    ${limit.map(x => s" limit $x").getOrElse("")}
-    ${offset.map(x => s" offset $x").getOrElse("")}
-  """)
+    whereClause: Option[String] = None,
+    groupBy: Option[String] = None,
+    orderBy: Option[String] = None,
+    limit: Option[Int] = None,
+    offset: Option[Int] = None) = {
+    BaseQueries.trim(s"""
+      select ${columns.mkString(", ")} from $tableName
+      ${whereClause.map(x => s" where $x").getOrElse("")}
+      ${groupBy.map(x => s" group by $x").getOrElse("")}
+      ${orderBy.map(x => s" order by $x").getOrElse("")}
+      ${limit.map(x => s" limit $x").getOrElse("")}
+      ${offset.map(x => s" offset $x").getOrElse("")}
+    """)
+  }
 
   protected case class GetById(override val values: Seq[Any]) extends FlatSingleRowQuery[T] {
     override val sql = s"select ${columns.mkString(", ")} from $tableName where $idWhereClause"

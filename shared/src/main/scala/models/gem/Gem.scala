@@ -6,8 +6,7 @@ case class Gem(
     crash: Option[Boolean] = None,
     timer: Option[Int] = None,
     width: Option[Int] = None,
-    height: Option[Int] = None
-) {
+    height: Option[Int] = None) {
   lazy val size = width.getOrElse(1) * height.getOrElse(1)
 
   override def toString = {

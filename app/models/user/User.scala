@@ -16,8 +16,7 @@ case class User(
     preferences: UserPreferences,
     profiles: Seq[LoginInfo],
     roles: Set[Role] = Set(Role.User),
-    created: LocalDateTime = DateUtils.now
-) extends Identity {
+    created: LocalDateTime = DateUtils.now) extends Identity {
   def isGuest = profiles.isEmpty
   def isAdmin = roles.contains(models.user.Role.Admin)
 }

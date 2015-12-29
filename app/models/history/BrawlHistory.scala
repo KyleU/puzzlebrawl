@@ -16,8 +16,7 @@ case class BrawlHistory(
     started: LocalDateTime,
     firstMove: Option[LocalDateTime],
     completed: Option[LocalDateTime],
-    logged: Option[LocalDateTime]
-) {
+    logged: Option[LocalDateTime]) {
   lazy val duration = {
     val createdMillis = DateUtils.toMillis(started)
     val completedMillis = completed match {

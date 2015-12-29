@@ -18,7 +18,7 @@ import play.routes.compiler.InjectedRoutesGenerator
 import play.sbt.routes.RoutesKeys.routesGenerator
 
 import com.sksamuel.scapegoat.sbt.ScapegoatSbtPlugin.autoImport._
-import com.typesafe.sbt.SbtScalariform.{ ScalariformKeys, defaultScalariformSettings }
+import com.typesafe.sbt.SbtScalariform.{ ScalariformKeys, scalariformSettings }
 
 import tut.Plugin._
 
@@ -65,6 +65,7 @@ object Server {
     // Code Quality
     scapegoatIgnoredFiles := Seq(".*/Row.scala", ".*/Routes.scala", ".*/ReverseRoutes.scala", ".*/JavaScriptReverseRoutes.scala", ".*/*.template.scala"),
     scapegoatDisabledInspections := Seq("DuplicateImport"),
+    scapegoatVersion := "1.1.0",
     ScalariformKeys.preferences := ScalariformKeys.preferences.value,
 
     tutSourceDirectory := baseDirectory.value / "doc",
@@ -77,14 +78,11 @@ object Server {
     }
   )
 
-  lazy val server = Project(
-    id = Shared.projectId,
-    base = file(".")
-  )
+  lazy val server = Project(id = Shared.projectId, base = file("."))
     .enablePlugins(GitVersioning)
     .enablePlugins(SbtWeb)
     .enablePlugins(play.sbt.PlayScala)
-    .settings(defaultScalariformSettings: _*)
+    .settings(scalariformSettings: _*)
     .settings(tutSettings: _*)
     .settings(serverSettings: _*)
     .aggregate(projectToRef(Client.client))

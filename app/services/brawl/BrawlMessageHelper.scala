@@ -42,7 +42,7 @@ trait BrawlMessageHelper { this: BrawlService =>
           val messages = player.activeGemsDrop() +: player.board.fullTurn() :+ player.activeGemsCreate()
           sendToAll(PlayerUpdate(player.id, messages))
 
-        case st: SelectTarget => if(!player.target.contains(st.target)) {
+        case st: SelectTarget => if (!player.target.contains(st.target)) {
           player.target = Some(st.target)
           sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("target", Seq(TargetChanged(st.target))))))
         }

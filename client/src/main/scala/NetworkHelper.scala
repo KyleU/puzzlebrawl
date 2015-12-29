@@ -28,7 +28,7 @@ trait NetworkHelper { this: PuzzleBrawl =>
   private def sendPing(): Unit = {
     socket.foreach { s =>
       if (s.connected) {
-        socket.get.send(s"""{ "c": "Ping", "v": { "timestamp": ${System.currentTimeMillis} } }""")
+        s.send(s"""{ "c": "Ping", "v": { "timestamp": ${System.currentTimeMillis} } }""")
       }
     }
     setTimeout(10000)(sendPing())

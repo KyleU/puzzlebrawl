@@ -2,8 +2,8 @@
 /* global Phaser:false */
 /* global _:false */
 define([
-  'board/Board', 'gem/Gem', 'playmat/PlaymatInput', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets', 'utils/Status'
-], function (Board, Gem, PlaymatInput, PlaymatResizer, PlaymatTargets, Status) {
+  'board/Board', 'gem/Gem', 'playmat/PlaymatInput', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets', 'utils/Formatter', 'utils/Status'
+], function (Board, Gem, PlaymatInput, PlaymatResizer, PlaymatTargets, Formatter, Status) {
   'use strict';
 
   var Playmat = function(game) {
@@ -71,7 +71,7 @@ define([
   Playmat.prototype.changeScore = function(id, delta) {
     var player = this.players[id];
     player.score += delta;
-    player.scoreLabel.text = player.score;
+    player.scoreLabel.text = Formatter.withCommas(player.score);
   };
 
   return Playmat;

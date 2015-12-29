@@ -10,7 +10,7 @@ trait UpdateHelper { this: BrawlService =>
     val now = System.nanoTime
     val deltaMs = (now - lastUpdateNanos) / 1000000
 
-    if(deltaMs > 1000) {
+    if (deltaMs > 1000) {
       //log.info(s"Update after [${deltaMs}ms] elapsed for brawl [$id].")
       brawl.players.foreach { player =>
         player.script match {

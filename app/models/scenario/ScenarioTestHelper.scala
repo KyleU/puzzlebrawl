@@ -14,9 +14,9 @@ import models.user.PlayerRecord
 import scala.util.Random
 
 object ScenarioTestHelper {
-  def testBrawl(id: UUID, testName: String, seed: Int, players: Seq[PlayerRecord]) = {
+  def testBrawl(id: UUID, testName: String, players: Seq[PlayerRecord]) = {
     val provider = BrawlTest.fromString(testName).getOrElse(throw new IllegalArgumentException(s"Invalid test [$testName]."))
-    val test = provider.newInstance(id, players.head.userId)
+    val test = provider.newInstance(id, players.headOption.getOrElse(throw new IllegalStateException).userId)
     test.init()
     test.cloneOriginal()
     test.run()

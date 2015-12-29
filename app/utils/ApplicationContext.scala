@@ -31,8 +31,7 @@ class ApplicationContext @javax.inject.Inject() (
     val messagesApi: MessagesApi,
     val config: Config,
     val lifecycle: ApplicationLifecycle,
-    val notificationService: NotificationService
-) extends ApplicationContextHelper with Logging {
+    val notificationService: NotificationService) extends ApplicationContextHelper with Logging {
   start()
 
   val supervisor = {

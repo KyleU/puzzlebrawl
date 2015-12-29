@@ -10,5 +10,4 @@ case class AdHocQuery(
   author: UUID,
   sql: String,
   created: LocalDateTime,
-  updated: LocalDateTime
-)
+  updated: LocalDateTime)

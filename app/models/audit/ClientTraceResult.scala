@@ -9,5 +9,4 @@ case class ClientTraceResult(
   id: UUID,
   player: UUID,
   data: JsObject,
-  created: LocalDateTime
-)
+  created: LocalDateTime)

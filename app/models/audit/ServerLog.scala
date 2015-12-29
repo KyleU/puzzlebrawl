@@ -9,5 +9,4 @@ case class ServerLog(
   logger: String,
   thread: String,
   message: String,
-  occurred: LocalDateTime
-)
+  occurred: LocalDateTime)

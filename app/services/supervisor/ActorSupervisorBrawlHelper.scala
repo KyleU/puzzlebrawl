@@ -24,7 +24,7 @@ trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
           createBrawl(scenario, Seq(pending._2, connectionId), seed)
         case None =>
           log.info(s"Queueing connection [$connectionId] for scenario [$scenario].")
-          pendingMultiplayerConnections = pendingMultiplayerConnections :+ ((scenario, connectionId))
+          pendingMultiplayerConnections = (scenario, connectionId) :: pendingMultiplayerConnections
       }
     } else {
       createBrawl(scenario, Seq(connectionId), seed)

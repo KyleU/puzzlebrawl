@@ -50,5 +50,4 @@ case class RequestLog(
   userAgent: Option[String],
   started: LocalDateTime,
   duration: Int,
-  status: Int
-)
+  status: Int)

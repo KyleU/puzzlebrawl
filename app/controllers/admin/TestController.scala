@@ -29,8 +29,7 @@ object TestController {
     original: Player = emptyPlayer("original"),
     test: Player = emptyPlayer("test"),
     testMessages: Seq[UpdateSegment] = Seq.empty,
-    goal: Player = emptyPlayer("goal")
-  )
+    goal: Player = emptyPlayer("goal"))
   implicit val writesResult = Json.writes[Result]
 }
 

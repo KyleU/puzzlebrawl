@@ -68,7 +68,7 @@ object Scenario {
         brawl.players.foreach(_.activeGemsCreate())
         brawl
       case "Testbed" => ScenarioTestHelper.testbedBrawl(id, seed, players)
-      case x if x.startsWith("Test") => ScenarioTestHelper.testBrawl(id, scenario.stripPrefix("Test"), seed, players)
+      case x if x.startsWith("Test") => ScenarioTestHelper.testBrawl(id, scenario.stripPrefix("Test"), players)
       case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
     }
   }

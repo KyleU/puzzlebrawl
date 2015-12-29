@@ -5,5 +5,4 @@ case class UpdateSegment(
   mutations: Seq[Mutation],
   combo: Option[Int] = None,
   charge: Option[Double] = None,
-  scoreDelta: Option[Int] = None
-)
+  scoreDelta: Option[Int] = None)

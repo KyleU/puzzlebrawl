@@ -10,13 +10,11 @@ object UserFeedback {
     feedbackId: UUID,
     authorId: UUID,
     content: String,
-    occurred: LocalDateTime
-  )
+    occurred: LocalDateTime)
 }
 
 case class UserFeedback(
   id: UUID,
   userId: UUID,
   feedback: String,
-  occurred: LocalDateTime
-)
+  occurred: LocalDateTime)
