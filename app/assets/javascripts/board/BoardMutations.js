@@ -37,7 +37,7 @@ define(['board/BoardGems'], function (BoardGems) {
     }
   }
 
-  function applySegment(board, segment, idx) {
+  function applySegment(board, segment, idx, scoreCallback) {
     if(debug) { console.log('  Segment [' + idx + ': ' + segment.category + '] (' + segment.mutations.length + ' mutations):'); }
 
     _.each(segment.mutations, function(mutation) {
@@ -49,7 +49,7 @@ define(['board/BoardGems'], function (BoardGems) {
       if(sd instanceof Array) {
         sd = sd[0];
       }
-      board.addScore(sd);
+      scoreCallback(sd);
     }
   }
 
