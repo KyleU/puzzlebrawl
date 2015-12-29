@@ -60,9 +60,7 @@ define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
     if(board === undefined || board === null) {
       throw 'Player update received with invalid id [' + update.id + '].';
     }
-    board.applyMutations(update.segments, function(delta) {
-      p.changeScore(update.id, delta);
-    });
+    board.applyMutations(update.segments);
   };
 
   return Testbed;

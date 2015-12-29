@@ -2,8 +2,8 @@
 /* global Phaser:false */
 /* global _:false */
 define([
-  'board/Board', 'gem/Gem', 'playmat/PlaymatInput', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets', 'utils/Formatter', 'utils/Status'
-], function (Board, Gem, PlaymatInput, PlaymatResizer, PlaymatTargets, Formatter, Status) {
+  'board/Board', 'gem/Gem', 'playmat/PlaymatInput', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets', 'utils/Status'
+], function (Board, Gem, PlaymatInput, PlaymatResizer, PlaymatTargets, Status) {
   'use strict';
 
   var Playmat = function(game) {
@@ -29,34 +29,20 @@ define([
     this.brawl = brawl;
     Status.setScenario(brawl.scenario);
     var playmat = this;
-    var style = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
     _.each(brawl.players, function(p) {
-      var board = new Board(p.id, p.board, playmat);
-      playmat.add(board);
-
-      var nameLabel = new Phaser.Text(playmat.game, 0, 0, p.name, style);
-      nameLabel.name = 'name-label-' + p.name;
-      playmat.add(nameLabel);
-
       var score = p.score;
       if(score === undefined) {
         score = 0;
       }
 
-      var scoreLabel = new Phaser.Text(playmat.game, 0, 0, score, style);
-      scoreLabel.name = 'score-label-' + p.name;
-      scoreLabel.anchor.set(1, 0);
-      playmat.add(scoreLabel);
+      var board = new Board(p.id, p.board, p.name, score, playmat);
+      playmat.add(board);
 
       playmat.players[p.id] = {
         id: p.id,
         name: p.name,
-        score: score,
         board: board,
-        target: p.target,
-
-        nameLabel: nameLabel,
-        scoreLabel: scoreLabel
+        target: p.target
       };
     });
 
@@ -66,12 +52,6 @@ define([
 
     playmat.resizer.refreshLayout();
     playmat.targets.refreshTarget();
-  };
-
-  Playmat.prototype.changeScore = function(id, delta) {
-    var player = this.players[id];
-    player.score += delta;
-    player.scoreLabel.text = Formatter.withCommas(player.score);
   };
 
   return Playmat;

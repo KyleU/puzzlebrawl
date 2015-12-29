@@ -47,31 +47,19 @@ define(['utils/Config'], function (Config) {
 
     var xOffset = marginPx;
 
-    self.nameLabel.x = xOffset;
-    self.nameLabel.y = marginPx + (self.board.h * Config.tile.size);
-
-    self.scoreLabel.x = xOffset + self.board.width;
-    self.scoreLabel.y = marginPx + (self.board.h * Config.tile.size);
-
     self.board.x = xOffset;
     self.board.y = marginPx;
 
     xOffset += self.board.width + (Config.tile.size / 4);
 
-    var othersScale = 1;//others.length
+    var othersScale = 1;
 
     _.each(others, function(player) {
-      player.nameLabel.x = xOffset;
-      player.nameLabel.y = marginPx + (player.board.h * Config.tile.size);
-
-      player.scoreLabel.x = xOffset + (player.board.width * othersScale);
-      player.scoreLabel.y = marginPx + (player.board.h * Config.tile.size);
-
       player.board.x = xOffset;
       player.board.y = marginPx;
 
       player.board.width = player.board.w * Config.tile.size;
-      player.board.height = player.board.h * Config.tile.size;
+      player.board.height = (player.board.h + 1) * Config.tile.size;
 
       player.board.scale = { x: othersScale, y: othersScale };
 

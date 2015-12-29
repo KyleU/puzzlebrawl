@@ -1,10 +1,14 @@
 /* global define:false */
 /* global Phaser:false */
-define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config'], function (Gem, BoardGems, BoardMutations, Config) {
+define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config', 'utils/Formatter'], function (Gem, BoardGems, BoardMutations, Config, Formatter) {
   'use strict';
 
-  function Board(owner, model, playmat) {
+  var style = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
+
+  function Board(owner, model, playerName, score, playmat) {
     this.owner = owner;
+    this.playerName = playerName;
+    this.score = score;
     this.key = model.key;
     this.w = model.width;
     this.h = model.height;
@@ -15,7 +19,7 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config'], f
     Phaser.Group.call(this, playmat.game, null, 'board-' + model.key);
 
     this.game.add.existing(this);
-    this.bgTileSprite = new Phaser.TileSprite(this.game, 0, 0, Config.tile.size * this.w, Config.tile.size * this.h, 'board-bg');
+    this.bgTileSprite = new Phaser.TileSprite(this.game, 0, 0, Config.tile.size * this.w, Config.tile.size * this.h, 'gems', 78);
 
     this.bgTileSprite.name = 'background';
     this.add(this.bgTileSprite);
@@ -28,6 +32,15 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config'], f
         }
       }
     }
+
+    this.nameLabel = new Phaser.Text(playmat.game, 0, this.h * Config.tile.size, this.playerName, style);
+    this.nameLabel.name = 'name-label-' + this.playerName;
+    this.add(this.nameLabel);
+
+    this.scoreLabel = new Phaser.Text(playmat.game, this.w * Config.tile.size, this.h * Config.tile.size, score, style);
+    this.scoreLabel.name = 'score-label-' + this.playerName;
+    this.scoreLabel.anchor.set(1, 0);
+    this.add(this.scoreLabel);
   }
 
   Board.prototype = Phaser.Group.prototype;
@@ -60,8 +73,13 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config'], f
     }
   };
 
-  Board.prototype.applyMutations = function(segments, scoreCallback) {
-    BoardMutations.applyMutations(this, segments, scoreCallback, 0);
+  Board.prototype.applyMutations = function(segments) {
+    BoardMutations.applyMutations(this, segments, 0);
+  };
+
+  Board.prototype.addScore = function(delta) {
+    this.score += delta;
+    this.scoreLabel.text = Formatter.withCommas(this.score);
   };
 
   return Board;
