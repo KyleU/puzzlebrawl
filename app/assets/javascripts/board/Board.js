@@ -15,7 +15,7 @@ define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config'], f
     Phaser.Group.call(this, playmat.game, null, 'board-' + model.key);
 
     this.game.add.existing(this);
-    this.bgTileSprite = new Phaser.TileSprite(this.game, 0, 0, Config.tile.size * this.w, Config.tile.size * this.h, 'board-bg');
+    this.bgTileSprite = new Phaser.TileSprite(this.game, 0, 0, Config.tile.size * this.w, Config.tile.size * this.h, 'gems', 78);
 
     this.bgTileSprite.name = 'background';
     this.add(this.bgTileSprite);
