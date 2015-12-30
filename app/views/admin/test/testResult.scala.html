@@ -12,6 +12,7 @@
   <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-body">
+        <div class="pull-right">@utils.Formatter.withCommas(result.original.score)</div>
         <h4>Original</h4>
         @renderBoard(result.original.board)
       </div>
@@ -20,6 +21,7 @@
   <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-body">
+        <div class="pull-right">@utils.Formatter.withCommas(result.test.score)</div>
         <h4>Test</h4>
         @renderBoard(result.test.board)
       </div>
@@ -28,6 +30,7 @@
   <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-body">
+        <div class="pull-right">@utils.Formatter.withCommas(result.goal.score)</div>
         <h4>Goal</h4>
         @renderBoard(result.goal.board)
       </div>

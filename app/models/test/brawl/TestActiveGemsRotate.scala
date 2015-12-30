@@ -19,6 +19,7 @@ class TestActiveGemsRotate(id: UUID, self: UUID) extends BrawlTest(id, self) {
 
     goal.board.applyMutation(AddGem(Gem(2, width = Some(2), height = Some(6)), 0, 0))
     goal.board.applyMutation(AddGem(Gem(0, color = Color.Yellow), 2, 0))
+    goal.score = 200
   }
 
   override def run() = {
@@ -27,6 +28,7 @@ class TestActiveGemsRotate(id: UUID, self: UUID) extends BrawlTest(id, self) {
     test.activeGemsRight()
     (0 until 8).foreach(x => test.activeGemsStep())
     test.activeGemsLeft()
-    test.dropActiveFullTurn
+    test.activeGemsDrop()
+    test.board.fullTurn(test)
   }
 }

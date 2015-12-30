@@ -20,6 +20,8 @@ class TestCombo(id: UUID, self: UUID) extends BrawlTest(id, self) {
     test.board.applyMutation(AddGem(Gem(6, Color.Blue, crash = Some(true)), 2, 0))
     test.board.applyMutation(AddGem(Gem(7, Color.Yellow), 2, 1))
     test.board.applyMutation(AddGem(Gem(8, Color.Yellow, crash = Some(true)), 3, 0))
+
+    goal.score = 2820
   }
 
   override def run() = {

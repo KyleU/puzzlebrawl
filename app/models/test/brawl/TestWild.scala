@@ -19,6 +19,7 @@ class TestWild(id: UUID, self: UUID) extends BrawlTest(id, self) {
     test.board.applyMutation(AddGem(Gem(5, Color.Wild), 1, 2))
 
     goal.board.applyMutation(AddGem(Gem(4, Color.Blue), 5, 0))
+    goal.score = 400
   }
 
   override def run() = test.board.processWilds(test)
