@@ -25,7 +25,7 @@ case object StopBrawlIfEmpty extends InternalMessage
 
 case class BrawlRequest(userId: UUID, message: BrawlMessage) extends InternalMessage
 
-case object BrawlUpdate extends InternalMessage
+case class UpdateSchedule(id: UUID, script: String, minActionMs: Int, maxActionMs: Int) extends InternalMessage
 
 case object GetSystemStatus extends InternalMessage
 case class SystemStatus(brawls: Seq[(UUID, Seq[(UUID, String)])], connections: Seq[(UUID, String)]) extends InternalMessage

@@ -15,6 +15,7 @@ object Scenario {
     "Testbed" -> "Testbed",
     "Offline" -> "Offline",
     "AI Test" -> "AI Test",
+    "Stress Test" -> "Stress Test",
     "Multiplayer" -> "Multiplayer Test",
     "Fixed" -> "Fixed Gem Stream",
     "All Red" -> "All Red",
@@ -45,6 +46,15 @@ object Scenario {
         val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))) ++ ais
         ps.foreach(_.activeGemsCreate())
         val brawl = Brawl(id, "AI Test", seed, ps)
+        brawl
+      case "Stress Test" =>
+        val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
+        val ais = (0 until (100 - players.size)).map { i =>
+          Player(UUID.randomUUID, (i + 1).toString, Board((i + 1).toString, w, h), GemStream(seed), script = Some("basic"))
+        }
+        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))) ++ ais
+        ps.foreach(_.activeGemsCreate())
+        val brawl = Brawl(id, "Stress Test", seed, ps)
         brawl
       case "Fixed" =>
         val ps = players.map { p =>

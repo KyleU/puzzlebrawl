@@ -28,22 +28,23 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   protected[this] var lastMoveMade: Option[LocalDateTime] = None
 
   protected[this] var status = "started"
-  private[this] var schedule: Option[Cancellable] = None
 
   override def preStart() = {
     log.info(s"Starting brawl scenario [$scenario] for [${players.map(p => p.userId + ": " + p.name).mkString(", ")}] with seed [$seed].")
+
     players.foreach { player =>
       player.connectionActor.foreach(_ ! BrawlStarted(brawl.id, self, DateUtils.fromMillis(brawl.started)))
       player.connectionActor.foreach(_ ! BrawlJoined(player.userId, brawl, 0))
     }
+
     insertHistory()
+
     val playersString = players.map(x => x.userId + " (" + x.name + ")").mkString(", ")
     val msg = s"Brawl `$id` started on `${Config.hostname}` with seed `$seed` using scenario `$scenario` for players `$playersString`."
+
+    startSchedules()
+
     notificationCallback(msg)
-    schedule = {
-      import scala.concurrent.duration._
-      Some(context.system.scheduler.schedule(2.seconds, 100.milliseconds, self, BrawlUpdate))
-    }
   }
 
   override def postStop() = {
@@ -52,7 +53,6 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
       s"`${p.userId}` (${p.name}): ${bp.board.getMoveCount} moves, ${bp.board.getGemCount} gems."
     }.mkString("\n  ")
     notificationCallback(msg)
-    schedule.map(_.cancel())
   }
 
   override def receiveRequest = {

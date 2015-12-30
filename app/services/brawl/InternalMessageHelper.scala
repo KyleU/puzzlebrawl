@@ -27,7 +27,7 @@ trait InternalMessageHelper { this: BrawlService =>
         case StopBrawl => timeReceive(StopBrawl) { handleStopBrawl() }
         case StopBrawlIfEmpty => timeReceive(StopBrawlIfEmpty) { handleStopBrawlIfEmpty() }
         case gt: BrawlTrace => timeReceive(gt) { handleBrawlTrace() }
-        case BrawlUpdate => timeReceive(BrawlUpdate) { handleBrawlUpdate() }
+        case s: UpdateSchedule => timeReceive(s) { handleUpdateSchedule(s) }
         case _ => log.warn(s"BrawlService received unhandled internal message [${im.getClass.getSimpleName}].")
       }
     } catch {
