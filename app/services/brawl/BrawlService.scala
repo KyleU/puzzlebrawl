@@ -32,8 +32,9 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   override def preStart() = {
     log.info(s"Starting brawl scenario [$scenario] for [${players.map(p => p.userId + ": " + p.name).mkString(", ")}] with seed [$seed].")
 
+    val startMessage = BrawlStarted(brawl.id, self, DateUtils.fromMillis(brawl.started))
     players.foreach { player =>
-      player.connectionActor.foreach(_ ! BrawlStarted(brawl.id, self, DateUtils.fromMillis(brawl.started)))
+      player.connectionActor.foreach(_ ! startMessage)
       player.connectionActor.foreach(_ ! BrawlJoined(player.userId, brawl, 0))
     }
 

@@ -1,5 +1,7 @@
 package services.brawl
 
+import java.util.UUID
+
 import models.{ MessageSet, ResponseMessage }
 import org.joda.time.Seconds
 import utils.Logging
@@ -20,6 +22,11 @@ trait BrawlHelper
     lastMoveMade.map { last =>
       Seconds.secondsBetween(first, last).getSeconds
     }
+  }
+
+  protected[this] def sendToPlayer(id: UUID, message: ResponseMessage) = {
+    val p = players.find(_.userId == id).getOrElse(throw new IllegalStateException(s"Cannot send message [$message] to unknown user [$id]."))
+    p.connectionActor.foreach(_ ! message)
   }
 
   protected[this] def sendToAll(messages: Seq[ResponseMessage]): Unit = {

@@ -64,7 +64,7 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     }
   }
 
-  def getGemCount = moveCount
+  def getGemCount = gemCount
   def incrementGemCount() = gemCount += 1
 
   def getMoveCount = moveCount
