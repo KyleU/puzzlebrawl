@@ -1,7 +1,7 @@
 package json
 
 import models.board.Board
-import models.brawl.Brawl
+import models.brawl.{ PlayerResult, Brawl }
 import models.gem.{ Color, Gem, GemLocation, GemStream }
 import models.player.Player
 import upickle._
@@ -70,4 +70,10 @@ object BrawlSerializers {
 
   implicit val brawlWriter = Writer[Brawl] { case b => writeJs(b) }
   implicit val brawlReader = Reader[Brawl] { case json => readJs[Brawl](json) }
+
+  def read(json: Js.Value) = readJs[Brawl](json)
+  def write(b: Brawl) = writeJs(b)
+
+  implicit val playerResultWriter = Writer[PlayerResult] { case pr => writeJs(pr) }
+  implicit val playerResultReader = Reader[PlayerResult] { case json => readJs[PlayerResult](json) }
 }

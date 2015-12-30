@@ -8,6 +8,7 @@ import utils.metrics.InstrumentedActor
 trait BrawlHelper
     extends InstrumentedActor
     with Logging
+    with CheatHelper
     with ConnectionHelper
     with HistoryHelper
     with BrawlMessageHelper

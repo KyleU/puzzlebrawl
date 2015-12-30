@@ -3,10 +3,9 @@ package models
 import java.util.UUID
 
 import models.board.mutation.{ UpdateSegment, Mutation }
-import models.brawl.Brawl
+import models.brawl.{ PlayerResult, Brawl }
 
 sealed trait ResponseMessage
-trait ReversibleResponseMessage extends ResponseMessage
 
 case class ServerError(reason: String, content: String) extends ResponseMessage
 case class Pong(timestamp: Long) extends ResponseMessage
@@ -19,4 +18,6 @@ case class BrawlJoined(self: UUID, brawl: Brawl, elapsedMs: Int) extends Respons
 
 case class PlayerUpdate(id: UUID, segments: Seq[UpdateSegment]) extends ResponseMessage
 
-case class MessageSet(messages: Seq[ResponseMessage]) extends ReversibleResponseMessage
+case class BrawlCompletionReport(id: UUID, scenario: String, durationMs: Int, results: Seq[PlayerResult]) extends ResponseMessage
+
+case class MessageSet(messages: Seq[ResponseMessage]) extends ResponseMessage

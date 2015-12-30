@@ -1,7 +1,7 @@
 package utils.json
 
 import models.board.Board
-import models.brawl.Brawl
+import models.brawl.{ PlayerResult, Brawl }
 import models.gem.{ GemLocation, GemStream, Color, Gem }
 import models.player.Player
 import play.api.libs.json._
@@ -72,4 +72,7 @@ object BrawlSerializers {
 
   implicit val brawlReads = Json.reads[Brawl]
   implicit val brawlWrites = Json.writes[Brawl]
+
+  implicit val playerResultReads = Json.reads[PlayerResult]
+  implicit val playerResultWrites = Json.writes[PlayerResult]
 }

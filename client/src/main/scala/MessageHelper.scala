@@ -1,6 +1,6 @@
 import java.util.UUID
 
-import json.JsonUtils
+import json.{ BaseSerializers, BrawlSerializers, JsonUtils }
 import models._
 import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
@@ -14,7 +14,10 @@ trait MessageHelper { this: PuzzleBrawl =>
       case "GetVersion" => send(VersionResponse("0.0"))
       case "Ping" => send(Pong(JsonUtils.getLong(v.timestamp)))
       case "DebugRequest" => v.data.toString match {
-        case "sync" => send(DebugResponse("sync", "Ok!"))
+        case "sync" =>
+          val json = BrawlSerializers.write(activeBrawl.getOrElse(throw new IllegalStateException()))
+          send(DebugResponse("sync", BaseSerializers.write(json)))
+        case x if x.startsWith("cheat-") => handleCheat(x.stripPrefix("cheat-"))
         case _ => throw new IllegalArgumentException(s"Unhandled debug request [${v.data.toString}].")
       }
 

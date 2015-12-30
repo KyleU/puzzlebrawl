@@ -9,7 +9,7 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
 
 @JSExport
-class PuzzleBrawl extends NetworkHelper with MessageHelper {
+class PuzzleBrawl extends CheatHelper with MessageHelper with NetworkHelper {
   lazy val scenario = {
     val hash = org.scalajs.dom.document.location.hash
     if (Option(hash).isEmpty || hash.isEmpty) { "Normal" } else { hash.stripPrefix("#") }

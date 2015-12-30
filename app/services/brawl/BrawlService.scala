@@ -59,11 +59,17 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
     case br: BrawlRequest => handleBrawlRequest(br)
     case im: InternalMessage => handleInternalMessage(im)
     case DebugRequest(data) => handleDebugRequest(data)
+    case se: ServerError => handleServerError(se)
     case x => throw new IllegalArgumentException(s"Brawl service received unknown message [$x].")
   }
 
   private[this] def handleDebugRequest(data: String) = data match {
     case "sync" => sender() ! DebugResponse("sync", Json.prettyPrint(Json.toJson(brawl)))
+    case x if x.startsWith("cheat-") => handleCheat(x.stripPrefix("cheat-"))
     case _ => log.warn(s"Unhandled debug request [$data] for brawl [$id].")
+  }
+
+  private[this] def handleServerError(se: ServerError) = {
+    log.error(s"Server error enountered for brawl [$id]: ${se.reason} - ${se.content}")
   }
 }
