@@ -47,11 +47,11 @@ define(['utils/Config'], function (Config) {
 
     var xOffset = marginPx;
 
-    self.nameLabel.x = xOffset;
-    self.nameLabel.y = marginPx + (self.board.h * Config.tile.size);
+    self.labels.nameLabel.x = xOffset;
+    self.labels.nameLabel.y = marginPx + (self.board.h * Config.tile.size);
 
-    self.scoreLabel.x = xOffset + self.board.width;
-    self.scoreLabel.y = marginPx + (self.board.h * Config.tile.size);
+    self.labels.scoreLabel.x = xOffset + self.board.width;
+    self.labels.scoreLabel.y = marginPx + (self.board.h * Config.tile.size);
 
     self.board.x = xOffset;
     self.board.y = marginPx;
@@ -61,17 +61,19 @@ define(['utils/Config'], function (Config) {
     var othersScale = 1;//others.length
 
     _.each(others, function(player) {
-      player.nameLabel.x = xOffset;
-      player.nameLabel.y = marginPx + (player.board.h * Config.tile.size);
+      player.labels.nameLabel.x = xOffset;
+      player.labels.nameLabel.y = marginPx + (player.board.h * Config.tile.size);
 
-      player.scoreLabel.x = xOffset + (player.board.width * othersScale);
-      player.scoreLabel.y = marginPx + (player.board.h * Config.tile.size);
+      player.labels.scoreLabel.x = xOffset + (player.board.width * othersScale);
+      player.labels.scoreLabel.y = marginPx + (player.board.h * Config.tile.size);
+
+      for(var bgIdx = 0; bgIdx < player.labels.container; bgIdx++) {
+        player.labels.container[bgIdx].x = xOffset;
+        player.labels.container[bgIdx].y = marginPx + (player.board.h * Config.tile.size);
+      }
 
       player.board.x = xOffset;
       player.board.y = marginPx;
-
-      player.board.width = player.board.w * Config.tile.size;
-      player.board.height = player.board.h * Config.tile.size;
 
       player.board.scale = { x: othersScale, y: othersScale };
 
@@ -79,7 +81,7 @@ define(['utils/Config'], function (Config) {
     });
 
     p.w = xOffset;
-    p.h = 13 * Config.tile.size; // TODO
+    p.h = self.board.h * Config.tile.size;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.resize();

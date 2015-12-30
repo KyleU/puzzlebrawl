@@ -2,8 +2,10 @@
 /* global Phaser:false */
 /* global _:false */
 define([
-  'board/Board', 'gem/Gem', 'playmat/PlaymatInput', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets', 'utils/Formatter', 'utils/Status'
-], function (Board, Gem, PlaymatInput, PlaymatResizer, PlaymatTargets, Formatter, Status) {
+  'board/Board', 'gem/Gem',
+  'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets',
+  'utils/Formatter', 'utils/Status'
+], function (Board, Gem, PlaymatInput, PlaymatLabels, PlaymatResizer, PlaymatTargets, Formatter, Status) {
   'use strict';
 
   var Playmat = function(game) {
@@ -13,7 +15,6 @@ define([
     this.players = {};
     this.self = null;
 
-    this.input = new PlaymatInput(this);
     this.resizer = new PlaymatResizer(this);
     this.targets = new PlaymatTargets(this);
   };
@@ -28,25 +29,17 @@ define([
     this.self = self;
     this.brawl = brawl;
     Status.setScenario(brawl.scenario);
+    this.input = new PlaymatInput(this);
+
     var playmat = this;
-    var style = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#fff' };
     _.each(brawl.players, function(p) {
       var board = new Board(p.id, p.board, playmat);
       playmat.add(board);
-
-      var nameLabel = new Phaser.Text(playmat.game, 0, 0, p.name, style);
-      nameLabel.name = 'name-label-' + p.name;
-      playmat.add(nameLabel);
 
       var score = p.score;
       if(score === undefined) {
         score = 0;
       }
-
-      var scoreLabel = new Phaser.Text(playmat.game, 0, 0, score, style);
-      scoreLabel.name = 'score-label-' + p.name;
-      scoreLabel.anchor.set(1, 0);
-      playmat.add(scoreLabel);
 
       playmat.players[p.id] = {
         id: p.id,
@@ -54,9 +47,7 @@ define([
         score: score,
         board: board,
         target: p.target,
-
-        nameLabel: nameLabel,
-        scoreLabel: scoreLabel
+        labels: new PlaymatLabels(playmat, p.name, score, board.w)
       };
     });
 
@@ -71,7 +62,7 @@ define([
   Playmat.prototype.changeScore = function(id, delta) {
     var player = this.players[id];
     player.score += delta;
-    player.scoreLabel.text = Formatter.withCommas(player.score);
+    player.labels.scoreLabel.text = Formatter.withCommas(player.score);
   };
 
   return Playmat;
