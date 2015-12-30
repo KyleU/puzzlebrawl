@@ -31,7 +31,7 @@ class FeedbackController @javax.inject.Inject() (override val ctx: ApplicationCo
           emailService.feedbackSubmitted(obj, request.identity)
 
           Database.execute(UserFeedbackQueries.insert(obj)).map { x =>
-            Redirect(routes.FeedbackController.feedbackForm()).flashing("success" -> "Your feedback has been submitted. Thanks!")
+            Redirect(routes.HomeController.index()).flashing("success" -> "Your feedback has been submitted. Thanks!")
           }
         case None => Future.successful(Redirect(routes.FeedbackController.feedbackForm()).flashing("error" -> "Please include some feedback."))
       }

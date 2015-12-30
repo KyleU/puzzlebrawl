@@ -1,16 +1,23 @@
-@(user: models.user.User)(implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages)
-@if(flash.get("success").isDefined) {
-  <div class="feedback-success">
-    @flash.get("success")
+@(user: models.user.User)(
+    implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
+)@layout.bootstrap(title = utils.Config.projectName, stylesheets = Seq(routes.Assets.versioned("stylesheets/static.min.css").url)) {
+  <div id="feedback-content" class="container">
+    @flash.get("error").map { msg => <div class="alert alert-danger alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      @msg
+    </div> }@flash.get("info").map { msg => <div class="alert alert-info alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      @msg
+    </div> }@flash.get("success").map { msg => <div class="alert alert-success alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      @msg
+    </div> }
+
+    <h3 class="feedback-prompt">@Messages("feedback.prompt")</h3>
+    <form method="post" action="@routes.FeedbackController.submitFeedback()">
+      <textarea name="feedback" id="feedback-input"></textarea>
+      <br>
+      <input type="submit" id="feedback-submit" value="@Messages("feedback.submit")" />
+    </form>
   </div>
-  <div class="feedback-modal-close modal-close background-@user.preferences.color">Resume</div>
-} else {
-  @if(flash.get("error").isDefined) {
-    <div class="feedback-error">
-      @flash.get("error")
-    </div>
-  }
-  <p class="feedback-prompt">@Messages("feedback.prompt")</p>
-  <textarea id="feedback-input"></textarea>
-  <button id="feedback-submit" class="background-@user.preferences.color">@Messages("feedback.submit")</button>
 }

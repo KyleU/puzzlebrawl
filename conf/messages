@@ -10,7 +10,7 @@ authentication.invalid.provider = Cannot authenticate with unknown social provid
 authentication.service.error = Couldn''t authenticate with provider [{0}].
 
 # Registration
-registration.title = Sign up for {0}
+registration.title = Sign Up
 registration.call.to.action = Welcome! Go ahead and sign up.
 registration.social.sign.in = Or, sign in using these providers
 registration.username.taken = That username is already in use.
@@ -20,12 +20,14 @@ registration.email.taken = That email address is already in use.
 index.welcome = Welcome to Puzzle Brawl!
 index.about = Thanks for checking out my progress!
 index.play.now = Play Now
+index.leave.feedback = Leave Feedback
 
 # Feedback
 feedback.prompt = Feedback is always appreciated. Thanks for sharing yours.
 feedback.submit = Submit Feedback
 
 # Profile
+profile.view = View Profile
 profile.set.username = Set username
 profile.create.account = Create a local account
 profile.sign.out = Sign Out
