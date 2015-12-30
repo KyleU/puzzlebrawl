@@ -20,39 +20,16 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
   final def fullTurn(player: Player, carry: Seq[UpdateSegment] = Seq.empty, combo: Int = 1): Seq[UpdateSegment] = {
     val comboOpt = if (combo == 1) { None } else { Some(combo) }
 
-    val timerActions = decrementTimers()
-
     val fuseActions = fuse()
 
-    val wildsActions = processWilds()
-
-    val crashActions = if (wildsActions.isEmpty) {
-      crash(comboOpt)
-    } else {
-      Seq.empty
-    }
-
-    val postCrashFuseActions = if (wildsActions.isEmpty && crashActions.isEmpty) {
-      Seq.empty
-    } else {
-      fuse()
-    }
+    val crashActions = crash(comboOpt)
 
     val collapseActions = collapse()
-    val postCollapseFuseActions = if (collapseActions.isEmpty) {
-      Seq.empty
-    } else {
-      fuse()
-    }
 
     val ret = Seq(
-      timerActions.toSeq,
       fuseActions,
-      wildsActions,
       crashActions,
-      postCrashFuseActions,
-      collapseActions.toSeq,
-      postCollapseFuseActions
+      collapseActions.toSeq
     ).flatten
 
     if (ret.isEmpty) {

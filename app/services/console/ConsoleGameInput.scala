@@ -30,11 +30,7 @@ class ConsoleGameInput(brawl: Brawl, client: ConsoleClient) extends ConsoleInput
         case char if char.charValue == 'w' => withPlayer(_.activeGemsClockwise())
         case char if char.charValue == 's' => withPlayer(_.activeGemsCounterClockwise())
         case char if char.charValue == '.' => withPlayer(_.activeGemsStep())
-        case char if char.charValue == ' ' => withPlayer { p =>
-          p.activeGemsDrop()
-          p.board.fullTurn(p)
-          p.activeGemsCreate()
-        }
+        case char if char.charValue == ' ' => withPlayer(_.dropActiveFullTurn)
         case char if char.charValue == '1' => client.setActivePlayer(brawl.players.headOption.getOrElse(throw new IllegalStateException()).id)
         case char if char.charValue == '2' => client.setActivePlayer(brawl.players(1).id)
         case char if char.charValue == '3' => client.setActivePlayer(brawl.players(2).id)

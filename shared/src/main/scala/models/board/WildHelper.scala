@@ -4,9 +4,10 @@ import models.Constants
 import models.board.mutation.Mutation.RemoveGem
 import models.board.mutation.UpdateSegment
 import models.gem.Color
+import models.player.Player
 
 trait WildHelper { this: Board =>
-  def processWilds() = {
+  def processWilds(player: Player) = {
     val ret = mapGems { (gem, x, y) =>
       if (gem.color == Color.Wild) {
         at(x, y - 1) match {
@@ -29,11 +30,12 @@ trait WildHelper { this: Board =>
         None
       } else {
         val (charge, scoreDelta) = if (r.tail.isEmpty) {
-          (Some(Constants.Charging.wildSoloDropCharge), Some(Constants.Scoring.wildSoloDropScore))
+          (Constants.Charging.wildSoloDropCharge, Constants.Scoring.wildSoloDropScore)
         } else {
-          (Some(r.length * Constants.Charging.wildPerGemCharge), Some(r.length * Constants.Scoring.wildPerGemScore))
+          (r.length * Constants.Charging.wildPerGemCharge, r.length * Constants.Scoring.wildPerGemScore)
         }
-        Some(UpdateSegment("wild", r, charge = charge, scoreDelta = scoreDelta))
+        player.score += scoreDelta
+        Some(UpdateSegment("wild", r, charge = Some(charge), scoreDelta = Some(scoreDelta)))
       }
     }
   }

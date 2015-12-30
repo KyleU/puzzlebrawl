@@ -39,7 +39,7 @@ trait MessageHelper { this: PuzzleBrawl =>
         send(PlayerUpdate(p.id, Seq(UpdateSegment("active-step", Seq(m)))))
       })
       case "ActiveGemsDrop" => activePlayer.foreach { p =>
-        send(PlayerUpdate(p.id, p.activeGemsDrop() +: p.board.fullTurn(p) :+ p.activeGemsCreate()))
+        send(PlayerUpdate(p.id, p.dropActiveFullTurn))
       }
 
       case "ResignBrawl" => throw new IllegalStateException("TODO")
