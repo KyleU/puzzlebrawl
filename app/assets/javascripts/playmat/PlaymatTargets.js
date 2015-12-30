@@ -63,15 +63,14 @@ define([], function () {
   PlaymatTargets.prototype.setTarget = function(src, tgt) {
     var player = this.playmat.players[src];
     if(player.target !== tgt) {
-      console.log('Target for [' + src + '] changed to  [' + tgt + '].');
       player.target = tgt;
-    }
-    if(this.playmat.self === src) {
-      var targetBoard = this.playmat.players[tgt].board;
+      if(this.playmat.self === src) {
+        var targetBoard = this.playmat.players[tgt].board;
 
-      var tween = this.playmat.game.add.tween(this.sprite);
-      tween.to({ x: targetBoard.x, y: targetBoard.y }, 200, Phaser.Easing.Cubic.Out);
-      tween.start();
+        var tween = this.playmat.game.add.tween(this.sprite);
+        tween.to({ x: targetBoard.x, y: targetBoard.y }, 200, Phaser.Easing.Cubic.Out);
+        tween.start();
+      }
     }
   };
 

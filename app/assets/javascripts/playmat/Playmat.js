@@ -47,7 +47,7 @@ define([
         score: score,
         board: board,
         target: p.target,
-        labels: new PlaymatLabels(playmat, p.name, score, board.w)
+        labels: new PlaymatLabels(playmat, p.name, score)
       };
     });
 

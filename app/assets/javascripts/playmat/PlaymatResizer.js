@@ -13,6 +13,9 @@ define(['utils/Config'], function (Config) {
 
   var marginPx = 32;
 
+  var selfScale = 1;
+  var othersScale = 1;
+
   var PlaymatResizer = function(playmat) {
     this.playmat = playmat;
   };
@@ -48,29 +51,24 @@ define(['utils/Config'], function (Config) {
     var xOffset = marginPx;
 
     self.labels.nameLabel.x = xOffset;
-    self.labels.nameLabel.y = marginPx + (self.board.h * Config.tile.size);
+    self.labels.nameLabel.y = marginPx + (self.board.h * Config.tile.size * selfScale);
 
-    self.labels.scoreLabel.x = xOffset + self.board.width;
-    self.labels.scoreLabel.y = marginPx + (self.board.h * Config.tile.size);
+    self.labels.scoreLabel.x = xOffset + (self.board.width * selfScale);
+    self.labels.scoreLabel.y = marginPx + (self.board.h * Config.tile.size * selfScale);
 
     self.board.x = xOffset;
     self.board.y = marginPx;
 
-    xOffset += self.board.width + (Config.tile.size / 4);
+    self.board.scale = { x: selfScale, y: selfScale };
 
-    var othersScale = 1;//others.length
+    xOffset += self.board.width + (Config.tile.size / 4);
 
     _.each(others, function(player) {
       player.labels.nameLabel.x = xOffset;
-      player.labels.nameLabel.y = marginPx + (player.board.h * Config.tile.size);
+      player.labels.nameLabel.y = marginPx + (player.board.h * Config.tile.size * othersScale);
 
       player.labels.scoreLabel.x = xOffset + (player.board.width * othersScale);
-      player.labels.scoreLabel.y = marginPx + (player.board.h * Config.tile.size);
-
-      for(var bgIdx = 0; bgIdx < player.labels.container; bgIdx++) {
-        player.labels.container[bgIdx].x = xOffset;
-        player.labels.container[bgIdx].y = marginPx + (player.board.h * Config.tile.size);
-      }
+      player.labels.scoreLabel.y = marginPx + (player.board.h * Config.tile.size * othersScale);
 
       player.board.x = xOffset;
       player.board.y = marginPx;
