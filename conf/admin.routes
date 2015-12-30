@@ -32,6 +32,8 @@ GET         /feedback                    controllers.admin.FeedbackController.fe
 GET         /feedback/:id/note           controllers.admin.FeedbackController.feedbackNoteForm(id: java.util.UUID)
 GET         /feedback/:id/remove         controllers.admin.FeedbackController.removeFeedback(id: java.util.UUID)
 
+GET         /constants                   controllers.admin.AdminController.constants()
+
 GET         /test                        controllers.admin.TestController.list()
 GET         /test/:name                  controllers.admin.TestController.run(name, json: Boolean ?= false)
 

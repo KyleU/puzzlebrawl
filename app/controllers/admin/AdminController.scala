@@ -28,6 +28,10 @@ class AdminController @javax.inject.Inject() (override val ctx: ApplicationConte
     }
   }
 
+  def constants = withAdminSession("constants") { implicit request =>
+    Future.successful(Ok(views.html.admin.report.constants()))
+  }
+
   def wipeSchema(key: String) = withAdminSession("wipe.schema") { implicit request =>
     if (key == "SuperSecretPassword") {
       Schema.wipe().map { tables =>
