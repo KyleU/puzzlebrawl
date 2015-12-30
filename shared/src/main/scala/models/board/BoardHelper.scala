@@ -2,6 +2,7 @@ package models.board
 
 import models.board.mutation.UpdateSegment
 import models.gem.Gem
+import models.player.Player
 
 import scala.annotation.tailrec
 
@@ -16,7 +17,7 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
   }
 
   @tailrec
-  final def fullTurn(carry: Seq[UpdateSegment] = Seq.empty, combo: Int = 1): Seq[UpdateSegment] = {
+  final def fullTurn(player: Player, carry: Seq[UpdateSegment] = Seq.empty, combo: Int = 1): Seq[UpdateSegment] = {
     val comboOpt = if (combo == 1) { None } else { Some(combo) }
 
     val timerActions = decrementTimers()
@@ -55,9 +56,12 @@ trait BoardHelper extends CollapseHelper with CrashHelper with DropHelper with F
     ).flatten
 
     if (ret.isEmpty) {
+      val scoreDelta = carry.flatMap(_.scoreDelta).sum
+      player.score += scoreDelta
+
       carry
     } else {
-      fullTurn(carry ++ ret, combo + 1)
+      fullTurn(player, carry ++ ret, combo + 1)
     }
   }
 }

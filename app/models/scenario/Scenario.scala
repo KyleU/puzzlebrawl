@@ -15,6 +15,7 @@ object Scenario {
     "Offline" -> "Offline",
     "BasicAI" -> "Basic AI Test",
     "TeamAI" -> "Team AI Test",
+    "Spinner" -> "Spinning AI Test",
     "StressTest" -> "Stress Test",
     "Multiplayer" -> "Multiplayer Test",
     "Fixed" -> "Fixed Gem Stream",

@@ -4,6 +4,7 @@ import models._
 import upickle._
 import upickle.legacy._
 
+import BaseSerializers._
 import BrawlSerializers._
 import MutationSerializers._
 

@@ -24,11 +24,6 @@ trait BrawlHelper
     }
   }
 
-  protected[this] def sendToPlayer(id: UUID, message: ResponseMessage) = {
-    val p = players.find(_.userId == id).getOrElse(throw new IllegalStateException(s"Cannot send message [$message] to unknown user [$id]."))
-    p.connectionActor.foreach(_ ! message)
-  }
-
   protected[this] def sendToAll(messages: Seq[ResponseMessage]): Unit = {
     if (messages.isEmpty) {
       log.info(s"No messages to send to all players for game [$scenario:$seed] in context [$context].")

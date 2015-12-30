@@ -27,6 +27,6 @@ class TestActiveGemsRotate(id: UUID, self: UUID) extends BrawlTest(id, self) {
     test.activeGemsRight()
     (0 until 8).foreach(x => test.activeGemsStep())
     test.activeGemsLeft()
-    Seq(test.activeGemsDrop()) ++ test.board.fullTurn()
+    Seq(test.activeGemsDrop()) ++ test.board.fullTurn(test)
   }
 }

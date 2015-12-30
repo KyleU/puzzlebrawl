@@ -32,7 +32,7 @@ class ConsoleGameInput(brawl: Brawl, client: ConsoleClient) extends ConsoleInput
         case char if char.charValue == '.' => withPlayer(_.activeGemsStep())
         case char if char.charValue == ' ' => withPlayer { p =>
           p.activeGemsDrop()
-          p.board.fullTurn()
+          p.board.fullTurn(p)
           p.activeGemsCreate()
         }
         case char if char.charValue == '1' => client.setActivePlayer(brawl.players.headOption.getOrElse(throw new IllegalStateException()).id)

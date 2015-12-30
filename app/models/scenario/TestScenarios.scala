@@ -13,29 +13,34 @@ import models.user.PlayerRecord
 object TestScenarios {
   private[this] val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
 
-  private[this] def withAis(players: Seq[PlayerRecord], totalPlayers: Int, seed: Int) = {
+  private[this] def withAis(players: Seq[PlayerRecord], totalPlayers: Int, script: String, seed: Int) = {
     val ps = players.zipWithIndex.map { p =>
       Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))
     }
     val ais = (0 until (totalPlayers - players.size)).map { i =>
-      Player(UUID.randomUUID, "AI " + (i + 1), players.size + i, Board("AI " + (i + 1), w, h), GemStream(seed), script = Some("basic"))
+      Player(UUID.randomUUID, "AI " + (i + 1), players.size + i, Board("AI " + (i + 1), w, h), GemStream(seed), script = Some(script))
     }
     ps ++ ais
   }
 
   def newInstance(id: UUID, scenario: String, seed: Int, players: Seq[PlayerRecord]) = scenario match {
     case "BasicAI" =>
-      val all = withAis(players, 5, seed)
+      val all = withAis(players, 5, "basic", seed)
       all.foreach(_.activeGemsCreate())
       val brawl = Brawl(id, "Basic AI Test", seed, all)
       brawl
     case "TeamAI" =>
-      val all = withAis(players, 4, seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
+      val all = withAis(players, 4, "random", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
       all.foreach(_.activeGemsCreate())
       val brawl = Brawl(id, "Team AI Test", seed, all)
       brawl
+    case "Spinner" =>
+      val all = withAis(players, 8, "spinner", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
+      all.foreach(_.activeGemsCreate())
+      val brawl = Brawl(id, "Spinning Test", seed, all)
+      brawl
     case "StressTest" =>
-      val all = withAis(players, 100, seed)
+      val all = withAis(players, 100, "random", seed)
       all.foreach(_.activeGemsCreate())
       val brawl = Brawl(id, "Stress Test", seed, all)
       brawl

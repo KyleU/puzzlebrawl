@@ -23,6 +23,6 @@ class TestCombo(id: UUID, self: UUID) extends BrawlTest(id, self) {
   }
 
   override def run() = {
-    test.board.fullTurn()
+    test.board.fullTurn(test)
   }
 }
