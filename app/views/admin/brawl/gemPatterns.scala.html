@@ -1,0 +1,49 @@
+@()(implicit session: Session, flash: Flash)
+@views.html.admin.layout.admin(utils.Config.projectName + " Gem Patterns", "brawl") {
+<div id="index-content" class="container">
+  @flash.get("error").map { msg => <div class="alert alert-danger alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    @msg
+  </div> }@flash.get("info").map { msg => <div class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    @msg
+  </div> }@flash.get("success").map { msg => <div class="alert alert-success alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    @msg
+  </div> }
+
+  <div class="row">
+    @for(gp <- models.gem.GemPattern.all) {
+      <div class="col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4>@gp.key</h4>
+            <table class="table table-bordered brawl-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  @for(x <- 0 until gp.width) {
+                    <th>@x</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+              @for(y <- gp.height - 1 to 0 by -1) {
+                <tr>
+                  <th>@y</th>
+                  @for(x <- 0 until gp.width) {
+                    @defining(gp.rows(y)(x)) { color =>
+                      <td class="color-@color.charVal" title="[@x, @y]: @color">&nbsp;</td>
+                    }
+                  }
+                </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+}
