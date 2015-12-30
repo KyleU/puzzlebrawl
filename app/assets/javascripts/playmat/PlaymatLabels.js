@@ -18,5 +18,13 @@ define([], function () {
     playmat.add(this.scoreLabel);
   };
 
+  PlaymatLabels.prototype.resize = function(xOffset, width, yOffset) {
+    this.nameLabel.x = xOffset;
+    this.nameLabel.y = yOffset;
+
+    this.scoreLabel.x = xOffset + width;
+    this.scoreLabel.y = yOffset;
+  };
+
   return PlaymatLabels;
 });

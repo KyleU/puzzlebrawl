@@ -50,11 +50,7 @@ define(['utils/Config'], function (Config) {
 
     var xOffset = marginPx;
 
-    self.labels.nameLabel.x = xOffset;
-    self.labels.nameLabel.y = marginPx + (self.board.h * Config.tile.size * selfScale);
-
-    self.labels.scoreLabel.x = xOffset + (self.board.width * selfScale);
-    self.labels.scoreLabel.y = marginPx + (self.board.h * Config.tile.size * selfScale);
+    self.labels.resize(xOffset, self.board.w * Config.tile.size * selfScale, marginPx + (self.board.h * Config.tile.size * selfScale));
 
     self.board.x = xOffset;
     self.board.y = marginPx;
@@ -64,11 +60,7 @@ define(['utils/Config'], function (Config) {
     xOffset += self.board.width + (Config.tile.size / 4);
 
     _.each(others, function(player) {
-      player.labels.nameLabel.x = xOffset;
-      player.labels.nameLabel.y = marginPx + (player.board.h * Config.tile.size * othersScale);
-
-      player.labels.scoreLabel.x = xOffset + (player.board.width * othersScale);
-      player.labels.scoreLabel.y = marginPx + (player.board.h * Config.tile.size * othersScale);
+      player.labels.resize(xOffset, player.board.w * Config.tile.size * othersScale, marginPx + (player.board.h * Config.tile.size * othersScale));
 
       player.board.x = xOffset;
       player.board.y = marginPx;
