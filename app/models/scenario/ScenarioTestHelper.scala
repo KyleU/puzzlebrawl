@@ -24,7 +24,9 @@ object ScenarioTestHelper {
   }
 
   def testbedBrawl(id: UUID, seed: Int, players: Seq[PlayerRecord]) = {
-    val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
+    val ps = players.zipWithIndex.map { p =>
+      Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))
+    }
     val brawl = Brawl(id, "Testbed", seed, ps)
     brawl.players.foreach { player =>
       (0 until 20).foreach { i =>

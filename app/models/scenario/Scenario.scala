@@ -35,29 +35,37 @@ object Scenario {
 
     scenario match {
       case "Normal" | "Multiplayer" =>
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed)))
+        val ps = players.zipWithIndex.map { p =>
+          Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))
+        }
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
       case "AI Test" =>
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
-        val ais = (0 until (5 - players.size)).map { i =>
-          Player(UUID.randomUUID, "AI " + (i + 1), Board("AI " + (i + 1), w, h), GemStream(seed), script = Some("basic"))
+        val ps = players.zipWithIndex.map { p =>
+          Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))
         }
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))) ++ ais
-        ps.foreach(_.activeGemsCreate())
-        val brawl = Brawl(id, "AI Test", seed, ps)
+        val ais = (0 until (5 - players.size)).map { i =>
+          Player(UUID.randomUUID, "AI " + (i + 1), players.size + i, Board("AI " + (i + 1), w, h), GemStream(seed), script = Some("basic"))
+        }
+        val all = ps ++ ais
+        all.foreach(_.activeGemsCreate())
+        val brawl = Brawl(id, "AI Test", seed, all)
         brawl
       case "Stress Test" =>
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
-        val ais = (0 until (100 - players.size)).map { i =>
-          Player(UUID.randomUUID, (i + 1).toString, Board((i + 1).toString, w, h), GemStream(seed), script = Some("basic"))
+        val ps = players.zipWithIndex.map { p =>
+          Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))
         }
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))) ++ ais
-        ps.foreach(_.activeGemsCreate())
-        val brawl = Brawl(id, "Stress Test", seed, ps)
+        val ais = (0 until (100 - players.size)).map { i =>
+          Player(UUID.randomUUID, (i + 1).toString, players.size + i, Board((i + 1).toString, w, h), GemStream(seed), script = Some("basic"))
+        }
+        val all = ps ++ ais
+        all.foreach(_.activeGemsCreate())
+        val brawl = Brawl(id, "Stress Test", seed, all)
         brawl
       case "Fixed" =>
-        val ps = players.map { p =>
+        val ps = players.zipWithIndex.map { p =>
           val gs = new FixedGemStream(Seq(
             Gem(0), Gem(1),
             Gem(2, color = Color.Green), Gem(3, color = Color.Green, crash = Some(true)),
@@ -66,14 +74,16 @@ object Scenario {
             Gem(8), Gem(9, crash = Some(true)),
             Gem(10), Gem(11)
           ))
-          Player(p.userId, p.name, Board(p.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), gs)
+          Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), gs)
         }
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
       case x if x.startsWith("All ") =>
         val testName = x.stripPrefix("All ")
         val (w, h) = Constants.Board.defaultWidth -> Constants.Board.defaultHeight
-        val ps = players.map(p => Player(p.userId, p.name, Board(p.name, w, h), MockGemStreams.forString(testName)))
+        val ps = players.zipWithIndex.map { p =>
+          Player(p._1.userId, p._1.name, p._2, Board(p._1.name, w, h), MockGemStreams.forString(testName))
+        }
         val brawl = Brawl(id, scenario, seed, ps)
         brawl.players.foreach(_.activeGemsCreate())
         brawl

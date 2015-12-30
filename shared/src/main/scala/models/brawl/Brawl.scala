@@ -17,7 +17,7 @@ object Brawl {
     players: Seq[(UUID, String)] = Seq(UUID.randomUUID -> "Player 1"),
     width: Int = 6,
     height: Int = 12) = {
-    val ps = players.map(x => Player(x._1, x._2, Board(x._2, width, height), gemStream = GemStream(seed)))
+    val ps = players.zipWithIndex.map(x => Player(x._1._1, x._1._2, x._2, Board(x._1._2, width, height), gemStream = GemStream(seed)))
     Brawl(id, scenario, seed, ps)
   }
 

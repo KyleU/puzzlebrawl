@@ -18,7 +18,7 @@ object TestController {
   import utils.json.BrawlSerializers._
   import utils.json.MutationSerializers._
 
-  private[this] def emptyPlayer(name: String) = Player(UUID.randomUUID, name, Board(name, 0, 0), GemStream())
+  private[this] def emptyPlayer(name: String, team: Int) = Player(UUID.randomUUID, name, team, Board(name, 0, 0), GemStream())
 
   case class Result(
     name: String,
@@ -26,10 +26,10 @@ object TestController {
     errors: Seq[BrawlTest.TestError],
     initMs: Int,
     runMs: Int,
-    original: Player = emptyPlayer("original"),
-    test: Player = emptyPlayer("test"),
+    original: Player = emptyPlayer("original", 0),
+    test: Player = emptyPlayer("test", 1),
     testMessages: Seq[UpdateSegment] = Seq.empty,
-    goal: Player = emptyPlayer("goal"))
+    goal: Player = emptyPlayer("goal", 2))
   implicit val writesResult = Json.writes[Result]
 }
 
