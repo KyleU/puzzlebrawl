@@ -57,8 +57,12 @@ define(['board/BoardAnimations', 'utils/Config'], function (BoardAnimations, Con
         var move = moves[moveIdx];
         var moveGem = gems[moveIdx];
         board.set(move.x + move.xDelta, move.y + move.yDelta, moveGem);
+
+        var targetX = (move.x + move.xDelta) * Config.tile.size;
+        var targetY = (board.h - (move.y + move.yDelta)) * Config.tile.size;
+
         var tween = board.game.add.tween(board.gems[moveGem.id]);
-        tween.to({x: (move.x + move.xDelta) * Config.tile.size, y: board.height - ((move.y + move.yDelta) * Config.tile.size)}, 200, Phaser.Easing.Cubic.Out);
+        tween.to({x: targetX, y: targetY}, 200, Phaser.Easing.Cubic.Out);
         tween.start();
       }
     },

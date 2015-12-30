@@ -14,7 +14,7 @@ define(['utils/Config'], function (Config) {
   var marginPx = 32;
 
   var selfScale = 1;
-  var othersScale = 1;
+  var othersScale = 0.8;
 
   var PlaymatResizer = function(playmat) {
     this.playmat = playmat;
@@ -79,7 +79,7 @@ define(['utils/Config'], function (Config) {
     });
 
     p.w = xOffset;
-    p.h = self.board.h * Config.tile.size;
+    p.h = (self.board.h + 1) * Config.tile.size;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.resize();
