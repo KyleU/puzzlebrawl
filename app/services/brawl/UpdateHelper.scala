@@ -22,7 +22,6 @@ trait UpdateHelper { this: BrawlService =>
     import play.api.libs.concurrent.Execution.Implicits.defaultContext
     import scala.concurrent.duration._
     val delay = s.minActionMs + (Random.nextFloat * (s.maxActionMs - s.minActionMs)).toInt
-    println(delay)
     context.system.scheduler.scheduleOnce(delay.milliseconds, self, s)
   }
 
