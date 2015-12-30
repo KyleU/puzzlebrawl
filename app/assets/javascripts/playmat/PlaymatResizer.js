@@ -13,7 +13,7 @@ define(['utils/Config'], function (Config) {
 
   var marginPx = 32;
 
-  var selfScale = 1;
+  var selfScale = 0.8;
   var othersScale = 0.8;
 
   var PlaymatResizer = function(playmat) {

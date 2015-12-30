@@ -6,7 +6,7 @@ define(['gem/Gem', 'utils/Config'], function (Gem, Config) {
   function addGem(board, gem, x, y) {
     var g = new Gem(gem, board.game);
     g.x = x * Config.tile.size;
-    g.y = board.height - (y * Config.tile.size);
+    g.y = (board.h - y) * Config.tile.size;
     board.gems[gem.id] = g;
     board.add(g);
   }
@@ -21,8 +21,11 @@ define(['gem/Gem', 'utils/Config'], function (Gem, Config) {
     if(gem === null || gem === undefined) {
       throw 'Gem with id [' + originalGem.id + '] is not present.';
     }
+    var targetX = (x + xDelta) * Config.tile.size;
+    var targetY = (board.h - (y + yDelta)) * Config.tile.size;
+
     var tween = board.game.add.tween(gem);
-    tween.to({x: (x + xDelta) * Config.tile.size, y: board.height - ((y + yDelta) * Config.tile.size)}, 200, Phaser.Easing.Cubic.Out);
+    tween.to({ x: targetX, y: targetY }, 200, Phaser.Easing.Cubic.Out);
     tween.start();
   }
 
