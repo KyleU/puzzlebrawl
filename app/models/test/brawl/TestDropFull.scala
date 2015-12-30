@@ -11,12 +11,12 @@ object TestDropFull extends BrawlTest.Provider {
 
 class TestDropFull(id: UUID, self: UUID) extends BrawlTest(id, self) {
   override def init() = {
-    (0 until goal.board.height).foreach(i => goal.board.applyMutation(AddGem(goal.gemStream.next, 0, i)))
+    (0 until goal.board.height).foreach(i => goal.board.applyMutation(AddGem(goal.gemStream.next(), 0, i)))
   }
 
   override def run() = {
     Seq(UpdateSegment("drop", (0 until test.board.height).flatMap { i =>
-      test.board.applyMutation(AddGem(test.gemStream.next, 0, test.board.height - 1)) +: test.board.drop(0, test.board.height - 1)
+      test.board.applyMutation(AddGem(test.gemStream.next(), 0, test.board.height - 1)) +: test.board.drop(0, test.board.height - 1)
     }))
   }
 }

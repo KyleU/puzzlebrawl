@@ -12,7 +12,7 @@ class ConsoleGameInput(brawl: Brawl, client: ConsoleClient) extends ConsoleInput
     case x if x.getKeyType == KeyType.Enter =>
       brawl.players.foreach { player =>
         val x = Random.nextInt(player.board.width)
-        player.board.applyMutation(AddGem(player.gemStream.next, x, player.board.height - 1))
+        player.board.applyMutation(AddGem(player.gemStream.next(), x, player.board.height - 1))
         player.board.drop(x, player.board.height - 1)
       }
       client.render()

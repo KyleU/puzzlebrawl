@@ -13,7 +13,7 @@ class TestRandom(id: UUID, self: UUID) extends BrawlTest(id, self) {
   override def init() = {
     for (y <- 0 until goal.board.height) {
       for (x <- 0 until goal.board.width) {
-        goal.board.applyMutation(AddGem(goal.gemStream.next, x, y))
+        goal.board.applyMutation(AddGem(goal.gemStream.next(), x, y))
       }
     }
   }
@@ -22,7 +22,7 @@ class TestRandom(id: UUID, self: UUID) extends BrawlTest(id, self) {
     "random",
     (0 until test.board.height).flatMap { y =>
       (0 until test.board.width).map { x =>
-        test.board.applyMutation(AddGem(test.gemStream.next, x, y))
+        test.board.applyMutation(AddGem(test.gemStream.next(), x, y))
       }
     }
   ))

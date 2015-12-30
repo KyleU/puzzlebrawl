@@ -29,7 +29,7 @@ object ScenarioTestHelper {
     brawl.players.foreach { player =>
       (0 until 20).foreach { i =>
         val x = Random.nextInt(player.board.width)
-        player.board.applyMutation(AddGem(player.gemStream.next, x, player.board.height - 1))
+        player.board.applyMutation(AddGem(player.gemStream.next(), x, player.board.height - 1))
         player.board.drop(x, player.board.height - 1)
       }
       player.board.fullTurn()

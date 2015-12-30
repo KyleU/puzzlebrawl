@@ -22,7 +22,7 @@ class BoardBenchmark {
 
     for (i <- 0 until 20) {
       val x = Random.nextInt(board.width)
-      board.applyMutation(AddGem(gemStream.next, x, board.height - 1))
+      board.applyMutation(AddGem(gemStream.next(), x, board.height - 1))
       board.drop(x, board.height - 1)
     }
 

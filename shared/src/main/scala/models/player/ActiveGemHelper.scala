@@ -5,7 +5,7 @@ import models.board.mutation.UpdateSegment
 import models.gem.{ Gem, GemLocation }
 
 trait ActiveGemHelper extends ActiveGemMoveHelper with ActiveGemRotationHelper { this: Player =>
-  def activeGemsCreate(gemOne: Gem = gemStream.next, gemTwo: Gem = gemStream.next) = {
+  def activeGemsCreate(gemOne: Gem = gemStream.next(), gemTwo: Gem = gemStream.next()) = {
     if (activeGems.nonEmpty) {
       throw new IllegalStateException(s"Active gems created, but player [$id] already has active gems [${activeGems.mkString(", ")}].")
     }

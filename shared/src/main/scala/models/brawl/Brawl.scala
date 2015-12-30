@@ -25,7 +25,7 @@ object Brawl {
     val game = blank(UUID.randomUUID, players = players, scenario = scenario, width = width, height = height)
     (0 until initialDrops).foreach(_ => game.players.foreach { p =>
       val x = Random.nextInt(p.board.width)
-      p.board.applyMutation(AddGem(p.gemStream.next, x, p.board.height - 1))
+      p.board.applyMutation(AddGem(p.gemStream.next(), x, p.board.height - 1))
       p.board.drop(x, p.board.height - 1)
     })
     game

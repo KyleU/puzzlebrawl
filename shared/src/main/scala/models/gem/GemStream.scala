@@ -19,6 +19,7 @@ case class GemStream(
     crashAdjustGreen: Option[Double] = None,
     crashAdjustBlue: Option[Double] = None,
     crashAdjustYellow: Option[Double] = None) {
+
   private[this] val r = new Random(seed)
   private[this] var nextId = 0
 
@@ -43,7 +44,7 @@ case class GemStream(
   )
   private[this] val crashChanceTotal = crashChances.map(_._2).sum
 
-  def next = {
+  def next() = {
     val ret = if (wildInterval > 0 && (nextId + 1) % wildInterval == 0) {
       Gem(nextId, color = Color.Wild)
     } else {

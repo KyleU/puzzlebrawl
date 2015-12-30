@@ -36,7 +36,7 @@ class TestGemStream(id: UUID, self: UUID) extends BrawlTest(id, self) {
       "stream",
       Seq((0 until 12).flatMap { y =>
         (0 until 6).map { x =>
-          test.board.applyMutation(AddGem(stream.next, x, y))
+          test.board.applyMutation(AddGem(stream.next(), x, y))
         }
       }).flatten
     ))
