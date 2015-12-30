@@ -9,12 +9,16 @@ define([], function() {
   var bodyElement = document.getElementById('modal-body');
 
   var Modal = {
-    show: function(title, body) {
+    show: function(title, body, preformatted) {
       contentElement.style.marginTop = (window.innerHeight / 2 - 200) + 'px';
       contentElement.style.marginLeft = (window.innerWidth / 2 - 200) + 'px';
 
       titleElement.innerText = title;
-      bodyElement.innerText = body;
+      if(preformatted) {
+        bodyElement.innerHTML = '<pre>' + body + '</pre>';
+      } else {
+        bodyElement.innerText = body;
+      }
       bodyElement.scrollTop = 0;
 
       modalElement.className = 'on';

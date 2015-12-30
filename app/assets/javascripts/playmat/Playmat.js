@@ -44,11 +44,15 @@ define([
       playmat.players[p.id] = {
         id: p.id,
         name: p.name,
+        team: p.team,
         score: score,
         board: board,
-        target: p.target,
-        labels: new PlaymatLabels(playmat, p.name, score)
+        target: p.target
       };
+    });
+
+    _.each(playmat.players, function(p) {
+      p.labels = new PlaymatLabels(playmat, p.id, p.name, p.score);
     });
 
     playmat.otherPlayers = _.filter(playmat.players, function(p) {

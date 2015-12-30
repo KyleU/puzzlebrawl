@@ -61,14 +61,25 @@ define([], function () {
   };
 
   PlaymatTargets.prototype.setTarget = function(src, tgt) {
-    var player = this.playmat.players[src];
+    var playmat = this.playmat;
+    var player = playmat.players[src];
     if(player.target !== tgt) {
       player.target = tgt;
-      if(this.playmat.self === src) {
-        var targetBoard = this.playmat.players[tgt].board;
+      if(playmat.self === src) {
+        var targetBoard = playmat.players[tgt].board;
+        var sprite = this.sprite;
 
-        var tween = this.playmat.game.add.tween(this.sprite);
+        var tween = this.playmat.game.add.tween(sprite);
         tween.to({ x: targetBoard.x, y: targetBoard.y }, 200, Phaser.Easing.Cubic.Out);
+        tween.onComplete.add(function() {
+          var selfTeam = playmat.players[playmat.self].team;
+          var targetTeam = playmat.players[tgt].team;
+          if(selfTeam === targetTeam) {
+            sprite.loadTexture('gems', 66);
+          } else {
+            sprite.loadTexture('gems', 65);
+          }
+        });
         tween.start();
       }
     }
