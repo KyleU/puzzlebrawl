@@ -10,7 +10,7 @@ import org.joda.time.LocalDateTime
 import utils.{ Config, DateUtils }
 
 object BrawlService {
-  val recordMessages = true
+  val recordMessages = false
 
   def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) = {
     Props(classOf[BrawlService], id, scenario, players, seed, notificationCallback)
@@ -28,7 +28,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
 
   protected[this] var brawlMessageCount = 0
-  protected[this] var lastBrawlMessage: Option[(BrawlMessage, UUID, LocalDateTime)] = None
+  protected[this] val lastBrawlMessages = collection.mutable.HashMap.empty[UUID, Option[(BrawlMessage, LocalDateTime)]]
   protected[this] val brawlMessages = if (BrawlService.recordMessages) {
     Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)])
   } else {
@@ -36,10 +36,9 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   }
 
   protected[this] def logBrawlMessage(message: BrawlMessage, playerId: UUID, occurred: LocalDateTime) = {
-    val msg = (message, playerId, occurred)
     brawlMessageCount += 1
-    lastBrawlMessage = Some(msg)
-    brawlMessages.map(_ += msg)
+    lastBrawlMessages(playerId) = Some(message -> occurred)
+    brawlMessages.map(_ += ((message, playerId, occurred)))
   }
 
   protected[this] var status = "started"
