@@ -1,5 +1,7 @@
 package models.player
 
+import java.util.Date
+
 import models.board.mutation.Mutation.{ MoveGems, MoveGem }
 import models.gem.GemLocation
 
@@ -46,6 +48,7 @@ trait ActiveGemRotationHelper { this: Player =>
       if (mutations.isEmpty) {
         None
       } else {
+        board.incrementMoveCount(new Date().getTime)
         val ret = board.applyMutation(MoveGems(mutations))
         activeGems = newGems
         Some(ret)

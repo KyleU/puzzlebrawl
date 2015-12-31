@@ -17,7 +17,6 @@ trait BrawlMessageHelper { this: BrawlService =>
       val player = brawl.playersById(br.userId)
 
       def sendMove(m: Mutation, key: String = "active-move") = {
-        player.board.incrementMoveCount(DateUtils.nowMillis)
         sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment(key, Seq(m)))))
       }
 
@@ -29,7 +28,6 @@ trait BrawlMessageHelper { this: BrawlService =>
         case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(m => sendMove(m))
         case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active-step", Seq(m))))))
         case ActiveGemsDrop =>
-          player.board.incrementMoveCount(DateUtils.nowMillis)
           val messages = player.dropActiveFullTurn(brawl)
           sendToAll(PlayerUpdate(player.id, messages))
 
