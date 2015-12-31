@@ -3,30 +3,21 @@ package services.brawl
 import models._
 import models.board.mutation.Mutation.TargetChanged
 import models.board.mutation.{ Mutation, UpdateSegment }
-import models.player.Player
 import utils.DateUtils
 
 import scala.util.control.NonFatal
 
 trait BrawlMessageHelper { this: BrawlService =>
-  private[this] def incrementMoveCount(player: Player) = {
-    val time = DateUtils.now
-    if (firstMoveMade.isEmpty) {
-      firstMoveMade = Some(time)
-    }
-    lastMoveMade = Some(time)
-    player.board.incrementMoveCount(DateUtils.toMillis(time))
-  }
 
   protected[this] def handleBrawlRequest(br: BrawlRequest) = {
     log.debug("Handling [" + br.message.getClass.getSimpleName.stripSuffix("$") + "] message from user [" + br.userId + "] for brawl [" + brawl.id + "].")
     try {
       val time = DateUtils.now
-      brawlMessages += ((br.message, br.userId, time))
+      brawlMessages.map(_ += ((br.message, br.userId, time)))
       val player = brawl.playersById(br.userId)
 
       def sendMove(m: Mutation, key: String = "active-move") = {
-        incrementMoveCount(player)
+        player.board.incrementMoveCount(DateUtils.nowMillis)
         sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment(key, Seq(m)))))
       }
 
@@ -36,9 +27,9 @@ trait BrawlMessageHelper { this: BrawlService =>
         case ActiveGemsRight => player.activeGemsRight().foreach(m => sendMove(m))
         case ActiveGemsClockwise => player.activeGemsClockwise().foreach(m => sendMove(m))
         case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(m => sendMove(m))
-        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendMove(m, "active-step"))
+        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active-step", Seq(m))))))
         case ActiveGemsDrop =>
-          incrementMoveCount(player)
+          player.board.incrementMoveCount(DateUtils.nowMillis)
           val messages = player.dropActiveFullTurn(brawl)
           sendToAll(PlayerUpdate(player.id, messages))
 

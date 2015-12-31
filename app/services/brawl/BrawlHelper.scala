@@ -19,12 +19,6 @@ trait BrawlHelper
     with UpdateHelper
     with Brawl.Callbacks { this: BrawlService =>
 
-  protected[this] def elapsedSeconds = firstMoveMade.flatMap { first =>
-    lastMoveMade.map { last =>
-      Seconds.secondsBetween(first, last).getSeconds
-    }
-  }
-
   protected[this] def sendToAll(messages: Seq[ResponseMessage]): Unit = {
     if (messages.isEmpty) {
       log.info(s"No messages to send to all players for game [$scenario:$seed] in context [$context].")
@@ -41,6 +35,5 @@ trait BrawlHelper
   }
 
   override def onLoss(playerId: UUID) = sendToAll(PlayerLoss(playerId))
-
   override def onComplete() = sendToAll(brawl.getCompletionReport)
 }

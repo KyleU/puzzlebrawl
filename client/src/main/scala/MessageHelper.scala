@@ -60,7 +60,7 @@ trait MessageHelper { this: PuzzleBrawl =>
     brawl.players.foreach(_.activeGemsCreate())
     activeBrawl = Some(brawl)
     activePlayer = brawl.players.find(p => p.id == userId)
-    send(BrawlJoined(userId, brawl, 0))
+    send(BrawlJoined(userId, brawl))
   }
 
   protected[this] def handleCheat(key: String) = key match {

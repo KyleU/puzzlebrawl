@@ -45,7 +45,7 @@ case class Brawl(
     var status: String = "active",
     started: Long = new Date().getTime,
     var completed: Option[Long] = None) extends CompletionHelper {
-  
+
   private[this] val rng = new Random(seed)
 
   protected[this] var callbacks: Option[Brawl.Callbacks] = None

@@ -12,6 +12,8 @@ import utils.{ Config, DateUtils }
 import utils.json.BrawlSerializers.brawlWrites
 
 object BrawlService {
+  val debug = true
+
   def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) = {
     Props(classOf[BrawlService], id, scenario, players, seed, notificationCallback)
   }
@@ -27,9 +29,11 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   protected[this] val playersById = players.map(x => x.userId -> x).toMap
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
 
-  protected[this] val brawlMessages = collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)]
-  protected[this] var firstMoveMade: Option[LocalDateTime] = None
-  protected[this] var lastMoveMade: Option[LocalDateTime] = None
+  protected[this] val brawlMessages = if (BrawlService.debug) {
+    Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)])
+  } else {
+    None
+  }
 
   protected[this] var status = "started"
 
@@ -39,7 +43,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
     val startMessage = BrawlStarted(brawl.id, self, DateUtils.fromMillis(brawl.started))
     players.foreach { player =>
       player.connectionActor.foreach(_ ! startMessage)
-      player.connectionActor.foreach(_ ! BrawlJoined(player.userId, brawl, 0))
+      player.connectionActor.foreach(_ ! BrawlJoined(player.userId, brawl))
     }
 
     insertHistory()

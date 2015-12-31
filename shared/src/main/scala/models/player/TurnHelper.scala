@@ -1,11 +1,15 @@
 package models.player
 
+import java.util.Date
+
 import models.board.mutation.Mutation.AddGem
 import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
 
 trait TurnHelper { this: Player =>
   final def dropActiveFullTurn(brawl: Brawl) = {
+    board.incrementMoveCount(new Date().getTime)
+
     val dropSegment = Seq(activeGemsDrop())
 
     val timerSegment = board.decrementTimers().toSeq

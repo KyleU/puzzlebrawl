@@ -1,6 +1,6 @@
-@(title: String, user: models.user.User, debug: Boolean)(
+@(user: models.user.User, debug: Boolean)(
   implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
-)@layout.basic(title = title, bodyClass = Some("dark")) {
+)@layout.basic(title = utils.Config.projectName, bodyClass = Some("dark")) {
   <div id="game-container"></div>
 
   @menubar()

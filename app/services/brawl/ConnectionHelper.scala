@@ -17,7 +17,7 @@ trait ConnectionHelper { this: BrawlService =>
         player.connectionActor = Some(connectionActor)
 
         connectionActor ! BrawlStarted(brawl.id, self, DateUtils.fromMillis(brawl.started))
-        connectionActor ! BrawlJoined(player.userId, brawl, elapsedSeconds.getOrElse(0))
+        connectionActor ! BrawlJoined(player.userId, brawl)
       case None =>
         // playerConnections += PlayerRecord(userId, name, Some(connectionId), Some(connectionActor))
         //brawl.addPlayer(userId, name)
@@ -27,7 +27,7 @@ trait ConnectionHelper { this: BrawlService =>
 
   protected[this] def handleAddObserver(userId: UUID, name: String, connectionId: UUID, connectionActor: ActorRef, as: Option[UUID]) {
     observerConnections += (PlayerRecord(userId, name, Some(connectionId), Some(connectionActor)) -> as)
-    connectionActor ! BrawlJoined(userId, brawl, elapsedSeconds.getOrElse(0))
+    connectionActor ! BrawlJoined(userId, brawl)
   }
 
   protected[this] def handleConnectionStopped(connectionId: UUID) {

@@ -1,5 +1,7 @@
 package models.player
 
+import java.util.Date
+
 import models.board.mutation.Mutation.{ MoveGems, MoveGem }
 
 trait ActiveGemMoveHelper { this: Player =>
@@ -8,6 +10,8 @@ trait ActiveGemMoveHelper { this: Player =>
   def activeGemsStep() = moveActiveGems(0, -1)
 
   private[this] def moveActiveGems(xDelta: Int, yDelta: Int) = {
+    board.incrementMoveCount(new Date().getTime)
+
     if (xDelta == 0 && yDelta == 0) {
       throw new IllegalStateException("Call to move active gems without a change in position.")
     }
