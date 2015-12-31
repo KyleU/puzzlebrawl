@@ -4,12 +4,12 @@
 define(['utils/Config'], function (Config) {
   'use strict';
 
-  var targetAspectRatios = [
-    9 / 16,
-    3 / 4,
-    4 / 3,
-    16 / 9
-  ];
+  //var targetAspectRatios = [
+  //  9 / 16,
+  //  3 / 4,
+  //  4 / 3,
+  //  16 / 9
+  //];
 
   var marginPx = 32;
 
@@ -21,10 +21,10 @@ define(['utils/Config'], function (Config) {
   };
 
   PlaymatResizer.prototype.closestAspectRatio = function() {
-    var world = this.playmat.game.world;
-    var aspectRatio = world.width / world.height;
-    var closestRatio = Phaser.ArrayUtils.findClosest(aspectRatio, targetAspectRatios);
-    console.log(targetAspectRatios, aspectRatio, closestRatio);
+    //var world = this.playmat.game.world;
+    //var aspectRatio = world.width / world.height;
+    //var closestRatio = Phaser.ArrayUtils.findClosest(aspectRatio, targetAspectRatios);
+    //console.log(targetAspectRatios, aspectRatio, closestRatio);
   };
 
   PlaymatResizer.prototype.refreshLayout = function() {

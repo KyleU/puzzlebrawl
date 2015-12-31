@@ -3,7 +3,7 @@
 define(['board/BoardGems'], function (BoardGems) {
   'use strict';
 
-  var debug = true;
+  var debug = false;
 
   function applyMutation(board, m) {
     switch(m.t) {
