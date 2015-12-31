@@ -3,9 +3,9 @@
 /* global _:false */
 define([
   'board/Board', 'gem/Gem',
-  'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets',
+  'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'playmat/PlaymatLayout', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets',
   'utils/Formatter', 'utils/Status'
-], function (Board, Gem, PlaymatInput, PlaymatLabels, PlaymatResizer, PlaymatTargets, Formatter, Status) {
+], function (Board, Gem, PlaymatInput, PlaymatLabels, PlaymatLayout, PlaymatResizer, PlaymatTargets, Formatter, Status) {
   'use strict';
 
   var Playmat = function(game) {
@@ -15,6 +15,7 @@ define([
     this.players = {};
     this.self = null;
 
+    this.layout = new PlaymatLayout(this);
     this.resizer = new PlaymatResizer(this);
     this.targets = new PlaymatTargets(this);
   };
@@ -59,7 +60,7 @@ define([
       return p.id !== playmat.self;
     });
 
-    playmat.resizer.refreshLayout();
+    playmat.layout.refreshLayout();
     playmat.targets.refreshTarget();
   };
 
