@@ -7,12 +7,10 @@ import models._
 import models.scenario.Scenario
 import models.user.PlayerRecord
 import org.joda.time.LocalDateTime
-import play.api.libs.json.Json
 import utils.{ Config, DateUtils }
-import utils.json.BrawlSerializers.brawlWrites
 
 object BrawlService {
-  val debug = true
+  val recordMessages = true
 
   def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) = {
     Props(classOf[BrawlService], id, scenario, players, seed, notificationCallback)
@@ -31,7 +29,11 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
 
   protected[this] var brawlMessageCount = 0
   protected[this] var lastBrawlMessage: Option[(BrawlMessage, UUID, LocalDateTime)] = None
-  protected[this] val brawlMessages = if (BrawlService.debug) { Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)]) } else { None }
+  protected[this] val brawlMessages = if (BrawlService.recordMessages) {
+    Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)])
+  } else {
+    None
+  }
 
   protected[this] def logBrawlMessage(message: BrawlMessage, playerId: UUID, occurred: LocalDateTime) = {
     val msg = (message, playerId, occurred)
