@@ -47,9 +47,14 @@ trait TurnHelper { this: Player =>
     Seq.empty
   } else {
     val groupedGems = pendingGems.groupBy(_.x).map(x => x._1 -> x._2.map(_.gem).reverse.zipWithIndex)
-    val additions = (0 until board.width).flatMap { i =>
-      groupedGems.getOrElse(i, Seq.empty).map { gem =>
-        this.board.applyMutation(AddGem(gem._1, i, board.height - gem._2 - 1))
+    val additions = (0 until board.width).flatMap { x =>
+      groupedGems.getOrElse(x, Seq.empty).flatMap { gem =>
+        val y = board.height - gem._2 - 1
+        if (this.board.at(x, y).isDefined) {
+          None
+        } else {
+          Some(this.board.applyMutation(AddGem(gem._1, x, y)))
+        }
       }
     }
     pendingGems = Seq.empty
