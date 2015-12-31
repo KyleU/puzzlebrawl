@@ -31,10 +31,13 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
 
   protected[this] var brawlMessageCount = 0
   protected[this] var lastBrawlMessage: Option[(BrawlMessage, UUID, LocalDateTime)] = None
-  protected[this] val brawlMessages = if (BrawlService.debug) {
-    Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)])
-  } else {
-    None
+  protected[this] val brawlMessages = if (BrawlService.debug) { Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)]) } else { None }
+
+  protected[this] def logBrawlMessage(message: BrawlMessage, playerId: UUID, occurred: LocalDateTime) = {
+    val msg = (message, playerId, occurred)
+    brawlMessageCount += 1
+    lastBrawlMessage = Some(msg)
+    brawlMessages.map(_ += msg)
   }
 
   protected[this] var status = "started"
@@ -64,28 +67,5 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
       s"`${p.userId}` (${p.name}): ${bp.board.getMoveCount} moves, ${bp.board.getNormalGemCount} normal gems, and ${bp.board.getTimerGemCount} timer gems."
     }.mkString("\n  ")
     notificationCallback(msg)
-  }
-
-  override def receiveRequest = {
-    case br: BrawlRequest => handleBrawlRequest(br)
-    case im: InternalMessage => handleInternalMessage(im)
-    case DebugRequest(data) => handleDebugRequest(data)
-    case se: ServerError => handleServerError(se)
-    case x => throw new IllegalArgumentException(s"Brawl service received unknown message [$x].")
-  }
-
-  private[this] def handleDebugRequest(data: String) = data match {
-    case "sync" => sender() ! DebugResponse("sync", Json.prettyPrint(Json.toJson(brawl)))
-    case x if x.startsWith("cheat-") => handleCheat(x.stripPrefix("cheat-"))
-    case _ => log.warn(s"Unhandled debug request [$data] for brawl [$id].")
-  }
-
-  private[this] def handleServerError(se: ServerError) = {
-    log.error(s"Server error enountered for brawl [$id]: ${se.reason} - ${se.content}")
-  }
-
-  private[this] def handleCheat(key: String) = key match {
-    case "victory" => sender() ! brawl.getCompletionReport
-    case _ => log.error(s"Unknown cheat [$key].")
   }
 }

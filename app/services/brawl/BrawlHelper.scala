@@ -2,22 +2,22 @@ package services.brawl
 
 import java.util.UUID
 
-import models.brawl.{ PlayerResult, Brawl }
-import models.{ PlayerLoss, BrawlCompletionReport, MessageSet, ResponseMessage }
-import org.joda.time.Seconds
+import models.brawl.Brawl
+import models.{ MessageSet, PlayerLoss, ResponseMessage }
 import utils.Logging
 import utils.metrics.InstrumentedActor
 
 trait BrawlHelper
     extends InstrumentedActor
-    with Logging
+    with Brawl.Callbacks
+    with BrawlMessageHelper
     with ConnectionHelper
     with HistoryHelper
-    with BrawlMessageHelper
     with InternalMessageHelper
+    with Logging
+    with RequestHelper
     with TraceHelper
-    with UpdateHelper
-    with Brawl.Callbacks { this: BrawlService =>
+    with UpdateHelper { this: BrawlService =>
 
   protected[this] def sendToAll(messages: Seq[ResponseMessage]): Unit = {
     if (messages.isEmpty) {

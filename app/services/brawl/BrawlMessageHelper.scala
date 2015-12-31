@@ -12,15 +12,10 @@ trait BrawlMessageHelper { this: BrawlService =>
     log.debug("Handling [" + br.message.getClass.getSimpleName.stripSuffix("$") + "] message from user [" + br.userId + "] for brawl [" + brawl.id + "].")
     try {
       val time = DateUtils.now
-      brawlMessageCount += 1
-      val msg = (br.message, br.userId, time)
-      lastBrawlMessage = Some(msg)
-      brawlMessages.map(_ += msg)
+      logBrawlMessage(br.message, br.userId, time)
       val player = brawl.playersById(br.userId)
 
-      def sendMove(m: Mutation, key: String = "active-move") = {
-        sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment(key, Seq(m)))))
-      }
+      def sendMove(m: Mutation, key: String = "active-move") = sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment(key, Seq(m)))))
 
       br.message match {
         case x if brawl.completed.isDefined => log.warn(s"Received brawl message [${x.getClass.getSimpleName}] for completed brawl [$brawl.id].")
@@ -29,9 +24,7 @@ trait BrawlMessageHelper { this: BrawlService =>
         case ActiveGemsClockwise => player.activeGemsClockwise().foreach(m => sendMove(m))
         case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(m => sendMove(m))
         case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active-step", Seq(m))))))
-        case ActiveGemsDrop =>
-          val messages = player.dropActiveFullTurn(brawl)
-          sendToAll(PlayerUpdate(player.id, messages))
+        case ActiveGemsDrop => sendToAll(PlayerUpdate(player.id, player.dropActiveFullTurn(brawl)))
 
         case st: SelectTarget => if (!player.target.contains(st.target)) {
           player.target = Some(st.target)
