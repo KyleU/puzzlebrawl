@@ -9,9 +9,9 @@ import scala.util.control.NonFatal
 trait BrawlMessageHelper { this: BrawlService =>
   protected[this] def handleBrawlRequest(br: BrawlRequest) = {
     log.debug("Handling [" + utils.Formatter.className(br.message) + "] message from user [" + br.userId + "] for brawl [" + brawl.id + "].")
+    val time = utils.DateUtils.now
     try {
-      val time = utils.DateUtils.now
-      logBrawlMessage(br.message, br.userId, time)
+      logBrawlMessageReceive(br.message, br.userId, time)
       val player = brawl.playersById(br.userId)
 
       def sendMove(m: Mutation, key: String = "active-move") = sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment(key, Seq(m)))))
@@ -39,5 +39,6 @@ trait BrawlMessageHelper { this: BrawlService =>
         log.error(s"Exception processing brawl request [$br].", x)
         sender() ! ServerError(x.getClass.getSimpleName, x.getMessage)
     }
+    logBrawlMessageComplete(br.message, br.userId, time)
   }
 }

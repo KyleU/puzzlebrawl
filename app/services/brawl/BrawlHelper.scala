@@ -12,6 +12,7 @@ trait BrawlHelper
     with Brawl.Callbacks
     with BrawlMessageHelper
     with ConnectionHelper
+    with DebugHelper
     with HistoryHelper
     with InternalMessageHelper
     with Logging

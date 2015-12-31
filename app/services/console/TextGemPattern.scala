@@ -6,6 +6,20 @@ import models.gem.{ Color, Gem }
 import services.console.ConsoleBorders._
 
 object TextGemPattern {
+  def crudeRenderingOf(board: Board) = {
+    val header = "    " + (0 until board.width).map(_.toString).mkString(" ")
+    val rows = header +: (board.height - 1 to 0 by -1).map { y =>
+      val row = utils.Formatter.padLeft(y.toString, 2) + ": " + (0 until board.width).map { x =>
+        board.at(x, y) match {
+          case Some(gem) => gem.color.charVal.toString
+          case None => "_"
+        }
+      }.mkString(" ")
+      row
+    }
+    rows
+  }
+
   def single(board: Board, gemOpt: Option[Gem], x: Int, y: Int) = {
     gemOpt match {
       case None => ' '

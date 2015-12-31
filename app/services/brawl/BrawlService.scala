@@ -6,12 +6,9 @@ import akka.actor.Props
 import models._
 import models.scenario.Scenario
 import models.user.PlayerRecord
-import org.joda.time.LocalDateTime
 import utils.{ Config, DateUtils }
 
 object BrawlService {
-  val recordMessages = false
-
   def props(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) = {
     Props(classOf[BrawlService], id, scenario, players, seed, notificationCallback)
   }
@@ -26,20 +23,6 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
 
   protected[this] val playersById = players.map(x => x.userId -> x).toMap
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
-
-  protected[this] var brawlMessageCount = 0
-  protected[this] val lastBrawlMessages = collection.mutable.HashMap.empty[UUID, Option[(BrawlMessage, LocalDateTime)]]
-  protected[this] val brawlMessages = if (BrawlService.recordMessages) {
-    Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)])
-  } else {
-    None
-  }
-
-  protected[this] def logBrawlMessage(message: BrawlMessage, playerId: UUID, occurred: LocalDateTime) = {
-    brawlMessageCount += 1
-    lastBrawlMessages(playerId) = Some(message -> occurred)
-    brawlMessages.map(_ += ((message, playerId, occurred)))
-  }
 
   protected[this] var status = "started"
 
