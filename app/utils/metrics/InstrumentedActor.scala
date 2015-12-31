@@ -7,7 +7,7 @@ trait InstrumentedActor extends Actor with Instrumented {
   def receiveRequest: PartialFunction[Any, Unit]
 
   protected[this] def timeReceive[A](msg: Any)(f: => A) = {
-    metrics.timer("receive", msg.getClass.getSimpleName.stripSuffix("$")).time(f)
+    metrics.timer("receive", utils.Formatter.className(msg)).time(f)
   }
 
   private[this] lazy val exceptionMeter: Meter = metrics.meter("exceptionMeter")

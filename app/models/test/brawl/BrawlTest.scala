@@ -13,7 +13,7 @@ object BrawlTest {
   import utils.json.BrawlSerializers._
 
   trait Provider {
-    val testName = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
+    val testName = utils.Formatter.className(this).replaceAllLiterally("Test", "")
     def newInstance(id: UUID, self: UUID): BrawlTest
   }
 
@@ -57,7 +57,7 @@ object BrawlTest {
 abstract class BrawlTest(id: UUID, self: UUID, val seed: Option[Int] = None) extends BrawlTestErrors {
   val brawl = Brawl.blank(
     id = id,
-    scenario = this.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", ""),
+    scenario = utils.Formatter.className(this).replaceAllLiterally("Test", ""),
     seed = seed.getOrElse(Math.abs(Random.nextInt())),
     players = Seq(self -> "original", UUID.randomUUID -> "test", UUID.randomUUID -> "goal")
   )

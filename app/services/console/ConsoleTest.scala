@@ -4,7 +4,7 @@ import models.test.brawl.BrawlTest
 
 object ConsoleTest {
   def run(test: BrawlTest, pauseBeforeRun: Boolean) = {
-    val testName = test.getClass.getSimpleName.stripSuffix("$").replaceAllLiterally("Test", "")
+    val testName = utils.Formatter.className(test).replaceAllLiterally("Test", "")
     test.init()
     test.cloneOriginal()
 

@@ -18,7 +18,7 @@ object Database extends Logging with Instrumented with FutureMetrics {
   private[this] var factory: PostgreSQLConnectionFactory = _
   private[this] val poolConfig = new PoolConfiguration(maxObjects = 20, maxIdle = 20, maxQueueSize = 10000)
   private[this] var pool: ConnectionPool[PostgreSQLConnection] = _
-  private[this] def prependComment(obj: Object, sql: String) = s"/* ${obj.getClass.getSimpleName.replace("$", "")} */ $sql"
+  private[this] def prependComment(obj: Object, sql: String) = s"/* ${utils.Formatter.className(obj)} */ $sql"
 
   def open(configuration: Configuration) = {
     factory = new PostgreSQLConnectionFactory(configuration)
@@ -34,7 +34,7 @@ object Database extends Logging with Instrumented with FutureMetrics {
   def transaction[A](f: (Connection) => Future[A], conn: Connection = pool): Future[A] = conn.inTransaction(c => f(c))
 
   def execute(statement: Statement, conn: Option[Connection] = None): Future[Int] = {
-    val name = statement.getClass.getSimpleName.replaceAllLiterally("$", "")
+    val name = utils.Formatter.className(statement)
     log.debug(s"Executing statement [$name] with SQL [${statement.sql}] with values [${statement.values.mkString(", ")}].")
     val ret = timing(s"execute.$name") {
       conn.getOrElse(pool).sendPreparedStatement(prependComment(statement, statement.sql), statement.values).map(_.rowsAffected.toInt)
@@ -46,7 +46,7 @@ object Database extends Logging with Instrumented with FutureMetrics {
   }
 
   def query[A](query: RawQuery[A], conn: Option[Connection] = None): Future[A] = {
-    val name = query.getClass.getSimpleName.replaceAllLiterally("$", "")
+    val name = utils.Formatter.className(query)
     log.debug(s"Executing query [$name] with SQL [${query.sql}] with values [${query.values.mkString(", ")}].")
     val ret = timing(s"query.$name") {
       conn.getOrElse(pool).sendPreparedStatement(prependComment(query, query.sql), query.values).map { r =>

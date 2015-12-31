@@ -3,15 +3,14 @@ package services.brawl
 import models._
 import models.board.mutation.Mutation.TargetChanged
 import models.board.mutation.{ Mutation, UpdateSegment }
-import utils.DateUtils
 
 import scala.util.control.NonFatal
 
 trait BrawlMessageHelper { this: BrawlService =>
   protected[this] def handleBrawlRequest(br: BrawlRequest) = {
-    log.debug("Handling [" + br.message.getClass.getSimpleName.stripSuffix("$") + "] message from user [" + br.userId + "] for brawl [" + brawl.id + "].")
+    log.debug("Handling [" + utils.Formatter.className(br.message) + "] message from user [" + br.userId + "] for brawl [" + brawl.id + "].")
     try {
-      val time = DateUtils.now
+      val time = utils.DateUtils.now
       logBrawlMessage(br.message, br.userId, time)
       val player = brawl.playersById(br.userId)
 
@@ -33,7 +32,7 @@ trait BrawlMessageHelper { this: BrawlService =>
 
         case ResignBrawl => log.info(s"Player [${player.id}] has resigned from brawl [$id].")
 
-        case r => log.warn(s"BrawlService received unknown brawl message [${r.getClass.getSimpleName.stripSuffix("$")}].")
+        case r => log.warn(s"BrawlService received unknown brawl message [${utils.Formatter.className(r)}].")
       }
     } catch {
       case NonFatal(x) =>

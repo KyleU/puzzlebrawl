@@ -31,7 +31,7 @@ trait TraceHelper { this: BrawlService =>
       }.mkString("<br/>\n"),
       "messageCount" -> brawlMessageCount,
       "lastMessages" -> lastBrawlMessages.map(x => x._1 + ": " + x._2.map { y =>
-        y._1.getClass.getSimpleName.stripSuffix("$") + " @ " + y._2
+        utils.Formatter.className(y._1) + " @ " + y._2
       }.getOrElse("No Message")).mkString(",\n")
     ))
     sender() ! ret

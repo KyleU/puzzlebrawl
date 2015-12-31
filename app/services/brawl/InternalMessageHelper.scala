@@ -18,7 +18,7 @@ trait InternalMessageHelper { this: BrawlService =>
   }
 
   protected[this] def handleInternalMessage(im: InternalMessage) = {
-    log.debug("Handling [" + im.getClass.getSimpleName.stripSuffix("$") + "] internal message for game [" + id + "].")
+    log.debug("Handling [" + utils.Formatter.className(im) + "] internal message for game [" + id + "].")
     try {
       im match {
         case ap: AddPlayer => timeReceive(ap) { handleAddPlayer(ap.userId, ap.name, ap.connectionId, ap.connectionActor) }
