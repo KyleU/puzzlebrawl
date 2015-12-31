@@ -30,7 +30,7 @@ object TestScenarios {
       val brawl = Brawl(id, "Basic AI Test", seed, all)
       brawl
     case "OneOnOne" =>
-      val all = withAis(players, 2, "spinner", seed)
+      val all = withAis(players, 2, "simple", seed)
       all.foreach(_.activeGemsCreate())
       val brawl = Brawl(id, "1v1 AI Test", seed, all)
       brawl
@@ -71,7 +71,6 @@ object TestScenarios {
       val brawl = Brawl(id, scenario, seed, ps)
       brawl.players.foreach(_.activeGemsCreate())
       brawl
-    case "Testbed" => ScenarioBrawlHelper.testbedBrawl(id, seed, players)
     case x if x.startsWith("Test") => ScenarioBrawlHelper.testBrawl(id, scenario.stripPrefix("Test"), players)
     case x => throw new IllegalArgumentException(s"Invalid scenario [$scenario].")
   }

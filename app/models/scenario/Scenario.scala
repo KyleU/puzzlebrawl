@@ -43,6 +43,9 @@ object Scenario {
         }
         ps.foreach(_.activeGemsCreate())
         Brawl(id, scenario, seed, ps)
+
+      case "Testbed" => ScenarioBrawlHelper.testbedBrawl(id, seed, players)
+
       case _ => TestScenarios.newInstance(id, scenario, seed, players)
     }
   }

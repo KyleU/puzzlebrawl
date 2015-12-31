@@ -3,7 +3,7 @@
 define(['board/BoardGems'], function (BoardGems) {
   'use strict';
 
-  var debug = false;
+  var debug = true;
 
   function applyMutation(board, m) {
     switch(m.t) {
@@ -54,11 +54,17 @@ define(['board/BoardGems'], function (BoardGems) {
   }
 
   function applyMutations(board, segments, scoreCallback, idx) {
-    if(debug) {
-      var count = _.reduce(segments, function(i, c){ return i + c.length; }, 0);
-      console.log('Processing [' + segments.length + '] segments containing [' + count + '] mutations.');
-    }
     if(segments.length > 0) {
+      if(debug) {
+        var count = _.reduce(segments.slice(1), function(i, c) { return i + c.mutations.length; }, 0);
+        var additional;
+        if(segments.length === 1) {
+          additional = ', no work remains.';
+        } else {
+          additional = ', leaving [' + (segments.length - 1) + '] segments remaining, containing [' + count + '] mutations.';
+        }
+        console.log('Processing one segment of length [' + segments[0].mutations.length + ']' + additional);
+      }
       if(board.owner === board.playmat.self) {
         board.game.isTweening = true;
       }
@@ -67,10 +73,12 @@ define(['board/BoardGems'], function (BoardGems) {
       if(segments.length === 1 && board.owner === board.playmat.self) {
         board.game.isTweening = false;
       }
-      var f = function() {
-        applyMutations(board, segments.splice(1), scoreCallback, idx + 1);
-      };
-      setTimeout(f, 200);
+      if(segments.length > 1) {
+        var f = function() {
+          applyMutations(board, segments.splice(1), scoreCallback, idx + 1);
+        };
+        setTimeout(f, 200);
+      }
     }
   }
 

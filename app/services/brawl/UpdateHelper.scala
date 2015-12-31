@@ -11,6 +11,7 @@ trait UpdateHelper { this: BrawlService =>
       case "basic" => UpdateSchedule(p.id, "basic", 500, 2000)
       case "spinner" => UpdateSchedule(p.id, "spinner", 200, 500)
       case "random" => UpdateSchedule(p.id, "random", 500, 2000)
+      case "simple" => UpdateSchedule(p.id, "simple", 2000, 2000)
       case x => throw new IllegalStateException("Unhandled")
     }
   }
@@ -35,6 +36,7 @@ trait UpdateHelper { this: BrawlService =>
       case "basic" => self ! BrawlRequest(s.id, basicMove(player))
       case "spinner" => self ! BrawlRequest(s.id, spinnerMove())
       case "random" => self ! BrawlRequest(s.id, randomMove())
+      case "simple" => self ! BrawlRequest(s.id, simpleMove())
       case x => throw new IllegalStateException(s"Unhandled script [$x].")
     }
     schedule(s)
@@ -56,5 +58,9 @@ trait UpdateHelper { this: BrawlService =>
     case i if i >= 6 && i <= 6 => ActiveGemsClockwise
     case i if i >= 7 && i <= 7 => ActiveGemsCounterClockwise
     case i if i >= 8 && i <= 10 => ActiveGemsDrop
+  }
+
+  private[this] def simpleMove() = {
+    ActiveGemsDrop
   }
 }

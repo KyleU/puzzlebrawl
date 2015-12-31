@@ -103,7 +103,7 @@ case class GemPattern(key: String, rows: Seq[Seq[Color]]) {
     val gems = deltas.flatMap { delta =>
       val startingColIndex = rng.nextInt(width)
       (0 until delta.toInt).map { i =>
-        val newGem = target.gemStream.nextTimer(color = Color.allColors(rng.nextInt(5)))
+        val newGem = target.gemStream.nextTimer(color = Color.allColors(rng.nextInt(4)))
         GemLocation(newGem, (startingColIndex + i) % width, 0)
       }
     }

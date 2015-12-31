@@ -21,25 +21,22 @@ case class Player(
     var target: Option[UUID] = None) extends ActiveGemHelper {
 
   final def dropActiveFullTurn(brawl: Brawl) = {
-    val dropSegment = activeGemsDrop()
-    val timerSegment = board.decrementTimers()
+    val dropSegment = Seq(activeGemsDrop())
+
+    val timerSegment = board.decrementTimers().toSeq
+
     val wildSegment = board.processWilds()
     val combo = if (wildSegment.isEmpty) { 1 } else { 2 }
     val postWildSegment = if (wildSegment.isEmpty) { Seq.empty } else { board.collapse() ++ board.fuse() }
-    val fullTurn = board.fullTurn(combo = combo)
 
-    val timerDump = if (pendingGems.isEmpty) {
-      None
-    } else {
-      Some(UpdateSegment("pending", pendingGems.flatMap { pg =>
-        this.board.applyMutation(AddGem(pg.gem, pg.x, board.height - 1)) +: this.board.drop(pg.x, board.height - 1)
-      }))
-    }
+    val fullTurnSegments = board.fullTurn(combo = combo)
 
-    val phaseOne = dropSegment +: timerSegment.toSeq
-    val phaseTwo = wildSegment ++ postWildSegment
-    val phaseThree = fullTurn :+ activeGemsCreate()
-    val messages = phaseOne ++ phaseTwo ++ phaseThree ++ timerDump.toSeq
+    val pendingSegment = processPendingGems()
+    val postPendingSegment = if (pendingSegment.isEmpty) { Seq.empty } else { board.collapse() ++ board.fuse() }
+
+    val activeCreate = Seq(activeGemsCreate())
+
+    val messages = dropSegment ++ timerSegment ++ wildSegment ++ postWildSegment ++ fullTurnSegments ++ pendingSegment ++ postPendingSegment ++ activeCreate
 
     val scoreDelta = messages.flatMap(_.scoreDelta).sum
     score += scoreDelta
@@ -50,5 +47,18 @@ case class Player(
     }
 
     messages
+  }
+
+  private[this] def processPendingGems() = if (pendingGems.isEmpty) {
+    Seq.empty
+  } else {
+    val groupedGems = pendingGems.groupBy(_.x).map(x => x._1 -> x._2.map(_.gem).reverse.zipWithIndex)
+    val additions = (0 until board.width).flatMap { i =>
+      groupedGems.getOrElse(i, Seq.empty).map { gem =>
+        this.board.applyMutation(AddGem(gem._1, i, board.height - gem._2 - 1))
+      }
+    }
+    pendingGems = Seq.empty
+    Seq(UpdateSegment("pending", additions))
   }
 }
