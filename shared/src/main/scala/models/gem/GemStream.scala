@@ -22,6 +22,7 @@ case class GemStream(
 
   private[this] val r = new Random(seed)
   private[this] var nextId = 0
+  private[this] var nextTimerId = 10000
 
   private[this] val wildInterval = (Constants.GemStream.baseWildGemInterval * gemAdjustWild.getOrElse(1.0)).toInt
   private[this] val crashChance = Constants.GemStream.baseCrashGemChance * gemAdjustCrash.getOrElse(1.0)
@@ -53,6 +54,12 @@ case class GemStream(
       Gem(nextId, color = color, crash = crash)
     }
     nextId += 1
+    ret
+  }
+
+  def nextTimer(color: Color) = {
+    val ret = Gem(nextTimerId, color = color, timer = Some(5))
+    nextTimerId += 1
     ret
   }
 

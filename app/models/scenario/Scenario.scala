@@ -13,11 +13,13 @@ object Scenario {
   def all = Seq(
     "Testbed" -> "Testbed",
     "Offline" -> "Offline",
+    "OneOnOne" -> "1v1 AI Test",
     "BasicAI" -> "Basic AI Test",
     "TeamAI" -> "Team AI Test",
     "Spinner" -> "Spinning AI Test",
     "StressTest" -> "Stress Test",
     "Multiplayer" -> "Multiplayer Test",
+    "EightWayBrawl" -> "Eight Player Multiplayer",
     "Fixed" -> "Fixed Gem Stream",
     "AllRed" -> "All Red",
     "AllGreen" -> "All Green",
@@ -35,7 +37,7 @@ object Scenario {
     }
 
     scenario match {
-      case "Normal" | "Multiplayer" =>
+      case "Normal" | "Multiplayer" | "EightWayBrawl" =>
         val ps = players.zipWithIndex.map { p =>
           Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))
         }

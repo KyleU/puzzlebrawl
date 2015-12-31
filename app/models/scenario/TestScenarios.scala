@@ -29,6 +29,11 @@ object TestScenarios {
       all.foreach(_.activeGemsCreate())
       val brawl = Brawl(id, "Basic AI Test", seed, all)
       brawl
+    case "OneOnOne" =>
+      val all = withAis(players, 2, "spinner", seed)
+      all.foreach(_.activeGemsCreate())
+      val brawl = Brawl(id, "1v1 AI Test", seed, all)
+      brawl
     case "TeamAI" =>
       val all = withAis(players, 4, "random", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
       all.foreach(_.activeGemsCreate())

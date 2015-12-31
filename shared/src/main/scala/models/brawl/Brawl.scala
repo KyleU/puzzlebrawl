@@ -4,7 +4,7 @@ import java.util.{ Date, UUID }
 
 import models.board.Board
 import models.board.mutation.Mutation.AddGem
-import models.gem.GemStream
+import models.gem.{ GemPattern, GemStream }
 import models.player.Player
 
 import scala.util.Random
@@ -32,13 +32,7 @@ object Brawl {
   }
 }
 
-case class Brawl(
-    id: UUID,
-    scenario: String,
-    seed: Int,
-    players: Seq[Player],
-    started: Long = new Date().getTime,
-    var completed: Option[Long] = None) {
+case class Brawl(id: UUID, scenario: String, seed: Int, players: Seq[Player], started: Long = new Date().getTime, var completed: Option[Long] = None) {
   private[this] val rng = new Random(seed)
 
   val playersById = players.map(p => p.id -> p).toMap
@@ -53,4 +47,15 @@ case class Brawl(
       }
     }
   }
+
+  def applyCharge(id: UUID, deltas: Seq[Double]) = {
+    val player = playersById(id)
+    val pattern = GemPattern.fromString(player.gemPattern)
+    player.target match {
+      case Some(tgtId) => pattern.applyCharge(deltas, playersById(tgtId), rng)
+      case None => // TODO No op for now
+    }
+  }
+
+  def elapsedMs = (completed.getOrElse(new Date().getTime) - started).toInt
 }

@@ -39,7 +39,7 @@ trait BrawlMessageHelper { this: BrawlService =>
         case ActiveGemsStep => player.activeGemsStep().foreach(m => sendMove(m, "active-step"))
         case ActiveGemsDrop =>
           incrementMoveCount(player)
-          val messages = player.dropActiveFullTurn
+          val messages = player.dropActiveFullTurn(brawl)
           sendToAll(PlayerUpdate(player.id, messages))
 
         case st: SelectTarget => if (!player.target.contains(st.target)) {
