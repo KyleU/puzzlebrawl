@@ -10,6 +10,11 @@ import models.player.Player
 import scala.util.Random
 
 object Brawl {
+  trait Callbacks {
+    def onLoss(playerId: UUID)
+    def onComplete()
+  }
+
   def blank(
     id: UUID,
     scenario: String,
@@ -32,8 +37,13 @@ object Brawl {
   }
 }
 
-case class Brawl(id: UUID, scenario: String, seed: Int, players: Seq[Player], started: Long = new Date().getTime, var completed: Option[Long] = None) {
+case class Brawl(
+    id: UUID, scenario: String, seed: Int, players: Seq[Player],
+    var status: String = "active", started: Long = new Date().getTime, var completed: Option[Long] = None) {
   private[this] val rng = new Random(seed)
+
+  private[this] var callbacks: Option[Brawl.Callbacks] = None
+  def setCallbacks(c: Brawl.Callbacks) = callbacks = Some(c)
 
   val playersById = players.map(p => p.id -> p).toMap
   if (playersById.size != players.size) {
@@ -72,4 +82,17 @@ case class Brawl(id: UUID, scenario: String, seed: Int, players: Seq[Player], st
   }
 
   def elapsedMs = (completed.getOrElse(new Date().getTime) - started).toInt
+
+  def onLoss(playerId: UUID) = {
+    val p = playersById(playerId)
+    p.status = "loss"
+    p.completed = Some(new Date().getTime)
+    callbacks.foreach(_.onLoss(playerId))
+    val teams = players.groupBy(_.team).map(x => x._1 -> x._2.exists(_.status == "active"))
+    if (teams.count(_._2) < 2) {
+      status = "complete"
+      players.filter(_.status == "active").foreach(_.status = "win")
+      callbacks.foreach(_.onComplete())
+    }
+  }
 }

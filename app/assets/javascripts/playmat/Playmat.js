@@ -70,5 +70,9 @@ define([
     player.labels.scoreLabel.text = Formatter.withCommas(player.score);
   };
 
+  Playmat.prototype.onPlayerLoss = function(playerId) {
+    this.players[playerId].board.alpha = 0.5;
+  };
+
   return Playmat;
 });

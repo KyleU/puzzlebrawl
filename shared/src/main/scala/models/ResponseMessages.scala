@@ -17,7 +17,7 @@ case class Disconnected(reason: String) extends ResponseMessage
 case class BrawlJoined(self: UUID, brawl: Brawl, elapsedMs: Int) extends ResponseMessage
 
 case class PlayerUpdate(id: UUID, segments: Seq[UpdateSegment]) extends ResponseMessage
-
+case class PlayerLoss(id: UUID) extends ResponseMessage
 case class BrawlCompletionReport(id: UUID, scenario: String, durationMs: Int, results: Seq[PlayerResult]) extends ResponseMessage
 
 case class MessageSet(messages: Seq[ResponseMessage]) extends ResponseMessage

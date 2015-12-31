@@ -2,12 +2,11 @@ package services.brawl
 
 import java.util.UUID
 
-import akka.actor.{ Cancellable, Props }
+import akka.actor.Props
 import models._
 import models.scenario.Scenario
 import models.user.PlayerRecord
 import org.joda.time.LocalDateTime
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
 import utils.{ Config, DateUtils }
 import utils.json.BrawlSerializers.brawlWrites
@@ -19,7 +18,11 @@ object BrawlService {
 }
 
 case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) extends BrawlHelper {
-  protected[this] lazy val brawl = Scenario.newInstance(id, scenario, seed, players)
+  protected[this] lazy val brawl = {
+    val b = Scenario.newInstance(id, scenario, seed, players)
+    b.setCallbacks(this)
+    b
+  }
 
   protected[this] val playersById = players.map(x => x.userId -> x).toMap
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
@@ -73,5 +76,10 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
 
   private[this] def handleServerError(se: ServerError) = {
     log.error(s"Server error enountered for brawl [$id]: ${se.reason} - ${se.content}")
+  }
+
+  private[this] def handleCheat(key: String) = key match {
+    case "victory" => sender() ! getCompletionReport
+    case _ => log.error(s"Unknown cheat [$key].")
   }
 }

@@ -26,6 +26,7 @@ object ResponseMessageSerializers {
           case "MessageSet" => readJs[MessageSet](o)
           case "BrawlJoined" => readJs[BrawlJoined](o)
           case "PlayerUpdate" => readJs[PlayerUpdate](o)
+          case "PlayerLoss" => readJs[PlayerLoss](o)
           case "BrawlCompletionReport" => readJs[BrawlCompletionReport](o)
           case "ServerError" => readJs[ServerError](o)
           case _ => throw new IllegalStateException()
@@ -43,6 +44,7 @@ object ResponseMessageSerializers {
         case ms: MessageSet => writeJs(ms)
         case bj: BrawlJoined => writeJs(bj)
         case pu: PlayerUpdate => writeJs(pu)
+        case pl: PlayerLoss => writeJs(pl)
         case bcr: BrawlCompletionReport => writeJs(bcr)
         case se: ServerError => writeJs(se)
 

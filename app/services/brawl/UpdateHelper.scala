@@ -32,14 +32,16 @@ trait UpdateHelper { this: BrawlService =>
   protected[this] def handleUpdateSchedule(s: UpdateSchedule) = {
     val player = brawl.playersById(s.id)
 
-    s.script match {
-      case "basic" => self ! BrawlRequest(s.id, basicMove(player))
-      case "spinner" => self ! BrawlRequest(s.id, spinnerMove())
-      case "random" => self ! BrawlRequest(s.id, randomMove())
-      case "simple" => self ! BrawlRequest(s.id, simpleMove())
-      case x => throw new IllegalStateException(s"Unhandled script [$x].")
+    if (player.status == "active") {
+      s.script match {
+        case "basic" => self ! BrawlRequest(s.id, basicMove(player))
+        case "spinner" => self ! BrawlRequest(s.id, spinnerMove())
+        case "random" => self ! BrawlRequest(s.id, randomMove())
+        case "simple" => self ! BrawlRequest(s.id, simpleMove())
+        case x => throw new IllegalStateException(s"Unhandled script [$x].")
+      }
+      schedule(s)
     }
-    schedule(s)
   }
 
   private[this] def basicMove(player: Player) = {

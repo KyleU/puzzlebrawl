@@ -56,9 +56,15 @@ trait MessageHelper { this: PuzzleBrawl =>
     }
     val players = Seq(userId -> "Offline User")
     val brawl = Brawl.blank(UUID.randomUUID, "Offline", players = players)
+    brawl.setCallbacks(this)
     brawl.players.foreach(_.activeGemsCreate())
     activeBrawl = Some(brawl)
     activePlayer = brawl.players.find(p => p.id == userId)
     send(BrawlJoined(userId, brawl, 0))
+  }
+
+  protected[this] def handleCheat(key: String) = key match {
+    case "victory" => send(getCompletionReport)
+    case _ => throw new IllegalStateException(s"Unknown cheat [$key].")
   }
 }

@@ -38,6 +38,9 @@ define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
           throw 'Unhandled debug response [' + v.key + '].';
         }
         break;
+      case 'PlayerLoss':
+        this.game.playmat.onPlayerLoss(v.id);
+        break;
       case 'BrawlCompletionReport':
         Modal.show('Game Complete', JSON.stringify(v, null, 2), true);
         break;

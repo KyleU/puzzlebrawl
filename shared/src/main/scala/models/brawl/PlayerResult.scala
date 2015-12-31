@@ -10,4 +10,6 @@ case class PlayerResult(
   score: Int,
   normalGemCount: Int,
   timerGemCount: Int,
-  moveCount: Int)
+  moveCount: Int,
+  status: String,
+  completed: Option[Long])

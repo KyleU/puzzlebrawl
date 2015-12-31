@@ -2,7 +2,8 @@ package services.brawl
 
 import java.util.UUID
 
-import models.{ MessageSet, ResponseMessage }
+import models.brawl.{ PlayerResult, Brawl }
+import models.{ PlayerLoss, BrawlCompletionReport, MessageSet, ResponseMessage }
 import org.joda.time.Seconds
 import utils.Logging
 import utils.metrics.InstrumentedActor
@@ -10,13 +11,13 @@ import utils.metrics.InstrumentedActor
 trait BrawlHelper
     extends InstrumentedActor
     with Logging
-    with CheatHelper
     with ConnectionHelper
     with HistoryHelper
     with BrawlMessageHelper
     with InternalMessageHelper
     with TraceHelper
-    with UpdateHelper { this: BrawlService =>
+    with UpdateHelper
+    with Brawl.Callbacks { this: BrawlService =>
 
   protected[this] def elapsedSeconds = firstMoveMade.flatMap { first =>
     lastMoveMade.map { last =>
@@ -38,4 +39,28 @@ trait BrawlHelper
     players.foreach(_.connectionActor.foreach(_ ! message))
     observerConnections.foreach(_._1.connectionActor.foreach(_ ! message))
   }
+
+  override def onLoss(playerId: UUID) = sendToAll(PlayerLoss(playerId))
+
+  override def onComplete() = sendToAll(getCompletionReport)
+
+  protected[this] def getCompletionReport = BrawlCompletionReport(
+    id = brawl.id,
+    scenario = brawl.scenario,
+    durationMs = 0, // TODO
+    results = brawl.players.map { p =>
+      PlayerResult(
+        id = p.id,
+        name = p.name,
+        script = p.script,
+        team = p.team,
+        score = p.score,
+        normalGemCount = p.board.getNormalGemCount,
+        timerGemCount = p.board.getTimerGemCount,
+        moveCount = p.board.getMoveCount,
+        status = p.status,
+        completed = p.completed
+      )
+    }
+  )
 }
