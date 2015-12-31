@@ -27,22 +27,22 @@ object TestScenarios {
     case "BasicAI" =>
       val all = withAis(players, 5, "basic", seed)
       all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "Basic AI Test", seed, all)
+      val brawl = Brawl(id, "Basic AI", seed, all)
       brawl
     case "OneOnOne" =>
       val all = withAis(players, 2, "basic", seed)
       all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "1v1 AI Test", seed, all)
+      val brawl = Brawl(id, "1v1 AI", seed, all)
       brawl
     case "TeamAI" =>
       val all = withAis(players, 4, "random", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
       all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "Team AI Test", seed, all)
+      val brawl = Brawl(id, "Team AI", seed, all)
       brawl
     case "Spinner" =>
-      val all = withAis(players, 8, "spinner", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
+      val all = withAis(players, 9, "spinner", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
       all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "Spinning Test", seed, all)
+      val brawl = Brawl(id, "Spinning", seed, all)
       brawl
     case "StressTest" =>
       val all = withAis(players, 100, "random", seed)

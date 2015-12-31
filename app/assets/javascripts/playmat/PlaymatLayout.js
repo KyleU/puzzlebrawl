@@ -75,7 +75,7 @@ define(['utils/Config'], function (Config) {
       othersScale = 0.8;
     } else if(others.length < 12) {
       boardsPerRow = Math.ceil(others.length / 2);
-      othersScale = 0.5;
+      othersScale = 0.4;
     } else {
       boardsPerRow = Math.ceil(others.length / 4);
       othersScale = 0.2;
@@ -85,6 +85,8 @@ define(['utils/Config'], function (Config) {
     var maxOffset = 0;
 
     _.each(others, function(player, idx) {
+      var row = Math.floor(idx / boardsPerRow);
+
       if(idx % boardsPerRow === 0) {
         xOffset = originalOffset;
       }
@@ -92,13 +94,12 @@ define(['utils/Config'], function (Config) {
       if(boardsPerRow > 5) {
         player.labels.hide();
       } else {
-        player.labels.resize(xOffset, player.board.w * Config.tile.size * othersScale, marginPx + (player.board.h * Config.tile.size * othersScale));
+        var offsetY = marginPx + ((row + 1) * (player.board.h * Config.tile.size * othersScale)) + (row * 64);
+        player.labels.resize(xOffset, player.board.w * Config.tile.size * othersScale, offsetY);
       }
 
-      var row = Math.floor(idx / boardsPerRow);
-
       player.board.x = xOffset;
-      player.board.y = marginPx + (row * (player.board.h + 1) * Config.tile.size * othersScale);
+      player.board.y = marginPx + (row * ((player.board.h * Config.tile.size * othersScale) + 64));
 
       player.board.scale = { x: othersScale, y: othersScale };
 
