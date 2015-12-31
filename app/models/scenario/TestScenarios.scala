@@ -30,7 +30,7 @@ object TestScenarios {
       val brawl = Brawl(id, "Basic AI Test", seed, all)
       brawl
     case "OneOnOne" =>
-      val all = withAis(players, 2, "simple", seed)
+      val all = withAis(players, 2, "basic", seed)
       all.foreach(_.activeGemsCreate())
       val brawl = Brawl(id, "1v1 AI Test", seed, all)
       brawl

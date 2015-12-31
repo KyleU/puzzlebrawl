@@ -43,7 +43,27 @@ trait UpdateHelper { this: BrawlService =>
   }
 
   private[this] def basicMove(player: Player) = {
-    ActiveGemsDrop
+    val ag1 = player.activeGems.headOption.getOrElse(throw new IllegalStateException())
+    val ag2 = player.activeGems.tail.headOption.getOrElse(throw new IllegalStateException())
+
+    if (ag1.y == ag2.y + 1) {
+      ActiveGemsClockwise
+    } else {
+      firstOccupiedIndex(player, ag1.x, ag1.y) match {
+        case Some(idx) =>
+          val g = player.board.at(ag1.x, idx).getOrElse(throw new IllegalStateException())
+          if (g.color == ag1.gem.color) {
+            ActiveGemsDrop
+          } else {
+            Random.nextInt(5) match {
+              case x if x == 0 || x == 1 => ActiveGemsLeft
+              case x if x == 2 || x == 3 => ActiveGemsRight
+              case x if x == 4 => ActiveGemsDrop
+            }
+          }
+        case None => ActiveGemsDrop
+      }
+    }
   }
 
   private[this] def spinnerMove() = if (Random.nextInt(10) == 0) {
@@ -62,5 +82,9 @@ trait UpdateHelper { this: BrawlService =>
 
   private[this] def simpleMove() = {
     ActiveGemsDrop
+  }
+
+  private[this] def firstOccupiedIndex(player: Player, x: Int, y: Int) = {
+    (0 until player.board.height).reverseIterator.drop(player.board.height - y).find(i => player.board.at(x, i).isDefined)
   }
 }
