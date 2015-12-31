@@ -12,13 +12,17 @@ trait CompletionHelper { this: Brawl =>
     callbacks.foreach(_.onLoss(playerId))
     val teams = players.groupBy(_.team).map(x => x._1 -> x._2.exists(_.status == "active"))
     if (teams.count(_._2) < 2) {
-      status = "complete"
-      players.filter(_.status == "active").foreach { p =>
-        p.status = "win"
-        p.completed = Some(new Date().getTime)
-      }
-      callbacks.foreach(_.onComplete())
+      onComplete()
     }
+  }
+
+  private[this] def onComplete() = {
+    status = "complete"
+    players.filter(_.status == "active").foreach { p =>
+      p.status = "win"
+      p.completed = Some(new Date().getTime)
+    }
+    callbacks.foreach(_.onComplete())
   }
 
   def getCompletionReport = BrawlCompletionReport(

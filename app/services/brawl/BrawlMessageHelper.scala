@@ -7,7 +7,9 @@ import models.board.mutation.{ Mutation, UpdateSegment }
 import scala.util.control.NonFatal
 
 trait BrawlMessageHelper { this: BrawlService =>
-  protected[this] def handleBrawlRequest(br: BrawlRequest) = {
+  protected[this] def handleBrawlRequest(br: BrawlRequest) = if (brawl.isComplete) {
+    log.debug("Received [" + utils.Formatter.className(br.message) + "] message from user [" + br.userId + "] after brawl [" + brawl.id + "] is complete.")
+  } else {
     log.debug("Handling [" + utils.Formatter.className(br.message) + "] message from user [" + br.userId + "] for brawl [" + brawl.id + "].")
     val time = utils.DateUtils.now
     try {

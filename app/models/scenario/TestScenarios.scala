@@ -23,32 +23,21 @@ object TestScenarios {
     ps ++ ais
   }
 
+  private def inst(players: Seq[PlayerRecord], totalPlayers: Int, script: String, seed: Int, id: UUID, name: String) = {
+    val all = withAis(players, totalPlayers, script, seed)
+    all.foreach(_.activeGemsCreate())
+    Brawl(id, name, seed, all)
+  }
+
   def newInstance(id: UUID, scenario: String, seed: Int, players: Seq[PlayerRecord]) = scenario match {
-    case "BasicAI" =>
-      val all = withAis(players, 5, "basic", seed)
-      all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "Basic AI", seed, all)
-      brawl
-    case "OneOnOne" =>
-      val all = withAis(players, 2, "basic", seed)
-      all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "1v1 AI", seed, all)
-      brawl
+    case "BasicAI" => inst(players, 5, "basic", seed, id, "Basic AI")
+    case "OneOnOne" => inst(players, 2, "basic", seed, id, "1v1 AI")
+    case "Speedy" => inst(players, 2, "speedy", seed, id, "Speedy AI")
+    case "Spinner" => inst(players, 9, "spinner", seed, id, "Whee!")
+    case "StressTest" => inst(players, 100, "random", seed, id, "Stress Test")
     case "TeamAI" =>
-      val all = withAis(players, 4, "random", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
-      all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "Team AI", seed, all)
-      brawl
-    case "Spinner" =>
-      val all = withAis(players, 9, "spinner", seed).zipWithIndex.map(x => x._1.copy(team = x._2 % 2))
-      all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "Spinning", seed, all)
-      brawl
-    case "StressTest" =>
-      val all = withAis(players, 100, "random", seed)
-      all.foreach(_.activeGemsCreate())
-      val brawl = Brawl(id, "Stress Test", seed, all)
-      brawl
+      val b = inst(players, 4, "random", seed, id, "Team AI")
+      b.copy(players = b.players.zipWithIndex.map(x => x._1.copy(team = x._2 % 2)))
     case "Fixed" =>
       val ps = players.zipWithIndex.map { p =>
         val gs = new FixedGemStream(Seq(

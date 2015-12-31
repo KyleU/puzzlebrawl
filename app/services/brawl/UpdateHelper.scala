@@ -9,7 +9,7 @@ trait UpdateHelper { this: BrawlService =>
   private[this] val schedules = brawl.players.flatMap { p =>
     p.script.map {
       case "basic" => UpdateSchedule(p.id, "basic", 1000, 2000)
-      case "spinner" => UpdateSchedule(p.id, "spinner", 200, 300)
+      case "spinner" => UpdateSchedule(p.id, "spinner", 100, 300)
       case "random" => UpdateSchedule(p.id, "random", 1000, 2000)
       case "simple" => UpdateSchedule(p.id, "simple", 2000, 2000)
       case "speedy" => UpdateSchedule(p.id, "speedy", 50, 100)
@@ -71,7 +71,7 @@ trait UpdateHelper { this: BrawlService =>
   }
 
   private[this] def spinnerMove() = if (Random.nextInt(10) == 0) {
-    ActiveGemsDrop
+    ActiveGemsCounterClockwise
   } else {
     ActiveGemsClockwise
   }
