@@ -7,7 +7,8 @@
       @utils.web.ViewUtils.th("scenario", "Scenario", sortBy)
       @utils.web.ViewUtils.th("status", "Status", sortBy)
       @utils.web.ViewUtils.th("players", "Players", sortBy)
-      @utils.web.ViewUtils.th("gems", "Gems", sortBy)
+      @utils.web.ViewUtils.th("normalGems", "Normal Gems", sortBy)
+      @utils.web.ViewUtils.th("timerGems", "Timer Gems", sortBy)
       @utils.web.ViewUtils.th("moves", "Moves", sortBy)
       @utils.web.ViewUtils.th("started", "Started", sortBy)
       @utils.web.ViewUtils.th("completed", "Completed", sortBy)
@@ -26,7 +27,8 @@
           @Html(s"""<a href="$url"><div title="${player.toString}">${player.toString.substring(0, 8)}</div></a>""")
         }
       }</td>
-      <td>@b.gems</td>
+      <td>@b.normalGems</td>
+      <td>@b.timerGems</td>
       <td>@b.moves</td>
       <td>@b.started.toString("yyyy-MM-dd HH:mm:ss")</td>
       <td>@b.completed.map(_.toString("yyyy-MM-dd HH:mm:ss"))</td>

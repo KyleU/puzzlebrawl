@@ -27,6 +27,7 @@ object BrawlTest {
     TestCrash,
     TestCrashLarge,
     TestCrashTimer,
+    TestCrashTimerComplex,
     TestDrop,
     TestDropFull,
     TestFullTurn,

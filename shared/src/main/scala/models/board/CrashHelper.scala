@@ -59,7 +59,7 @@ trait CrashHelper { this: Board =>
     }
 
     val run = check(gem, gem, x, y)
-    if (run.size > 1) {
+    if (run.count(_._1.timer.isEmpty) > 1) {
       run.map { n =>
         n._1.size -> applyMutation(RemoveGem(n._2, n._3))
       }

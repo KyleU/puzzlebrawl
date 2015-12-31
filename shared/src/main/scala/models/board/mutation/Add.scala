@@ -5,7 +5,7 @@ import models.board.mutation.Mutation.AddGem
 
 object Add {
   def apply(b: Board, m: AddGem) = {
-    b.incrementGemCount()
+    b.incrementGemCount(m.gem.timer.isDefined)
     for (y <- 0 until m.gem.height.getOrElse(1)) {
       for (x <- 0 until m.gem.width.getOrElse(1)) {
         b.at(m.x + x, m.y + y) match {

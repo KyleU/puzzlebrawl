@@ -20,7 +20,8 @@ trait CheatHelper { this: PuzzleBrawl =>
           script = p.script,
           team = p.team,
           score = p.score,
-          gemCount = p.board.getGemCount,
+          normalGemCount = p.board.getNormalGemCount,
+          timerGemCount = p.board.getTimerGemCount,
           moveCount = p.board.getMoveCount
         )
       }

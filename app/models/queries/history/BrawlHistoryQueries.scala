@@ -10,8 +10,7 @@ import org.joda.time.{ LocalDate, LocalDateTime }
 object BrawlHistoryQueries extends BaseQueries[BrawlHistory] {
   override protected val tableName = "brawls"
   override protected val columns = Seq(
-    "id", "seed", "scenario", "status", "players",
-    "gems", "moves", "created", "first_move", "completed", "logged"
+    "id", "seed", "scenario", "status", "players", "normal_gems", "timer_gems", "moves", "created", "first_move", "completed", "logged"
   )
   override protected val searchColumns = Seq("id::text", "seed::text", "scenario", "status", "players::text")
 
@@ -56,17 +55,18 @@ object BrawlHistoryQueries extends BaseQueries[BrawlHistory] {
     val scenario = row.as[String]("scenario")
     val status = row.as[String]("status")
     val players = row.as[Seq[UUID]]("players")
-    val gems = row.as[Seq[Int]]("gems")
+    val normalGems = row.as[Seq[Int]]("normal_gems")
+    val timerGems = row.as[Seq[Int]]("timer_gems")
     val moves = row.as[Seq[Int]]("moves")
     val created = row.as[LocalDateTime]("created")
     val firstMove = row.asOpt[LocalDateTime]("first_move")
     val completed = row.asOpt[LocalDateTime]("completed")
     val logged = row.asOpt[LocalDateTime]("logged")
-    BrawlHistory(id, seed, scenario, status, players, gems, moves, created, firstMove, completed, logged)
+    BrawlHistory(id, seed, scenario, status, players, normalGems, timerGems, moves, created, firstMove, completed, logged)
   }
 
   override protected def toDataSeq(bh: BrawlHistory) = Seq[Any](
     bh.id, bh.seed, bh.scenario, bh.status, bh.players,
-    bh.gems, bh.moves, bh.started, bh.firstMove, bh.completed, bh.logged
+    bh.normalGems, bh.timerGems, bh.moves, bh.started, bh.firstMove, bh.completed, bh.logged
   )
 }

@@ -5,7 +5,8 @@ import models.board.mutation.Mutation._
 import models.gem.{ GemLocation, Gem }
 
 case class Board(key: String, width: Int, height: Int) extends BoardHelper {
-  private[this] var gemCount = 0
+  private[this] var normalGemCount = 0
+  private[this] var timerGemCount = 0
   private[this] var moveCount = 0
   private[this] var firstMoveMade: Option[Long] = None
   private[this] var lastMoveMade: Option[Long] = None
@@ -64,8 +65,13 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
     }
   }
 
-  def getGemCount = gemCount
-  def incrementGemCount() = gemCount += 1
+  def getNormalGemCount = normalGemCount
+  def getTimerGemCount = timerGemCount
+  def incrementGemCount(timer: Boolean) = if (timer) {
+    timerGemCount += 1
+  } else {
+    normalGemCount += 1
+  }
 
   def getMoveCount = moveCount
   def incrementMoveCount(time: Long) = {

@@ -8,5 +8,6 @@ case class PlayerResult(
   script: Option[String],
   team: Int,
   score: Int,
-  gemCount: Int,
+  normalGemCount: Int,
+  timerGemCount: Int,
   moveCount: Int)
