@@ -34,6 +34,11 @@ define([], function () {
     playmat.add(this.scoreLabel);
   };
 
+  PlaymatLabels.prototype.hide = function() {
+    this.nameLabel.visible = false;
+    this.scoreLabel.visible = false;
+  };
+
   PlaymatLabels.prototype.resize = function(xOffset, width, yOffset) {
     this.nameLabel.x = xOffset;
     this.nameLabel.y = yOffset;

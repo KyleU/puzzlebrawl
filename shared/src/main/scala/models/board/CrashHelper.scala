@@ -43,7 +43,7 @@ trait CrashHelper { this: Board =>
     val encountered = scala.collection.mutable.HashSet.empty[Int]
 
     def check(source: Gem, gem: Gem, x: Int, y: Int): Seq[(Gem, Int, Int)] = {
-      if (!encountered.contains(gem.id) && source.timer.isEmpty && (gem.color == source.color || gem.timer.isDefined)) {
+      if (!encountered.contains(gem.id) && source.timer.isEmpty && ((gem.timer.isEmpty && gem.color == source.color) || gem.timer.isDefined)) {
         encountered += gem.id
         def helper(xIdx: Int, yIdx: Int) = at(xIdx, yIdx).map(g => check(gem, g, xIdx, yIdx)).getOrElse(Seq.empty)
         val (startX, startY) = startIndexFor(gem, x, y)

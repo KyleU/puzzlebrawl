@@ -12,9 +12,6 @@ define(['utils/Config'], function (Config) {
 
   var marginPx = 32;
 
-  var selfScale = 1;
-  var othersScale = 0.8;
-
   var PlaymatLayout = function(playmat) {
     this.playmat = playmat;
   };
@@ -41,11 +38,11 @@ define(['utils/Config'], function (Config) {
     var splitPlayers = _.partition(p.players, function(player) { return player.id === selfId; });
 
     if(splitPlayers.length !== 2 || splitPlayers[0].length !== 1) {
-      throw 'Incomplete board definitions';
+      throw 'Incomplete board definitions.';
     }
 
     var self = splitPlayers[0][0];
-    var others = splitPlayers[1];
+    var selfScale = 1;
 
     var xOffset = marginPx;
 
@@ -55,19 +52,11 @@ define(['utils/Config'], function (Config) {
     self.board.y = marginPx;
 
     self.board.scale = { x: selfScale, y: selfScale };
+    xOffset += self.board.width + marginPx;
 
-    xOffset += self.board.width + (Config.tile.size / 4);
-
-    _.each(others, function(player) {
-      player.labels.resize(xOffset, player.board.w * Config.tile.size * othersScale, marginPx + (player.board.h * Config.tile.size * othersScale));
-
-      player.board.x = xOffset;
-      player.board.y = marginPx;
-
-      player.board.scale = { x: othersScale, y: othersScale };
-
-      xOffset += player.board.width + marginPx;
-    });
+    if(splitPlayers[1].length > 0) {
+      xOffset = renderOthers(splitPlayers[1], xOffset);
+    }
 
     p.w = xOffset;
     p.h = (self.board.h + 1) * Config.tile.size;
@@ -76,6 +65,51 @@ define(['utils/Config'], function (Config) {
       this.playmat.resizer.resize();
     }
   };
+
+  function renderOthers(others, originalOffset) {
+    var boardsPerRow;
+    var othersScale;
+
+    if(others.length < 5) {
+      boardsPerRow = others.length;
+      othersScale = 0.8;
+    } else if(others.length < 12) {
+      boardsPerRow = Math.ceil(others.length / 2);
+      othersScale = 0.5;
+    } else {
+      boardsPerRow = Math.ceil(others.length / 4);
+      othersScale = 0.2;
+    }
+
+    var xOffset;
+    var maxOffset = 0;
+
+    _.each(others, function(player, idx) {
+      if(idx % boardsPerRow === 0) {
+        xOffset = originalOffset;
+      }
+
+      if(boardsPerRow > 5) {
+        player.labels.hide();
+      } else {
+        player.labels.resize(xOffset, player.board.w * Config.tile.size * othersScale, marginPx + (player.board.h * Config.tile.size * othersScale));
+      }
+
+      var row = Math.floor(idx / boardsPerRow);
+
+      player.board.x = xOffset;
+      player.board.y = marginPx + (row * (player.board.h + 1) * Config.tile.size * othersScale);
+
+      player.board.scale = { x: othersScale, y: othersScale };
+
+      xOffset += player.board.width + marginPx;
+      if(xOffset > maxOffset) {
+        maxOffset = xOffset;
+      }
+    });
+
+    return maxOffset;
+  }
 
   return PlaymatLayout;
 });
