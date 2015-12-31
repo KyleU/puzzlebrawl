@@ -9,10 +9,11 @@ trait UpdateHelper { this: BrawlService =>
   private[this] val schedules = brawl.players.flatMap { p =>
     p.script.map {
       case "basic" => UpdateSchedule(p.id, "basic", 1000, 2000)
-      case "spinner" => UpdateSchedule(p.id, "spinner", 200, 500)
+      case "spinner" => UpdateSchedule(p.id, "spinner", 200, 300)
       case "random" => UpdateSchedule(p.id, "random", 1000, 2000)
       case "simple" => UpdateSchedule(p.id, "simple", 2000, 2000)
-      case x => throw new IllegalStateException("Unhandled")
+      case "speedy" => UpdateSchedule(p.id, "speedy", 50, 100)
+      case x => throw new IllegalStateException(s"Unhandled schedule [$x].")
     }
   }
 
@@ -38,6 +39,7 @@ trait UpdateHelper { this: BrawlService =>
         case "spinner" => self ! BrawlRequest(s.id, spinnerMove())
         case "random" => self ! BrawlRequest(s.id, randomMove())
         case "simple" => self ! BrawlRequest(s.id, simpleMove())
+        case "speedy" => self ! BrawlRequest(s.id, simpleMove())
         case x => throw new IllegalStateException(s"Unhandled script [$x].")
       }
       schedule(s)

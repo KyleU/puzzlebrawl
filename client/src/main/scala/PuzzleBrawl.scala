@@ -2,7 +2,7 @@ import java.util.UUID
 
 import json.{ BaseSerializers, RequestMessageSerializers }
 import models._
-import models.brawl.{ PlayerResult, Brawl }
+import models.brawl.Brawl
 import models.player.Player
 
 import scala.scalajs.js
@@ -53,28 +53,5 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
 
   override def onLoss(playerId: UUID) = send(PlayerLoss(playerId))
 
-  override def onComplete() = send(getCompletionReport)
-
-  protected[this] def getCompletionReport = {
-    val brawl = activeBrawl.getOrElse(throw new IllegalStateException())
-    BrawlCompletionReport(
-      id = brawl.id,
-      scenario = brawl.scenario,
-      durationMs = 0, // TODO
-      results = brawl.players.map { p =>
-        PlayerResult(
-          id = p.id,
-          name = p.name,
-          script = p.script,
-          team = p.team,
-          score = p.score,
-          normalGemCount = p.board.getNormalGemCount,
-          timerGemCount = p.board.getTimerGemCount,
-          moveCount = p.board.getMoveCount,
-          status = p.status,
-          completed = p.completed
-        )
-      }
-    )
-  }
+  override def onComplete() = send(activeBrawl.getOrElse(throw new IllegalStateException()).getCompletionReport)
 }

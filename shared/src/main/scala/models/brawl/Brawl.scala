@@ -39,10 +39,11 @@ object Brawl {
 
 case class Brawl(
     id: UUID, scenario: String, seed: Int, players: Seq[Player],
-    var status: String = "active", started: Long = new Date().getTime, var completed: Option[Long] = None) {
+    var status: String = "active", started: Long = new Date().getTime, var completed: Option[Long] = None
+) extends CompletionHelper {
   private[this] val rng = new Random(seed)
 
-  private[this] var callbacks: Option[Brawl.Callbacks] = None
+  protected[this] var callbacks: Option[Brawl.Callbacks] = None
   def setCallbacks(c: Brawl.Callbacks) = callbacks = Some(c)
 
   val playersById = players.map(p => p.id -> p).toMap
@@ -57,6 +58,8 @@ case class Brawl(
       }
     }
   }
+
+  def elapsedMs = (completed.getOrElse(new Date().getTime) - started).toInt
 
   def applyCharge(id: UUID, deltas: Seq[Double]) = {
     val player = playersById(id)
@@ -78,24 +81,6 @@ case class Brawl(
     player.target match {
       case Some(tgtId) => pattern.applyCharge(remainingDeltas, playersById(tgtId), rng)
       case None => // TODO No op for now
-    }
-  }
-
-  def elapsedMs = (completed.getOrElse(new Date().getTime) - started).toInt
-
-  def onLoss(playerId: UUID) = {
-    val p = playersById(playerId)
-    p.status = "loss"
-    p.completed = Some(new Date().getTime)
-    callbacks.foreach(_.onLoss(playerId))
-    val teams = players.groupBy(_.team).map(x => x._1 -> x._2.exists(_.status == "active"))
-    if (teams.count(_._2) < 2) {
-      status = "complete"
-      players.filter(_.status == "active").foreach { p =>
-        p.status = "win"
-        p.completed = Some(new Date().getTime)
-      }
-      callbacks.foreach(_.onComplete())
     }
   }
 }
