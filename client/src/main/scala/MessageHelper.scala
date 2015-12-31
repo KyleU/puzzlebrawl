@@ -64,7 +64,7 @@ trait MessageHelper { this: PuzzleBrawl =>
   }
 
   protected[this] def handleCheat(key: String) = key match {
-    case "victory" => send(getCompletionReport)
+    case "victory" => send(activeBrawl.getOrElse(throw new IllegalStateException()).getCompletionReport)
     case _ => throw new IllegalStateException(s"Unknown cheat [$key].")
   }
 }

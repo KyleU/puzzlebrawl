@@ -79,7 +79,7 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   }
 
   private[this] def handleCheat(key: String) = key match {
-    case "victory" => sender() ! getCompletionReport
+    case "victory" => sender() ! brawl.getCompletionReport
     case _ => log.error(s"Unknown cheat [$key].")
   }
 }
