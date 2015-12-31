@@ -22,5 +22,9 @@ class TestWild(id: UUID, self: UUID) extends BrawlTest(id, self) {
     goal.score = 400
   }
 
-  override def run() = test.board.processWilds(test)
+  override def run() = {
+    val msgs = test.board.processWilds()
+    test.score += msgs.flatMap(_.scoreDelta).sum
+    msgs
+  }
 }

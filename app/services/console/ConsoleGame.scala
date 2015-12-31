@@ -24,7 +24,7 @@ class ConsoleGame() {
       player.board.applyMutation(AddGem(player.gemStream.next(), x, player.board.height - 1))
       player.board.drop(x, player.board.height - 1)
     }
-    player.board.fullTurn(player)
+    player.board.fullTurn()
     player.activeGemsCreate()
   }
 

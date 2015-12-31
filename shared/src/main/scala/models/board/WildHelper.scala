@@ -7,7 +7,7 @@ import models.gem.Color
 import models.player.Player
 
 trait WildHelper { this: Board =>
-  def processWilds(player: Player) = {
+  def processWilds() = {
     val ret = mapGems { (gem, x, y) =>
       if (gem.color == Color.Wild) {
         at(x, y - 1) match {
@@ -34,7 +34,6 @@ trait WildHelper { this: Board =>
         } else {
           (r.length * Constants.Charging.wildPerGemCharge, r.length * Constants.Scoring.wildPerGemScore)
         }
-        player.score += scoreDelta
         Some(UpdateSegment("wild", r, charge = Some(charge), scoreDelta = Some(scoreDelta)))
       }
     }

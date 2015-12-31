@@ -29,6 +29,8 @@ class TestActiveGemsRotate(id: UUID, self: UUID) extends BrawlTest(id, self) {
     (0 until 8).foreach(x => test.activeGemsStep())
     test.activeGemsLeft()
     test.activeGemsDrop()
-    test.board.fullTurn(test)
+    val msgs = test.board.fullTurn()
+    test.score += msgs.flatMap(_.scoreDelta).sum
+    msgs
   }
 }
