@@ -57,9 +57,7 @@ trait NetworkHelper { this: PuzzleBrawl =>
 
     activeBrawl match {
       case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
-      case None => if (this.pendingStart) {
-        start()
-      }
+      case None => if (this.pendingStart) { start() }
     }
   }
 

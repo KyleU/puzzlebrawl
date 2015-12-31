@@ -8,12 +8,14 @@ import utils.DateUtils
 import scala.util.control.NonFatal
 
 trait BrawlMessageHelper { this: BrawlService =>
-
   protected[this] def handleBrawlRequest(br: BrawlRequest) = {
     log.debug("Handling [" + br.message.getClass.getSimpleName.stripSuffix("$") + "] message from user [" + br.userId + "] for brawl [" + brawl.id + "].")
     try {
       val time = DateUtils.now
-      brawlMessages.map(_ += ((br.message, br.userId, time)))
+      brawlMessageCount += 1
+      val msg = (br.message, br.userId, time)
+      lastBrawlMessage = Some(msg)
+      brawlMessages.map(_ += msg)
       val player = brawl.playersById(br.userId)
 
       def sendMove(m: Mutation, key: String = "active-move") = {

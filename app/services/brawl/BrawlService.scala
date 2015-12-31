@@ -29,6 +29,8 @@ case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], 
   protected[this] val playersById = players.map(x => x.userId -> x).toMap
   protected[this] val observerConnections = collection.mutable.ArrayBuffer.empty[(PlayerRecord, Option[UUID])]
 
+  protected[this] var brawlMessageCount = 0
+  protected[this] var lastBrawlMessage: Option[(BrawlMessage, UUID, LocalDateTime)] = None
   protected[this] val brawlMessages = if (BrawlService.debug) {
     Some(collection.mutable.ArrayBuffer.empty[(BrawlMessage, UUID, LocalDateTime)])
   } else {

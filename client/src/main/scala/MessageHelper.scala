@@ -14,9 +14,7 @@ trait MessageHelper { this: PuzzleBrawl =>
       case "GetVersion" => send(VersionResponse("0.0"))
       case "Ping" => send(Pong(JsonUtils.getLong(v.timestamp)))
       case "DebugRequest" => v.data.toString match {
-        case "sync" =>
-          val json = BrawlSerializers.write(activeBrawl.getOrElse(throw new IllegalStateException()))
-          send(DebugResponse("sync", BaseSerializers.write(json)))
+        case "sync" => send(DebugResponse("sync", BaseSerializers.write(BrawlSerializers.write(brawl))))
         case x if x.startsWith("cheat-") => handleCheat(x.stripPrefix("cheat-"))
         case _ => throw new IllegalArgumentException(s"Unhandled debug request [${v.data.toString}].")
       }
@@ -39,7 +37,7 @@ trait MessageHelper { this: PuzzleBrawl =>
         send(PlayerUpdate(p.id, Seq(UpdateSegment("active-step", Seq(m)))))
       })
       case "ActiveGemsDrop" => activePlayer.foreach { p =>
-        send(PlayerUpdate(p.id, p.dropActiveFullTurn(activeBrawl.getOrElse(throw new IllegalStateException()))))
+        send(PlayerUpdate(p.id, p.dropActiveFullTurn(brawl)))
       }
 
       case "ResignBrawl" => throw new IllegalStateException("TODO")
@@ -64,7 +62,7 @@ trait MessageHelper { this: PuzzleBrawl =>
   }
 
   protected[this] def handleCheat(key: String) = key match {
-    case "victory" => send(activeBrawl.getOrElse(throw new IllegalStateException()).getCompletionReport)
+    case "victory" => send(brawl.getCompletionReport)
     case _ => throw new IllegalStateException(s"Unknown cheat [$key].")
   }
 }

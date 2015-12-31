@@ -17,6 +17,7 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
 
   protected[this] val userId = UUID.randomUUID // TODO
   protected[this] var activeBrawl: Option[Brawl] = None
+  protected[this] def brawl = activeBrawl.getOrElse(throw new IllegalStateException("No active brawl."))
   protected[this] var activePlayer: Option[Player] = None
 
   protected[this] var pendingStart = false
@@ -53,5 +54,5 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
 
   override def onLoss(playerId: UUID) = send(PlayerLoss(playerId))
 
-  override def onComplete() = send(activeBrawl.getOrElse(throw new IllegalStateException()).getCompletionReport)
+  override def onComplete() = send(brawl.getCompletionReport)
 }

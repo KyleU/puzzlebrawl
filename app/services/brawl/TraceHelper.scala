@@ -29,8 +29,8 @@ trait TraceHelper { this: BrawlService =>
           case None => s"${x._1.toString} (Disconnected)"
         }
       }.mkString("<br/>\n"),
-      "messageCount" -> brawlMessages.size,
-      "lastMessage" -> brawlMessages.lastOption.map(_.toString()).getOrElse("None")
+      "messageCount" -> brawlMessageCount,
+      "lastMessage" -> lastBrawlMessage.map(x => x._2 + " @ " + x._3 + ": [" + x._1 + "]").getOrElse("None")
     ))
     sender() ! ret
   }
