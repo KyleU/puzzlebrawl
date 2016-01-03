@@ -53,32 +53,49 @@ define(['board/BoardGems'], function (BoardGems) {
     }
   }
 
-  function applyMutations(board, segments, scoreCallback, idx) {
-    if(segments.length > 0) {
-      if(debug) {
-        var count = _.reduce(segments.slice(1), function(i, c) { return i + c.mutations.length; }, 0);
-        var additional;
-        if(segments.length === 1) {
-          additional = ', no work remains.';
-        } else {
-          additional = ', leaving [' + (segments.length - 1) + '] segments remaining, containing [' + count + '] mutations.';
-        }
-        console.log('Processing one segment of length [' + segments[0].mutations.length + ']' + additional);
+  var pendingSegments = {};
+
+  function applyMutations(board, segments, scoreCallback) {
+    if(pendingSegments[board.owner] === undefined) {
+      pendingSegments[board.owner] = [];
+    }
+
+    pendingSegments[board.owner] = pendingSegments[board.owner].concat(segments);
+
+    applyPendingSegments(board, scoreCallback);
+  }
+
+  function applyPendingSegments(board, scoreCallback, idx) {
+    var pending = pendingSegments[board.owner];
+
+    if(debug) {
+      var count = _.reduce(pending.slice(1), function(i, c) { return i + c.mutations.length; }, 0);
+      var additional;
+      if(pending.length === 1) {
+        additional = ', no work remains.';
+      } else {
+        additional = ', leaving [' + (pending.length - 1) + '] segments remaining, containing [' + count + '] mutations.';
       }
-      if(board.owner === board.playmat.self) {
-        board.game.isTweening = true;
+      console.log('Processing one segment of length [' + pending[0].mutations.length + '] for [' + board.owner + ']' + additional);
+    }
+
+    if(pending.length > 0) {
+      var segment = pending[0];
+
+      board.isTweening = true;
+      applySegment(board, segment, idx, scoreCallback);
+      if(pending.length === 1) {
+        board.isTweening = false;
       }
-      var s = segments[0];
-      applySegment(board, s, idx, scoreCallback);
-      if(segments.length === 1 && board.owner === board.playmat.self) {
-        board.game.isTweening = false;
-      }
-      if(segments.length > 1) {
-        var f = function() {
-          applyMutations(board, segments.splice(1), scoreCallback, idx + 1);
-        };
-        setTimeout(f, 200);
-      }
+
+      pendingSegments[board.owner] = pending.splice(1);
+    }
+
+    if(pendingSegments[board.owner].length > 0) {
+      var f = function() {
+        applyPendingSegments(board, scoreCallback, idx + 1);
+      };
+      setTimeout(f, 200);
     }
   }
 

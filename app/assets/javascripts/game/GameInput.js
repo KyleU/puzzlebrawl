@@ -18,7 +18,9 @@ define([], function () {
   }
 
   GameInput.prototype.onInput = function(t, param) {
-    if(!this.game.isTweening) {
+    if(this.game.playmat !== undefined && this.game.playmat.selfBoard.isTweening) {
+      console.log('Suppressed input [' + t + '] while tweening.');
+    } else {
       switch(t) {
         case 'active-left':
           this.game.send('ActiveGemsLeft', {});
@@ -57,8 +59,6 @@ define([], function () {
           console.log('Unhandled input [' + t + '].');
           break;
       }
-    } else {
-      console.log('Suppressed input [' + t + '] while tweening.');
     }
   };
 

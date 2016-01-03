@@ -37,6 +37,10 @@ define([
       var board = new Board(p.id, p.board, playmat);
       playmat.add(board);
 
+      if(p.id === playmat.self) {
+        playmat.selfBoard = board;
+      }
+
       var score = p.score;
       if(score === undefined) {
         score = 0;
