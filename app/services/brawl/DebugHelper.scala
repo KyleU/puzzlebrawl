@@ -21,6 +21,11 @@ trait DebugHelper { this: BrawlService =>
     None
   }
 
+  protected[this] def logBoards() = brawl.players.foreach { p =>
+    val board = TextGemPattern.crudeRenderingOf(p.board)
+    log.info(s"Board for player [${p.id}]:\n  " + board.mkString("\n  "))
+  }
+
   protected[this] def logBrawlMessageReceive(message: BrawlMessage, playerId: UUID, occurred: LocalDateTime) = {
     brawlMessageCount += 1
     lastBrawlMessages(playerId) = Some(message -> occurred)

@@ -14,6 +14,7 @@ trait RequestHelper { this: BrawlService =>
   }
 
   private[this] def handleDebugRequest(data: String) = data match {
+    case "dump" => logBoards()
     case "sync" => sender() ! DebugResponse("sync", Json.prettyPrint(Json.toJson(brawl)))
     case x if x.startsWith("cheat-") => handleCheat(x.stripPrefix("cheat-"))
     case _ => log.warn(s"Unhandled debug request [$data] for brawl [$id].")

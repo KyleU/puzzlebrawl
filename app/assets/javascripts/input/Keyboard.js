@@ -34,7 +34,8 @@ define([], function () {
 
     g.input.keyboard.addKey(Phaser.Keyboard.X).onDown.add(input('sandbox'));
     g.input.keyboard.addKey(Phaser.Keyboard.QUESTION_MARK).onDown.add(input('toggle-debug'));
-    g.input.keyboard.addKey(Phaser.Keyboard.BACKWARD_SLASH).onDown.add(input('debug', 'sync'));
+    g.input.keyboard.addKey(Phaser.Keyboard.EQUALS).onDown.add(input('debug', 'sync'));
+    g.input.keyboard.addKey(Phaser.Keyboard.BACKWARD_SLASH).onDown.add(input('debug', 'dump'));
     g.input.keyboard.addKey(Phaser.Keyboard.V).onDown.add(input('debug', 'cheat-victory'));
   };
 
