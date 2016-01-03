@@ -3,9 +3,10 @@ package services.history
 import java.util.UUID
 
 import com.github.mauricio.async.db.Connection
+import models.queries.auth.UserQueries
 import models.queries.history.BrawlHistoryQueries
 import models.history.BrawlHistory
-import org.joda.time.LocalDateTime
+import org.joda.time.{ LocalDate, LocalDateTime }
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.database.Database
 
@@ -22,6 +23,14 @@ object BrawlHistoryService {
   } yield count -> list
 
   def getCountByUser(id: UUID) = Database.query(BrawlHistoryQueries.getBrawlHistoryCountForUser(id))
+
+  def getWins(d: LocalDate) = Database.query(BrawlHistoryQueries.GetBrawlHistoriesByDayAndStatus(d, "win")).flatMap { histories =>
+    Future.sequence(histories.map { h =>
+      Future.sequence(h.players.map { p =>
+        Database.query(UserQueries.getById(Seq(p))).map(_.getOrElse(throw new IllegalStateException()))
+      }).map(u => h -> u)
+    })
+  }
 
   def insert(bh: BrawlHistory) = Database.execute(BrawlHistoryQueries.insert(bh)).map(ok => true)
 

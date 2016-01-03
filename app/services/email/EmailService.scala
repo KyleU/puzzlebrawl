@@ -1,6 +1,7 @@
 package services.email
 
 import models.audit.{ DailyMetric, UserFeedback }
+import models.history.BrawlHistory
 import models.user.User
 import org.joda.time.LocalDate
 import play.api.i18n.Messages
@@ -32,8 +33,9 @@ class EmailService @javax.inject.Inject() (mailerClient: MailerClient, config: C
     color: String,
     metrics: Map[DailyMetric.Metric, Long],
     totals: Map[DailyMetric.Metric, Long],
+    wins: Seq[(BrawlHistory, Seq[User])],
     tableCounts: Seq[(String, Long)]) = {
-    val html = views.html.admin.report.emailReport(d, color, metrics, totals, tableCounts).toString()
+    val html = views.html.admin.report.emailReport(d, color, metrics, totals, wins, tableCounts).toString()
     sendMessage(adminFrom, config.adminEmail, s"${Config.projectName} report for [$d]", adminTextMessage, html)
     DailyMetricService.setMetric(d, DailyMetric.ReportSent, 1L)
   }

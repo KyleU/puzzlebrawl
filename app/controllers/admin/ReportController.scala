@@ -8,6 +8,7 @@ import org.joda.time.LocalDate
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import services.audit.DailyMetricService
 import services.database.Database
+import services.history.BrawlHistoryService
 import utils.{ ApplicationContext, DateUtils }
 
 import scala.concurrent.Future
@@ -19,8 +20,9 @@ class ReportController @javax.inject.Inject() (override val ctx: ApplicationCont
       tables <- Database.query(ReportQueries.ListTables)
       metrics <- DailyMetricService.recalculateMetrics(d)
       totals <- DailyMetricService.getTotals(d)
+      wins <- BrawlHistoryService.getWins(d)
       counts <- Future.sequence(tables.map(table => Database.query(ReportQueries.CountTable(table))))
-    } yield Ok(views.html.admin.report.emailReport(d, request.identity.preferences.color, metrics._2._1, totals, counts))
+    } yield Ok(views.html.admin.report.emailReport(d, request.identity.preferences.color, metrics._2._1, totals, wins, counts))
   }
 
   def trend() = withAdminSession("trend") { implicit request =>

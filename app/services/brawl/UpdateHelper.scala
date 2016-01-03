@@ -71,7 +71,7 @@ trait UpdateHelper { this: BrawlService =>
   }
 
   private[this] def spinnerMove() = if (Random.nextInt(10) == 0) {
-    ActiveGemsCounterClockwise
+    ActiveGemsDrop
   } else {
     ActiveGemsClockwise
   }

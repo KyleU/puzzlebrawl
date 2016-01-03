@@ -27,8 +27,7 @@ object Scenario {
     "AllBlue" -> "All Blue",
     "AllYellow" -> "All Yellow",
     "AllRedBlue" -> "All Red and Blue",
-    "AllCrash" -> "All Crash",
-    "AllWild" -> "All Wild"
+    "AllCrash" -> "All Crash"
   )
 
   def newInstance(id: UUID, scenario: String, seed: Int, players: Seq[PlayerRecord]) = {

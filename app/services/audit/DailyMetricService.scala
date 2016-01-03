@@ -61,6 +61,9 @@ object DailyMetricService {
   }
 
   private[this] def getSql(metric: Metric) = metric match {
+    case BrawlsStarted => Some("select count(*) as c from brawls where created >= ? and created < ?")
+    case BrawlsWon => Some("select count(*) as c from brawls where created >= ? and created < ? and status = 'win'")
+    case BrawlsAdandoned => Some("select count(*) as c from brawls where created >= ? and created < ? and status = 'abandoned'")
     case Signups => Some("select count(*) as c from users where created >= ? and created < ?")
     case Requests => Some("select count(*) as c from requests where started >= ? and started < ?")
     case Feedbacks => Some("select count(*) as c from user_feedback where occurred >= ? and occurred < ?")
@@ -73,7 +76,7 @@ object DailyMetricService {
     val lastLine = result.split("\n").last
     val endIndex = lastLine.indexOf('%')
     val startIndex = lastLine.indexOf(' ', endIndex - 5)
-    val ret = lastLine.substring(startIndex, endIndex)
-    ret.trim.toLong
+    val ret = 100 - lastLine.substring(startIndex, endIndex).trim.toLong
+    ret
   }
 }

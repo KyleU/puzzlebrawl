@@ -10,7 +10,6 @@ object MockGemStreams {
     case "Yellow" => allYellow()
     case "Red/Blue" => allRedBlue()
     case "Crash" => allCrash()
-    case "Wild" => allWild()
     case _ => throw new IllegalArgumentException(s"Invalid mock gem stream [$s].")
   }
 
@@ -75,10 +74,5 @@ object MockGemStreams {
     seed = 0,
     gemAdjustWild = Some(0.0),
     gemAdjustCrash = Some(10.0)
-  )
-
-  private[this] def allWild() = GemStream(
-    seed = 0,
-    gemAdjustWild = Some(100.0)
   )
 }

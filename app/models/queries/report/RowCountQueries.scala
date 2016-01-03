@@ -8,7 +8,7 @@ object RowCountQueries {
     override def sql = BaseQueries.trim("""
       select t.table_name as tn
       from information_schema.tables as t
-      where table_catalog = 'solitaire' and table_schema = 'public' and table_type = 'BASE TABLE'
+      where table_catalog = 'puzzlebrawl' and table_schema = 'public' and table_type = 'BASE TABLE'
       order by table_name
     """)
     override def reduce(rows: Iterator[Row]) = rows.map(row => row.as[String]("tn")).toList
