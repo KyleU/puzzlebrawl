@@ -2,11 +2,14 @@ import java.util.UUID
 
 import json.{ BaseSerializers, RequestMessageSerializers }
 import models._
+import models.board.mutation.Mutation.TargetChanged
+import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
 import models.player.Player
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
+import scala.util.Random
 
 @JSExport
 class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks {
@@ -52,7 +55,16 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
   @JSExport
   def receive(c: String, v: js.Dynamic): Unit = messageReceived(c, v)
 
-  override def onLoss(playerId: UUID) = send(PlayerLoss(playerId))
+  override def onLoss(playerId: UUID) = {
+    send(PlayerLoss(playerId))
+    brawl.players.filter(_.target.contains(playerId)).foreach { p =>
+      val validPlayers = Random.shuffle(brawl.players.filter(player => player.isActive && player.id != p.id).map(_.id))
+      p.target = validPlayers.headOption
+      p.target.foreach { tgt =>
+        send(PlayerUpdate(p.id, Seq(UpdateSegment("target", Seq(TargetChanged(tgt))))))
+      }
+    }
+  }
 
   override def onComplete() = send(brawl.getCompletionReport)
 }

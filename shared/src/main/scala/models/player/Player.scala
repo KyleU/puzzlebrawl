@@ -18,4 +18,8 @@ case class Player(
   var pendingGems: Seq[GemLocation] = Seq.empty,
   var target: Option[UUID] = None,
   var status: String = "active",
-  var completed: Option[Long] = None) extends ActiveGemHelper with TurnHelper
+  var completed: Option[Long] = None) extends ActiveGemHelper with TurnHelper {
+
+  def isActive = status == "active"
+  def isComplete = completed.isDefined
+}

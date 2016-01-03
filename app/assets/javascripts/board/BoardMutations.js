@@ -59,9 +59,7 @@ define(['board/BoardGems'], function (BoardGems) {
     if(pendingSegments[board.owner] === undefined) {
       pendingSegments[board.owner] = [];
     }
-
     pendingSegments[board.owner] = pendingSegments[board.owner].concat(segments);
-
     applyPendingSegments(board, scoreCallback);
   }
 

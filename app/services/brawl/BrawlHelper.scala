@@ -2,10 +2,14 @@ package services.brawl
 
 import java.util.UUID
 
+import models.board.mutation.Mutation.TargetChanged
+import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
-import models.{ MessageSet, PlayerLoss, ResponseMessage }
+import models.{ PlayerUpdate, MessageSet, PlayerLoss, ResponseMessage }
 import utils.Logging
 import utils.metrics.InstrumentedActor
+
+import scala.util.Random
 
 trait BrawlHelper
     extends InstrumentedActor
@@ -35,6 +39,15 @@ trait BrawlHelper
     observerConnections.foreach(_._1.connectionActor.foreach(_ ! message))
   }
 
-  override def onLoss(playerId: UUID) = sendToAll(PlayerLoss(playerId))
+  override def onLoss(playerId: UUID) = {
+    sendToAll(PlayerLoss(playerId))
+    brawl.players.filter(_.target.contains(playerId)).foreach { p =>
+      val validPlayers = Random.shuffle(brawl.players.filter(player => player.isActive && player.id != p.id).map(_.id))
+      p.target = validPlayers.headOption
+      p.target.foreach { tgt =>
+        sendToAll(PlayerUpdate(p.id, Seq(UpdateSegment("target", Seq(TargetChanged(tgt))))))
+      }
+    }
+  }
   override def onComplete() = sendToAll(brawl.getCompletionReport)
 }
