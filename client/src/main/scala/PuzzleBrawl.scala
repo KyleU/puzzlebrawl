@@ -15,7 +15,7 @@ import scala.util.Random
 class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks {
   lazy val scenario = {
     val hash = org.scalajs.dom.document.location.hash
-    if (Option(hash).isEmpty || hash.isEmpty) { "Normal" } else { hash.stripPrefix("#") }
+    if (Option(hash).isEmpty || hash.isEmpty) { "normal" } else { hash.stripPrefix("#") }
   }
 
   protected[this] val userId = UUID.randomUUID // TODO

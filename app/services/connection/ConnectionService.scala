@@ -23,6 +23,7 @@ class ConnectionService(val id: UUID = UUID.randomUUID, val supervisor: ActorRef
 
   override def preStart() = {
     supervisor ! ConnectionStarted(user, id, self)
+    out ! "OK" // TODO Send menu
   }
 
   override def receiveRequest = {

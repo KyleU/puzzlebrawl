@@ -11,23 +11,23 @@ import models.user.PlayerRecord
 
 object Scenario {
   def all = Seq(
-    "Testbed" -> "Testbed",
-    "Offline" -> "Offline",
-    "OneOnOne" -> "1v1 AI Test",
-    "BasicAI" -> "Basic AI Test",
-    "TeamAI" -> "Team AI Test",
-    "Speedy" -> "Crazy Fast AI",
-    "Spinner" -> "Spinning AI",
-    "StressTest" -> "Stress Test",
-    "Multiplayer" -> "Multiplayer Test",
-    "EightWayBrawl" -> "Eight Player Multiplayer",
-    "Fixed" -> "Fixed Gem Stream",
-    "AllRed" -> "All Red",
-    "AllGreen" -> "All Green",
-    "AllBlue" -> "All Blue",
-    "AllYellow" -> "All Yellow",
-    "AllRedBlue" -> "All Red and Blue",
-    "AllCrash" -> "All Crash"
+    "testbed" -> "Testbed",
+    "offline" -> "Offline",
+    "one-on-one" -> "1v1 AI Test",
+    "basic-ai" -> "Basic AI Test",
+    "team-ai" -> "Team AI Test",
+    "speedy" -> "Crazy Fast AI",
+    "spinner" -> "Spinning AI",
+    "stress-test" -> "Stress Test",
+    "multiplayer" -> "Multiplayer Test",
+    "eight-way-brawl" -> "Eight Player Multiplayer",
+    "fixed" -> "Fixed Gem Stream",
+    "stream-red" -> "All Red",
+    "stream-green" -> "All Green",
+    "stream-blue" -> "All Blue",
+    "stream-yellow" -> "All Yellow",
+    "stream-red-blue" -> "All Red and Blue",
+    "stream-crash" -> "All Crash"
   )
 
   def newInstance(id: UUID, scenario: String, seed: Int, players: Seq[PlayerRecord]) = {
@@ -37,7 +37,7 @@ object Scenario {
     }
 
     scenario match {
-      case "Normal" | "Multiplayer" | "EightWayBrawl" =>
+      case "normal" | "multiplayer" | "eight-way-brawl" =>
         val ps = players.zipWithIndex.map { p =>
           Player(p._1.userId, p._1.name, p._2, Board(p._1.name, Constants.Board.defaultWidth, Constants.Board.defaultHeight), GemStream(seed))
         }

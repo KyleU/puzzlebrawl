@@ -4,12 +4,12 @@ import models.gem.GemStream
 
 object MockGemStreams {
   def forString(s: String) = s match {
-    case "Red" => allRed()
-    case "Green" => allGreen()
-    case "Blue" => allBlue()
-    case "Yellow" => allYellow()
-    case "Red/Blue" => allRedBlue()
-    case "Crash" => allCrash()
+    case "red" => allRed()
+    case "green" => allGreen()
+    case "blue" => allBlue()
+    case "yellow" => allYellow()
+    case "red-blue" => allRedBlue()
+    case "crash" => allCrash()
     case _ => throw new IllegalArgumentException(s"Invalid mock gem stream [$s].")
   }
 

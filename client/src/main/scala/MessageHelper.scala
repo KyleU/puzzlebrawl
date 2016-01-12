@@ -49,11 +49,11 @@ trait MessageHelper { this: PuzzleBrawl =>
   }
 
   protected[this] def handleStartBrawl(scenario: String) = {
-    if (scenario != "Offline") {
+    if (scenario != "offline") {
       throw new IllegalStateException(s"Can't handle scenario [$scenario].")
     }
     val players = Seq(userId -> "Offline User")
-    val brawl = Brawl.blank(UUID.randomUUID, "Offline", players = players)
+    val brawl = Brawl.blank(UUID.randomUUID, "offline", players = players)
     brawl.setCallbacks(this)
     brawl.players.foreach(_.activeGemsCreate())
     activeBrawl = Some(brawl)

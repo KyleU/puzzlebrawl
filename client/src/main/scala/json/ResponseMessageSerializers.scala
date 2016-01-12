@@ -21,6 +21,7 @@ object ResponseMessageSerializers {
       }
       val ret: ResponseMessage = json.value.find(_._1 == "v").getOrElse(throw new IllegalStateException())._2 match {
         case o: Js.Obj => c match {
+          case "ServerError" => readJs[ServerError](o)
           case "VersionResponse" => readJs[VersionResponse](o)
           case "Pong" => readJs[Pong](o)
           case "MessageSet" => readJs[MessageSet](o)
@@ -28,7 +29,6 @@ object ResponseMessageSerializers {
           case "PlayerUpdate" => readJs[PlayerUpdate](o)
           case "PlayerLoss" => readJs[PlayerLoss](o)
           case "BrawlCompletionReport" => readJs[BrawlCompletionReport](o)
-          case "ServerError" => readJs[ServerError](o)
           case _ => throw new IllegalStateException()
         }
         case _ => throw new IllegalStateException()
@@ -39,15 +39,14 @@ object ResponseMessageSerializers {
   private implicit val responseMessageWriter: Writer[ResponseMessage] = Writer[ResponseMessage] {
     case rm =>
       val jsVal = rm match {
+        case se: ServerError => writeJs(se)
         case vr: VersionResponse => writeJs(vr)
         case p: Pong => writeJs(p)
-        case ms: MessageSet => writeJs(ms)
         case bj: BrawlJoined => writeJs(bj)
         case pu: PlayerUpdate => writeJs(pu)
         case pl: PlayerLoss => writeJs(pl)
         case bcr: BrawlCompletionReport => writeJs(bcr)
-        case se: ServerError => writeJs(se)
-
+        case ms: MessageSet => writeJs(ms)
         case _ => throw new IllegalStateException(s"Invalid Message [${rm.getClass.getName}].")
       }
       val jsArray = jsVal match { case arr: Js.Arr => arr; case _ => throw new IllegalArgumentException(jsVal.toString) }

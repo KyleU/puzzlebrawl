@@ -26,7 +26,7 @@ define(['state/GameState', 'state/LoadingScreen'], function (GameState, LoadingS
 
     var g = this.game;
     var resizeCallback = function() {
-      var w = window.innerWidth > 2000 ? 2000 : window.innerWidth;
+      var w = window.innerWidth;// > 2000 ? 2000 : window.innerWidth;
       g.scale.setGameSize(w, window.innerHeight);
       g.state.getCurrentState().resize();
     };

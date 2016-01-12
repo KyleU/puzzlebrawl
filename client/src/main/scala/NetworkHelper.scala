@@ -10,8 +10,8 @@ trait NetworkHelper { this: PuzzleBrawl =>
   val connectionEl = org.scalajs.dom.document.getElementById("status-connection")
 
   lazy val networkStatus = scenario match {
-    case "Offline" => "offline"
-    case "Normal" => "proxy"
+    case "offline" => "offline"
+    case "normal" => "proxy"
     case _ => "proxy" //"blend"
   }
 

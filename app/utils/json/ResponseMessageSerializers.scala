@@ -5,11 +5,13 @@ import play.api.libs.json._
 
 import utils.json.BrawlSerializers.{ brawlWrites, gemLocationWrites, playerResultWrites }
 import utils.json.MutationSerializers.{ mutationWrites, updateSegmentWrites }
+import services.ui.MenuService.menuEntryWrites
 
 object ResponseMessageSerializers {
   private[this] val serverErrorWrites = Json.writes[ServerError]
-  private[this] val pongWrites = Json.writes[Pong]
   private[this] val versionResponseWrites = Json.writes[VersionResponse]
+  private[this] val initialStateWrites = Json.writes[InitialState]
+  private[this] val pongWrites = Json.writes[Pong]
   private[this] val debugResponseWrites = Json.writes[DebugResponse]
   private[this] val disconnectedWrites = Json.writes[Disconnected]
 
@@ -24,6 +26,8 @@ object ResponseMessageSerializers {
       case se: ServerError => serverErrorWrites.writes(se)
       case p: Pong => pongWrites.writes(p)
       case vr: VersionResponse => versionResponseWrites.writes(vr)
+
+      case is: InitialState => initialStateWrites.writes(is)
 
       case SendTrace => JsObject(Nil)
       case dr: DebugResponse => debugResponseWrites.writes(dr)

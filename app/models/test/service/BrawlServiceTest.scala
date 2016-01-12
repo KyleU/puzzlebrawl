@@ -21,7 +21,7 @@ object BrawlServiceTest extends Logging {
     val conn = system.actorOf(ConnectionService.props(Some(connId), ctx.supervisor, User.mock, testProbe.ref))
     val playerRecords = Seq(PlayerRecord(User.mock.id, "Test User", Some(connId), Some(conn)))
 
-    system.actorOf(BrawlService.props(UUID.randomUUID, "Normal", playerRecords, 0, s => {}))
+    system.actorOf(BrawlService.props(UUID.randomUUID, "normal", playerRecords, 0, s => {}))
 
     testProbe.expectMsgClass(classOf[BrawlJoined])
 
