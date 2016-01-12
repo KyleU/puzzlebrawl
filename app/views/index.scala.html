@@ -18,7 +18,7 @@
         <div class="jumbotron">
           <h1>@Messages("index.welcome")</h1>
           <p>@Messages("index.about")</p>
-          <p><a class="btn btn-primary btn-lg" href="@routes.GameController.play()" role="button">@Messages("index.play.now")</a></p>
+          <p><a class="btn btn-primary btn-lg" href="@routes.BrawlController.play()" role="button">@Messages("index.play.now")</a></p>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
           <div class="panel-body">
             <ul>
             @for(scenario <- models.scenario.Scenario.all) {
-              <li><a href="@routes.GameController.play()#@scenario._1">@scenario._2</a></li>
+              <li><a href="@routes.BrawlController.play()#@scenario._1">@scenario._2</a></li>
             }
             </ul>
           </div>
@@ -66,7 +66,7 @@
           <div class="panel-body">
             <ul>
             @for(t <- models.test.brawl.BrawlTest.all) {
-              <li><a href="@routes.GameController.play()#Test@t.testName">@t.testName</a></li>
+              <li><a href="@routes.BrawlController.play()#Test@t.testName">@t.testName</a></li>
             }
             </ul>
           </div>

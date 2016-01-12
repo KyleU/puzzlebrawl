@@ -7,7 +7,6 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Explore <span class="caret"></span></a>
     <ul class="dropdown-menu" role="menu">
       <li><a href="@controllers.admin.routes.LogController.list()">Logs</a></li>
-      <li><a href="@controllers.admin.routes.FeedbackController.feedbackList()">Feedback</a></li>
       <li><a href="@controllers.admin.routes.UserController.userList()">Users</a></li>
       <li><a href="@controllers.admin.routes.BrawlHistoryController.brawlList()">Brawls</a></li>
       <li><a href="@controllers.admin.routes.RequestLogController.requestList()">Requests</a></li>
@@ -39,6 +38,15 @@
       <li><a href="@controllers.admin.routes.ReportController.requests()">Requests</a></li>
       <li><a href="@controllers.admin.routes.ReportController.email()">Email</a></li>
       <li><a href="@controllers.admin.routes.AdHocQueryController.queryList(None)">Ad-Hoc</a></li>
+    </ul>
+  </li>
+  <li @if(section == "feedback") { class="active" }>
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Feedback <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+      <li><a href="@controllers.admin.routes.FeedbackController.list("all")">All</a></li>
+      <li><a href="@controllers.admin.routes.FeedbackController.list("open")">Open</a></li>
+      <li><a href="@controllers.admin.routes.FeedbackController.list("resolved")">Resolved</a></li>
+      <li><a href="@controllers.admin.routes.FeedbackController.list("praise")">Praise</a></li>
     </ul>
   </li>
 </ul>

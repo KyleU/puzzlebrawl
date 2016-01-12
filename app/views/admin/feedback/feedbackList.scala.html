@@ -1,15 +1,15 @@
 @(
+  key: String,
   q: String,
   sortBy: String,
   count: Int,
   page: Int,
-  feedback: Seq[models.audit.UserFeedback],
-  notes: Seq[models.audit.UserFeedback.FeedbackNote]
-)(implicit session: Session, flash: Flash)@views.html.admin.layout.list(
-  "feedback", "Feedback", "explore", count, page, feedback.size, q,
-  searchAction = controllers.admin.routes.FeedbackController.feedbackList(),
-  prevLink = controllers.admin.routes.FeedbackController.feedbackList(q, sortBy, page - 1),
-  nextLink = controllers.admin.routes.FeedbackController.feedbackList(q, sortBy, page + 1)
+  feedbacks: Seq[(models.audit.UserFeedback, Seq[models.audit.UserFeedback.FeedbackNote])]
+)(implicit session: Session, flash: Flash, identity: models.user.User)@views.html.admin.layout.list(
+  s"${ if(key == "all") { "" } else { key + " " } } feedback", s"${ if(key == "all") { "" } else { key.head.toUpper + key.tail + " " } }Feedback", "feedback", count, page, feedbacks.size, q,
+  searchAction = controllers.admin.routes.FeedbackController.list(key),
+  prevLink = controllers.admin.routes.FeedbackController.list(key, q, sortBy, page - 1),
+  nextLink = controllers.admin.routes.FeedbackController.list(key, q, sortBy, page + 1)
 ) {
-  @feedbackListTable(sortBy, feedback, notes)
+  @feedbackListTable(sortBy, feedbacks)
 }

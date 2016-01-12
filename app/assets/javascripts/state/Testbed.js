@@ -1,5 +1,5 @@
 /* global define:false */
-define(['dialog/Modal', 'sandbox/ParticleTest', 'state/GameState', 'utils/BrawlSync'], function (Modal, ParticleTest, GameState, BrawlSync) {
+define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, GameState, BrawlSync) {
   'use strict';
 
   function Testbed(game) {
@@ -55,7 +55,6 @@ define(['dialog/Modal', 'sandbox/ParticleTest', 'state/GameState', 'utils/BrawlS
 
   Testbed.prototype.startBrawl = function(self, brawl) {
     this.game.playmat.setBrawl(self, brawl);
-    ParticleTest.start(this.game);
   };
 
   Testbed.prototype.onPlayerUpdate = function(update) {

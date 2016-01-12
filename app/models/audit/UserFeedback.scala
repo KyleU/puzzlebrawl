@@ -14,7 +14,11 @@ object UserFeedback {
 }
 
 case class UserFeedback(
-  id: UUID,
-  userId: UUID,
-  feedback: String,
-  occurred: LocalDateTime)
+    id: UUID,
+    userId: UUID,
+    brawlId: Option[UUID],
+    context: String,
+    contact: Option[String],
+    content: String,
+    occurred: LocalDateTime) {
+}

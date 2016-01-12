@@ -30,10 +30,10 @@ class ObserveController @javax.inject.Inject() (override val ctx: ApplicationCon
   }
 
   def observeBrawlAsAdmin(gameId: UUID) = withAdminSession("observe.brawl") { implicit request =>
-    Future.successful(Redirect(controllers.routes.GameController.play() + "#observe-" + gameId))
+    Future.successful(Redirect(controllers.routes.BrawlController.play() + "#observe-" + gameId))
   }
 
   def observeBrawlAs(gameId: UUID, as: UUID) = withAdminSession("observe.brawl.as") { implicit request =>
-    Future.successful(Redirect(controllers.routes.GameController.play() + "#observe-" + gameId + "(" + as + ")"))
+    Future.successful(Redirect(controllers.routes.BrawlController.play() + "#observe-" + gameId + "(" + as + ")"))
   }
 }

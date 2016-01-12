@@ -38,10 +38,10 @@ addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.8") // dependencyUpdates
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-scalariform" % "1.3.0") // scalariformFormat
 
-addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.3")
+addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.4")
 
 addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.5") // stats
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.7.0") // scalastyle
 
-addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.4.0")
+addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.4.1")

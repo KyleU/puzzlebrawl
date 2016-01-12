@@ -5,7 +5,10 @@ object CreateUserFeedbackTable extends CreateTableStatement("user_feedback") {
     create table $tableName (
       id uuid not null primary key,
       user_id uuid not null,
-      feedback text not null,
+      brawl_id uuid,
+      context character varying(128),
+      contact character varying(512),
+      content text not null,
       occurred timestamp without time zone not null
     ) with (oids=false);
 

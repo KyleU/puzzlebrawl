@@ -21,10 +21,16 @@ class FeedbackController @javax.inject.Inject() (override val ctx: ApplicationCo
     request.body.asFormUrlEncoded match {
       case Some(form) => form.get("feedback") match {
         case Some(feedback) =>
+          val brawlId = form.get("brawl").flatMap(_.headOption.map(UUID.fromString))
+          val context = form.get("context").flatMap(_.headOption).getOrElse("unknown")
+          val contact = form.get("contact").flatMap(_.headOption)
           val obj = UserFeedback(
             id = UUID.randomUUID,
             userId = request.identity.id,
-            feedback = feedback.mkString("\n\n"),
+            brawlId = brawlId,
+            context = context,
+            contact = contact,
+            content = feedback.mkString("\n\n"),
             occurred = DateUtils.now
           )
 

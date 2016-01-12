@@ -3,10 +3,7 @@ GET         /friends                           controllers.HomeController.index
 GET         /ping                              controllers.HomeController.ping(timestamp: Long)
 
 # Game
-GET         /play                              controllers.GameController.play()
-
-# Utility
-GET         /*path/                            controllers.HomeController.untrail(path: String)
+GET         /play                              controllers.BrawlController.play()
 
 # Websocket
 GET         /websocket                         controllers.WebsocketController.connect()
@@ -29,6 +26,9 @@ GET         /options/set/:option/:value        controllers.ProfileController.set
 
 # Admin
 ->          /admin                             admin.Routes
+
+# Utility
+GET         /*path/                            controllers.HomeController.untrail(path: String)
 
 # Assets
 GET         /favicon.ico                       controllers.Assets.at(path = "/public", file = "images/ui/favicon/favicon.ico")

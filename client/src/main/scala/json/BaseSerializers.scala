@@ -16,7 +16,7 @@ object BaseSerializers {
   }
 
   implicit val intOptionWriter = Writer[Option[Int]] {
-    case Some(i) => Js.Num(i)
+    case Some(i) => Js.Num(i.toDouble)
     case None => Js.Null
   }
   implicit val intOptionReader = Reader[Option[Int]] {

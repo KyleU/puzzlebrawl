@@ -1,5 +1,5 @@
 /* global define:false */
-define(['sandbox/ParticleTest', 'state/GameState', 'state/Testbed', 'utils/Config'], function (ParticleTest, GameState, Testbed, Config) {
+define(['state/GameState', 'state/Testbed', 'utils/Config'], function (GameState, Testbed, Config) {
   'use strict';
 
   function LoadingScreen(game) {
@@ -11,8 +11,7 @@ define(['sandbox/ParticleTest', 'state/GameState', 'state/Testbed', 'utils/Confi
 
   LoadingScreen.prototype.preload = function() {
     this.game.load.spritesheet('gems', 'assets/images/game/gems.png', Config.tile.size, Config.tile.size);
-
-    ParticleTest.preload(this.game);
+    this.game.load.audio('audio', 'assets/audio/test.ogg');
 
     var testbed = new Testbed(this.game);
     this.game.state.add('testbed', testbed);
