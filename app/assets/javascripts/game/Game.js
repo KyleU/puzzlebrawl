@@ -24,7 +24,6 @@ define([
     this.connected = false;
     this.initialized = false;
     this.gameInput = new GameInput(this);
-    this.localServer = this.createLocalServer();
   }
 
   Game.prototype = Phaser.Game.prototype;
@@ -48,6 +47,7 @@ define([
 
     this.playmat = new Playmat(this);
 
+    this.localServer = this.createLocalServer();
     this.localServer.start();
   };
 
