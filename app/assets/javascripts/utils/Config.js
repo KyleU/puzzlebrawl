@@ -13,6 +13,11 @@ define(function () {
       swipeMinTimeMs: 50,
       swipeMaxTimeMs: 250,
       swipeDistancePx: 100
+    },
+
+    animation: {
+      moveDurationMs: 200,
+      removeDurationMs: 200
     }
   };
 });

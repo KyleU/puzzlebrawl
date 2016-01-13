@@ -4,6 +4,7 @@ import models.scenario.Scenario
 import models.ui.MenuEntry
 import models.user.User
 import play.api.libs.json._
+import utils.Config
 
 object MenuService {
   implicit val menuEntryWrites: Writes[MenuEntry] = new Writes[MenuEntry] {
@@ -14,10 +15,7 @@ object MenuService {
       JsObject(title ++ act ++ children)
     }
   }
-}
 
-@javax.inject.Singleton
-class MenuService @javax.inject.Inject() () {
   def menuFor(identity: User) = if (identity.isAdmin) { adminMenu } else { basicMenu }
 
   private def act(title: String, action: String) = MenuEntry(title, action = Some(action))
@@ -39,6 +37,6 @@ class MenuService @javax.inject.Inject() () {
     act("Admin", "admin")
   )
 
-  private[this] val basicMenu = commonActions ++ settingsActions
-  private[this] val adminMenu = commonActions ++ adminActions ++ settingsActions
+  private[this] val basicMenu = fld(Config.projectName, commonActions ++ settingsActions)
+  private[this] val adminMenu = fld(Config.projectName + " Admin", commonActions ++ adminActions ++ settingsActions)
 }

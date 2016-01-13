@@ -32,6 +32,9 @@ define(['utils/Status'], function (Status) {
           }
         });
         break;
+      case 'InitialState':
+        console.log('InitialState', this);
+        break;
       default:
         console.warn('Unhandled message [' + c + '] in state [' + this.id + ']: ' + JSON.stringify(v));
     }

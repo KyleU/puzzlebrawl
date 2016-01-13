@@ -25,7 +25,7 @@ define(['gem/Gem', 'utils/Config'], function (Gem, Config) {
     var targetY = (board.h - (y + yDelta)) * Config.tile.size;
 
     var tween = board.game.add.tween(gem);
-    tween.to({ x: targetX, y: targetY }, 200, Phaser.Easing.Cubic.Out);
+    tween.to({ x: targetX, y: targetY }, Config.animation.removeDurationMs, Phaser.Easing.Cubic.Out);
     tween.start();
   }
 
@@ -44,7 +44,7 @@ define(['gem/Gem', 'utils/Config'], function (Gem, Config) {
     }
 
     var tween = board.game.add.tween(gem);
-    tween.to({ alpha: 0 }, 200, Phaser.Easing.Cubic.Out);
+    tween.to({ alpha: 0 }, Config.animation.removeDurationMs, Phaser.Easing.Cubic.Out);
     tween.onComplete.add(function() {
       board.remove(gem);
     });
