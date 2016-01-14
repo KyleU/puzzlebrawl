@@ -53,7 +53,7 @@ define([], function () {
           this.game.playmat.targets.selectNextTarget();
           break;
         case 'debug':
-          this.game.send('DebugRequest', { data: param });
+          this.game.send('DebugInfo', { data: param });
           break;
         default:
           console.log('Unhandled input [' + t + '].');

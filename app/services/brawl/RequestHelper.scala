@@ -8,12 +8,12 @@ trait RequestHelper { this: BrawlService =>
   override def receiveRequest: PartialFunction[Any, Unit] = {
     case br: BrawlRequest => handleBrawlRequest(br)
     case im: InternalMessage => handleInternalMessage(im)
-    case DebugRequest(data) => handleDebugRequest(data)
+    case DebugInfo(data) => handleDebugInfo(data)
     case se: ServerError => handleServerError(se)
     case x => throw new IllegalArgumentException(s"Brawl service received unknown message [$x].")
   }
 
-  private[this] def handleDebugRequest(data: String) = data match {
+  private[this] def handleDebugInfo(data: String) = data match {
     case "dump" => logBoards()
     case "sync" => sender() ! DebugResponse("sync", Json.prettyPrint(Json.toJson(brawl)))
     case x if x.startsWith("cheat-") => handleCheat(x.stripPrefix("cheat-"))

@@ -1,7 +1,7 @@
 /* global define:false */
 define([], function () {
   function sandbox(ws) {
-    ws.send('DebugRequest', { data: 'Sandbox!' });
+    ws.send('DebugInfo', { data: 'Sandbox!' });
     return 'Ok: ' + ws.id;
   }
 

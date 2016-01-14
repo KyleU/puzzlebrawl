@@ -13,7 +13,7 @@ trait MessageHelper { this: PuzzleBrawl =>
     c match {
       case "GetVersion" => send(VersionResponse("0.0"))
       case "Ping" => send(Pong(JsonUtils.getLong(v.timestamp)))
-      case "DebugRequest" => v.data.toString match {
+      case "DebugInfo" => v.data.toString match {
         case "sync" => send(DebugResponse("sync", BaseSerializers.write(BrawlSerializers.write(brawl))))
         case x if x.startsWith("cheat-") => handleCheat(x.stripPrefix("cheat-"))
         case _ => throw new IllegalArgumentException(s"Unhandled debug request [${v.data.toString}].")

@@ -23,15 +23,14 @@ object Shared {
     val scala = "2.11.7"
   }
 
-  lazy val sharedJs = (crossProject.crossType(CrossType.Pure) in file("shared")).settings(
-    scalaVersion := Versions.scala
-  )
+  lazy val sharedJs = (crossProject.crossType(CrossType.Pure) in file("shared"))
+    .settings(scalaVersion := Versions.scala)
     .enablePlugins(ScalaJSPlay)
     .settings(
       sourceMapsBase := baseDirectory.value / "..",
       scalaJSStage in Global := FastOptStage,
       scapegoatIgnoredFiles := Seq(".*"),
-      scapegoatVersion := "1.1.0"
+      scapegoatVersion := Dependencies.scapegoatVersion
   ).js
 
   lazy val sharedJvm = (project in file("shared"))
@@ -40,7 +39,7 @@ object Shared {
     .settings(scalariformSettings: _*)
     .settings(
       scalaVersion := Versions.scala,
-      scapegoatVersion := "1.1.0",
+      scapegoatVersion := Dependencies.scapegoatVersion,
       ScalariformKeys.preferences := ScalariformKeys.preferences.value
     )
 }

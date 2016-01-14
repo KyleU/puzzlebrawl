@@ -65,7 +65,7 @@ object Server {
     // Code Quality
     scapegoatIgnoredFiles := Seq(".*/Row.scala", ".*/Routes.scala", ".*/ReverseRoutes.scala", ".*/JavaScriptReverseRoutes.scala", ".*/*.template.scala"),
     scapegoatDisabledInspections := Seq("DuplicateImport"),
-    scapegoatVersion := "1.1.0",
+    scapegoatVersion := Dependencies.scapegoatVersion,
     ScalariformKeys.preferences := ScalariformKeys.preferences.value,
 
     tutSourceDirectory := baseDirectory.value / "doc",

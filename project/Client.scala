@@ -20,7 +20,7 @@ object Client {
     ),
     scalaJSStage in Global := FastOptStage,
     scapegoatIgnoredFiles := Seq(".*/json/.*"),
-    scapegoatVersion := "1.1.0",
+    scapegoatVersion := Dependencies.scapegoatVersion,
     ScalariformKeys.preferences := ScalariformKeys.preferences.value
   )
 

@@ -22,7 +22,7 @@ object RequestMessageSerializers {
         case "MalformedRequest" => readJs[MalformedRequest](v)
         case "Ping" => readJs[Ping](v)
         case "GetVersion" => GetVersion
-        case "DebugRequest" => readJs[DebugRequest](v)
+        case "DebugInfo" => readJs[DebugInfo](v)
 
         case "SetPreference" => readJs[SetPreference](v)
 
@@ -51,7 +51,7 @@ object RequestMessageSerializers {
         case mf: MalformedRequest => writeJs(mf)
         case p: Ping => writeJs(p)
         case GetVersion => Js.Obj
-        case dr: DebugRequest => writeJs(dr)
+        case dr: DebugInfo => writeJs(dr)
         case sp: SetPreference => writeJs(sp)
         case sb: StartBrawl => writeJs(sb)
         case jb: JoinBrawl => writeJs(jb)

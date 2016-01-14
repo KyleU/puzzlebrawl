@@ -1,7 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
 /* global _:false */
-define(['utils/Status'], function (Status) {
+define(['ui/Menu', 'utils/DebugTrace', 'utils/Status'], function (Menu, DebugTrace, Status) {
   'use strict';
 
   function GameState(id, game) {
@@ -33,7 +33,12 @@ define(['utils/Status'], function (Status) {
         });
         break;
       case 'InitialState':
-        console.log('InitialState', this);
+        console.log('InitialState', v);
+        this.game.userId = v.user;
+        this.game.menu = new Menu(v.menu);
+        break;
+      case 'SendTrace':
+        this.game.send('DebugInfo', { data: JSON.stringify(DebugTrace.getTrace(this.game)) });
         break;
       default:
         console.warn('Unhandled message [' + c + '] in state [' + this.id + ']: ' + JSON.stringify(v));

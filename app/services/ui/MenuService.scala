@@ -23,7 +23,7 @@ object MenuService {
 
   private[this] val commonActions = Seq(
     act("Play Now", "play"),
-    fld("Scenarios", Scenario.all.map(x => act(x._1, x._2)))
+    fld("Scenarios", Scenario.all.map(x => act(x._2, x._1)))
   )
 
   private[this] val settingsActions = Seq(
