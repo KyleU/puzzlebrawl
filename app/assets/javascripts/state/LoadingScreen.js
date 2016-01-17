@@ -12,6 +12,11 @@ define(['state/GameState', 'state/Testbed', 'utils/Config'], function (GameState
   LoadingScreen.prototype.preload = function() {
     this.game.load.spritesheet('gems', 'assets/images/game/gems.png', Config.tile.size, Config.tile.size);
     this.game.load.audio('audio', 'assets/audio/test.ogg');
+    if(this.game.isDebug) {
+      this.game.load.script('assets/client-fastopt');
+    } else {
+      this.game.load.script('assets/client-opt');
+    }
 
     var testbed = new Testbed(this.game);
     this.game.state.add('testbed', testbed);

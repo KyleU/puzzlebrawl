@@ -8,5 +8,5 @@ requirejs.config({
 
 requirejs(['game/Game'], function(Game) {
   'use strict';
-  window.game = new Game();
+  window.brawl = new Game();
 });

@@ -36,6 +36,9 @@ define(['state/GameState', 'state/LoadingScreen'], function (GameState, LoadingS
 
     if(typeof Phaser.Plugin.Debug === 'function') {
       this.game.add.plugin(Phaser.Plugin.Debug);
+      this.game.isDebug = true;
+    } else {
+      this.game.isDebug = false;
     }
 
     this.game.state.start('loading');
