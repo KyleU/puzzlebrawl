@@ -1,6 +1,6 @@
 @(user: models.user.User, profiles: Seq[com.mohiva.play.silhouette.impl.providers.CommonSocialProfile])(
   implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
-)@layout.bootstrap(
+)@layout.basic(
   title = utils.Config.projectName + " Profile",
   scripts = Seq(routes.Assets.versioned("javascripts/profile.js").url)
 ) {

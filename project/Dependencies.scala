@@ -31,7 +31,6 @@ object Dependencies {
     val requireJs = "org.webjars" % "requirejs" % "2.1.22"
     val bootstrap = "org.webjars" % "bootstrap" % "3.3.6"
     val underscore = "org.webjars" % "underscorejs" % "1.8.3"
-    val datGui = "org.webjars" % "dat-gui" % "0.5.0"
     val d3 = "org.webjars" % "d3js" % "3.5.12"
     val nvd3 = "org.webjars" % "nvd3-community" % "1.7.0"
   }

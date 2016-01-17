@@ -11,8 +11,8 @@ class HomeController @javax.inject.Inject() (override val ctx: ApplicationContex
     Future.successful(Ok("puzzlebrawl.com"))
   }
 
-  def index() = withSession("index") { implicit request =>
-    Future.successful(Ok(views.html.index(request.identity)))
+  def play() = withSession("play") { implicit request =>
+    Future.successful(Ok(views.html.brawl.brawl(request.identity, debug = ctx.config.debug)))
   }
 
   def untrail(path: String) = Action.async {

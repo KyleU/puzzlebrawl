@@ -51,7 +51,7 @@ class RegistrationController @javax.inject.Inject() (override val ctx: Applicati
       loginInfo = loginInfo,
       email = Some(data.email)
     )
-    val r = Redirect(controllers.routes.HomeController.index())
+    val r = Redirect(controllers.routes.HomeController.play())
     for {
       avatar <- env.avatarService.retrieveURL(data.email)
       profile <- env.userService.create(user, profile.copy(avatarURL = avatar.orElse(Some("default"))))

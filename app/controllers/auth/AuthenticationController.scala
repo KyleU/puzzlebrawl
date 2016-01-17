@@ -22,7 +22,7 @@ class AuthenticationController @javax.inject.Inject() (override val ctx: Applica
     UserForms.signInForm.bindFromRequest.fold(
       form => Future.successful(BadRequest(views.html.auth.signin(request.identity, form))),
       credentials => env.credentials.authenticate(credentials).flatMap { loginInfo =>
-        val result = Redirect(controllers.routes.HomeController.index())
+        val result = Redirect(controllers.routes.HomeController.play())
         env.identityService.retrieve(loginInfo).flatMap {
           case Some(user) => env.authenticatorService.create(loginInfo).flatMap { authenticator =>
             env.eventBus.publish(LoginEvent(user, request, request2Messages))
@@ -48,7 +48,7 @@ class AuthenticationController @javax.inject.Inject() (override val ctx: Applica
             authInfo <- env.authInfoService.save(profile.loginInfo, authInfo)
             authenticator <- env.authenticatorService.create(profile.loginInfo)
             value <- env.authenticatorService.init(authenticator)
-            result <- env.authenticatorService.embed(value, Redirect(controllers.routes.HomeController.index()))
+            result <- env.authenticatorService.embed(value, Redirect(controllers.routes.HomeController.play()))
           } yield {
             env.eventBus.publish(LoginEvent(user, request, request2Messages))
             result
@@ -63,7 +63,7 @@ class AuthenticationController @javax.inject.Inject() (override val ctx: Applica
   }
 
   def signOut = withSession("signout") { implicit request =>
-    val result = Redirect(controllers.routes.HomeController.index())
+    val result = Redirect(controllers.routes.HomeController.play())
     env.eventBus.publish(LogoutEvent(request.identity, request, request2Messages))
     env.authenticatorService.discard(request.authenticator, result).map(x => result)
   }

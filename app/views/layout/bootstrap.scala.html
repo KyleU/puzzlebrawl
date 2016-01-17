@@ -1,5 +1,0 @@
-@(title: String, scripts: Seq[String] = Nil, stylesheets: Seq[String] = Nil)(content: Html)(implicit session: Session, flash: Flash)@basic(
-  title,
-  scripts = scripts,
-  stylesheets = Seq(routes.Assets.versioned("lib/bootstrap/css/bootstrap.min.css").url) ++ stylesheets
-)(content)
