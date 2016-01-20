@@ -1,7 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
 /* global _:false */
-define(['ui/Menu', 'utils/DebugTrace', 'utils/Status'], function (Menu, DebugTrace, Status) {
+define(['utils/DebugTrace', 'utils/Status'], function (DebugTrace, Status) {
   'use strict';
 
   function GameState(id, game) {
@@ -31,11 +31,6 @@ define(['ui/Menu', 'utils/DebugTrace', 'utils/Status'], function (Menu, DebugTra
             self.onMessage(message[0].replace('models.', ''), message[1]);
           }
         });
-        break;
-      case 'InitialState':
-        console.log('InitialState', v);
-        this.game.userId = v.user;
-        this.game.menu = new Menu(v.menu);
         break;
       case 'SendTrace':
         this.game.send('DebugInfo', { data: JSON.stringify(DebugTrace.getTrace(this.game)) });

@@ -1,30 +1,35 @@
 /* global define:false */
-define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, GameState, BrawlSync) {
+define(['dialog/Modal', 'state/GameState', 'ui/Menu', 'utils/BrawlSync'], function (Modal, GameState, Menu, BrawlSync) {
   'use strict';
 
-  function Testbed(game) {
-    GameState.call(this, 'testbed', game);
+  function HomeState(game) {
+    GameState.call(this, 'gameplay', game);
   }
 
-  Testbed.prototype = Object.create(GameState.prototype);
-  Testbed.prototype.constructor = Testbed;
+  HomeState.prototype = Object.create(GameState.prototype);
+  HomeState.prototype.constructor = HomeState;
 
-  Testbed.prototype.create = function() {
+  HomeState.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
     this.game.init();
   };
 
-  Testbed.prototype.update = function() {
+  HomeState.prototype.update = function() {
     this.game.gamepad.update();
     this.game.gesture.update();
   };
 
-  Testbed.prototype.resize = function() {
+  HomeState.prototype.resize = function() {
     this.game.playmat.resizer.resize();
   };
 
-  Testbed.prototype.onMessage = function(c, v) {
+  HomeState.prototype.onMessage = function(c, v) {
     switch(c) {
+      case 'InitialState':
+        console.log('InitialState', v);
+        this.game.userId = v.user;
+        this.game.menu = new Menu(v.menu);
+        break;
       case 'BrawlJoined':
         this.startBrawl(v.self, v.brawl);
         break;
@@ -53,11 +58,11 @@ define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
     }
   };
 
-  Testbed.prototype.startBrawl = function(self, brawl) {
+  HomeState.prototype.startBrawl = function(self, brawl) {
     this.game.playmat.setBrawl(self, brawl);
   };
 
-  Testbed.prototype.onPlayerUpdate = function(update) {
+  HomeState.prototype.onPlayerUpdate = function(update) {
     var p = this.game.playmat;
     if(p === undefined || p === null) {
       throw 'Player update received with no active brawl.';
@@ -71,5 +76,5 @@ define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
     });
   };
 
-  return Testbed;
+  return HomeState;
 });

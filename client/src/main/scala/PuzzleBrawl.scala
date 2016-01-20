@@ -6,6 +6,7 @@ import models.board.mutation.Mutation.TargetChanged
 import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
 import models.player.Player
+import models.ui.MenuEntry
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSExport
@@ -32,7 +33,9 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
 
   @JSExport
   def start() = networkStatus match {
-    case "offline" => handleStartBrawl(scenario)
+    case "offline" =>
+      send(InitialState(userId, MenuEntry("Offline", action = Some("offline"))))
+      handleStartBrawl(scenario)
     case "proxy" => if (socket.exists(_.connected)) {
       val initialMessage = scenario match {
         case x if x.startsWith("observe") => x.substring(x.indexOf("-") + 1) match {

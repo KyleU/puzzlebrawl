@@ -47,7 +47,7 @@ define([
 
     this.playmat = new Playmat(this);
 
-    this.localServer = this.createLocalServer();
+    this.createLocalServer();
     this.localServer.start();
   };
 
@@ -64,14 +64,14 @@ define([
   };
 
   Game.prototype.createLocalServer = function() {
-    var ret = new PuzzleBrawl();
+    var pb = new PuzzleBrawl();
     var self = this;
     var callback = function(json) {
       var ret = JSON.parse(json);
       self.onMessage(ret.c, ret.v);
     };
-    ret.register(callback);
-    return ret;
+    pb.register(callback);
+    this.localServer = pb;
   };
 
   return Game;

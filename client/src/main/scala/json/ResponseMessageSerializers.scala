@@ -1,11 +1,13 @@
 package json
 
 import models._
+import models.ui.MenuEntry
 import upickle._
 import upickle.legacy._
 
 import BaseSerializers._
 import BrawlSerializers._
+import MenuSerializers._
 import MutationSerializers._
 
 object ResponseMessageSerializers {
@@ -23,6 +25,7 @@ object ResponseMessageSerializers {
         case o: Js.Obj => c match {
           case "ServerError" => readJs[ServerError](o)
           case "VersionResponse" => readJs[VersionResponse](o)
+          case "InitialState" => readJs[InitialState](o)
           case "Pong" => readJs[Pong](o)
           case "MessageSet" => readJs[MessageSet](o)
           case "BrawlJoined" => readJs[BrawlJoined](o)
@@ -41,6 +44,7 @@ object ResponseMessageSerializers {
       val jsVal = rm match {
         case se: ServerError => writeJs(se)
         case vr: VersionResponse => writeJs(vr)
+        case is: InitialState => writeJs(is)
         case p: Pong => writeJs(p)
         case bj: BrawlJoined => writeJs(bj)
         case pu: PlayerUpdate => writeJs(pu)
