@@ -1,15 +1,7 @@
 /* global define:false */
 /* global Phaser:false */
-/* global PuzzleBrawl:false */
-define([
-  'game/GameInput', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'state/InitialState'
-], function (GameInput, GemTextures, Gamepad, Gesture, Keyboard, Playmat, InitialState) {
+define(['game/GameInit', 'game/GameInput', 'state/InitialState'], function (gameInit, GameInput, InitialState) {
   'use strict';
-
-  if(window.PhaserGlobal === undefined) {
-    window.PhaserGlobal = {};
-  }
-  window.PhaserGlobal.hideBanner = true;
 
   function Game() {
     Phaser.Game.call(this, {
@@ -30,25 +22,7 @@ define([
   Game.prototype.constructor = Game;
 
   Game.prototype.init = function() {
-    if(this.initialized) {
-      throw 'Game already initialized.';
-    }
-
-    this.keyboard = new Keyboard(this);
-    this.keyboard.init();
-
-    this.gamepad = new Gamepad(this);
-    this.gamepad.init();
-
-    this.gesture = new Gesture(this);
-    this.gesture.init();
-
-    this.gemTextures = new GemTextures(this);
-
-    this.playmat = new Playmat(this);
-
-    this.createLocalServer();
-    this.localServer.start();
+    gameInit(this);
   };
 
   Game.prototype.send = function(c, v) { this.localServer.receive(c, v); };
@@ -61,17 +35,6 @@ define([
         state.onMessage(c, v);
         break;
     }
-  };
-
-  Game.prototype.createLocalServer = function() {
-    var pb = new PuzzleBrawl();
-    var self = this;
-    var callback = function(json) {
-      var ret = JSON.parse(json);
-      self.onMessage(ret.c, ret.v);
-    };
-    pb.register(callback);
-    this.localServer = pb;
   };
 
   return Game;

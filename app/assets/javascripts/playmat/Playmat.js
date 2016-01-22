@@ -1,11 +1,10 @@
 /* global define:false */
 /* global Phaser:false */
-/* global _:false */
 define([
   'board/Board', 'gem/Gem',
-  'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'playmat/PlaymatLayout', 'playmat/PlaymatResizer', 'playmat/PlaymatTargets',
-  'utils/Formatter', 'utils/Status'
-], function (Board, Gem, PlaymatInput, PlaymatLabels, PlaymatLayout, PlaymatResizer, PlaymatTargets, Formatter, Status) {
+  'playmat/PlaymatLayout', 'playmat/PlaymatResizer', 'playmat/PlaymatSetBrawl', 'playmat/PlaymatTargets',
+  'utils/Formatter'
+], function (Board, Gem, PlaymatLayout, PlaymatResizer, setBrawl, PlaymatTargets, Formatter) {
   'use strict';
 
   var Playmat = function(game) {
@@ -24,48 +23,18 @@ define([
   Playmat.prototype.constructor = Playmat;
 
   Playmat.prototype.setBrawl = function(self, brawl) {
-    if(this.brawl !== undefined) {
-      throw 'Already using brawl [' + this.brawl.id + '].';
+    setBrawl(this, self, brawl);
+  };
+
+  Playmat.prototype.onPlayerUpdate = function(update) {
+    var p = this;
+    var board = p.players[update.id].board;
+    if(board === undefined || board === null) {
+      throw 'Player update received with invalid id [' + update.id + '].';
     }
-    this.self = self;
-    this.brawl = brawl;
-    Status.setScenario(brawl.scenario);
-    this.input = new PlaymatInput(this);
-
-    var playmat = this;
-    _.each(brawl.players, function(p) {
-      var board = new Board(p.id, p.board, playmat);
-      playmat.add(board);
-
-      if(p.id === playmat.self) {
-        playmat.selfBoard = board;
-      }
-
-      var score = p.score;
-      if(score === undefined) {
-        score = 0;
-      }
-
-      playmat.players[p.id] = {
-        id: p.id,
-        name: p.name,
-        team: p.team,
-        score: score,
-        board: board,
-        target: p.target
-      };
+    board.applyMutations(update.segments, function(delta) {
+      p.changeScore(update.id, delta);
     });
-
-    _.each(playmat.players, function(p) {
-      p.labels = new PlaymatLabels(playmat, p.id, p.name, p.score);
-    });
-
-    playmat.otherPlayers = _.filter(playmat.players, function(p) {
-      return p.id !== playmat.self;
-    });
-
-    playmat.layout.refreshLayout();
-    playmat.targets.refreshTarget();
   };
 
   Playmat.prototype.changeScore = function(id, delta) {

@@ -54,11 +54,7 @@ trait NetworkHelper { this: PuzzleBrawl =>
   protected[this] def onSocketConnect(): Unit = {
     connectionEl.classList.remove("error")
     connectionEl.classList.add("connected")
-
-    activeBrawl match {
-      case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
-      case None => if (this.pendingStart) { start() }
-    }
+    onConnect()
   }
 
   protected[this] def onSocketError(error: String): Unit = {

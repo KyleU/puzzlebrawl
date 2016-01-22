@@ -31,26 +31,33 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
     sendCallback = callback
   }
 
+  def onConnect() = activeBrawl match {
+    case Some(b) => throw new IllegalStateException("TODO: Reconnect.")
+    case None => if (this.pendingStart) { start() }
+  }
+
+  private[this] def getInitialMessage = {
+    scenario match {
+      case x if x.startsWith("observe") => x.substring(x.indexOf("-") + 1) match {
+        case id if id.contains('(') =>
+          val gameId = UUID.fromString(id.substring(0, id.indexOf('(')))
+          val as = UUID.fromString(id.substring(id.indexOf('(') + 1).dropRight(1))
+          RequestMessageSerializers.write(ObserveBrawl(gameId, Some(as)))
+        case id => RequestMessageSerializers.write(ObserveBrawl(UUID.fromString(id), None))
+      }
+      case x if x.startsWith("join") => RequestMessageSerializers.write(JoinBrawl(UUID.fromString(x.substring(x.indexOf("-") + 1))))
+      case x => RequestMessageSerializers.write(StartBrawl(x))
+    }
+  }
+
   @JSExport
   def start() = networkStatus match {
     case "offline" =>
       send(InitialState(userId, MenuEntry("Offline", action = Some("offline"))))
       handleStartBrawl(scenario)
-    case "proxy" => if (socket.exists(_.connected)) {
-      val initialMessage = scenario match {
-        case x if x.startsWith("observe") => x.substring(x.indexOf("-") + 1) match {
-          case id if id.contains('(') =>
-            val gameId = UUID.fromString(id.substring(0, id.indexOf('(')))
-            val as = UUID.fromString(id.substring(id.indexOf('(') + 1).dropRight(1))
-            RequestMessageSerializers.write(ObserveBrawl(gameId, Some(as)))
-          case id => RequestMessageSerializers.write(ObserveBrawl(UUID.fromString(id), None))
-        }
-        case x if x.startsWith("join") => RequestMessageSerializers.write(JoinBrawl(UUID.fromString(x.substring(x.indexOf("-") + 1))))
-        case x => RequestMessageSerializers.write(StartBrawl(x))
-      }
-      socket.foreach(_.send(BaseSerializers.write(initialMessage)))
-    } else {
-      this.pendingStart = true
+    case "proxy" => socket match {
+      case Some(x) if x.connected => x.send(BaseSerializers.write(getInitialMessage))
+      case _ => this.pendingStart = true
     }
     case "blend" => // TODO
   }

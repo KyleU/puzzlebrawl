@@ -31,10 +31,10 @@ define(['dialog/Modal', 'state/GameState', 'ui/Menu', 'utils/BrawlSync'], functi
         this.game.menu = new Menu(v.menu);
         break;
       case 'BrawlJoined':
-        this.startBrawl(v.self, v.brawl);
+        this.game.playmat.setBrawl(v.self, v.brawl);
         break;
       case 'PlayerUpdate':
-        this.onPlayerUpdate(v);
+        this.game.playmat.onPlayerUpdate(v);
         break;
       case 'DebugResponse':
         if(v.key === 'sync') {
@@ -56,24 +56,6 @@ define(['dialog/Modal', 'state/GameState', 'ui/Menu', 'utils/BrawlSync'], functi
         GameState.prototype.onMessage.call(this, c, v);
         break;
     }
-  };
-
-  HomeState.prototype.startBrawl = function(self, brawl) {
-    this.game.playmat.setBrawl(self, brawl);
-  };
-
-  HomeState.prototype.onPlayerUpdate = function(update) {
-    var p = this.game.playmat;
-    if(p === undefined || p === null) {
-      throw 'Player update received with no active brawl.';
-    }
-    var board = p.players[update.id].board;
-    if(board === undefined || board === null) {
-      throw 'Player update received with invalid id [' + update.id + '].';
-    }
-    board.applyMutations(update.segments, function(delta) {
-      p.changeScore(update.id, delta);
-    });
   };
 
   return HomeState;
