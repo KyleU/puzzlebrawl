@@ -11,16 +11,24 @@ define([], function () {
   }
 
   Navigation.prototype.navigate = function() {
-    switch(window.location.hash) {
+    var h = window.location.hash;
+    if(h.charAt(0) === '#') {
+      h = h.substr(1);
+    }
+    switch(h) {
       case '':
+      case 'home':
         this.game.panels.show('menu');
         break;
-      case '#normal':
-        this.game.panels.show('gameplay');
-        this.game.send('StartBrawl', { 'scenario': 'normal'});
+      case 'test':
+        this.game.panels.show('test');
+        break;
+      case 'scenario':
+        this.game.panels.show('scenario');
         break;
       default:
-        console.log('Unhandled navigation: ' + window.location.hash);
+        this.game.panels.show('gameplay');
+        this.game.send('StartBrawl', { 'scenario': h });
         break;
     }
   };

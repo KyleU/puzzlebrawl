@@ -6,6 +6,8 @@ define([], function () {
     this.splash = document.getElementById('splash-panel');
     this.connecting = document.getElementById('connecting-panel');
     this.menu = document.getElementById('menu-panel');
+    this.tests = document.getElementById('test-panel');
+    this.scenarios = document.getElementById('scenario-panel');
     this.instructions = document.getElementById('menu-panel');
     this.options = document.getElementById('menu-panel');
     this.gameplay = document.getElementById('game-container');
@@ -23,6 +25,12 @@ define([], function () {
         break;
       case 'menu':
         this.active = this.menu;
+        break;
+      case 'scenario':
+        this.active = this.scenarios;
+        break;
+      case 'test':
+        this.active = this.tests;
         break;
       case 'instructions':
         this.active = this.instructions;
