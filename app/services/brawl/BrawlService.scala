@@ -15,10 +15,16 @@ object BrawlService {
 }
 
 case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) extends BrawlHelper {
-  protected[this] lazy val brawl = {
+  protected[this] lazy val brawl = try {
     val b = Scenario.newInstance(id, scenario, seed, players)
     b.setCallbacks(this)
     b
+  } catch {
+    case x: IllegalArgumentException =>
+      players.foreach { player =>
+        player.connectionActor.foreach(_ ! ServerError("Invalid Scenario", x.getMessage))
+      }
+      throw x
   }
 
   protected[this] val playersById = players.map(x => x.userId -> x).toMap

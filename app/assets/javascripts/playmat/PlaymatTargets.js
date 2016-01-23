@@ -11,8 +11,24 @@ define([], function () {
   PlaymatTargets.prototype.refreshTarget = function() {
     if(this.sprite === undefined) {
       this.sprite = new Phaser.Sprite(this.playmat.game, 0, 0, 'gems', 65);
+      this.sprite.name = 'targeting-reticle';
       this.sprite.visible = false;
       this.playmat.add(this.sprite);
+    }
+
+    var self = this.playmat.players[this.playmat.self];
+    if(self.target !== undefined && this.playmat.otherPlayers.length > 1) {
+      var tgtBoard = this.playmat.players[self.target].board;
+      this.sprite.x = tgtBoard.x;
+      this.sprite.y = tgtBoard.y;
+      this.sprite.visible = true;
+    }
+  };
+
+  PlaymatTargets.prototype.destroy = function() {
+    if(this.sprite !== undefined) {
+      this.playmat.remove(this.sprite);
+      this.sprite.destroy();
     }
 
     var self = this.playmat.players[this.playmat.self];

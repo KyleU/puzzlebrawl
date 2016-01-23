@@ -47,5 +47,12 @@ define([], function () {
     this.scoreLabel.y = yOffset;
   };
 
+  PlaymatLabels.prototype.destroy = function() {
+    this.playmat.remove(this.nameLabel);
+    this.nameLabel.destroy();
+    this.playmat.remove(this.scoreLabel);
+    this.scoreLabel.destroy();
+  };
+
   return PlaymatLabels;
 });

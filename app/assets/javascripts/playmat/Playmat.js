@@ -2,9 +2,9 @@
 /* global Phaser:false */
 define([
   'board/Board', 'gem/Gem',
-  'playmat/PlaymatLayout', 'playmat/PlaymatResizer', 'playmat/PlaymatSetBrawl', 'playmat/PlaymatTargets',
+  'playmat/PlaymatLayout', 'playmat/PlaymatResizer', 'playmat/PlaymatBrawl', 'playmat/PlaymatTargets',
   'utils/Formatter'
-], function (Board, Gem, PlaymatLayout, PlaymatResizer, setBrawl, PlaymatTargets, Formatter) {
+], function (Board, Gem, PlaymatLayout, PlaymatResizer, PlaymatBrawl, PlaymatTargets, Formatter) {
   'use strict';
 
   var Playmat = function(game) {
@@ -25,7 +25,7 @@ define([
   Playmat.prototype.constructor = Playmat;
 
   Playmat.prototype.setBrawl = function(self, brawl) {
-    setBrawl(this, self, brawl);
+    PlaymatBrawl.startBrawl(this, self, brawl);
   };
 
   Playmat.prototype.onPlayerUpdate = function(update) {
@@ -51,7 +51,7 @@ define([
 
   Playmat.prototype.resignIfPlaying = function() {
     if(this.brawl !== null && this.brawl !== undefined) {
-      console.log('Resign');
+      PlaymatBrawl.resignBrawl(this);
     }
   };
 

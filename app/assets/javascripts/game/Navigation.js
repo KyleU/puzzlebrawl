@@ -29,11 +29,17 @@ define([], function () {
       case 'menu':
         this.game.panels.show('menu');
         break;
+      case 'instructions':
+        this.game.panels.show('instructions');
+        break;
       case 'test':
         this.game.panels.show('test');
         break;
       case 'scenario':
         this.game.panels.show('scenario');
+        break;
+      case 'options':
+        this.game.panels.show('options');
         break;
       default:
         if(this.game.playmat !== undefined) {

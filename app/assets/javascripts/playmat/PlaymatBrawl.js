@@ -3,7 +3,7 @@
 define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/Status'], function (Board, PlaymatInput, PlaymatLabels, Status) {
   'use strict';
 
-  return function(playmat, self, brawl) {
+  function startBrawl(playmat, self, brawl) {
     if(playmat.brawl !== undefined && playmat.brawl !== null) {
       throw 'Already using brawl [' + playmat.brawl.id + '].';
     }
@@ -45,5 +45,25 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
 
     playmat.layout.refreshLayout();
     playmat.targets.refreshTarget();
+  }
+
+  function resignBrawl(playmat) {
+    Status.setScenario('Brawl Complete');
+    _.each(playmat.players, function(pl) {
+      playmat.remove(pl.board);
+      pl.labels.destroy();
+      pl.board.destroy();
+    });
+    if(playmat.targets !== undefined && playmat.targets !== null) {
+      playmat.targets.destroy();
+    }
+    playmat.self = null;
+    playmat.players = {};
+    playmat.brawl = null;
+  }
+
+  return {
+    startBrawl: startBrawl,
+    resignBrawl: resignBrawl
   };
 });

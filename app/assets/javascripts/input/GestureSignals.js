@@ -14,20 +14,24 @@ define([], function () {
     this.onHold.add(this.holdCallback, this, 0);
   };
 
+  GestureSignals.prototype.should = function() {
+    return this.game.playmat !== undefined && this.game.playmat.input !== undefined;
+  };
+
   GestureSignals.prototype.swipeCallback = function(gestures, pointer) {
-    if(this.game.playmat !== undefined) {
+    if(this.should()) {
       this.game.playmat.input.onSwipe(pointer);
     }
   };
 
   GestureSignals.prototype.tapCallback = function(gestures, pointer) {
-    if(this.game.playmat !== undefined) {
+    if(this.should()) {
       this.game.playmat.input.onTap(pointer);
     }
   };
 
   GestureSignals.prototype.holdCallback = function(gestures, pointer) {
-    if(this.game.playmat !== undefined) {
+    if(this.should()) {
       this.game.playmat.input.onHold(pointer);
     }
   };
