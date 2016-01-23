@@ -5,9 +5,17 @@ define([], function () {
   function Navigation(game) {
     this.game = game;
     var self = this;
+
     window.addEventListener('hashchange', function() {
       self.navigate();
     }, false);
+
+    var titleLabel = document.getElementById('title');
+    if(titleLabel !== null && titleLabel !== undefined) {
+      titleLabel.addEventListener('click', function(event) {
+        window.location.hash = '#home';
+      }, false);
+    }
   }
 
   Navigation.prototype.navigate = function() {
@@ -18,6 +26,7 @@ define([], function () {
     switch(h) {
       case '':
       case 'home':
+      case 'menu':
         this.game.panels.show('menu');
         break;
       case 'test':
@@ -27,6 +36,9 @@ define([], function () {
         this.game.panels.show('scenario');
         break;
       default:
+        if(this.game.playmat !== undefined) {
+          this.game.playmat.resignIfPlaying();
+        }
         this.game.panels.show('gameplay');
         this.game.send('StartBrawl', { 'scenario': h });
         break;

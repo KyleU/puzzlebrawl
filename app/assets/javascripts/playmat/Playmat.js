@@ -49,5 +49,11 @@ define([
     this.players[playerId].board.alpha = 0.5;
   };
 
+  Playmat.prototype.resignIfPlaying = function() {
+    if(this.brawl !== null && this.brawl !== undefined) {
+      console.log('Resign');
+    }
+  };
+
   return Playmat;
 });
