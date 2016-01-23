@@ -1,8 +1,8 @@
 /* global define:false */
 /* global PuzzleBrawl:false */
 define([
-  'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'panels/Panels', 'playmat/Playmat'
-], function (GemTextures, Gamepad, Gesture, Keyboard, Panels, Playmat) {
+  'game/Navigation', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'panels/Panels', 'playmat/Playmat'
+], function (Navigation, GemTextures, Gamepad, Gesture, Keyboard, Panels, Playmat) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -40,6 +40,8 @@ define([
     game.gemTextures = new GemTextures(game);
 
     game.playmat = new Playmat(game);
+
+    game.navigation = new Navigation(game);
 
     createLocalServer(game);
   };

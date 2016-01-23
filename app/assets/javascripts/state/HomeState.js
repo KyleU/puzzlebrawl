@@ -25,7 +25,7 @@ define(['dialog/Modal', 'state/GameState', 'state/HomeMessageHandler'], function
 
   HomeState.prototype.initialStateReceived = function(state) {
     this.game.userId = state.user;
-    this.game.panels.show('menu');
+    this.game.navigation.navigate();
   };
 
   HomeState.prototype.onMessage = function(c, v) {

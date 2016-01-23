@@ -16,7 +16,6 @@ define([], function () {
   Panels.prototype.show = function(key) {
     this.active.classList.remove('on');
     this.active.classList.add('off');
-    console.log('Showing panel [' + key + '].');
 
     switch(key) {
       case 'connecting':
