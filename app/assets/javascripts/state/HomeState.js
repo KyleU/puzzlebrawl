@@ -12,9 +12,6 @@ define(['dialog/Modal', 'state/GameState', 'state/HomeMessageHandler'], function
   HomeState.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
     this.game.init();
-    this.game.localServer.start();
-
-    this.showPanel('splash');
   };
 
   HomeState.prototype.update = function() {
@@ -26,10 +23,9 @@ define(['dialog/Modal', 'state/GameState', 'state/HomeMessageHandler'], function
     this.game.playmat.resizer.resize();
   };
 
-  HomeState.prototype.showPanel = function(key) {
-    console.log('Show: ' + key);
-    this.game.splashPanel.visible = key === 'splash';
-    this.game.playmat.visible = key === 'playmat';
+  HomeState.prototype.initialStateReceived = function(state) {
+    this.game.userId = state.user;
+    this.game.panels.show('menu');
   };
 
   HomeState.prototype.onMessage = function(c, v) {

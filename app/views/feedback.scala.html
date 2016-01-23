@@ -1,6 +1,6 @@
 @(user: models.user.User)(
     implicit request: Request[AnyContent], session: Session, flash: Flash, messages: Messages
-)@layout.basic(title = utils.Config.projectName, stylesheets = Seq(routes.Assets.versioned("stylesheets/static.min.css").url)) {
+)@layout.basic(title = utils.Config.projectName) {
   <div id="feedback-content" class="container">
     @flash.get("error").map { msg => <div class="alert alert-danger alert-dismissable">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>

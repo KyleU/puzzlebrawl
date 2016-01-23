@@ -1,8 +1,8 @@
 /* global define:false */
 /* global PuzzleBrawl:false */
 define([
-  'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'ui/SplashPanel'
-], function (GemTextures, Gamepad, Gesture, Keyboard, Playmat, SplashPanel) {
+  'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'panels/Panels', 'playmat/Playmat'
+], function (GemTextures, Gamepad, Gesture, Keyboard, Panels, Playmat) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -25,6 +25,9 @@ define([
       throw 'Game already initialized.';
     }
 
+    game.panels = new Panels();
+    game.panels.show('connecting');
+
     game.keyboard = new Keyboard(game);
     game.keyboard.init();
 
@@ -36,7 +39,6 @@ define([
 
     game.gemTextures = new GemTextures(game);
 
-    game.splashPanel = new SplashPanel(game);
     game.playmat = new Playmat(game);
 
     createLocalServer(game);

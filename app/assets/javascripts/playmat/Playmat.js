@@ -14,7 +14,7 @@ define([
     this.players = {};
     this.self = null;
 
-    this.visible = false;
+    this.visible = true;
 
     this.layout = new PlaymatLayout(this);
     this.resizer = new PlaymatResizer(this);

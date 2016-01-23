@@ -1,0 +1,42 @@
+@(user: models.user.User)(implicit messages: Messages)
+<div class="menu-container">
+  <h4>Scenarios</h4>
+  <div>
+    <ul>
+    @for(scenario <- models.scenario.Scenario.all) {
+      <li><a href="#@scenario._1">@scenario._2</a></li>
+    }
+    </ul>
+  </div>
+</div>
+
+<div class="menu-container">
+  <h4>Actions</h4>
+  <div>
+    <ul>
+      <li><div id="play-now"><a href="#normal">@Messages("index.play.now")</a></div></li>
+      @if(user.roles.contains(models.user.Role.Admin)) {
+        <li><a href="@controllers.admin.routes.AdminController.index()">Admin</a></li>
+      }
+      <li><a href="@routes.FeedbackController.feedbackForm()">@Messages("index.leave.feedback")</a></li>
+      @if(user.profiles.isEmpty) {
+        <li><a href="@controllers.auth.routes.AuthenticationController.signInForm()">@Messages("authentication.sign.in")</a></li>
+        <li><a href="@controllers.auth.routes.RegistrationController.registrationForm()">@Messages("registration.title")</a></li>
+      } else {
+        <li><a href="@controllers.auth.routes.AuthenticationController.signOut">@Messages("profile.sign.out")</a></li>
+        <li><a href="@routes.ProfileController.profile">@Messages("profile.view")</a></li>
+      }
+    </ul>
+  </div>
+</div>
+
+<div class="menu-container">
+  <h4>Tests</h4>
+  <div>
+    <ul>
+    @for(t <- models.test.brawl.BrawlTest.all) {
+      <li><a href="#test-@t.testName">@t.testName</a></li>
+    }
+    </ul>
+  </div>
+</div>

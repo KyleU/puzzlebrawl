@@ -5,8 +5,7 @@ define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
   return function(homeState, c, v) {
     switch(c) {
       case 'InitialState':
-        homeState.game.userId = v.user;
-        homeState.showPanel('playmat');
+        homeState.initialStateReceived(v);
         break;
       case 'BrawlJoined':
         homeState.game.playmat.setBrawl(v.self, v.brawl);

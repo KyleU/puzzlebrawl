@@ -3,11 +3,10 @@
 )@layout.basic(title = utils.Config.projectName, bodyClass = Some("dark")) {
   <div id="game-container"></div>
 
-  @menubar()
   @modal()
+  @panels(user)
 
-  @instructions()
-  @homeMenu(user)
+  @menubar()
 
   @if(debug) {
     <script src="@routes.Assets.versioned("lib/phaser/js/phaser-arcade-physics.js")"></script>
