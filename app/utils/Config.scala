@@ -17,7 +17,7 @@ object Config {
 class Config @javax.inject.Inject() (val cnf: play.api.Configuration) {
   val debug = !Play.isProd(Play.current)
 
-  val fileCacheDir = cnf.getString("cache.dir")
+  val fileCacheDir = cnf.getString("cache.dir").getOrElse("./cache")
 
   // Database
   val databaseConfiguration = new Configuration(

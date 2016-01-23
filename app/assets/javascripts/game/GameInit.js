@@ -1,8 +1,8 @@
 /* global define:false */
 /* global PuzzleBrawl:false */
 define([
-  'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat'
-], function (GemTextures, Gamepad, Gesture, Keyboard, Playmat) {
+  'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'playmat/Playmat', 'ui/SplashPanel'
+], function (GemTextures, Gamepad, Gesture, Keyboard, Playmat, SplashPanel) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -36,11 +36,9 @@ define([
 
     game.gemTextures = new GemTextures(game);
 
-    //game.splashScreen = new SplashScreen(game);
-
+    game.splashPanel = new SplashPanel(game);
     game.playmat = new Playmat(game);
 
     createLocalServer(game);
-    game.localServer.start();
   };
 });

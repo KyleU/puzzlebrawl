@@ -1,9 +1,9 @@
 /* global define:false */
-define(['dialog/Modal', 'state/GameState', 'ui/Menu', 'utils/BrawlSync'], function (Modal, GameState, Menu, BrawlSync) {
+define(['dialog/Modal', 'state/GameState', 'state/HomeMessageHandler'], function (Modal, GameState, handler) {
   'use strict';
 
   function HomeState(game) {
-    GameState.call(this, 'gameplay', game);
+    GameState.call(this, 'home', game);
   }
 
   HomeState.prototype = Object.create(GameState.prototype);
@@ -12,6 +12,9 @@ define(['dialog/Modal', 'state/GameState', 'ui/Menu', 'utils/BrawlSync'], functi
   HomeState.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
     this.game.init();
+    this.game.localServer.start();
+
+    this.showPanel('splash');
   };
 
   HomeState.prototype.update = function() {
@@ -23,39 +26,14 @@ define(['dialog/Modal', 'state/GameState', 'ui/Menu', 'utils/BrawlSync'], functi
     this.game.playmat.resizer.resize();
   };
 
+  HomeState.prototype.showPanel = function(key) {
+    console.log('Show: ' + key);
+    this.game.splashPanel.visible = key === 'splash';
+    this.game.playmat.visible = key === 'playmat';
+  };
+
   HomeState.prototype.onMessage = function(c, v) {
-    switch(c) {
-      case 'InitialState':
-        console.log('InitialState', v);
-        this.game.userId = v.user;
-        this.game.menu = new Menu(v.menu);
-        break;
-      case 'BrawlJoined':
-        this.game.playmat.setBrawl(v.self, v.brawl);
-        break;
-      case 'PlayerUpdate':
-        this.game.playmat.onPlayerUpdate(v);
-        break;
-      case 'DebugResponse':
-        if(v.key === 'sync') {
-          BrawlSync.check(this.game.playmat.brawl, JSON.parse(v.data));
-        } else {
-          throw 'Unhandled debug response [' + v.key + '].';
-        }
-        break;
-      case 'PlayerLoss':
-        this.game.playmat.onPlayerLoss(v.id);
-        break;
-      case 'BrawlCompletionReport':
-        Modal.show('Game Complete', JSON.stringify(v, null, 2), true);
-        break;
-      case 'ServerError':
-        Modal.show('Server Error', v.reason + ': ' + v.content);
-        break;
-      default:
-        GameState.prototype.onMessage.call(this, c, v);
-        break;
-    }
+    handler(this, c, v);
   };
 
   return HomeState;
