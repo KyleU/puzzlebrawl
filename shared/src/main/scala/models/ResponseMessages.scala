@@ -4,14 +4,13 @@ import java.util.UUID
 
 import models.board.mutation.UpdateSegment
 import models.brawl.{ PlayerResult, Brawl }
-import models.ui.MenuEntry
 
 sealed trait ResponseMessage
 
 case class ServerError(reason: String, content: String) extends ResponseMessage
 case class VersionResponse(version: String) extends ResponseMessage
 
-case class InitialState(user: UUID, menu: MenuEntry) extends ResponseMessage
+case class InitialState(user: UUID, username: Option[String]) extends ResponseMessage
 
 case class Pong(timestamp: Long) extends ResponseMessage
 case object SendTrace extends ResponseMessage

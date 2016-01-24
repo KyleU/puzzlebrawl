@@ -53,7 +53,8 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
   @JSExport
   def start() = networkStatus match {
     case "offline" =>
-      send(InitialState(userId, MenuEntry("Offline", action = Some("offline"))))
+      val username = None
+      send(InitialState(userId, username))
       handleStartBrawl(scenario)
     case "proxy" => socket match {
       case Some(x) if x.connected => x.send(BaseSerializers.write(getInitialMessage))

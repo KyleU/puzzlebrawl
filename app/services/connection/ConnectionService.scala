@@ -22,7 +22,7 @@ class ConnectionService(val id: UUID = UUID.randomUUID, val supervisor: ActorRef
 
   protected[this] var pendingDebugChannel: Option[ActorRef] = None
 
-  def initialState() = InitialState(user.id, MenuService.menuFor(user))
+  def initialState() = InitialState(user.id, user.username)
 
   override def preStart() = {
     supervisor ! ConnectionStarted(user, id, self)

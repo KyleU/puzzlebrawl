@@ -7,15 +7,6 @@ import play.api.libs.json._
 import utils.Config
 
 object MenuService {
-  implicit val menuEntryWrites: Writes[MenuEntry] = new Writes[MenuEntry] {
-    override def writes(e: MenuEntry) = {
-      val title = Seq("title" -> JsString(e.title))
-      val act = e.action.map(a => "action" -> JsString(a)).toSeq
-      val children = e.children.map(cs => "children" -> JsArray(cs.map(menuEntryWrites.writes)))
-      JsObject(title ++ act ++ children)
-    }
-  }
-
   def menuFor(identity: User) = if (identity.isAdmin) { adminMenu } else { basicMenu }
 
   private def act(title: String, action: String) = MenuEntry(title, action = Some(action))
