@@ -10,6 +10,10 @@ trait ActiveGemMoveHelper { this: Player =>
   def activeGemsStep() = moveActiveGems(0, -1)
 
   private[this] def moveActiveGems(xDelta: Int, yDelta: Int) = {
+    if (activeGems.isEmpty) {
+      throw new IllegalStateException(s"There are [${activeGems.size}] active gems, but at least [1] is needed.")
+    }
+
     board.incrementMoveCount(new Date().getTime)
 
     if (xDelta == 0 && yDelta == 0) {

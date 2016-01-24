@@ -30,14 +30,6 @@ define([], function () {
       this.playmat.remove(this.sprite);
       this.sprite.destroy();
     }
-
-    var self = this.playmat.players[this.playmat.self];
-    if(self.target !== undefined && this.playmat.otherPlayers.length > 1) {
-      var tgtBoard = this.playmat.players[self.target].board;
-      this.sprite.x = tgtBoard.x;
-      this.sprite.y = tgtBoard.y;
-      this.sprite.visible = true;
-    }
   };
 
   PlaymatTargets.prototype.selectTarget = function(tgt) {
