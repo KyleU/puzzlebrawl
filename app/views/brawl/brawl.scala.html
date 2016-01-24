@@ -3,9 +3,15 @@
 )@layout.basic(title = utils.Config.projectName, bodyClass = Some("dark")) {
   <div id="game-container"></div>
 
-  @modal()
-  @panels(user)
+  @panels.splash()
+  @panels.connecting()
+  @panels.menu(user)
+  @panels.scenario()
+  @panels.test()
+  @panels.instructions()
+  @panels.options()
 
+  @modal()
   @menubar()
 
   @if(debug) {

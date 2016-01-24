@@ -1,0 +1,22 @@
+@(user: models.user.User)(implicit messages: Messages)
+<div class="brawl-panel off" id="menu-panel">
+  <div class="menu-container">
+    <ul>
+      <li><div id="play-now"><a href="#normal">@Messages("index.play.now")</a></div></li>
+      <li><a href="#instructions">How To Play</a></li>
+      @if(user.roles.contains(models.user.Role.Admin)) {
+        <li><a href="@controllers.admin.routes.AdminController.index()" target="_blank">Admin</a></li>
+        <li><a href="#test">Tests</a></li>
+      }
+      <li><a href="#scenario">Scenarios</a></li>
+      <li><a href="#feedback">@Messages("index.leave.feedback")</a></li>
+      @if(user.profiles.isEmpty) {
+        <li><a href="#sign-in">@Messages("authentication.sign.in")</a></li>
+        <li><a href="#register">@Messages("registration.title")</a></li>
+      } else {
+        <li><a href="#sign-out">@Messages("profile.sign.out")</a></li>
+        <li><a href="#profile">@Messages("profile.view")</a></li>
+      }
+    </ul>
+  </div>
+</div>

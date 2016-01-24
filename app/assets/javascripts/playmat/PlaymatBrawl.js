@@ -9,7 +9,7 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
     }
     playmat.self = self;
     playmat.brawl = brawl;
-    Status.setScenario(brawl.scenario);
+    Status.setStatus(brawl.scenario);
     playmat.input = new PlaymatInput(playmat);
 
     _.each(brawl.players, function(pl) {
@@ -48,7 +48,7 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
   }
 
   function resignBrawl(playmat) {
-    Status.setScenario('Brawl Complete');
+    Status.setStatus('Brawl Complete');
     _.each(playmat.players, function(pl) {
       playmat.remove(pl.board);
       pl.labels.destroy();

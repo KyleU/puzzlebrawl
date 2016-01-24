@@ -13,7 +13,7 @@ define([], function () {
       latency = val;
       latencyEl.textContent = latency + 'ms';
     },
-    setScenario: function(val) {
+    setStatus: function(val) {
       scenario = val;
       scenarioEl.textContent = scenario;
     }
