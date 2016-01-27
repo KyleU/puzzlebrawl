@@ -33,7 +33,7 @@ trait UpdateHelper { this: BrawlService =>
   protected[this] def handleUpdateSchedule(s: UpdateSchedule) = {
     val player = brawl.playersById(s.id)
 
-    if (player.status == "active") {
+    if (player.isActive) {
       s.script match {
         case "basic" => self ! BrawlRequest(s.id, basicMove(player))
         case "spinner" => self ! BrawlRequest(s.id, spinnerMove())

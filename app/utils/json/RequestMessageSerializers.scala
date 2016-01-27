@@ -16,6 +16,7 @@ object RequestMessageSerializers {
   private[this] val observeBrawlReads = Json.reads[ObserveBrawl]
 
   private[this] val selectTargetReads = Json.reads[SelectTarget]
+  private[this] val resignBrawlReads = Json.reads[ResignBrawl]
 
   implicit val requestMessageReads = new Reads[RequestMessage] {
     override def reads(json: JsValue) = {
@@ -35,7 +36,7 @@ object RequestMessageSerializers {
         case "ObserveBrawl" => observeBrawlReads.reads(v)
 
         case "SelectTarget" => selectTargetReads.reads(v)
-        case "ResignBrawl" => JsSuccess(ResignBrawl)
+        case "ResignBrawl" => resignBrawlReads.reads(v)
 
         case "ActiveGemsLeft" => JsSuccess(ActiveGemsLeft)
         case "ActiveGemsRight" => JsSuccess(ActiveGemsRight)

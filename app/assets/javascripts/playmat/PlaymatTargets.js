@@ -9,7 +9,7 @@ define([], function () {
   };
 
   PlaymatTargets.prototype.refreshTarget = function() {
-    if(this.sprite === undefined) {
+    if(this.sprite === undefined || this.sprite === null) {
       this.sprite = new Phaser.Sprite(this.playmat.game, 0, 0, 'gems', 65);
       this.sprite.name = 'targeting-reticle';
       this.sprite.visible = false;
@@ -29,6 +29,7 @@ define([], function () {
     if(this.sprite !== undefined) {
       this.playmat.remove(this.sprite);
       this.sprite.destroy();
+      this.sprite = null;
     }
   };
 

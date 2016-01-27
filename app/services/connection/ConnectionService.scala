@@ -60,6 +60,7 @@ class ConnectionService(val id: UUID = UUID.randomUUID, val supervisor: ActorRef
     case ct: ClientTrace => timeReceive(ct) { handleClientTrace() }
     case bm: BrawlMessage => handleBrawlMessage(bm)
     case bs: BrawlStarted => handleBrawlStarted(bs.id, bs.brawlService, bs.started)
+    case bs: BrawlStopped => handleBrawlStopped(bs.id)
 
     case x => throw new IllegalArgumentException(s"Unhandled internal message [${x.getClass.getSimpleName}].")
   }

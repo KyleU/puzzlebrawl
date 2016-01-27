@@ -57,9 +57,11 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
     if(playmat.targets !== undefined && playmat.targets !== null) {
       playmat.targets.destroy();
     }
+    var id = playmat.brawl.id;
     playmat.self = null;
     playmat.players = {};
     playmat.brawl = null;
+    playmat.game.send('ResignBrawl', { id: id });
   }
 
   return {

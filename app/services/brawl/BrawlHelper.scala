@@ -5,7 +5,8 @@ import java.util.UUID
 import models.board.mutation.Mutation.TargetChanged
 import models.board.mutation.UpdateSegment
 import models.brawl.Brawl
-import models.{ PlayerUpdate, MessageSet, PlayerLoss, ResponseMessage }
+import models._
+import play.api.libs.concurrent.Akka
 import utils.Logging
 import utils.metrics.InstrumentedActor
 
@@ -39,6 +40,14 @@ trait BrawlHelper
     observerConnections.foreach(_._1.connectionActor.foreach(_ ! message))
   }
 
+  protected[this] def onResign(brawlId: UUID, playerId: UUID) = {
+    if (brawlId != id) {
+      throw new IllegalStateException(s"Tried to resign brawl [$brawlId], but active brawl is [$id].")
+    }
+    log.info(s"Player [$playerId] has resigned from brawl [$id].")
+    brawl.onLoss(playerId)
+  }
+
   override def onLoss(playerId: UUID) = {
     sendToAll(PlayerLoss(playerId))
     brawl.players.filter(_.target.contains(playerId)).foreach { p =>
@@ -49,5 +58,13 @@ trait BrawlHelper
       }
     }
   }
-  override def onComplete() = sendToAll(brawl.getCompletionReport)
+
+  override def onComplete() = {
+    val report = brawl.getCompletionReport
+    sendToAll(report)
+    val duration = utils.Formatter.withCommas(report.durationMs)
+    val totalMoves = report.results.map(_.moveCount).sum
+    log.info(s"Brawl [$id] completed after [${duration}ms] and [$totalMoves] total moves.")
+    players.foreach(p => removePlayer(p.userId))
+  }
 }

@@ -16,7 +16,7 @@ object Client {
     unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "0.8.2",
-      "com.lihaoyi" %%% "upickle" % "0.3.6"
+      "com.lihaoyi" %%% "upickle" % "0.3.7"
     ),
     scalaJSStage in Global := FastOptStage,
     scapegoatIgnoredFiles := Seq(".*/json/.*"),
@@ -25,8 +25,7 @@ object Client {
   )
 
   lazy val client = (project in file("client"))
-    .enablePlugins(GitVersioning)
-    .enablePlugins(GitBranchPrompt)
+    .enablePlugins(GitVersioning, GitBranchPrompt)
     .settings(scalariformSettings: _*)
     .enablePlugins(ScalaJSPlugin, ScalaJSPlay)
     .settings(clientSettings: _*)

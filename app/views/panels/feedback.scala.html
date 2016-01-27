@@ -1,0 +1,9 @@
+@()(implicit messages: Messages)
+<div class="brawl-panel off" id="feedback-panel">
+  <div class="container">
+    <h4 class="feedback-prompt">@Messages("feedback.prompt")</h4>
+    <textarea name="feedback" id="feedback-input"></textarea>
+    <br>
+    <input type="submit" id="feedback-submit" value="@Messages("feedback.submit")" />
+  </div>
+</div>

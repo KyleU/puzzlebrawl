@@ -46,11 +46,18 @@ define([
   };
 
   Playmat.prototype.onPlayerLoss = function(playerId) {
-    this.players[playerId].board.alpha = 0.5;
+    if(this.players.length > 0) {
+      this.players[playerId].board.alpha = 0.5;
+    }
+    if(PlaymatBrawl.pendingNav !== undefined && PlaymatBrawl.pendingNav !== null) {
+      this.game.navigation.navigate(PlaymatBrawl.pendingNav);
+      PlaymatBrawl.pendingNav = null;
+    }
   };
 
-  Playmat.prototype.resignIfPlaying = function() {
+  Playmat.prototype.resignIfPlaying = function(pendingNav) {
     if(this.brawl !== null && this.brawl !== undefined) {
+      PlaymatBrawl.pendingNav = pendingNav;
       PlaymatBrawl.resignBrawl(this);
     }
   };

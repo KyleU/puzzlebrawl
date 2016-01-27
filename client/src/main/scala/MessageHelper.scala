@@ -40,7 +40,12 @@ trait MessageHelper { this: PuzzleBrawl =>
         send(PlayerUpdate(p.id, p.dropActiveFullTurn(brawl)))
       }
 
-      case "ResignBrawl" => throw new IllegalStateException("TODO")
+      case "ResignBrawl" => activePlayer.foreach { p =>
+        if (v.id.toString != brawl.id.toString) {
+          throw new IllegalStateException(s"Tried to resign brawl [${v.id}], but active brawl is [${brawl.id}].")
+        }
+        onLoss(p.id)
+      }
 
       case _ => throw new IllegalStateException(s"Invalid message [$c].")
     }

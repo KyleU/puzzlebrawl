@@ -31,7 +31,7 @@ object RequestMessageSerializers {
         case "ObserveBrawl" => readJs[ObserveBrawl](v)
 
         case "SelectTarget" => readJs[SelectTarget](v)
-        case "ResignBrawl" => ResignBrawl
+        case "ResignBrawl" => readJs[ResignBrawl](v)
 
         case "ActiveGemsLeft" => ActiveGemsLeft
         case "ActiveGemsRight" => ActiveGemsRight
@@ -57,7 +57,7 @@ object RequestMessageSerializers {
         case jb: JoinBrawl => writeJs(jb)
         case ob: ObserveBrawl => writeJs(ob)
         case st: SelectTarget => writeJs(st)
-        case ResignBrawl => Js.Obj
+        case rb: ResignBrawl => writeJs(rb)
         case _: ActiveGemsMessage => Js.Obj
         case _ => throw new IllegalStateException(s"Invalid Message [${rm.getClass.getName}].")
       }

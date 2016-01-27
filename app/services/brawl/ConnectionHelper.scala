@@ -31,29 +31,40 @@ trait ConnectionHelper { this: BrawlService =>
   }
 
   protected[this] def handleConnectionStopped(connectionId: UUID) {
+    players.find(_.connectionId.contains(connectionId)) match {
+      case Some(player) => removePlayer(player.userId)
+      case None => observerConnections.find(_._1.connectionId.contains(connectionId)) match {
+        case Some(observerConnection) => removeObserver(observerConnection._1.userId)
+        case None => log.warn(s"Unknown connection [$connectionId].")
+      }
+    }
+  }
+
+  private[this] def stopIfEmpty() = {
     import play.api.Play.current
     import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
     import scala.concurrent.duration._
 
-    players.find(_.connectionId.contains(connectionId)) match {
-      case Some(player) =>
-        log.info(s"Player connection [$connectionId] stopped.")
-        player.connectionId = None
-        player.connectionActor = None
-      case None => observerConnections.find(_._1.connectionId.contains(connectionId)) match {
-        case Some(observerConnection) =>
-          log.info(s"Observer connection [$connectionId] stopped.")
-          observerConnection._1.connectionId = None
-          observerConnection._1.connectionActor = None
-        case None =>
-          throw new IllegalStateException(s"Unknown connection [$connectionId].")
-      }
-    }
-
     val hasPlayer = players.exists(_.connectionId.isDefined) || observerConnections.exists(_._1.connectionId.isDefined)
     if (!hasPlayer) {
       Akka.system.scheduler.scheduleOnce(30.seconds, self, StopBrawlIfEmpty)
     }
+  }
+
+  protected[this] def removePlayer(userId: UUID) = {
+    val player = players.find(_.userId == userId).getOrElse(throw new IllegalStateException(s"Unknown player [$userId]."))
+    player.connectionId = None
+    player.connectionActor = None
+    log.info(s"Player [$userId] removed from brawl [$id].")
+    stopIfEmpty()
+  }
+
+  protected[this] def removeObserver(userId: UUID) = {
+    val observer = observerConnections.find(_._1.userId == userId).getOrElse(throw new IllegalStateException(s"Unknown observer [$userId]."))
+    observer._1.connectionId = None
+    observer._1.connectionActor = None
+    log.info(s"Observer [$userId] removed from brawl [$id].")
+    stopIfEmpty()
   }
 }

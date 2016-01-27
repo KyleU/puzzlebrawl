@@ -23,20 +23,5 @@
       <br/>
       <input type="submit" class="submit" value="Register" />
     </form>
-
-    @defining(services.user.SocialAuthProviders.providers) { providers =>
-      @if(providers.nonEmpty) {
-        <div>
-          <p>@Messages("registration.social.sign.in")</p>
-          <div>
-          @for(p <- providers if p._1 != "credentials") {
-            <a title="Sign in with @p._2" href="@controllers.auth.routes.AuthenticationController.authenticateSocial(p._1)" class="provider @p._1">
-              <img src="@routes.Assets.versioned(s"images/providers/${p._1}.png")">
-            </a>
-          }
-          </div>
-        </div>
-      }
-    }
   </div>
 }

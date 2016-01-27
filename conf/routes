@@ -5,10 +5,6 @@ GET         /ping                              controllers.HomeController.ping(t
 # Websocket
 GET         /websocket                         controllers.WebsocketController.connect()
 
-# Feedback
-GET         /feedback                          controllers.FeedbackController.feedbackForm
-POST        /feedback                          controllers.FeedbackController.submitFeedback
-
 # Authentication
 GET         /signup                            controllers.auth.RegistrationController.registrationForm
 POST        /signup                            controllers.auth.RegistrationController.register
@@ -16,10 +12,6 @@ GET         /signin                            controllers.auth.AuthenticationCo
 POST        /signin                            controllers.auth.AuthenticationController.authenticateCredentials
 GET         /signin/:provider                  controllers.auth.AuthenticationController.authenticateSocial(provider)
 GET         /signout                           controllers.auth.AuthenticationController.signOut
-
-# Profile
-GET         /profile                           controllers.ProfileController.profile
-GET         /options/set/:option/:value        controllers.ProfileController.setOption(option, value)
 
 # Admin
 ->          /admin                             admin.Routes

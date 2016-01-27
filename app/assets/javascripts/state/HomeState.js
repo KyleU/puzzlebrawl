@@ -24,8 +24,13 @@ define(['dialog/Modal', 'state/GameState', 'state/HomeMessageHandler'], function
   };
 
   HomeState.prototype.initialStateReceived = function(state) {
-    this.game.userId = state.user;
-    this.game.navigation.navigate();
+    this.game.userId = state.userId;
+    this.game.username = state.username;
+    var h = window.location.hash;
+    if(h.charAt(0) === '#') {
+      h = h.substr(1);
+    }
+    this.game.navigation.navigate(h);
   };
 
   HomeState.prototype.onMessage = function(c, v) {

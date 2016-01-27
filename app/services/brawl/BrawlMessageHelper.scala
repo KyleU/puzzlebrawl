@@ -26,14 +26,11 @@ trait BrawlMessageHelper { this: BrawlService =>
         case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(m => sendMove(m))
         case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active-step", Seq(m))))))
         case ActiveGemsDrop => sendToAll(PlayerUpdate(player.id, player.dropActiveFullTurn(brawl)))
-
         case st: SelectTarget => if (!player.target.contains(st.target)) {
           player.target = Some(st.target)
           sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("target", Seq(TargetChanged(st.target))))))
         }
-
-        case ResignBrawl => log.info(s"Player [${player.id}] has resigned from brawl [$id].")
-
+        case rb: ResignBrawl => onResign(rb.id, player.id)
         case r => log.warn(s"BrawlService received unknown brawl message [${utils.Formatter.className(r)}].")
       }
     } catch {

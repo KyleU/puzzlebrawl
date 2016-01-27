@@ -7,7 +7,6 @@ import upickle.legacy._
 
 import BaseSerializers._
 import BrawlSerializers._
-import MenuSerializers._
 import MutationSerializers._
 
 object ResponseMessageSerializers {

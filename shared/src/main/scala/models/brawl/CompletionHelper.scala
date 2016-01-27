@@ -10,7 +10,7 @@ trait CompletionHelper { this: Brawl =>
     p.status = "loss"
     p.completed = Some(new Date().getTime)
     callbacks.foreach(_.onLoss(playerId))
-    val teams = players.groupBy(_.team).map(x => x._1 -> x._2.exists(_.status == "active"))
+    val teams = players.groupBy(_.team).map(x => x._1 -> x._2.exists(_.isActive))
     if (teams.count(_._2) < 2) {
       onComplete()
     }
@@ -18,7 +18,7 @@ trait CompletionHelper { this: Brawl =>
 
   private[this] def onComplete() = {
     status = "complete"
-    players.filter(_.status == "active").foreach { p =>
+    players.filter(_.isActive).foreach { p =>
       p.status = "win"
       p.completed = Some(new Date().getTime)
     }

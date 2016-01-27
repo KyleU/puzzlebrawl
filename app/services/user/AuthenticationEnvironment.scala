@@ -30,17 +30,15 @@ class AuthenticationEnvironment @javax.inject.Inject() (val wsClient: WSClient) 
 
   val clock = Clock()
 
-  val authInfoService = new DelegableAuthInfoRepository(PasswordInfoService, OAuth1InfoService, OAuth2InfoService, OpenIdInfoService)
+  val authInfoService = new DelegableAuthInfoRepository(PasswordInfoService)
 
   val credentials = new CredentialsProvider(authInfoService, hasher, Seq(hasher))
-
-  private[this] val sap = new SocialAuthProviders(play.api.Play.current.configuration, httpLayer, credentials, idGenerator, clock)
 
   val authProvider = new BasicAuthProvider(authInfoService, hasher, Nil)
 
   override val requestProviders = Seq(authProvider)
-  val providersSeq = sap.providers
-  val providersMap = sap.providers.toMap
+  val providersSeq = Seq("credentials" -> credentials)
+  val providersMap = providersSeq.toMap
 
   val avatarService = new GravatarService(httpLayer)
 
