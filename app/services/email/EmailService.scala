@@ -30,12 +30,11 @@ class EmailService @javax.inject.Inject() (mailerClient: MailerClient, config: C
 
   def sendDailyReport(
     d: LocalDate,
-    color: String,
     metrics: Map[DailyMetric.Metric, Long],
     totals: Map[DailyMetric.Metric, Long],
     wins: Seq[(BrawlHistory, Seq[User])],
     tableCounts: Seq[(String, Long)]) = {
-    val html = views.html.admin.report.emailReport(d, color, metrics, totals, wins, tableCounts).toString()
+    val html = views.html.admin.report.emailReport(d, metrics, totals, wins, tableCounts).toString()
     sendMessage(adminFrom, config.adminEmail, s"${Config.projectName} report for [$d]", adminTextMessage, html)
     DailyMetricService.setMetric(d, DailyMetric.ReportSent, 1L)
   }

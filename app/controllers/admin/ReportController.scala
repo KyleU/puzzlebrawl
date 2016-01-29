@@ -22,7 +22,7 @@ class ReportController @javax.inject.Inject() (override val ctx: ApplicationCont
       totals <- DailyMetricService.getTotals(d)
       wins <- BrawlHistoryService.getWins(d)
       counts <- Future.sequence(tables.map(table => Database.query(ReportQueries.CountTable(table))))
-    } yield Ok(views.html.admin.report.emailReport(d, request.identity.preferences.color, metrics._2._1, totals, wins, counts))
+    } yield Ok(views.html.admin.report.emailReport(d, metrics._2._1, totals, wins, counts))
   }
 
   def trend() = withAdminSession("trend") { implicit request =>

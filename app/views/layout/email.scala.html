@@ -1,15 +1,13 @@
-@(title: String, color: String)(content: Html)<!DOCTYPE html>
-@defining(utils.web.CssEmailStyles(color)) { css =>
+@(title: String)(content: Html)<!DOCTYPE html>
 <html>
   <head>
     <title>@title</title>
     <meta charset="utf-8" />
   </head>
-  <body style="@css.body">
-    <div style="@css.body">
-      <div><img src="@css.logoSource" style="@css.logo" /></div>
+  <body style="@utils.web.CssEmailStyles.body">
+    <div style="@utils.web.CssEmailStyles.body">
+      <div><img src="@utils.web.CssEmailStyles.logoSource" style="@utils.web.CssEmailStyles.logo" /></div>
       @content
     </div>
   </body>
 </html>
-}

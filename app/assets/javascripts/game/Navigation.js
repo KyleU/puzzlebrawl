@@ -2,6 +2,18 @@
 define(['utils/Status'], function (Status) {
   'use strict';
 
+  var states = {
+    '': ['Home', 'menu'],
+    'home': ['Home', 'menu'],
+    'menu': ['Home', 'menu'],
+    'instructions': ['Instructions', 'instructions'],
+    'test': ['Tests', 'test'],
+    'scenario': ['Scenarios', 'scenario'],
+    'options': ['Options', 'options'],
+    'feedback': ['Feedback', 'feedback'],
+    'status': ['Status', 'status']
+  };
+
   function Navigation(game) {
     this.game = game;
     var self = this;
@@ -30,46 +42,17 @@ define(['utils/Status'], function (Status) {
         return false;
       }
     }
-
-    switch(key) {
-      case '':
-      case 'home':
-      case 'menu':
-        Status.setStatus('Home');
-        this.game.panels.show('menu');
-        break;
-      case 'instructions':
-        Status.setStatus('Instructions');
-        this.game.panels.show(key);
-        break;
-      case 'test':
-        Status.setStatus('Tests');
-        this.game.panels.show(key);
-        break;
-      case 'scenario':
-        Status.setStatus('Scenarios');
-        this.game.panels.show(key);
-        break;
-      case 'options':
-        Status.setStatus('Options');
-        this.game.panels.show(key);
-        break;
-      case 'feedback':
-        Status.setStatus('Feedback');
-        this.game.panels.show(key);
-        break;
-      case 'status':
-        Status.setStatus('Status');
-        this.game.panels.show('status');
-        break;
-      case null:
-      case undefined:
-        throw 'Key was not provided.';
-      default:
-        Status.setStatus('Starting Brawl');
-        this.game.panels.show('gameplay');
-        this.game.send('StartBrawl', { 'scenario': key });
-        break;
+    if(key === null || key === undefined) {
+      throw 'Key was not provided.';
+    }
+    var action = states[key];
+    if(action === null || action === undefined) {
+      Status.setStatus('Starting Brawl');
+      this.game.panels.show('gameplay');
+      this.game.send('StartBrawl', { 'scenario': key });
+    } else {
+      Status.setStatus(action[0]);
+      this.game.panels.show(action[1]);
     }
 
     return true;

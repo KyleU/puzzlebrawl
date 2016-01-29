@@ -1,6 +1,6 @@
 package utils.web
 
-case class CssEmailStyles(colorId: String) {
+object CssEmailStyles {
   val colorHex = "#dddddd"
   val alignRight = "text-align: right;"
 

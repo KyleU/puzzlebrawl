@@ -1,12 +1,10 @@
-@()
-<div class="brawl-panel off" id="scenario-panel">
+@()<div class="brawl-panel off" id="scenario-panel">
   <div class="menu-container">
     <h4>Scenarios</h4>
     <div>
       <ul>
       @for(scenario <- models.scenario.Scenario.all) {
-        <li><a href="#@scenario._1">@scenario._2</a></li>
-      }
+        <li><a href="#@scenario._1">@scenario._2</a></li>}
       </ul>
     </div>
   </div>
