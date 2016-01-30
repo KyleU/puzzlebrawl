@@ -46,7 +46,7 @@ define([
   };
 
   Playmat.prototype.onPlayerLoss = function(playerId) {
-    if(this.players.length > 0) {
+    if(this.players !== undefined && this.players[playerId] !== undefined) {
       this.players[playerId].board.alpha = 0.5;
     }
     if(PlaymatBrawl.pendingNav !== undefined && PlaymatBrawl.pendingNav !== null) {

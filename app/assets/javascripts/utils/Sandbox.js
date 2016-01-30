@@ -1,8 +1,9 @@
 /* global define:false */
 define([], function () {
   function sandbox() {
-    //return 'Ok: ' + 'Yeah!';
-    throw new Error('!');
+    window.brawl.gameAudio.play('move');
+    var msg = '...';
+    return 'Ok: ' + msg;
   }
 
   return {

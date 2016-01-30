@@ -44,6 +44,22 @@ define(['board/BoardGems'], function (BoardGems) {
       applyMutation(board, mutation);
     });
 
+    if(board.owner === board.game.playmat.self) {
+      switch(segment.category) {
+        case 'active-move':
+          board.game.gameAudio.play('move');
+          break;
+        case 'active-drop':
+          board.game.gameAudio.play('drop');
+          break;
+        case 'crash':
+          board.game.gameAudio.play('crash');
+          break;
+        default:
+          break;
+      }
+    }
+
     var sd = segment.scoreDelta;
     if(sd !== undefined) {
       if(sd instanceof Array) {

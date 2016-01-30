@@ -1,8 +1,8 @@
 /* global define:false */
 /* global PuzzleBrawl:false */
 define([
-  'game/Navigation', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'panels/Panels', 'playmat/Playmat'
-], function (Navigation, GemTextures, Gamepad, Gesture, Keyboard, Panels, Playmat) {
+  'audio/Audio', 'game/Navigation', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'panels/Panels', 'playmat/Playmat'
+], function (Audio, Navigation, GemTextures, Gamepad, Gesture, Keyboard, Panels, Playmat) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -25,9 +25,18 @@ define([
       throw new Error('Game already initialized.');
     }
 
+    // Textures
+    game.gemTextures = new GemTextures(game);
+
+    // Playmat
+    game.playmat = new Playmat(game);
+
+    // Panels
     game.panels = new Panels();
     game.panels.show('connecting');
+    game.navigation = new Navigation(game);
 
+    // Input
     game.keyboard = new Keyboard(game);
     game.keyboard.init();
 
@@ -39,12 +48,10 @@ define([
 
     game.gameInput.pause();
 
-    game.gemTextures = new GemTextures(game);
+    // Audio
+    game.gameAudio = new Audio(game);
 
-    game.playmat = new Playmat(game);
-
-    game.navigation = new Navigation(game);
-
+    // Scala.js
     createLocalServer(game);
   };
 });
