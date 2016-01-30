@@ -22,9 +22,9 @@ class EmailService @javax.inject.Inject() (mailerClient: MailerClient, config: C
     sendMessage(Messages("email.from"), to, welcomeSubject, textTemplate.toString, htmlTemplate)
   }
 
-  def feedbackSubmitted(fb: UserFeedback, user: User)(implicit messages: Messages) = {
+  def feedbackSubmitted(fb: UserFeedback)(implicit messages: Messages) = {
     val text = "You should really use HTML mail."
-    val html = views.html.email.feedbackHtml(fb, user).toString()
+    val html = views.html.email.feedbackHtml(fb).toString()
     sendMessage(Messages("email.from"), config.adminEmail, s"${Config.projectName} user feedback from [${fb.userId}]", text, html)
   }
 

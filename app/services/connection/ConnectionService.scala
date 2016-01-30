@@ -35,6 +35,8 @@ class ConnectionService(val id: UUID = UUID.randomUUID, val supervisor: ActorRef
     case p: Ping => timeReceive(p) { out ! Pong(p.timestamp) }
     case GetVersion => timeReceive(GetVersion) { out ! VersionResponse(Config.version) }
     case sp: SetPreference => timeReceive(sp) { handleSetPreference(sp) }
+
+    case fr: FeedbackResponse => timeReceive(fr) { handleFeedbackResponse(fr.contact, fr.feedback) }
     case dr: DebugInfo => timeReceive(dr) { handleDebugInfo(dr.data) }
 
     case sb: StartBrawl => timeReceive(sb) { handleStartBrawl(sb.scenario, None) }

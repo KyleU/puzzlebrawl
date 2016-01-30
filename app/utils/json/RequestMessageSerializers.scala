@@ -8,6 +8,7 @@ object RequestMessageSerializers {
   private[this] val pingReads = Json.reads[Ping]
   // case object [GetVersion]
   private[this] val debugInfoReads = Json.reads[DebugInfo]
+  private[this] val feedbackResponseReads = Json.reads[FeedbackResponse]
 
   private[this] val setPreferenceReads = Json.reads[SetPreference]
 
@@ -27,6 +28,8 @@ object RequestMessageSerializers {
         case "MalformedRequest" => malformedRequestReads.reads(v)
         case "Ping" => pingReads.reads(v)
         case "GetVersion" => JsSuccess(GetVersion)
+
+        case "FeedbackResponse" => feedbackResponseReads.reads(v)
         case "DebugInfo" => debugInfoReads.reads(v)
 
         case "SetPreference" => setPreferenceReads.reads(v)

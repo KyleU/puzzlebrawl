@@ -10,6 +10,7 @@ case class Ping(timestamp: Long) extends RequestMessage
 case object GetVersion extends RequestMessage
 case class SetPreference(name: String, value: String) extends RequestMessage
 
+case class FeedbackResponse(contact: String, feedback: String) extends RequestMessage
 case class DebugInfo(data: String) extends RequestMessage
 
 case class StartBrawl(scenario: String) extends RequestMessage

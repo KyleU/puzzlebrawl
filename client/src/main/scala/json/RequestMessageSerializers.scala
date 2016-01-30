@@ -20,11 +20,13 @@ object RequestMessageSerializers {
       }
       val ret: RequestMessage = c match {
         case "MalformedRequest" => readJs[MalformedRequest](v)
+
         case "Ping" => readJs[Ping](v)
         case "GetVersion" => GetVersion
-        case "DebugInfo" => readJs[DebugInfo](v)
-
         case "SetPreference" => readJs[SetPreference](v)
+
+        case "FeedbackResponse" => readJs[FeedbackResponse](v)
+        case "DebugInfo" => readJs[DebugInfo](v)
 
         case "StartBrawl" => readJs[StartBrawl](v)
         case "JoinBrawl" => readJs[JoinBrawl](v)
@@ -52,6 +54,7 @@ object RequestMessageSerializers {
         case p: Ping => writeJs(p)
         case GetVersion => Js.Obj
         case dr: DebugInfo => writeJs(dr)
+        case fr: FeedbackResponse => writeJs(fr)
         case sp: SetPreference => writeJs(sp)
         case sb: StartBrawl => writeJs(sb)
         case jb: JoinBrawl => writeJs(jb)

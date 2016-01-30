@@ -11,29 +11,12 @@ object UserFeedback {
     authorId: UUID,
     content: String,
     occurred: LocalDateTime)
-
-  /*
-  val obj = UserFeedback(
-    id = UUID.randomUUID,
-    userId = request.identity.id,
-    brawlId = brawlId,
-    context = context,
-    contact = contact,
-    content = feedback.mkString("\n\n"),
-    occurred = DateUtils.now
-  )
-
-  emailService.feedbackSubmitted(obj, request.identity)
-
-  Database.execute(UserFeedbackQueries.insert(obj)).map { x =>
-    Ok("Your feedback has been submitted. Thanks!")
-  }
-   */
 }
 
 case class UserFeedback(
     id: UUID,
     userId: UUID,
+    username: Option[String],
     brawlId: Option[UUID],
     context: String,
     contact: Option[String],

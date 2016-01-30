@@ -23,9 +23,10 @@ define([], function() {
         setTimeout(function() { promptEl.innerText = originalPrompt; }, 2500);
       } else {
         feedbackEl.value = '';
+        game.send('FeedbackResponse', msg);
         promptEl.innerText = 'Thanks for your feedback!';
         setTimeout(function() { promptEl.innerText = originalPrompt; }, 2500);
-        setTimeout(function() { game.navigation.navigate('home'); }, 2500);
+        setTimeout(function() { window.location = '#menu'; }, 2500);
       }
     };
   }

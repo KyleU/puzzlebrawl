@@ -9,8 +9,8 @@ import org.joda.time.LocalDateTime
 
 object UserFeedbackQueries extends BaseQueries[UserFeedback] {
   override protected val tableName = "user_feedback"
-  override protected val columns = Seq("id", "user_id", "brawl_id", "context", "contact", "content", "occurred")
-  override protected val searchColumns = Seq("id::text", "user_id::text", "feedback")
+  override protected val columns = Seq("id", "user_id", "username", "brawl_id", "context", "contact", "content", "occurred")
+  override protected val searchColumns = Seq("id::text", "user_id::text", "username", "context", "contact", "feedback")
 
   val insert = Insert
   def searchCount(q: String, groupBy: Option[String] = None) = new SearchCount(q, groupBy)
@@ -27,13 +27,14 @@ object UserFeedbackQueries extends BaseQueries[UserFeedback] {
   override protected def fromRow(row: Row) = {
     val id = row.as[UUID]("id")
     val userId = row.as[UUID]("user_id")
+    val username = row.asOpt[String]("username")
     val brawlId = row.asOpt[UUID]("brawl_id")
     val context = row.as[String]("context")
     val contact = row.asOpt[String]("contact")
     val content = row.as[String]("feedback")
     val occurred = row.as[LocalDateTime]("occurred")
-    UserFeedback(id, userId, brawlId, context, contact, content, occurred)
+    UserFeedback(id, userId, username, brawlId, context, contact, content, occurred)
   }
 
-  override protected def toDataSeq(f: UserFeedback) = Seq[Any](f.id, f.userId, f.brawlId, f.context, f.contact, f.content, f.occurred)
+  override protected def toDataSeq(f: UserFeedback) = Seq[Any](f.id, f.userId, f.username, f.brawlId, f.context, f.contact, f.content, f.occurred)
 }

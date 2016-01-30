@@ -61,7 +61,6 @@ define(['utils/Sandbox', 'utils/Status'], function (Sandbox, Status) {
         action[2](this.game);
       }
     }
-
     return true;
   };
 
