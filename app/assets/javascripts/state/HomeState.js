@@ -1,10 +1,9 @@
 /* global define:false */
-define(['panels/Modal', 'panels/Options', 'state/GameState', 'state/HomeMessageHandler'], function (Modal, Options, GameState, handler) {
+define(['panels/Options', 'panels/Feedback', 'state/GameState', 'state/HomeMessageHandler'], function (Options, Feedback, GameState, handler) {
   'use strict';
 
   function HomeState(game) {
     GameState.call(this, 'home', game);
-    this.options = new Options(game);
   }
 
   HomeState.prototype = Object.create(GameState.prototype);
@@ -13,6 +12,8 @@ define(['panels/Modal', 'panels/Options', 'state/GameState', 'state/HomeMessageH
   HomeState.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
     this.game.init();
+    this.options = new Options(this.game);
+    Feedback.init(this.game);
   };
 
   HomeState.prototype.update = function() {

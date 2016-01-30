@@ -37,6 +37,8 @@ define([
     game.gesture = new Gesture(game);
     game.gesture.init();
 
+    game.gameInput.pause();
+
     game.gemTextures = new GemTextures(game);
 
     game.playmat = new Playmat(game);

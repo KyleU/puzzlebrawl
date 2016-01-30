@@ -17,6 +17,14 @@ define(['utils/Sandbox'], function (Sandbox) {
     }
   }
 
+  GameInput.prototype.pause = function() {
+    this.game.input.enabled = false;
+  };
+
+  GameInput.prototype.resume = function() {
+    this.game.input.enabled = true;
+  };
+
   GameInput.prototype.onInput = function(t, param) {
     if(this.game.playmat !== undefined && this.game.playmat.selfBoard.isTweening) {
       console.log('Suppressed input [' + t + '] while tweening.');

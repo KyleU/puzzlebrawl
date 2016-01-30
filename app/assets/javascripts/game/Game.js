@@ -24,8 +24,9 @@ define(['game/GameInit', 'game/GameInput', 'state/InitialState'], function (game
 
   Game.prototype.init = function() { gameInit(this); };
 
-  Game.prototype.send = function(c, v) { this.localServer.receive(c, v); };
   Game.prototype.onInput = function(t, param) { this.gameInput.onInput(t, param); };
+
+  Game.prototype.send = function(c, v) { this.localServer.receive(c, v); };
   Game.prototype.onMessage = function(c, v) { this.state.getCurrentState().onMessage(c, v); };
 
   return Game;

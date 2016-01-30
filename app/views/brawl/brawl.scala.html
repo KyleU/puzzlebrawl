@@ -3,16 +3,7 @@
 )@layout.basic(title = utils.Config.projectName, bodyClass = Some("theme-" + user.preferences.theme)) {
 
 <div id="game-container"></div>
-
-@panels.splash()
-@panels.connecting()
-@panels.menu(user)
-@panels.scenario()
-@panels.test()
-@panels.instructions()
-@panels.options(user)
-@panels.status()
-@panels.feedback()
+@panels.all(user)
 @modal()
 @menubar()
 @if(debug) {

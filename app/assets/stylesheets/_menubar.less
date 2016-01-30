@@ -4,7 +4,12 @@
   height: 32px;
   width: 100%;
   background-color: #444444;
-  min-width: 400px;
+}
+
+@media only screen and (max-device-width: 400px) {
+  #status-scenario-container, #status-connection, #status-latency-container {
+    display:none;
+  }
 }
 
 #status-scenario-container {

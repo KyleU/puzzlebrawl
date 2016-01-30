@@ -19,6 +19,19 @@
   display: block;
 }
 
+.panel-button {
+  color: #000;
+  font-size: 20px;
+  background: #ddd;
+  padding: 5px 10px 5px 10px;
+  border: 0;
+  text-decoration: none;
+}
+.panel-button:hover {
+  background: #bbb;
+  text-decoration: none;
+}
+
 #splash-panel, #connecting-panel {
   background-color: #000;
   div {
@@ -59,5 +72,26 @@
   li {
     margin: 0;
     padding: 0;
+  }
+}
+
+#feedback-panel {
+  .container {
+    text-align: center;
+    textarea {
+      width: 250px;
+      height: 140px;
+      border: 0;
+      padding: 5px;
+      margin: 10px 0;
+      font-size: 110%;
+    }
+    #feedback-contact {
+      width: 250px;
+      border: 0;
+      padding: 5px;
+      margin: 0;
+      font-size: 110%;
+    }
   }
 }

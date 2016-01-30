@@ -25,6 +25,7 @@ define(['panels/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
         break;
       case 'BrawlCompletionReport':
         Modal.show('Game Complete', JSON.stringify(v, null, 2), true);
+        homeState.game.gameInput.pause();
         break;
       case 'ServerError':
         Modal.show('Server Error', v.reason + ': ' + v.content);

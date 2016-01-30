@@ -10,6 +10,8 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
     playmat.self = self;
     playmat.brawl = brawl;
     Status.setStatus(brawl.scenario);
+
+    playmat.game.gameInput.resume();
     playmat.input = new PlaymatInput(playmat);
 
     _.each(brawl.players, function(pl) {
