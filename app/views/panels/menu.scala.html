@@ -5,6 +5,7 @@
       <li><a href="#instructions">How To Play</a></li>
       @if(user.roles.contains(models.user.Role.Admin)) {
         <li><a href="@controllers.admin.routes.AdminController.index()" target="_blank">Admin</a></li>
+        <li><a href="#sandbox">Sandbox</a></li>
         <li><a href="#test">Tests</a></li>
       }
       <li><a href="#scenario">Scenarios</a></li>

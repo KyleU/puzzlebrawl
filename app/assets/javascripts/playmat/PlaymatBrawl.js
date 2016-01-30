@@ -5,7 +5,7 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
 
   function startBrawl(playmat, self, brawl) {
     if(playmat.brawl !== undefined && playmat.brawl !== null) {
-      throw 'Already using brawl [' + playmat.brawl.id + '].';
+      throw new Error('Already using brawl [' + playmat.brawl.id + '].');
     }
     playmat.self = self;
     playmat.brawl = brawl;

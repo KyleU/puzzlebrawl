@@ -34,6 +34,7 @@ class NotificationService @javax.inject.Inject() (ws: WSClient, config: Config) 
     }
     ret
   } else {
+    log.info(s"Post to [$channel] with Slack disabled: [$msg].")
     Future.successful("Slack is not enabled.")
   }
 }

@@ -19,6 +19,8 @@ object Schema extends Logging {
     CreateOpenIdInfoTable,
     CreateSessionInfoTable,
 
+    CreateAnalyticsEventsTable,
+
     CreateBrawlsTable,
     CreateRequestsTable,
     CreateClientTraceTable,

@@ -1,5 +1,5 @@
 /* global define:false */
-define([], function () {
+define(['sandbox/Sandbox'], function (Sandbox) {
   'use strict';
 
   function GameInput(game) {
@@ -54,6 +54,9 @@ define([], function () {
           break;
         case 'debug':
           this.game.send('DebugInfo', { data: param });
+          break;
+        case 'sandbox':
+          Sandbox.go();
           break;
         default:
           console.log('Unhandled input [' + t + '].');

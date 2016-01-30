@@ -19,7 +19,7 @@ define(['gem/Gem', 'utils/Config'], function (Gem, Config) {
   function moveGem(board, originalGem, x, y, xDelta, yDelta) {
     var gem = board.gems[originalGem.id];
     if(gem === null || gem === undefined) {
-      throw 'Gem with id [' + originalGem.id + '] is not present.';
+      throw new Error('Gem with id [' + originalGem.id + '] is not present.');
     }
     var targetX = (x + xDelta) * Config.tile.size;
     var targetY = (board.h - (y + yDelta)) * Config.tile.size;
@@ -40,7 +40,7 @@ define(['gem/Gem', 'utils/Config'], function (Gem, Config) {
   function removeGem(board, g) {
     var gem = board.gems[g.id];
     if(gem === null || gem === undefined) {
-      throw 'Gem with id [' + g.id + '] has not been added.';
+      throw new Error('Gem with id [' + g.id + '] has not been added.');
     }
 
     var tween = board.game.add.tween(gem);

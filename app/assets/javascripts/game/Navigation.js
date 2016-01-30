@@ -1,5 +1,5 @@
 /* global define:false */
-define(['utils/Status'], function (Status) {
+define(['utils/Status', 'sandbox/Sandbox'], function (Status, Sandbox) {
   'use strict';
 
   var states = {
@@ -43,13 +43,17 @@ define(['utils/Status'], function (Status) {
       }
     }
     if(key === null || key === undefined) {
-      throw 'Key was not provided.';
+      throw new Error('Key was not provided.');
     }
     var action = states[key];
     if(action === null || action === undefined) {
-      Status.setStatus('Starting Brawl');
-      this.game.panels.show('gameplay');
-      this.game.send('StartBrawl', { 'scenario': key });
+      if(key === 'sandbox') {
+        Sandbox.go();
+      } else {
+        Status.setStatus('Starting Brawl');
+        this.game.panels.show('gameplay');
+        this.game.send('StartBrawl', {'scenario': key});
+      }
     } else {
       Status.setStatus(action[0]);
       this.game.panels.show(action[1]);

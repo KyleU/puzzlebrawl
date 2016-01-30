@@ -1,6 +1,9 @@
 package controllers
 
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.libs.json.{ JsObject, JsString }
 import play.api.mvc.Action
+import services.audit.AnalyticsService
 import utils.ApplicationContext
 
 import scala.concurrent.Future
@@ -23,7 +26,18 @@ class HomeController @javax.inject.Inject() (override val ctx: ApplicationContex
     Future.successful(Redirect(if (url.startsWith("http")) { url } else { "http://" + url }))
   }
 
-  def ping(timestamp: Long) = Action.async { implicit request =>
-    Future.successful(Ok(timestamp.toString))
+  def error() = withSession("error") { implicit request =>
+    request.body.asJson match {
+      case Some(json) =>
+        val sourceAddress = request.remoteAddress
+        AnalyticsService.error(request.identity.id, sourceAddress, json).map { result =>
+          val msg = s"Error received from user [${request.identity.id}]."
+          ctx.notificationService.alert(msg, "#production-errors")
+          Ok(JsObject(Map("result" -> JsString("All good, thanks for the report!"))))
+        }
+      case None =>
+        log.warn("Cannot parse error report with content [" + request.body.asText.getOrElse("???") + "].")
+        Future.successful(Ok(JsObject(Map("result" -> JsString("Invalid content.")))))
+    }
   }
 }

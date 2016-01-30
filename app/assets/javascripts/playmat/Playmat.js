@@ -32,7 +32,7 @@ define([
     var p = this;
     var board = p.players[update.id].board;
     if(board === undefined || board === null) {
-      throw 'Player update received with invalid id [' + update.id + '].';
+      throw new Error('Player update received with invalid id [' + update.id + '].');
     }
     board.applyMutations(update.segments, function(delta) {
       p.changeScore(update.id, delta);

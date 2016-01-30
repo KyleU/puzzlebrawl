@@ -53,7 +53,7 @@ define(['gem/GemSprites', 'utils/Config'], function(GemSprites, Config) {
 
       this.gemTextures[key] = bd.texture;
     } else {
-      throw 'Texture for [' + key + '] already loaded.';
+      throw new Error('Texture for [' + key + '] already loaded.');
     }
   };
 

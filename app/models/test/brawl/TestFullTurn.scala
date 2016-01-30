@@ -23,10 +23,10 @@ class TestFullTurn(id: UUID, self: UUID) extends BrawlTest(id, self, seed = Some
         goal.board.applyMutation(AddGem(goal.gemStream.next(), x, y))
       }
     }
-    goal.board.fullTurn()
+    goal.board.processWilds() ++ goal.board.fullTurn()
   }
 
   override def run() = {
-    test.board.fullTurn()
+    test.board.processWilds() ++ test.board.fullTurn()
   }
 }

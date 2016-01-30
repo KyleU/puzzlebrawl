@@ -17,7 +17,7 @@ define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
         if(v.key === 'sync') {
           BrawlSync.check(homeState.game.playmat.brawl, JSON.parse(v.data));
         } else {
-          throw 'Unhandled debug response [' + v.key + '].';
+          throw new Error('Unhandled debug response [' + v.key + '].');
         }
         break;
       case 'PlayerLoss':

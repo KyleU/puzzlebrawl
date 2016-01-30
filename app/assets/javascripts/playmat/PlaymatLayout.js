@@ -30,7 +30,7 @@ define(['utils/Config'], function (Config) {
 
     var selfId = this.playmat.self;
     if(selfId === null) {
-      throw 'No self id.';
+      throw new Error('No self id.');
     }
 
     var originalSize = [p.w, p.h];
@@ -38,7 +38,7 @@ define(['utils/Config'], function (Config) {
     var splitPlayers = _.partition(p.players, function(player) { return player.id === selfId; });
 
     if(splitPlayers.length !== 2 || splitPlayers[0].length !== 1) {
-      throw 'Incomplete board definitions.';
+      throw new Error('Incomplete board definitions.');
     }
 
     var self = splitPlayers[0][0];

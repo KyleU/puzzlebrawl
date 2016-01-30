@@ -22,7 +22,7 @@ define([
 
   return function(game) {
     if(game.initialized) {
-      throw 'Game already initialized.';
+      throw new Error('Game already initialized.');
     }
 
     game.panels = new Panels();

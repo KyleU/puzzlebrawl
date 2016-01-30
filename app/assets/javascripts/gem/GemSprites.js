@@ -15,7 +15,7 @@ define([], function () {
       case 'w':
         return 4;
       default:
-        throw 'Invalid color [' + color + '].';
+        throw new Error('Invalid color [' + color + '].');
     }
   }
 

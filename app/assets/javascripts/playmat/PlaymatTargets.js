@@ -35,7 +35,7 @@ define([], function () {
 
   PlaymatTargets.prototype.selectTarget = function(tgt) {
     if(this.playmat.self === tgt) {
-      throw 'Cannot select self.';
+      throw new Error('Cannot select self.');
     }
     var target = tgt;
     if(typeof target === 'number') {

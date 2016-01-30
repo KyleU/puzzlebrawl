@@ -24,7 +24,7 @@ define([], function () {
 
     var panel = this.elements[key];
     if(panel === null || panel === undefined) {
-      throw 'Invalid key [' + key + '].';
+      throw new Error('Invalid panel key [' + key + '].');
     } else {
       this.active = panel;
     }

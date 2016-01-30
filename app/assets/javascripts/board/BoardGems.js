@@ -7,7 +7,7 @@ define(['board/BoardAnimations', 'utils/Config'], function (BoardAnimations, Con
     addGem: function(board, gem, x, y) {
       var original = board.gems[gem.id];
       if(original !== null && original !== undefined) {
-        throw 'Gem [' + gem.id + '] has already been added.';
+        throw new Error('Gem [' + gem.id + '] has already been added.');
       }
       board.set(x, y, gem);
 
@@ -17,10 +17,10 @@ define(['board/BoardAnimations', 'utils/Config'], function (BoardAnimations, Con
     changeGem: function(board, newGem, x, y) {
       var g = board.at(x, y);
       if(g === null) {
-        throw 'Cannot change empty space at [' + x + ', ' + y + '].';
+        throw new Error('Cannot change empty space at [' + x + ', ' + y + '].');
       }
       if(g.id !== newGem.id) {
-        throw 'Gem at [' + x + ', ' + y + '] has id [' + g.id + '], not [' + newGem.id + '].';
+        throw new Error('Gem at [' + x + ', ' + y + '] has id [' + g.id + '], not [' + newGem.id + '].');
       }
       board.set(x, y, newGem);
 
@@ -30,7 +30,7 @@ define(['board/BoardAnimations', 'utils/Config'], function (BoardAnimations, Con
     moveGem: function(board, x, y, xDelta, yDelta) {
       var g = board.at(x, y);
       if(g === null || g === undefined) {
-        throw 'Gem at [' + x + ', ' + y + '] is not present.';
+        throw new Error('Gem at [' + x + ', ' + y + '] is not present.');
       }
 
       BoardAnimations.moveGem(board, g, x, y, xDelta, yDelta);
@@ -47,7 +47,7 @@ define(['board/BoardAnimations', 'utils/Config'], function (BoardAnimations, Con
         var gemMove = moves[gemMoveIdx];
         var gem = board.at(gemMove.x, gemMove.y);
         if(gem === null) {
-          throw 'Move attempted from empty position [' + gemMove.x + ', ' + gemMove.y + '].';
+          throw new Error('Move attempted from empty position [' + gemMove.x + ', ' + gemMove.y + '].');
         }
         board.clear(gemMove.x, gemMove.y, gem.width, gem.height);
         gems.push(gem);
@@ -70,7 +70,7 @@ define(['board/BoardAnimations', 'utils/Config'], function (BoardAnimations, Con
     removeGem: function(board, x, y) {
       var g = board.at(x, y);
       if(g === null || g === undefined) {
-        throw 'Gem at [' + x + ', ' + y + '] has not been added.';
+        throw new Error('Gem at [' + x + ', ' + y + '] has not been added.');
       }
 
       BoardAnimations.removeGem(board, g);

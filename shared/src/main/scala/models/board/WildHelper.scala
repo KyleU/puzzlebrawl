@@ -4,7 +4,6 @@ import models.Constants
 import models.board.mutation.Mutation.RemoveGem
 import models.board.mutation.UpdateSegment
 import models.gem.Color
-import models.player.Player
 
 trait WildHelper { this: Board =>
   def processWilds() = {
