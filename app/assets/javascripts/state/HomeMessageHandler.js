@@ -1,5 +1,5 @@
 /* global define:false */
-define(['dialog/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, GameState, BrawlSync) {
+define(['panels/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, GameState, BrawlSync) {
   'use strict';
 
   return function(homeState, c, v) {

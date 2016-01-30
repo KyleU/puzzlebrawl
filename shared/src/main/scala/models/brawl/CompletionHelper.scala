@@ -25,6 +25,7 @@ trait CompletionHelper { this: Brawl =>
     callbacks.foreach(_.onComplete())
   }
 
+  @SuppressWarnings(Array("VarClosure"))
   def getCompletionReport = BrawlCompletionReport(
     id = id,
     scenario = scenario,

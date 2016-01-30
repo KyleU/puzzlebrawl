@@ -49,11 +49,6 @@ object Server {
 
     scalaJSProjects := Seq(Client.client),
 
-    // Prevent Scaladoc
-    doc in Compile <<= target.map(_ / "none"),
-    sources in (Compile, doc) := Seq.empty,
-    publishArtifact in (Compile, packageDoc) := false,
-
     // Sbt-Web
     JsEngineKeys.engineType := JsEngineKeys.EngineType.Node,
     pipelineStages := Seq(scalaJSProd, rjs, digest, gzip),

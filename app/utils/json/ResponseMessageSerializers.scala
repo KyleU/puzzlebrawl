@@ -1,6 +1,7 @@
 package utils.json
 
 import models._
+import models.user.UserPreferences
 import play.api.libs.json._
 
 import utils.json.BrawlSerializers.{ brawlWrites, gemLocationWrites, playerResultWrites }
@@ -9,7 +10,10 @@ import utils.json.MutationSerializers.{ mutationWrites, updateSegmentWrites }
 object ResponseMessageSerializers {
   private[this] val serverErrorWrites = Json.writes[ServerError]
   private[this] val versionResponseWrites = Json.writes[VersionResponse]
+
+  private[this] implicit val userPreferencesWrites = Json.writes[UserPreferences]
   private[this] val initialStateWrites = Json.writes[InitialState]
+
   private[this] val pongWrites = Json.writes[Pong]
   private[this] val debugResponseWrites = Json.writes[DebugResponse]
   private[this] val disconnectedWrites = Json.writes[Disconnected]

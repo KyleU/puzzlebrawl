@@ -1,5 +1,5 @@
 /* global define:false */
-define(['sandbox/Sandbox'], function (Sandbox) {
+define(['utils/Sandbox'], function (Sandbox) {
   'use strict';
 
   function GameInput(game) {

@@ -53,8 +53,9 @@ object Logging extends Instrumented {
       super.error(message, error)
     }
     def errorThenThrow(message: => String) = {
-      this.error(message)
-      throw new IllegalStateException(message)
+      val x = new IllegalStateException(message)
+      this.error(message, x)
+      throw x
     }
     def errorThenThrow(message: => String, error: => Throwable) = {
       this.error(message, error)

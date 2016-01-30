@@ -1,6 +1,6 @@
 /* global define:false */
 /* global Phaser:false */
-define(['dialog/Modal'], function(Modal) {
+define(['panels/Modal'], function(Modal) {
   'use strict';
 
   function sendError(msg) {

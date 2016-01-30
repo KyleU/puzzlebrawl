@@ -1,5 +1,5 @@
 /* global define:false */
-define(['utils/Status', 'sandbox/Sandbox'], function (Status, Sandbox) {
+define(['utils/Sandbox', 'utils/Status'], function (Sandbox, Status) {
   'use strict';
 
   var states = {
@@ -57,6 +57,9 @@ define(['utils/Status', 'sandbox/Sandbox'], function (Status, Sandbox) {
     } else {
       Status.setStatus(action[0]);
       this.game.panels.show(action[1]);
+      if(action[2] !== undefined) {
+        action[2](this.game);
+      }
     }
 
     return true;

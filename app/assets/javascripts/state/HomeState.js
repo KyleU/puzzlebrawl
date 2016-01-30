@@ -1,9 +1,10 @@
 /* global define:false */
-define(['dialog/Modal', 'state/GameState', 'state/HomeMessageHandler'], function (Modal, GameState, handler) {
+define(['panels/Modal', 'panels/Options', 'state/GameState', 'state/HomeMessageHandler'], function (Modal, Options, GameState, handler) {
   'use strict';
 
   function HomeState(game) {
     GameState.call(this, 'home', game);
+    this.options = new Options(game);
   }
 
   HomeState.prototype = Object.create(GameState.prototype);
@@ -26,6 +27,7 @@ define(['dialog/Modal', 'state/GameState', 'state/HomeMessageHandler'], function
   HomeState.prototype.initialStateReceived = function(state) {
     this.game.userId = state.userId;
     this.game.username = state.username;
+    this.options.loadOptions(state.preferences);
     var h = window.location.hash;
     if(h.charAt(0) === '#') {
       h = h.substr(1);
