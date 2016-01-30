@@ -18,7 +18,7 @@ object BrawlServiceTest extends Logging {
 
     val initStart = DateUtils.nowMillis
     val connId = UUID.randomUUID
-    val conn = system.actorOf(ConnectionService.props(Some(connId), ctx.supervisor, User.mock, testProbe.ref))
+    val conn = system.actorOf(ConnectionService.props(Some(connId), ctx.supervisor, User.mock, testProbe.ref, "127.0.0.1"))
     val playerRecords = Seq(PlayerRecord(User.mock.id, "Test User", Some(connId), Some(conn)))
 
     system.actorOf(BrawlService.props(UUID.randomUUID, "normal", playerRecords, 0, s => {}))

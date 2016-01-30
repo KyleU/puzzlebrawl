@@ -5,16 +5,21 @@ import java.util.UUID
 import akka.actor.{ ActorRef, Props }
 import models._
 import models.user.User
-import services.ui.MenuService
 import utils.Config
 
 object ConnectionService {
-  def props(id: Option[UUID], supervisor: ActorRef, user: User, out: ActorRef) = {
-    Props(new ConnectionService(id.getOrElse(UUID.randomUUID), supervisor, user, out))
+  def props(id: Option[UUID], supervisor: ActorRef, user: User, out: ActorRef, sourceAddress: String) = {
+    Props(new ConnectionService(id.getOrElse(UUID.randomUUID), supervisor, user, out, sourceAddress))
   }
 }
 
-class ConnectionService(val id: UUID = UUID.randomUUID, val supervisor: ActorRef, val user: User, val out: ActorRef) extends ConnectionServiceHelper {
+class ConnectionService(
+    val id: UUID = UUID.randomUUID,
+    val supervisor: ActorRef,
+    val user: User,
+    val out: ActorRef,
+    val sourceAddress: String) extends ConnectionServiceHelper {
+
   protected[this] var userPreferences = user.preferences
 
   protected[this] var activeBrawlId: Option[UUID] = None

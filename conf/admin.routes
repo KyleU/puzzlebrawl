@@ -22,9 +22,9 @@ GET         /brawls                      controllers.admin.BrawlHistoryControlle
 GET         /brawls/:id                  controllers.admin.BrawlHistoryController.brawlDetail(id: java.util.UUID)
 GET         /brawls/:id/remove           controllers.admin.BrawlHistoryController.removeBrawl(id: java.util.UUID)
 
-GET         /traces                      controllers.admin.ClientTraceController.traceList(q ?= "", sortBy ?= "created", page: Int ?= 0)
-GET         /traces/:id                  controllers.admin.ClientTraceController.traceDetail(id: java.util.UUID)
-GET         /traces/:id/remove           controllers.admin.ClientTraceController.removeTrace(id: java.util.UUID)
+GET         /analytics/list              controllers.admin.AnalyticsEventController.eventList(q ?= "", sortBy ?= "created", page: Int ?= 0)
+GET         /analytics/:id               controllers.admin.AnalyticsEventController.eventDetail(id: java.util.UUID)
+GET         /analytics/:id/remove        controllers.admin.AnalyticsEventController.removeEvent(id: java.util.UUID)
 
 GET         /requests                    controllers.admin.RequestLogController.requestList(q ?= "", sortBy ?= "started", page: Int ?= 0)
 

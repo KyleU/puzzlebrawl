@@ -38,11 +38,11 @@ object AnalyticsEventQueries extends BaseQueries[AnalyticsEvent] {
   override protected def fromRow(row: Row) = {
     val id = row.as[UUID]("id")
     val eventType = AnalyticsEvent.EventType.fromString(row.as[String]("event_type"))
-    val device = row.as[UUID]("device")
+    val userId = row.as[UUID]("user_id")
     val sourceAddress = row.asOpt[String]("source_address")
     val data = Json.parse(row.as[String]("data")).as[JsObject]
     val created = row.as[LocalDateTime]("created")
-    AnalyticsEvent(id, eventType, device, sourceAddress, data, created)
+    AnalyticsEvent(id, eventType, userId, sourceAddress, data, created)
   }
 
   override protected def toDataSeq(ae: AnalyticsEvent) = Seq(ae.id, ae.eventType.id, ae.userId, ae.sourceAddress, Json.prettyPrint(ae.data), ae.created)

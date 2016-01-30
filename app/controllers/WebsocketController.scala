@@ -22,7 +22,7 @@ class WebsocketController @javax.inject.Inject() (override val ctx: ApplicationC
     SecuredRequestHandler { securedRequest =>
       Future.successful(HandlerResult(Ok, Some(securedRequest.identity)))
     }.map {
-      case HandlerResult(r, Some(user)) => Right(ConnectionService.props(None, ctx.supervisor, user, _: ActorRef))
+      case HandlerResult(r, Some(user)) => Right(ConnectionService.props(None, ctx.supervisor, user, _: ActorRef, request.remoteAddress))
       case HandlerResult(r, None) => Left(r)
     }
   }

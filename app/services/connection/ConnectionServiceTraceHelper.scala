@@ -3,11 +3,11 @@ package services.connection
 import java.util.UUID
 
 import models._
-import models.audit.UserFeedback
+import models.audit.{ AnalyticsEvent, UserFeedback }
 import models.queries.audit.UserFeedbackQueries
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.{ JsObject, Json }
-import services.audit.ClientTraceService
+import services.audit.AnalyticsService
 import services.database.Database
 import utils.DateUtils
 import utils.metrics.InstrumentedActor
@@ -50,7 +50,7 @@ trait ConnectionServiceTraceHelper extends InstrumentedActor { this: ConnectionS
   protected[this] def handleDebugInfo(data: String) = pendingDebugChannel match {
     case Some(dc) =>
       val json = Json.parse(data).as[JsObject]
-      ClientTraceService.persistTrace(user.id, json)
+      AnalyticsService.trace(user.id, sourceAddress, json)
       dc ! TraceResponse(id, json.fields)
     case None => activeBrawl match {
       case Some(brawl) => brawl.forward(DebugInfo(data))

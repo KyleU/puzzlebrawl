@@ -14,7 +14,7 @@ object ConnectionServiceTest extends Logging {
     val testProbe = TestProbe()
 
     val initStart = DateUtils.nowMillis
-    val conn = system.actorOf(ConnectionService.props(None, ctx.supervisor, User.mock, testProbe.ref))
+    val conn = system.actorOf(ConnectionService.props(None, ctx.supervisor, User.mock, testProbe.ref, "127.0.0.1"))
     val initMs = DateUtils.nowMillis - initStart
 
     val runStart = DateUtils.nowMillis

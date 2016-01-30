@@ -12,10 +12,11 @@ import utils.DateUtils
 
 object AnalyticsService {
   def error(userId: UUID, sourceAddress: String, data: JsValue) = log(EventType.Error, userId, sourceAddress, data)
+  def trace(userId: UUID, sourceAddress: String, data: JsValue) = log(EventType.ClientTrace, userId, sourceAddress, data)
 
   private[this] def log(eventType: AnalyticsEvent.EventType, userId: UUID, sourceAddress: String, data: JsValue) = {
     val event = AnalyticsEvent(
-      id = UUID.randomUUID(),
+      id = UUID.randomUUID,
       eventType = eventType,
       userId = userId,
       sourceAddress = Some(sourceAddress),
