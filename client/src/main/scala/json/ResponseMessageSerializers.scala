@@ -27,6 +27,7 @@ object ResponseMessageSerializers {
           case "InitialState" => readJs[InitialState](o)
           case "Pong" => readJs[Pong](o)
           case "MessageSet" => readJs[MessageSet](o)
+          case "BrawlQueueUpdate" => readJs[BrawlQueueUpdate](o)
           case "BrawlJoined" => readJs[BrawlJoined](o)
           case "PlayerUpdate" => readJs[PlayerUpdate](o)
           case "PlayerLoss" => readJs[PlayerLoss](o)
@@ -45,12 +46,12 @@ object ResponseMessageSerializers {
         case vr: VersionResponse => writeJs(vr)
         case is: InitialState => writeJs(is)
         case p: Pong => writeJs(p)
+        case bqu: BrawlQueueUpdate => writeJs(bqu)
         case bj: BrawlJoined => writeJs(bj)
         case pu: PlayerUpdate => writeJs(pu)
         case pl: PlayerLoss => writeJs(pl)
         case bcr: BrawlCompletionReport => writeJs(bcr)
         case ms: MessageSet => writeJs(ms)
-        case _ => throw new IllegalStateException(s"Invalid Message [${rm.getClass.getName}].")
       }
       val jsArray = jsVal match { case arr: Js.Arr => arr; case _ => throw new IllegalArgumentException(jsVal.toString) }
       jsArray.value.toList match {

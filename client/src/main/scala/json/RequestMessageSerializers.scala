@@ -62,7 +62,6 @@ object RequestMessageSerializers {
         case st: SelectTarget => writeJs(st)
         case rb: ResignBrawl => writeJs(rb)
         case _: ActiveGemsMessage => Js.Obj
-        case _ => throw new IllegalStateException(s"Invalid Message [${rm.getClass.getName}].")
       }
       val jsArray = jsVal match { case arr: Js.Arr => arr; case _ => throw new IllegalArgumentException(jsVal.toString) }
       jsArray.value.toList match {

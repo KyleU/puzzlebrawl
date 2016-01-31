@@ -9,6 +9,7 @@ define(['panels/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
         break;
       case 'BrawlJoined':
         homeState.game.playmat.setBrawl(v.self, v.brawl);
+        homeState.game.panels.show('gameplay');
         break;
       case 'PlayerUpdate':
         homeState.game.playmat.onPlayerUpdate(v);

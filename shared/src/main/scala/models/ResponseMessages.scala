@@ -18,6 +18,7 @@ case object SendTrace extends ResponseMessage
 case class DebugResponse(key: String, data: String) extends ResponseMessage
 case class Disconnected(reason: String) extends ResponseMessage
 
+case class BrawlQueueUpdate(scenario: String, requiredPlayers: Int, players: Seq[String]) extends ResponseMessage
 case class BrawlJoined(self: UUID, brawl: Brawl) extends ResponseMessage
 
 case class PlayerUpdate(id: UUID, segments: Seq[UpdateSegment]) extends ResponseMessage

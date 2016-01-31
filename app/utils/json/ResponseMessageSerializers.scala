@@ -18,6 +18,7 @@ object ResponseMessageSerializers {
   private[this] val debugResponseWrites = Json.writes[DebugResponse]
   private[this] val disconnectedWrites = Json.writes[Disconnected]
 
+  private[this] val brawlQueueUpdateWrites = Json.writes[BrawlQueueUpdate]
   private[this] val brawlJoinedWrites = Json.writes[BrawlJoined]
 
   private[this] val playerUpdateWrites = Json.writes[PlayerUpdate]
@@ -36,13 +37,14 @@ object ResponseMessageSerializers {
       case dr: DebugResponse => debugResponseWrites.writes(dr)
       case d: Disconnected => disconnectedWrites.writes(d)
 
+      case bqu: BrawlQueueUpdate => brawlQueueUpdateWrites.writes(bqu)
       case bj: BrawlJoined => brawlJoinedWrites.writes(bj)
 
       case pu: PlayerUpdate => playerUpdateWrites.writes(pu)
       case pl: PlayerLoss => playerLossWrites.writes(pl)
       case bcr: BrawlCompletionReport => brawlCompletionReportWrites.writes(bcr)
 
-      case _ => throw new IllegalArgumentException(s"Unhandled ResponseMessage type [${r.getClass.getSimpleName}].")
+      case ms: MessageSet => throw new IllegalArgumentException()
     }
     JsObject(Seq("c" -> JsString(utils.Formatter.className(r)), "v" -> json))
   }

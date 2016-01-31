@@ -78,6 +78,7 @@ class ActorSupervisor(val ctx: ApplicationContext) extends ActorSupervisorHelper
   }
 
   protected[this] def handleConnectionStopped(id: UUID) {
+    matchmaking.connectionStopped(id)
     connections.remove(id) match {
       case Some(conn) =>
         connectionsCounter.dec()

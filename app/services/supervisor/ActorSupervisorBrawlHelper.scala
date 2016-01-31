@@ -13,7 +13,7 @@ import scala.util.Random
 trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
   private[this] def masterRng = new Random()
 
-  private[this] val matchmaking = Matchmaking()
+  protected[this] val matchmaking = Matchmaking()
 
   protected[this] def handleCreateBrawl(scenario: String, connectionId: UUID, seed: Option[Int]) {
     if (matchmaking.handlesScenario(scenario)) {
