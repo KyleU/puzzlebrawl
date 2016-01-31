@@ -12,6 +12,8 @@ case class Matchmaking() extends Logging {
 
   def handlesScenario(scenario: String) = queues.get(scenario).isDefined
 
+  def getRequiredPlayerCount(scenario: String) = queues.get(scenario).map(_._1).getOrElse(0)
+
   def addPlayer(scenario: String, connectionId: UUID) = {
     val pending = queues.getOrElse(scenario, throw new IllegalStateException())
     val currentCount = pending._2.size

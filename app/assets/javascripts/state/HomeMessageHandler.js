@@ -7,6 +7,9 @@ define(['panels/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
       case 'InitialState':
         homeState.initialStateReceived(v);
         break;
+      case 'BrawlQueueUpdate':
+        console.log(v);
+        break;
       case 'BrawlJoined':
         homeState.game.playmat.setBrawl(v.self, v.brawl);
         homeState.game.panels.show('gameplay');

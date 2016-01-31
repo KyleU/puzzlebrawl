@@ -21,7 +21,11 @@ trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
         case (true, players) =>
           createBrawl(scenario, players, seed)
         case (false, players) =>
-        // Queued, TODO send status.
+          val requiredPlayers = matchmaking.getRequiredPlayerCount(scenario)
+          val conns = players.map(p => connections.getOrElse(p, throw new IllegalArgumentException()))
+          val playerNames = conns.map(_.name)
+          val msg = BrawlQueueUpdate(scenario, requiredPlayers, playerNames)
+          conns.foreach(_.actorRef ! msg)
       }
     } else {
       createBrawl(scenario, Seq(connectionId), seed)

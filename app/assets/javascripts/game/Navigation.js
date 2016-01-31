@@ -5,13 +5,13 @@ define(['utils/Sandbox', 'utils/Status'], function (Sandbox, Status) {
   var states = {
     '': ['Home', 'menu'],
     'home': ['Home', 'menu'],
-    'menu': ['Home', 'menu'],
-    'instructions': ['Instructions', 'instructions'],
-    'test': ['Tests', 'test'],
-    'scenario': ['Scenarios', 'scenario'],
-    'options': ['Options', 'options'],
-    'feedback': ['Feedback', 'feedback'],
-    'status': ['Status', 'status']
+    'menu': ['Home'],
+    'instructions': ['Instructions'],
+    'test': ['Tests'],
+    'scenario': ['Scenarios'],
+    'options': ['Options'],
+    'feedback': ['Feedback'],
+    'status': ['Status']
   };
 
   function Navigation(game) {
@@ -56,7 +56,11 @@ define(['utils/Sandbox', 'utils/Status'], function (Sandbox, Status) {
       }
     } else {
       Status.setStatus(action[0]);
-      this.game.panels.show(action[1]);
+      var p = action[1];
+      if(p === undefined) {
+        p = key;
+      }
+      this.game.panels.show(p);
       if(action[2] !== undefined) {
         action[2](this.game);
       }
