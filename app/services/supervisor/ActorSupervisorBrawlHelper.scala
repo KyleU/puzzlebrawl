@@ -13,18 +13,15 @@ import scala.util.Random
 trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
   private[this] def masterRng = new Random()
 
-  private[this] var pendingMultiplayerConnections = List.empty[(String, UUID)]
+  private[this] val matchmaking = Matchmaking()
 
   protected[this] def handleCreateBrawl(scenario: String, connectionId: UUID, seed: Option[Int]) {
-    if (scenario == "Multiplayer") {
-      pendingMultiplayerConnections.headOption match {
-        case Some(pending) =>
-          log.info(s"Starting brawl for connections [${pending._2}, $connectionId] for scenario [$scenario].")
-          pendingMultiplayerConnections = pendingMultiplayerConnections.tail
-          createBrawl(scenario, Seq(pending._2, connectionId), seed)
-        case None =>
-          log.info(s"Queueing connection [$connectionId] for scenario [$scenario].")
-          pendingMultiplayerConnections = (scenario, connectionId) :: pendingMultiplayerConnections
+    if (matchmaking.handlesScenario(scenario)) {
+      matchmaking.addPlayer(scenario, connectionId) match {
+        case (true, players) =>
+          createBrawl(scenario, players, seed)
+        case (false, players) =>
+        // Queued, TODO send status.
       }
     } else {
       createBrawl(scenario, Seq(connectionId), seed)

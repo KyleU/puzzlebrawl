@@ -7,7 +7,6 @@ import akka.actor._
 import models._
 import models.user.User
 import org.joda.time.LocalDateTime
-import services.audit.NotificationService
 import utils.metrics.MetricsServletActor
 import utils.{ ApplicationContext, DateUtils, Logging }
 
