@@ -11,7 +11,8 @@ define(['utils/Sandbox', 'utils/Status'], function (Sandbox, Status) {
     'scenario': ['Scenarios'],
     'options': ['Options'],
     'feedback': ['Feedback'],
-    'status': ['Status']
+    'status': ['Status'],
+    'matchmaking': ['Matchmaking']
   };
 
   function Navigation(game) {
@@ -57,7 +58,7 @@ define(['utils/Sandbox', 'utils/Status'], function (Sandbox, Status) {
     } else {
       Status.setStatus(action[0]);
       var p = action[1];
-      if(p === undefined) {
+      if(p === undefined || p === null) {
         p = key;
       }
       this.game.panels.show(p);

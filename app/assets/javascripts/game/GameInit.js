@@ -1,8 +1,14 @@
 /* global define:false */
 /* global PuzzleBrawl:false */
 define([
-  'audio/Audio', 'game/Navigation', 'gem/GemTextures', 'input/Gamepad', 'input/Gesture', 'input/Keyboard', 'panels/Panels', 'playmat/Playmat'
-], function (Audio, Navigation, GemTextures, Gamepad, Gesture, Keyboard, Panels, Playmat) {
+  'audio/Audio', 'game/Navigation', 'gem/GemTextures',
+  'input/Gamepad', 'input/Gesture', 'input/Keyboard',
+  'panels/Matchmaking', 'panels/Panels', 'playmat/Playmat'
+], function (
+  Audio, Navigation, GemTextures,
+  Gamepad, Gesture, Keyboard,
+  Matchmaking, Panels, Playmat
+) {
   'use strict';
 
   if(window.PhaserGlobal === undefined) {
@@ -35,6 +41,7 @@ define([
     game.panels = new Panels();
     game.panels.show('connecting');
     game.navigation = new Navigation(game);
+    game.matchmaking = new Matchmaking(game);
 
     // Input
     game.keyboard = new Keyboard(game);

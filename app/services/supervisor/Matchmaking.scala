@@ -4,36 +4,40 @@ import java.util.UUID
 
 import utils.Logging
 
+object Matchmaking {
+  case class Queue(scenario: String, requiredPlayers: Int, var connections: Seq[UUID] = Seq.empty)
+}
+
 case class Matchmaking() extends Logging {
-  private[this] val queues = Map(
-    "multiplayer" -> 2,
-    "eight-way-brawl" -> 8
-  ).mapValues(_ -> collection.mutable.ArrayBuffer.empty[UUID])
+  private[this] val queues = Seq(
+    Matchmaking.Queue("multiplayer", 2),
+    Matchmaking.Queue("eight-way-brawl", 8)
+  )
+  private[this] val queueMap = queues.map(x => x.scenario -> x).toMap
 
-  def handlesScenario(scenario: String) = queues.get(scenario).isDefined
+  def handlesScenario(scenario: String) = queueMap.get(scenario).isDefined
 
-  def getRequiredPlayerCount(scenario: String) = queues.get(scenario).map(_._1).getOrElse(0)
+  def getRequiredPlayerCount(scenario: String) = queueMap.get(scenario).map(_.requiredPlayers).getOrElse(0)
 
   def addPlayer(scenario: String, connectionId: UUID) = {
-    val pending = queues.getOrElse(scenario, throw new IllegalStateException())
-    val currentCount = pending._2.size
-    if (currentCount + 1 == pending._1) {
-      pending._2 += connectionId
-      val players = Seq(pending._2: _*)
+    val pending = queueMap.getOrElse(scenario, throw new IllegalArgumentException())
+    log.info(queues.toString)
+    val currentCount = pending.connections.size
+    if (currentCount + 1 == pending.requiredPlayers) {
+      val players = pending.connections :+ connectionId
       log.info(s"Starting brawl for connections [${players.mkString(", ")}] for scenario [$scenario].")
-      pending._2.clear()
+      pending.connections = Seq.empty
       true -> players
     } else {
-      pending._2 += connectionId
-      log.info(s"Queueing connection [$connectionId] as player [${pending._2.size}] for scenario [$scenario].")
-      false -> Seq(pending._2: _*)
+      pending.connections = pending.connections :+ connectionId
+      log.info(s"Queueing connection [$connectionId] as player [${pending.connections.size} of ${pending.requiredPlayers}] for scenario [$scenario].")
+      false -> pending.connections
     }
   }
 
-  def connectionStopped(id: UUID) = queues.foreach { q =>
-    if (q._2._2.contains(id)) {
-      log.info(s"Removing connection [$id] from [${q._1}] queue.")
-      q._2._2 -= id
-    }
+  def connectionStopped(id: UUID) = queues.find(_.connections.contains(id)).map { q =>
+    q.connections = q.connections.filterNot(_ == id)
+    log.info(s"Removed connection [$id] from [${q.scenario}] queue. [${q.connections.size}] players remain.")
+    (q.scenario, q.connections)
   }
 }

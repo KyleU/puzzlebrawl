@@ -78,7 +78,13 @@ class ActorSupervisor(val ctx: ApplicationContext) extends ActorSupervisorHelper
   }
 
   protected[this] def handleConnectionStopped(id: UUID) {
-    matchmaking.connectionStopped(id)
+    matchmaking.connectionStopped(id).foreach { x =>
+      val requiredPlayers = matchmaking.getRequiredPlayerCount(x._1)
+      val conns = x._2.map(p => connections.getOrElse(p, throw new IllegalArgumentException(s"Missing connection definition for [$p].")))
+      val playerNames = conns.map(_.name)
+      val msg = BrawlQueueUpdate(x._1, requiredPlayers, playerNames)
+      conns.foreach(_.actorRef ! msg)
+    }
     connections.remove(id) match {
       case Some(conn) =>
         connectionsCounter.dec()

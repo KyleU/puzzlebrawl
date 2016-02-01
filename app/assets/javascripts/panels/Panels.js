@@ -13,6 +13,7 @@ define([], function () {
       'options': document.getElementById('options-panel'),
       'status': document.getElementById('status-panel'),
       'feedback': document.getElementById('feedback-panel'),
+      'matchmaking': document.getElementById('matchmaking-panel'),
       'gameplay': document.getElementById('game-container')
     };
 

@@ -22,7 +22,7 @@ trait ActorSupervisorBrawlHelper { this: ActorSupervisor =>
           createBrawl(scenario, players, seed)
         case (false, players) =>
           val requiredPlayers = matchmaking.getRequiredPlayerCount(scenario)
-          val conns = players.map(p => connections.getOrElse(p, throw new IllegalArgumentException()))
+          val conns = players.map(p => connections.getOrElse(p, throw new IllegalArgumentException(s"Missing connection definition for [$p].")))
           val playerNames = conns.map(_.name)
           val msg = BrawlQueueUpdate(scenario, requiredPlayers, playerNames)
           conns.foreach(_.actorRef ! msg)
