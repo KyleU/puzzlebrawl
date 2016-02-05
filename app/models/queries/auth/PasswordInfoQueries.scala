@@ -15,12 +15,12 @@ object PasswordInfoQueries extends BaseQueries[PasswordInfo] {
   val getById = GetById
   val removeById = RemoveById
 
-  case class CreatePasswordInfo(l: LoginInfo, p: PasswordInfo) extends Statement {
+  final case class CreatePasswordInfo(l: LoginInfo, p: PasswordInfo) extends Statement {
     override val sql = insertSql
     override val values = Seq(l.providerID, l.providerKey) ++ toDataSeq(p)
   }
 
-  case class UpdatePasswordInfo(l: LoginInfo, p: PasswordInfo) extends Statement {
+  final case class UpdatePasswordInfo(l: LoginInfo, p: PasswordInfo) extends Statement {
     override val sql = s"update $tableName set hasher = ?, password = ?, salt = ?, created = ? where provider = ? and key = ?"
     override val values = toDataSeq(p) ++ Seq(l.providerID, l.providerKey)
   }

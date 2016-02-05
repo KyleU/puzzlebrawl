@@ -49,7 +49,8 @@ object TestScenarios {
 
   private[this] def fixedInst(players: Seq[PlayerRecord], seed: Int, id: UUID, scenario: String) = {
     val ps = players.zipWithIndex.map { p =>
-      val gs = new FixedGemStream(Seq(
+      val gs = new GemStream()
+      gs.addPendingGems(Seq(
         Gem(0), Gem(1),
         Gem(2, color = Color.Green), Gem(3, color = Color.Green, crash = Some(true)),
         Gem(4, color = Color.Blue), Gem(5, color = Color.Blue, crash = Some(true)),

@@ -13,7 +13,7 @@ object GemPattern {
   def fromString(s: String) = all.find(_.key == s).getOrElse(throw new IllegalArgumentException())
 }
 
-case class GemPattern(key: String, rows: Seq[Seq[Color]]) {
+final case class GemPattern(key: String, rows: Seq[Seq[Color]]) {
   val height = rows.length
   val width = rows.map(_.length).max
 

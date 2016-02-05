@@ -22,12 +22,12 @@ object ReportQueries {
     override def reduce(rows: Iterator[Row]) = rows.map(row => row.as[String]("tn")).toList
   }
 
-  case class CountTable(t: String) extends SingleRowQuery[(String, Long)] {
+  final case class CountTable(t: String) extends SingleRowQuery[(String, Long)] {
     override def sql = s"select count(*) as c from $t"
     override def map(row: Row) = t -> row.as[Long]("c")
   }
 
-  case class GameCountForUsers(userIds: Seq[UUID]) extends Query[Map[UUID, Int]] {
+  final case class GameCountForUsers(userIds: Seq[UUID]) extends Query[Map[UUID, Int]] {
     override def sql = s"select player, count(*) as c from games${playerClause("player", userIds)} group by player"
     override def values = userIds
     override def reduce(rows: Iterator[Row]) = rows.map { row =>
@@ -35,7 +35,7 @@ object ReportQueries {
     }.toMap
   }
 
-  case class WinCountForUsers(userIds: Seq[UUID]) extends Query[Map[UUID, Int]] {
+  final case class WinCountForUsers(userIds: Seq[UUID]) extends Query[Map[UUID, Int]] {
     override def sql = s"select player, count(*) as c from games${playerClause("player", userIds)} and status = 'win' group by player"
     override def values = userIds
     override def reduce(rows: Iterator[Row]) = rows.map { row =>
@@ -43,7 +43,7 @@ object ReportQueries {
     }.toMap
   }
 
-  case class RequestCountForUsers(userIds: Seq[UUID]) extends Query[Map[UUID, Int]] {
+  final case class RequestCountForUsers(userIds: Seq[UUID]) extends Query[Map[UUID, Int]] {
     override def sql = s"select user_id, count(*) as c from requests${playerClause("user_id", userIds)} group by user_id"
     override def values = userIds
     override def reduce(rows: Iterator[Row]) = rows.map { row =>

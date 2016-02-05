@@ -18,7 +18,7 @@ object UserFeedbackQueries extends BaseQueries[UserFeedback] {
   val search = Search
   val remove = RemoveById
 
-  case class GetUserFeedbackByUser(id: UUID, sortBy: String) extends Query[List[UserFeedback]] {
+  final case class GetUserFeedbackByUser(id: UUID, sortBy: String) extends Query[List[UserFeedback]] {
     override val sql = getSql(whereClause = Some("user_id = ?"), orderBy = Some("?"))
     override val values = Seq(id, sortBy)
     override def reduce(rows: Iterator[Row]) = rows.map(fromRow).toList

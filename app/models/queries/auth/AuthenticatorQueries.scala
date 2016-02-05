@@ -16,13 +16,13 @@ object AuthenticatorQueries extends BaseQueries[CookieAuthenticator] {
   val getById = GetById
   val removeById = RemoveById
 
-  case class FindSessionInfoByLoginInfo(l: LoginInfo) extends FlatSingleRowQuery[CookieAuthenticator] {
+  final case class FindSessionInfoByLoginInfo(l: LoginInfo) extends FlatSingleRowQuery[CookieAuthenticator] {
     override val sql = getSql(Some("provider = ? and key = ?"))
     override val values = Seq(l.providerID, l.providerKey)
     override def flatMap(row: Row) = Some(fromRow(row))
   }
 
-  case class UpdateAuthenticator(ca: CookieAuthenticator) extends Statement {
+  final case class UpdateAuthenticator(ca: CookieAuthenticator) extends Statement {
     override val sql = updateSql(Seq("provider", "key", "last_used", "expiration", "fingerprint"))
     override val values = Seq(
       ca.loginInfo.providerID,

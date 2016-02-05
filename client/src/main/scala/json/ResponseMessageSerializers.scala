@@ -1,7 +1,6 @@
 package json
 
 import models._
-import models.ui.MenuEntry
 import upickle._
 import upickle.legacy._
 
@@ -52,6 +51,9 @@ object ResponseMessageSerializers {
         case pl: PlayerLoss => writeJs(pl)
         case bcr: BrawlCompletionReport => writeJs(bcr)
         case ms: MessageSet => writeJs(ms)
+        case dr: DebugResponse => writeJs(dr)
+        case d: Disconnected => writeJs(d)
+        case SendTrace => Js.Obj()
       }
       val jsArray = jsVal match { case arr: Js.Arr => arr; case _ => throw new IllegalArgumentException(jsVal.toString) }
       jsArray.value.toList match {

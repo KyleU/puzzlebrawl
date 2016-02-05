@@ -4,7 +4,7 @@ import java.util.UUID
 
 import akka.actor.ActorRef
 
-case class PlayerRecord(
+final case class PlayerRecord(
   userId: UUID,
   name: String,
   var connectionId: Option[UUID],

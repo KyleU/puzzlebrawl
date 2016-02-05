@@ -1,6 +1,6 @@
 package models.board.mutation
 
-case class UpdateSegment(
+final case class UpdateSegment(
   category: String,
   mutations: Seq[Mutation],
   combo: Option[Int] = None,

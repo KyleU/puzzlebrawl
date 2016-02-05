@@ -29,7 +29,7 @@ object AnalyticsEventQueries extends BaseQueries[AnalyticsEvent] {
     override def reduce(rows: Iterator[Row]) = rows.map(r => r.as[LocalDateTime]("d").toLocalDate -> r.as[Long]("c").toInt).toSeq
   }
 
-  case class GetByDate(d: LocalDate) extends Query[Iterator[AnalyticsEvent]] {
+  final case class GetByDate(d: LocalDate) extends Query[Iterator[AnalyticsEvent]] {
     override def sql = s"select ${columns.mkString(", ")} from $tableName where created >= ? and created < ?"
     override def values = Seq(d, d.plusDays(1))
     override def reduce(rows: Iterator[Row]) = rows.map(fromRow)

@@ -42,6 +42,8 @@ addSbtPlugin("com.sksamuel.scapegoat" %% "sbt-scapegoat" % "1.0.4")
 
 addSbtPlugin("org.scalastyle" %% "scalastyle-sbt-plugin" % "0.7.0") // scalastyle
 
+addSbtPlugin("org.brianmckenna" % "sbt-wartremover" % "0.14")
+
 // Documentation
 addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.4.1")
 

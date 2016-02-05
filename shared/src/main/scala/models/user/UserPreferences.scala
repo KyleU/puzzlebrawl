@@ -1,5 +1,5 @@
 package models.user
 
-case class UserPreferences(
+final case class UserPreferences(
   avatar: String = "guest",
   theme: String = "dark")

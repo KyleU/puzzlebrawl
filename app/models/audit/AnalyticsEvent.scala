@@ -13,14 +13,14 @@ object AnalyticsEvent {
 
     case object Error extends EventType("error")
 
-    case class Unknown(override val id: String) extends EventType(id)
+    final case class Unknown(override val id: String) extends EventType(id)
 
     val all = Seq(ClientTrace, Error)
     def fromString(s: String) = all.find(_.id == s).getOrElse(Unknown(s))
   }
 }
 
-case class AnalyticsEvent(
+final case class AnalyticsEvent(
   id: UUID,
   eventType: AnalyticsEvent.EventType,
   userId: UUID,

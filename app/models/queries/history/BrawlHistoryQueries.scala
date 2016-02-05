@@ -20,28 +20,28 @@ object BrawlHistoryQueries extends BaseQueries[BrawlHistory] {
   val search = Search
   val removeById = RemoveById
 
-  case class SetCounts(id: UUID, gems: Seq[Int], moves: Seq[Int]) extends Statement {
+  final case class SetCounts(id: UUID, gems: Seq[Int], moves: Seq[Int]) extends Statement {
     override val sql = updateSql(Seq("gems", "moves"))
     override val values = Seq[Any](gems, moves, id)
   }
 
-  case class SetFirstMove(id: UUID, firstMove: LocalDateTime) extends Statement {
+  final case class SetFirstMove(id: UUID, firstMove: LocalDateTime) extends Statement {
     override def sql = updateSql(Seq("first_move"))
     override def values = Seq(firstMove, id)
   }
 
-  case class SetCompleted(id: UUID, completed: LocalDateTime, status: String) extends Statement {
+  final case class SetCompleted(id: UUID, completed: LocalDateTime, status: String) extends Statement {
     override def sql = updateSql(Seq("completed", "status"))
     override def values = Seq(completed, status, id)
   }
 
-  case class GetBrawlHistoriesByDayAndStatus(d: LocalDate, status: String) extends Query[Seq[BrawlHistory]] {
+  final case class GetBrawlHistoriesByDayAndStatus(d: LocalDate, status: String) extends Query[Seq[BrawlHistory]] {
     override def sql = getSql(whereClause = Some("completed >= ? and completed < ? and status = ?"), orderBy = Some("completed"))
     override def values = Seq(d, d.plusDays(1), status)
     override def reduce(rows: Iterator[Row]) = rows.map(fromRow).toList
   }
 
-  case class GetBrawlHistoryIdsForUser(userId: UUID) extends Query[List[UUID]] {
+  final case class GetBrawlHistoryIdsForUser(userId: UUID) extends Query[List[UUID]] {
     override val sql = s"select id from $tableName where player = ?"
     override val values = Seq(userId)
     override def reduce(rows: Iterator[Row]) = rows.map(_.as[UUID]("id")).toList

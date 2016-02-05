@@ -11,7 +11,7 @@ object DailyMetricQueries extends BaseQueries[DailyMetric] {
   override protected val idColumns = Seq("day", "metric")
   override protected val searchColumns = Seq("day", "metric", "value")
 
-  case class GetValue(d: LocalDate, m: DailyMetric.Metric) extends FlatSingleRowQuery[Long] {
+  final case class GetValue(d: LocalDate, m: DailyMetric.Metric) extends FlatSingleRowQuery[Long] {
     override val sql = s"select value from $tableName where day = ? and metric = ?"
     override def values = Seq(d, m)
     override def flatMap(row: Row) = Some(row.as[Long]("value"))
@@ -19,7 +19,7 @@ object DailyMetricQueries extends BaseQueries[DailyMetric] {
   val insert = Insert
   val insertBatch = InsertBatch
 
-  case class GetMetrics(d: LocalDate) extends Query[Map[DailyMetric.Metric, Long]] {
+  final case class GetMetrics(d: LocalDate) extends Query[Map[DailyMetric.Metric, Long]] {
     override def sql = s"select metric, value from $tableName where day = ?"
     override def values = Seq(d)
     override def reduce(rows: Iterator[Row]) = rows.map(tupleFromRow).toMap
@@ -36,29 +36,29 @@ object DailyMetricQueries extends BaseQueries[DailyMetric] {
     }.toSeq.sortBy(_._1).reverse
   }
 
-  case class GetTotals(last: LocalDate) extends Query[Map[DailyMetric.Metric, Long]] {
+  final case class GetTotals(last: LocalDate) extends Query[Map[DailyMetric.Metric, Long]] {
     override def sql = s"select metric, sum(value) as value from $tableName where day <= ? group by metric"
     override def values = Seq(last)
     override def reduce(rows: Iterator[Row]) = rows.map(tupleFromRow).toMap
   }
 
-  case class RemoveByDay(d: LocalDate) extends Statement {
+  final case class RemoveByDay(d: LocalDate) extends Statement {
     override def sql = s"delete from $tableName where day = ?"
     override def values = Seq(d)
   }
 
-  case class GetMetricHistory(metric: DailyMetric.Metric) extends Query[Seq[(LocalDate, Long)]] {
+  final case class GetMetricHistory(metric: DailyMetric.Metric) extends Query[Seq[(LocalDate, Long)]] {
     override def sql = s"select day, value from $tableName where metric = ? order by day"
     override def values = Seq(metric)
     override def reduce(rows: Iterator[Row]) = rows.map(row => row.as[LocalDate]("day") -> row.as[Long]("value")).toSeq
   }
 
-  case class UpdateMetric(dm: DailyMetric) extends Statement {
+  final case class UpdateMetric(dm: DailyMetric) extends Statement {
     override def sql: String = updateSql(Seq("value", "measured"))
     override def values = Seq(dm.value, dm.measured, dm.date, dm.metric)
   }
 
-  case class CalculateMetric(metric: DailyMetric.Metric, override val sql: String, d: LocalDate) extends SingleRowQuery[(DailyMetric.Metric, Long)] {
+  final case class CalculateMetric(metric: DailyMetric.Metric, override val sql: String, d: LocalDate) extends SingleRowQuery[(DailyMetric.Metric, Long)] {
     override val values = sql.count(_ == '?') match {
       case 0 => Nil
       case 1 => Seq(s"${d.plusDays(1).toString} 00:00:00")

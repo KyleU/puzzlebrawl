@@ -5,7 +5,7 @@ import java.util.UUID
 import org.joda.time.LocalDateTime
 
 object UserFeedback {
-  case class FeedbackNote(
+  final case class FeedbackNote(
     id: UUID,
     feedbackId: UUID,
     authorId: UUID,
@@ -13,7 +13,7 @@ object UserFeedback {
     occurred: LocalDateTime)
 }
 
-case class UserFeedback(
+final case class UserFeedback(
     id: UUID,
     userId: UUID,
     username: Option[String],

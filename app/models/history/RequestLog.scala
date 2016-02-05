@@ -31,7 +31,7 @@ object RequestLog {
   )
 }
 
-case class RequestLog(
+final case class RequestLog(
   id: UUID,
   userId: UUID,
   authProvider: String,

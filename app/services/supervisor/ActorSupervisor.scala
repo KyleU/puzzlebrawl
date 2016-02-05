@@ -11,8 +11,8 @@ import utils.metrics.MetricsServletActor
 import utils.{ ApplicationContext, DateUtils, Logging }
 
 object ActorSupervisor extends Logging {
-  case class BrawlRecord(connections: Seq[(UUID, String)], actorRef: ActorRef, started: LocalDateTime)
-  case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeBrawl: Option[UUID], started: LocalDateTime)
+  final case class BrawlRecord(connections: Seq[(UUID, String)], actorRef: ActorRef, started: LocalDateTime)
+  final case class ConnectionRecord(userId: UUID, name: String, actorRef: ActorRef, var activeBrawl: Option[UUID], started: LocalDateTime)
 }
 
 class ActorSupervisor(val ctx: ApplicationContext) extends ActorSupervisorHelper {

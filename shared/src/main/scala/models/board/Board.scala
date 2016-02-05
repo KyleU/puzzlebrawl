@@ -4,7 +4,7 @@ import models.board.mutation._
 import models.board.mutation.Mutation._
 import models.gem.{ GemLocation, Gem }
 
-case class Board(key: String, width: Int, height: Int) extends BoardHelper {
+final case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   private[this] var normalGemCount = 0
   private[this] var timerGemCount = 0
   private[this] var moveCount = 0
@@ -12,8 +12,10 @@ case class Board(key: String, width: Int, height: Int) extends BoardHelper {
   private[this] var lastMoveMade: Option[Long] = None
 
   protected[this] val spaces = Array.ofDim[Option[Gem]](width, height)
-  for (x <- 0 until width; y <- 0 until height) {
-    spaces(x)(y) = None
+  (0 until width).foreach { x =>
+    (0 until height).foreach { y =>
+      spaces(x)(y) = None
+    }
   }
   def getSpacesCopy = spaces.map(x => x.map(y => y))
 

@@ -20,7 +20,7 @@ object RequestLogQueries extends BaseQueries[RequestLog] {
   def searchCount(q: String, groupBy: Option[String] = None) = new SearchCount(q, groupBy)
   val search = Search
 
-  case class GetRequestsByUser(id: UUID) extends Query[List[RequestLog]] {
+  final case class GetRequestsByUser(id: UUID) extends Query[List[RequestLog]] {
     override val sql = getSql(Some("user_id = ?"), orderBy = Some("started desc"))
     override val values = Seq(id)
     override def reduce(rows: Iterator[Row]) = rows.map(fromRow).toList
@@ -28,7 +28,7 @@ object RequestLogQueries extends BaseQueries[RequestLog] {
 
   def getRequestCountForUser(userId: UUID) = new Count(s"select count(*) as c from $tableName where user_id = ?", Seq(userId))
 
-  case class RemoveRequestsByUser(userId: UUID) extends Statement {
+  final case class RemoveRequestsByUser(userId: UUID) extends Statement {
     override val sql = s"delete from $tableName where user_id = ?"
     override val values = Seq(userId)
   }
@@ -45,7 +45,7 @@ object RequestLogQueries extends BaseQueries[RequestLog] {
     }.toSeq
   }
 
-  case class GetCounts(col: String) extends Query[Seq[(String, Int)]] {
+  final case class GetCounts(col: String) extends Query[Seq[(String, Int)]] {
     override val sql = s"select r.$col as col, count(r.id) as c from requests r group by r.$col order by c desc;"
     override def reduce(rows: Iterator[Row]) = rows.map { row =>
       row.asOpt[String]("col").getOrElse("null") -> row.asOpt[Long]("c").getOrElse(0L).toInt

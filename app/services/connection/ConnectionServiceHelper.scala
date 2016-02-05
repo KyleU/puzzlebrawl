@@ -38,7 +38,7 @@ trait ConnectionServiceHelper
 
   protected[this] def handleBrawlStopped(id: UUID) {
     if (!activeBrawlId.contains(id)) {
-      throw new IllegalStateException(s"Provided brawl [$id] is not the active brawl.")
+      //throw new IllegalStateException(s"Provided brawl [$id] is not the active brawl.")
     }
     activeBrawlId = None
     activeBrawl = None

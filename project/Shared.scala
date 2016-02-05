@@ -9,6 +9,7 @@ import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 
 import playscalajs.ScalaJSPlay
 import playscalajs.ScalaJSPlay.autoImport._
+import wartremover.WartRemover.autoImport._
 
 object Shared {
   val projectId = "puzzlebrawl"
@@ -22,6 +23,11 @@ object Shared {
     val app = "0.1-SNAPSHOT"
     val scala = "2.11.7"
   }
+
+  val includedWartRemovers = Seq(
+    Wart.EitherProjectionPartial, Wart.Enumeration, Wart.FinalCaseClass, Wart.JavaConversions,
+    Wart.ListOps, Wart.Null, Wart.OptionPartial, Wart.Return, Wart.TryPartial
+  )
 
   lazy val sharedJs = (crossProject.crossType(CrossType.Pure) in file("shared"))
     .settings(scalaVersion := Versions.scala)
@@ -40,6 +46,7 @@ object Shared {
     .settings(
       scalaVersion := Versions.scala,
       scapegoatVersion := Dependencies.scapegoatVersion,
-      ScalariformKeys.preferences := ScalariformKeys.preferences.value
+      ScalariformKeys.preferences := ScalariformKeys.preferences.value,
+      wartremoverErrors ++= includedWartRemovers
     )
 }

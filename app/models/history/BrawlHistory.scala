@@ -5,7 +5,7 @@ import java.util.UUID
 import org.joda.time.LocalDateTime
 import utils.DateUtils
 
-case class BrawlHistory(
+final case class BrawlHistory(
     id: UUID,
     seed: Int,
     scenario: String,
@@ -18,6 +18,7 @@ case class BrawlHistory(
     firstMove: Option[LocalDateTime],
     completed: Option[LocalDateTime],
     logged: Option[LocalDateTime]) {
+
   lazy val duration = {
     val createdMillis = DateUtils.toMillis(started)
     val completedMillis = completed match {

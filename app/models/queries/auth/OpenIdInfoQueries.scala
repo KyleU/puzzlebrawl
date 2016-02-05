@@ -16,12 +16,12 @@ object OpenIdInfoQueries extends BaseQueries[OpenIDInfo] {
   val getById = GetById
   val removeById = RemoveById
 
-  case class CreateOpenIdInfo(l: LoginInfo, o: OpenIDInfo) extends Statement {
+  final case class CreateOpenIdInfo(l: LoginInfo, o: OpenIDInfo) extends Statement {
     override val sql = insertSql
     override val values = Seq(l.providerID, l.providerKey) ++ toDataSeq(o)
   }
 
-  case class UpdateOpenIdInfo(l: LoginInfo, o: OpenIDInfo) extends Statement {
+  final case class UpdateOpenIdInfo(l: LoginInfo, o: OpenIDInfo) extends Statement {
     override val sql = s"update $tableName set id = ?, attributes = ?, created = ? where provider = ? and key = ?"
     val attributes = Json.prettyPrint(Json.toJson(o.attributes))
     override val values = toDataSeq(o) ++ Seq(l.providerID, l.providerKey)

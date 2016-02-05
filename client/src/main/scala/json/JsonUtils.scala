@@ -8,6 +8,7 @@ object JsonUtils {
   def getStringOption(o: js.Dynamic) = if (o.isInstanceOf[Unit]) { None } else { Some(o.toString) }
 
   def getInt(o: js.Dynamic) = o.toString.toInt
+
   def getIntOption(o: js.Dynamic) = if (o.isInstanceOf[Unit]) { None } else { Some(getInt(o)) }
 
   def getLong(o: js.Dynamic) = o.toString.toLong

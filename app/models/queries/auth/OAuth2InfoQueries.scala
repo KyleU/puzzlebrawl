@@ -16,12 +16,12 @@ object OAuth2InfoQueries extends BaseQueries[OAuth2Info] {
   val getById = GetById
   val removeById = RemoveById
 
-  case class CreateOAuth2Info(l: LoginInfo, o: OAuth2Info) extends Statement {
+  final case class CreateOAuth2Info(l: LoginInfo, o: OAuth2Info) extends Statement {
     override val sql = insertSql
     override val values = Seq(l.providerID, l.providerKey) ++ toDataSeq(o)
   }
 
-  case class UpdateOAuth2Info(l: LoginInfo, o: OAuth2Info) extends Statement {
+  final case class UpdateOAuth2Info(l: LoginInfo, o: OAuth2Info) extends Statement {
     override val sql = {
       s"update $tableName set access_token = ?, token_type = ?, expires_in = ?, refresh_token = ?, params = ?, created = ? where provider = ? and key = ?"
     }

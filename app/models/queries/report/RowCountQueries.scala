@@ -14,7 +14,7 @@ object RowCountQueries {
     override def reduce(rows: Iterator[Row]) = rows.map(row => row.as[String]("tn")).toList
   }
 
-  case class CountTable(t: String) extends SingleRowQuery[(String, Long)] {
+  final case class CountTable(t: String) extends SingleRowQuery[(String, Long)] {
     override def sql = s"select count(*) as c from $t"
     override def map(row: Row) = t -> row.as[Long]("c")
   }

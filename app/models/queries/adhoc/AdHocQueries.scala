@@ -18,12 +18,12 @@ object AdHocQueries extends BaseQueries[AdHocQuery] {
   val search = Search
   val removeById = RemoveById
 
-  case class UpdateAdHocQuery(id: UUID, title: String, author: UUID, sqlString: String) extends Statement {
+  final case class UpdateAdHocQuery(id: UUID, title: String, author: UUID, sqlString: String) extends Statement {
     override val sql = updateSql(Seq("author", "title", "sql", "updated"))
     override val values = Seq[Any](author, title, sqlString, DateUtils.now, id)
   }
 
-  case class AdHocQueryExecute(override val sql: String, override val values: Seq[Any]) extends Query[(Seq[String], Seq[Seq[Any]])] {
+  final case class AdHocQueryExecute(override val sql: String, override val values: Seq[Any]) extends Query[(Seq[String], Seq[Seq[Any]])] {
     override def reduce(rows: Iterator[Row]) = {
       val rowsList = rows.toList.map(_.rowData)
       val columns = (rowsList match {

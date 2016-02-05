@@ -1,9 +1,8 @@
 package models.audit
 
 import org.joda.time.LocalDateTime
-import play.twirl.api.Html
 
-case class ServerLog(
+final case class ServerLog(
   level: LogLevel,
   line: Int,
   logger: String,

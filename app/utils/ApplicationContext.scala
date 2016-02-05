@@ -36,7 +36,7 @@ class ApplicationContext @javax.inject.Inject() (
 
   val supervisor = {
     val instanceRef = Akka.system.actorOf(Props(classOf[ActorSupervisor], this), "supervisor")
-    log.info(s"Actor Supervisor [${instanceRef.path.toString}] started for [${utils.Config.projectId}].")
+    log.info(s"Actor Supervisor [${instanceRef.path}] started for [${utils.Config.projectId}].")
     instanceRef
   }
 }

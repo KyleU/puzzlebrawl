@@ -47,7 +47,7 @@ object BrawlTest {
   )
   def fromString(s: String) = all.find(_.testName == s)
 
-  case class TestError(src: Option[Gem], tgt: Option[Gem], x: Int, y: Int, message: Option[String] = None) {
+  final case class TestError(src: Option[Gem], tgt: Option[Gem], x: Int, y: Int, message: Option[String] = None) {
     override def toString = s"[$x, $y]: " + message.getOrElse(s"${src.getOrElse("Empty")} is not equal to ${tgt.getOrElse("Empty")}.")
   }
   implicit val testErrorReads = Json.reads[TestError]

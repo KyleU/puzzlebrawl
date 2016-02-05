@@ -4,7 +4,7 @@ import models.Constants
 
 import scala.util.Random
 
-case class GemStream(
+final case class GemStream(
     seed: Int = Math.abs(Random.nextInt),
 
     gemAdjustWild: Option[Double] = None,
@@ -23,6 +23,9 @@ case class GemStream(
   private[this] val r = new Random(seed)
   private[this] var nextId = 0
   private[this] var nextTimerId = 10000
+
+  private[this] var pendingGems = Seq.empty[Gem]
+  def addPendingGems(gems: Seq[Gem]) = pendingGems = pendingGems ++ gems
 
   private[this] val wildInterval = (Constants.GemStream.baseWildGemInterval * gemAdjustWild.getOrElse(1.0)).toInt
   private[this] val crashChance = Constants.GemStream.baseCrashGemChance * gemAdjustCrash.getOrElse(1.0)
@@ -46,12 +49,18 @@ case class GemStream(
   private[this] val crashChanceTotal = crashChances.map(_._2).sum
 
   def next() = {
-    val ret = if (wildInterval > 0 && (nextId + 1) % wildInterval == 0) {
-      Gem(nextId, color = Color.Wild)
-    } else {
-      val crash = if (r.nextDouble < crashChance) { Some(true) } else { None }
-      val color = randomColor(crash.exists(x => x))
-      Gem(nextId, color = color, crash = crash)
+    val ret = pendingGems.headOption match {
+      case Some(g) =>
+        pendingGems = pendingGems.tail
+        g.copy(id = nextId)
+      case None =>
+        if (wildInterval > 0 && (nextId + 1) % wildInterval == 0) {
+          Gem(nextId, color = Color.Wild)
+        } else {
+          val crash = if (r.nextDouble < crashChance) { Some(true) } else { None }
+          val color = randomColor(crash.exists(x => x))
+          Gem(nextId, color = color, crash = crash)
+        }
     }
     nextId += 1
     ret

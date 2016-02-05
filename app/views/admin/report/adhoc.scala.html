@@ -25,7 +25,7 @@
             <button type="submit" name="action" value="delete" class="btn btn-primary">Delete</button>
           </form>
         </div>
-        <h4>@if(q.isDefined) { @q.get.title } else { Ad-hoc Queries }</h4>
+        <h4>@if(q.isDefined) { @q.getOrElse(throw new IllegalStateException()).title } else { Ad-hoc Queries }</h4>
       </div>
     </div>
 
@@ -39,8 +39,8 @@
           </div>
           <div class="pull-left">
             <button type="submit" name="action" value="save" class="btn btn-primary">Save</button>
-            <input type="text" name="title" placeholder="Query Title" value="@if(q.isDefined) {@q.get.title}" />
-            <input type="hidden" name="id" value="@if(selectedQuery.isDefined) {@selectedQuery.get.toString}" />
+            <input type="text" name="title" placeholder="Query Title" value="@q.map(_.title).getOrElse("")" />
+            <input type="hidden" name="id" value="@selectedQuery.map(_.toString).getOrElse("")" />
           </div>
         </form>
       </div>

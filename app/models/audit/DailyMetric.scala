@@ -48,4 +48,4 @@ object DailyMetric {
   def fromString(s: String) = allMap(s)
 }
 
-case class DailyMetric(date: LocalDate, metric: DailyMetric.Metric, value: Long, measured: LocalDateTime)
+final case class DailyMetric(date: LocalDate, metric: DailyMetric.Metric, value: Long, measured: LocalDateTime)

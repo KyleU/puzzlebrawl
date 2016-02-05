@@ -20,7 +20,7 @@ object TestController {
 
   private[this] def emptyPlayer(name: String, team: Int) = Player(UUID.randomUUID, name, team, Board(name, 0, 0), GemStream())
 
-  case class Result(
+  final case class Result(
     name: String,
     status: String,
     errors: Seq[BrawlTest.TestError],

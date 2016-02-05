@@ -11,7 +11,7 @@ object Logging extends Instrumented {
   val warnMeter = metrics.meter("log.warn")
   val errorMeter = metrics.meter("log.error")
 
-  case class CustomLogger(name: String) extends Logger(LoggerFactory.getLogger(name)) {
+  final case class CustomLogger(name: String) extends Logger(LoggerFactory.getLogger(name)) {
     override def trace(message: => String) = {
       traceMeter.mark()
       super.trace(message)

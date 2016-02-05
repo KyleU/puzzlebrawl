@@ -4,7 +4,7 @@ import java.util.UUID
 
 import org.joda.time.LocalDateTime
 
-case class AdHocQuery(
+final case class AdHocQuery(
   id: UUID,
   title: String,
   author: UUID,

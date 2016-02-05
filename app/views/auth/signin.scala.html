@@ -8,12 +8,12 @@
     <h4>@Messages("authentication.call.to.action", utils.Config.projectName)</h4>
     <form method="post" action="@controllers.auth.routes.AuthenticationController.authenticateCredentials()">
       <input type="text" class="form-control" name="email" value="@form("email").value" placeholder="@Messages("authentication.form.username")" />
-      @if(form.error("email").isDefined) {
-        <em>@Messages(form.error("email").get.message)</em>
+      @form.error("email").map { e =>
+        <em>@Messages(e.message)</em>
       }
       <input type="password" class="form-control" name="password" placeholder="@Messages("authentication.form.password")" />
-      @if(form.error("password").isDefined) {
-        <em>@Messages(form.error("password").get.message)</em>
+      @form.error("password").map { e =>
+        <em>@Messages(e.message)</em>
       }
       <input type="submit" class="submit" value="@Messages("authentication.sign.in")" />
     </form>

@@ -1,6 +1,6 @@
 package models.gem
 
-case class Gem(
+final case class Gem(
     id: Int,
     color: Color = Color.Red,
     crash: Option[Boolean] = None,

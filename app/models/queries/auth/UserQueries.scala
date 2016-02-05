@@ -24,7 +24,7 @@ object UserQueries extends BaseQueries[User] {
 
   private[this] val defaultPreferencesJson = Json.toJson(UserPreferences()).as[JsObject]
 
-  case class UpdateUser(u: User) extends Statement {
+  final case class UpdateUser(u: User) extends Statement {
     override val sql = updateSql(Seq("username", "prefs", "profiles", "roles"))
     override val values = {
       val profiles = u.profiles.map(l => s"${l.providerID}:${l.providerKey}").toArray
@@ -34,28 +34,28 @@ object UserQueries extends BaseQueries[User] {
     }
   }
 
-  case class SetUsername(userId: UUID, username: Option[String]) extends Statement {
+  final case class SetUsername(userId: UUID, username: Option[String]) extends Statement {
     override val sql = updateSql(Seq("username"))
     override val values = Seq(username, userId)
   }
 
-  case class SetPreferences(userId: UUID, userPreferences: UserPreferences) extends Statement {
+  final case class SetPreferences(userId: UUID, userPreferences: UserPreferences) extends Statement {
     override val sql = updateSql(Seq("prefs"))
     override val values = Seq(Json.toJson(userPreferences).toString(), userId)
   }
 
-  case class AddRole(id: UUID, role: Role) extends Statement {
+  final case class AddRole(id: UUID, role: Role) extends Statement {
     override val sql = s"update $tableName set roles = array_append(roles, ?) where id = ?"
     override val values = Seq(role.name, id)
   }
 
-  case class FindUserByUsername(username: String) extends FlatSingleRowQuery[User] {
+  final case class FindUserByUsername(username: String) extends FlatSingleRowQuery[User] {
     override val sql = getSql(Some("username = ?"))
     override val values = Seq(username)
     override def flatMap(row: Row) = Some(fromRow(row))
   }
 
-  case class FindUserByProfile(loginInfo: LoginInfo) extends FlatSingleRowQuery[User] {
+  final case class FindUserByProfile(loginInfo: LoginInfo) extends FlatSingleRowQuery[User] {
     override val sql = getSql(Some("profiles @> ARRAY[?]::text[]"))
     override val values = Seq(s"${loginInfo.providerID}:${loginInfo.providerKey}")
     override def flatMap(row: Row) = Some(fromRow(row))

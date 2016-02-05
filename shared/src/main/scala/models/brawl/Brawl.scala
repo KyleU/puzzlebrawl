@@ -19,7 +19,7 @@ object Brawl {
   }
 }
 
-case class Brawl(
+final case class Brawl(
     id: UUID,
     scenario: String,
     seed: Int,

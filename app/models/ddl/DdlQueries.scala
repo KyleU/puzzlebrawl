@@ -7,7 +7,7 @@ import models.database.{ Row, Statement, SingleRowQuery }
 object DdlQueries {
   val testUserId = UUID.fromString("00000000-0000-0000-0000-000000000000")
 
-  case class DoesTableExist(tableName: String) extends SingleRowQuery[Boolean] {
+  final case class DoesTableExist(tableName: String) extends SingleRowQuery[Boolean] {
     override val sql = "select exists (select * from information_schema.tables WHERE table_name = ?);"
     override val values = tableName :: Nil
     override def map(row: Row) = row.as[Boolean]("exists")
@@ -26,7 +26,7 @@ object DdlQueries {
     )"""
   }
 
-  case class TruncateTables(tableNames: Seq[String]) extends Statement {
+  final case class TruncateTables(tableNames: Seq[String]) extends Statement {
     override val sql = s"truncate ${tableNames.mkString(", ")}"
   }
 

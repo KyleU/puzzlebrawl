@@ -5,10 +5,10 @@ import java.util.UUID
 import utils.Logging
 
 object Matchmaking {
-  case class Queue(scenario: String, requiredPlayers: Int, var connections: Seq[UUID] = Seq.empty)
+  final case class Queue(scenario: String, requiredPlayers: Int, var connections: Seq[UUID] = Seq.empty)
 }
 
-case class Matchmaking() extends Logging {
+final case class Matchmaking() extends Logging {
   private[this] val queues = Seq(
     Matchmaking.Queue("multiplayer", 2),
     Matchmaking.Queue("eight-way-brawl", 8)

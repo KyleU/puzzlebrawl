@@ -5,7 +5,7 @@ import java.util.UUID
 import models.board.Board
 import models.gem.{ GemLocation, GemPattern, GemStream }
 
-case class Player(
+final case class Player(
     id: UUID,
     name: String,
     team: Int,

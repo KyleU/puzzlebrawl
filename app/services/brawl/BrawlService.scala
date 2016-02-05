@@ -14,7 +14,7 @@ object BrawlService {
   }
 }
 
-case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) extends BrawlHelper {
+final case class BrawlService(id: UUID, scenario: String, players: Seq[PlayerRecord], seed: Int, notificationCallback: (String) => Unit) extends BrawlHelper {
   protected[this] lazy val brawl = try {
     val b = Scenario.newInstance(id, scenario, seed, players)
     b.setCallbacks(this)

@@ -1,26 +1,23 @@
-import sbtide.Keys._
-import com.typesafe.sbt.jshint.Import.JshintKeys
-import sbt._
-import sbt.Keys._
-import sbt.Project.projectToRef
-
-import playscalajs.PlayScalaJS.autoImport._
-import com.typesafe.sbt.digest.Import._
+import com.sksamuel.scapegoat.sbt.ScapegoatSbtPlugin.autoImport._
 import com.typesafe.sbt.GitVersioning
+import com.typesafe.sbt.SbtScalariform.{ ScalariformKeys, scalariformSettings }
+import com.typesafe.sbt.digest.Import._
 import com.typesafe.sbt.gzip.Import._
 import com.typesafe.sbt.jse.JsEngineImport.JsEngineKeys
+import com.typesafe.sbt.jshint.Import.JshintKeys
 import com.typesafe.sbt.less.Import._
 import com.typesafe.sbt.rjs.Import._
 import com.typesafe.sbt.web.Import._
 import com.typesafe.sbt.web.SbtWeb
-
 import play.routes.compiler.InjectedRoutesGenerator
 import play.sbt.routes.RoutesKeys.routesGenerator
-
-import com.sksamuel.scapegoat.sbt.ScapegoatSbtPlugin.autoImport._
-import com.typesafe.sbt.SbtScalariform.{ ScalariformKeys, scalariformSettings }
-
+import playscalajs.PlayScalaJS.autoImport._
+import sbt.Keys._
+import sbt.Project.projectToRef
+import sbt._
+import sbtide.Keys._
 import tut.Plugin._
+import wartremover.WartRemover.autoImport._
 
 object Server {
   private[this] val dependencies = {
@@ -62,7 +59,7 @@ object Server {
     scapegoatDisabledInspections := Seq("DuplicateImport"),
     scapegoatVersion := Dependencies.scapegoatVersion,
     ScalariformKeys.preferences := ScalariformKeys.preferences.value,
-
+    wartremoverErrors ++= Shared.includedWartRemovers,
     tutSourceDirectory := baseDirectory.value / "doc",
 
     // IntelliJ import fixes
