@@ -6,12 +6,14 @@ define(['utils/Sandbox', 'utils/Status'], function (Sandbox, Status) {
     '': ['Home', 'menu'],
     'home': ['Home', 'menu'],
     'menu': ['Home'],
+    'name': ['Edit Name'],
     'instructions': ['Instructions'],
     'test': ['Tests'],
     'scenario': ['Scenarios'],
     'options': ['Options'],
     'feedback': ['Feedback'],
     'status': ['Status'],
+    'profile': ['Profile'],
     'matchmaking': ['Matchmaking']
   };
 

@@ -6,12 +6,14 @@ define([], function () {
     this.elements = {
       'splash': document.getElementById('splash-panel'),
       'connecting': document.getElementById('connecting-panel'),
+      'name': document.getElementById('name-panel'),
       'menu': document.getElementById('menu-panel'),
       'test': document.getElementById('test-panel'),
       'scenario': document.getElementById('scenario-panel'),
       'instructions': document.getElementById('instructions-panel'),
       'options': document.getElementById('options-panel'),
       'status': document.getElementById('status-panel'),
+      'profile': document.getElementById('profile-panel'),
       'feedback': document.getElementById('feedback-panel'),
       'matchmaking': document.getElementById('matchmaking-panel'),
       'gameplay': document.getElementById('game-container')

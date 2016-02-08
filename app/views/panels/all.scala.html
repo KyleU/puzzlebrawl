@@ -1,11 +1,14 @@
 @(user: models.user.User)(implicit messages: Messages)
 @panels.splash()
 @panels.connecting()
+@panels.name(user)
 @panels.menu(user)
+@if(user.roles.contains(models.user.Role.Admin)) {
+@panels.test()}
 @panels.scenario()
-@panels.test()
 @panels.instructions()
 @panels.options(user)
 @panels.status()
+@panels.profile(user)
 @panels.feedback()
 @panels.matchmaking()

@@ -1,0 +1,8 @@
+@(user: models.user.User)<div class="brawl-panel off" id="name-panel">
+  <div class="container">
+    <h5>Choose Your Name</h5>
+    <input id="username-input" value="@user.username.getOrElse("")">
+    <br>
+    <button>Save</button>
+  </div>
+</div>
