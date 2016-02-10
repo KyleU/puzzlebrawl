@@ -17,6 +17,7 @@ object ResponseMessageSerializers {
   private[this] val pongWrites = Json.writes[Pong]
   private[this] val debugResponseWrites = Json.writes[DebugResponse]
   private[this] val disconnectedWrites = Json.writes[Disconnected]
+  private[this] val preferenceChangedWrites = Json.writes[PreferenceChanged]
 
   private[this] val brawlQueueUpdateWrites = Json.writes[BrawlQueueUpdate]
   private[this] val brawlJoinedWrites = Json.writes[BrawlJoined]
@@ -36,6 +37,7 @@ object ResponseMessageSerializers {
       case SendTrace => JsObject(Nil)
       case dr: DebugResponse => debugResponseWrites.writes(dr)
       case d: Disconnected => disconnectedWrites.writes(d)
+      case pc: PreferenceChanged => preferenceChangedWrites.writes(pc)
 
       case bqu: BrawlQueueUpdate => brawlQueueUpdateWrites.writes(bqu)
       case bj: BrawlJoined => brawlJoinedWrites.writes(bj)

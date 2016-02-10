@@ -24,13 +24,20 @@ object ResponseMessageSerializers {
           case "ServerError" => readJs[ServerError](o)
           case "VersionResponse" => readJs[VersionResponse](o)
           case "InitialState" => readJs[InitialState](o)
+
           case "Pong" => readJs[Pong](o)
-          case "MessageSet" => readJs[MessageSet](o)
+          case "SendTrace" => SendTrace
+          case "DebugResponse" => readJs[DebugResponse](o)
+          case "Disconnected" => readJs[Disconnected](o)
+          case "PreferenceChanged" => readJs[PreferenceChanged](o)
+
           case "BrawlQueueUpdate" => readJs[BrawlQueueUpdate](o)
           case "BrawlJoined" => readJs[BrawlJoined](o)
           case "PlayerUpdate" => readJs[PlayerUpdate](o)
           case "PlayerLoss" => readJs[PlayerLoss](o)
           case "BrawlCompletionReport" => readJs[BrawlCompletionReport](o)
+
+          case "MessageSet" => readJs[MessageSet](o)
           case _ => throw new IllegalStateException()
         }
         case _ => throw new IllegalStateException()
@@ -44,16 +51,20 @@ object ResponseMessageSerializers {
         case se: ServerError => writeJs(se)
         case vr: VersionResponse => writeJs(vr)
         case is: InitialState => writeJs(is)
+
         case p: Pong => writeJs(p)
+        case SendTrace => Js.Obj()
+        case dr: DebugResponse => writeJs(dr)
+        case d: Disconnected => writeJs(d)
+        case pc: PreferenceChanged => writeJs(pc)
+
         case bqu: BrawlQueueUpdate => writeJs(bqu)
         case bj: BrawlJoined => writeJs(bj)
         case pu: PlayerUpdate => writeJs(pu)
         case pl: PlayerLoss => writeJs(pl)
         case bcr: BrawlCompletionReport => writeJs(bcr)
+
         case ms: MessageSet => writeJs(ms)
-        case dr: DebugResponse => writeJs(dr)
-        case d: Disconnected => writeJs(d)
-        case SendTrace => Js.Obj()
       }
       val jsArray = jsVal match { case arr: Js.Arr => arr; case _ => throw new IllegalArgumentException(jsVal.toString) }
       jsArray.value.toList match {

@@ -20,6 +20,7 @@ class ConnectionService(
     val out: ActorRef,
     val sourceAddress: String) extends ConnectionServiceHelper {
 
+  protected[this] var currentUsername = user.username
   protected[this] var userPreferences = user.preferences
 
   protected[this] var activeBrawlId: Option[UUID] = None
@@ -27,7 +28,7 @@ class ConnectionService(
 
   protected[this] var pendingDebugChannel: Option[ActorRef] = None
 
-  def initialState() = InitialState(user.id, user.username, user.preferences)
+  def initialState() = InitialState(user.id, currentUsername, userPreferences)
 
   override def preStart() = {
     supervisor ! ConnectionStarted(user, id, self)
@@ -47,7 +48,7 @@ class ConnectionService(
     case sb: StartBrawl => timeReceive(sb) { handleStartBrawl(sb.scenario, None) }
     case jb: JoinBrawl => timeReceive(jb) { handleJoinBrawl(jb.id) }
     case ob: ObserveBrawl => timeReceive(ob) { handleObserveBrawl(ob.id, ob.as) }
-    case gm: BrawlMessage => handleBrawlMessage(gm)
+    case bm: BrawlMessage => handleBrawlMessage(bm)
 
     // Incoming game messages
     case im: InternalMessage => handleInternalMessage(im)
@@ -65,7 +66,6 @@ class ConnectionService(
   private[this] def handleInternalMessage(im: InternalMessage) = im match {
     case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace() }
     case ct: ClientTrace => timeReceive(ct) { handleClientTrace() }
-    case bm: BrawlMessage => handleBrawlMessage(bm)
     case bs: BrawlStarted => handleBrawlStarted(bs.id, bs.brawlService, bs.started)
     case bs: BrawlStopped => handleBrawlStopped(bs.id)
 

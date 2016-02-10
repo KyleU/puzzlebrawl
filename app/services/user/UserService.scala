@@ -51,6 +51,8 @@ object UserService extends Logging {
     }
   }
 
+  def isUsernameInUse(name: String) = Database.query(UserQueries.IsUsernameInUse(name))
+
   def remove(userId: UUID) = {
     val startTime = System.nanoTime
     Database.transaction { conn =>

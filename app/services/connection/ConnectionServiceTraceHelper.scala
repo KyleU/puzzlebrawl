@@ -16,7 +16,7 @@ trait ConnectionServiceTraceHelper extends InstrumentedActor { this: ConnectionS
   protected[this] def handleConnectionTrace() {
     val ret = TraceResponse(id, List(
       "userId" -> user.id,
-      "name" -> user.username.getOrElse("Guest")
+      "name" -> currentUsername.getOrElse("Guest")
     ))
     sender() ! ret
   }
@@ -30,7 +30,7 @@ trait ConnectionServiceTraceHelper extends InstrumentedActor { this: ConnectionS
     val obj = UserFeedback(
       id = UUID.randomUUID,
       userId = user.id,
-      username = user.username,
+      username = currentUsername,
       brawlId = activeBrawlId,
       context = "Normal",
       contact = if (contact.isEmpty) { None } else { Some(contact) },
@@ -40,7 +40,7 @@ trait ConnectionServiceTraceHelper extends InstrumentedActor { this: ConnectionS
 
     val f = Database.execute(UserFeedbackQueries.insert(obj))
     f.onSuccess {
-      case x => log.info(s"Feedback submitted from user [${user.id} (${user.username.getOrElse("n/a")})]:\n$feedback")
+      case x => log.info(s"Feedback submitted from user [${user.id} (${currentUsername.getOrElse("n/a")})]:\n$feedback")
     }
     f.onFailure {
       case x => log.warn(s"Unable to save feedback from user [${user.id}].", x)

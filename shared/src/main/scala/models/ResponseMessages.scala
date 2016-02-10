@@ -17,6 +17,7 @@ final case class Pong(timestamp: Long) extends ResponseMessage
 case object SendTrace extends ResponseMessage
 final case class DebugResponse(key: String, data: String) extends ResponseMessage
 final case class Disconnected(reason: String) extends ResponseMessage
+final case class PreferenceChanged(name: String, value: String, result: String) extends ResponseMessage
 
 final case class BrawlQueueUpdate(scenario: String, requiredPlayers: Int, players: Seq[String]) extends ResponseMessage
 final case class BrawlJoined(self: UUID, brawl: Brawl) extends ResponseMessage

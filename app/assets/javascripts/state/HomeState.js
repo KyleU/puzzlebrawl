@@ -1,5 +1,7 @@
 /* global define:false */
-define(['panels/Options', 'panels/Feedback', 'state/GameState', 'state/HomeMessageHandler'], function (Options, Feedback, GameState, handler) {
+define([
+  'panels/ChooseName', 'panels/Feedback', 'panels/Options', 'state/GameState', 'state/HomeMessageHandler'
+], function (ChooseName, Feedback, Options, GameState, handler) {
   'use strict';
 
   function HomeState(game) {
@@ -13,6 +15,7 @@ define(['panels/Options', 'panels/Feedback', 'state/GameState', 'state/HomeMessa
     GameState.prototype.create.apply(this, arguments);
     this.game.init();
     this.options = new Options(this.game);
+    this.chooseName = new ChooseName(this.game);
     Feedback.init(this.game);
   };
 
@@ -27,13 +30,20 @@ define(['panels/Options', 'panels/Feedback', 'state/GameState', 'state/HomeMessa
 
   HomeState.prototype.initialStateReceived = function(state) {
     this.game.userId = state.userId;
-    this.game.username = state.username;
+
     this.options.loadOptions(state.preferences);
+
     var h = window.location.hash;
     if(h.charAt(0) === '#') {
       h = h.substr(1);
     }
-    this.game.navigation.navigate(h);
+
+    if(state.username === null || state.username === undefined) {
+      this.chooseName.show(h);
+    } else {
+      this.game.username = state.username;
+      this.game.navigation.navigate(h);
+    }
   };
 
   HomeState.prototype.onMessage = function(c, v) {

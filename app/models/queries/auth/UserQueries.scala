@@ -24,6 +24,12 @@ object UserQueries extends BaseQueries[User] {
 
   private[this] val defaultPreferencesJson = Json.toJson(UserPreferences()).as[JsObject]
 
+  final case class IsUsernameInUse(name: String) extends SingleRowQuery[Boolean] {
+    override val sql = "select count(*) as c from users where username = ?"
+    override val values = Seq(name)
+    override def map(row: Row) = row.as[Int]("c") != 0
+  }
+
   final case class UpdateUser(u: User) extends Statement {
     override val sql = updateSql(Seq("username", "prefs", "profiles", "roles"))
     override val values = {
@@ -32,11 +38,6 @@ object UserQueries extends BaseQueries[User] {
       val prefs = Json.toJson(u.preferences).toString()
       Seq(u.username, prefs, profiles, roles, u.id)
     }
-  }
-
-  final case class SetUsername(userId: UUID, username: Option[String]) extends Statement {
-    override val sql = updateSql(Seq("username"))
-    override val values = Seq(username, userId)
   }
 
   final case class SetPreferences(userId: UUID, userPreferences: UserPreferences) extends Statement {
