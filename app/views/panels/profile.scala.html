@@ -1,6 +1,17 @@
-@(user: models.user.User)<div class="brawl-panel off" id="profile-panel">
+@(user: models.user.User)(implicit messages: Messages)<div class="brawl-panel off" id="profile-panel">
   <div class="container">
-    <h5>@user.username.getOrElse("Profile")</h5>
+    <h5>@user.username.getOrElse("Anonymous User")</h5>
     TODO
+
+    <div class="menu-container">
+      <div><a href="#name">@Messages("menu.choose.username")</a></div>
+
+      @if(user.profiles.isEmpty) {
+        <div><a href="#sign-in">@Messages("menu.sign.in")</a></div>
+        <div><a href="#register">@Messages("menu.sign.up")</a></div>
+      } else {
+        <div><a href="#sign-out">@Messages("menu.sign.out")</a></div>
+      }
+    </div>
   </div>
 </div>

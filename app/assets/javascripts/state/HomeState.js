@@ -13,10 +13,10 @@ define([
 
   HomeState.prototype.create = function() {
     GameState.prototype.create.apply(this, arguments);
-    this.game.init();
-    this.options = new Options(this.game);
+    this.options = new Options(this);
     this.chooseName = new ChooseName(this.game);
     Feedback.init(this.game);
+    this.game.init();
   };
 
   HomeState.prototype.update = function() {

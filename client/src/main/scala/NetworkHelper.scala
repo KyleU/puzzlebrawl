@@ -1,6 +1,6 @@
 import json.{ BaseSerializers, ResponseMessageSerializers }
 import models._
-import utils.NetworkSocket
+import utils.{ Logging, NetworkSocket }
 
 import scala.scalajs.js
 import scala.scalajs.js.JSON
@@ -9,11 +9,10 @@ import scala.scalajs.js.timers._
 trait NetworkHelper { this: PuzzleBrawl =>
   val connectionEl = org.scalajs.dom.document.getElementById("status-connection")
 
-  lazy val networkStatus = scenario match {
-    case "offline" => "offline"
-    case "normal" => "proxy"
-    case _ => "proxy" //"blend"
-  }
+  val networkStatus = "proxy"
+  //val networkStatus = "offline"
+  //val networkStatus = "parallel"
+  //val networkStatus = "blend"
 
   protected[this] val socket = if (networkStatus == "offline") {
     None
@@ -37,11 +36,8 @@ trait NetworkHelper { this: PuzzleBrawl =>
   setTimeout(1000)(sendPing())
 
   protected[this] def messageReceived(c: String, v: js.Dynamic) = if (networkStatus == "proxy") {
-    this.socket match {
-      case Some(sock) => sock.send(s"""{"c": "$c", "v": ${JSON.stringify(v)} }""")
-      case None => throw new IllegalStateException()
-    }
-  } else if (networkStatus == "offline") {
+    this.socket.foreach(_.send(s"""{"c": "$c", "v": ${JSON.stringify(v)} }"""))
+  } else {
     handleMessage(c, v)
   }
 
@@ -70,6 +66,7 @@ trait NetworkHelper { this: PuzzleBrawl =>
   protected[this] def onSocketMessage(s: String): Unit = networkStatus match {
     case "offline" => throw new IllegalStateException()
     case "proxy" => sendCallback(s)
-    case "blend" => scala.scalajs.js.Dynamic.global.console.log(s"Message [$s] received from socket.") // TODO
+    case "parallel" => Logging.info(s"Message [$s] received from socket in parallel mode.")
+    case "blend" => Logging.info(s"Message [$s] received from socket in blend mode.")
   }
 }

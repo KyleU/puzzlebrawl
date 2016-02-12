@@ -27,7 +27,7 @@ object UserQueries extends BaseQueries[User] {
   final case class IsUsernameInUse(name: String) extends SingleRowQuery[Boolean] {
     override val sql = "select count(*) as c from users where username = ?"
     override val values = Seq(name)
-    override def map(row: Row) = row.as[Int]("c") != 0
+    override def map(row: Row) = row.as[Long]("c") != 0L
   }
 
   final case class UpdateUser(u: User) extends Statement {

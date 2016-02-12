@@ -3,16 +3,15 @@
 define(['gem/Gem', 'board/BoardGems', 'board/BoardMutations', 'utils/Config'], function (Gem, BoardGems, BoardMutations, Config) {
   'use strict';
 
-  function Board(owner, model, playmat) {
+  function Board(owner, model, game) {
     this.owner = owner;
     this.key = model.key;
     this.w = model.width;
     this.h = model.height;
     this.model = model;
-    this.playmat = playmat;
 
     this.gems = {};
-    Phaser.Group.call(this, playmat.game, null, 'board-' + model.key);
+    Phaser.Group.call(this, game, null, 'board-' + model.key);
 
     this.game.add.existing(this);
     this.bgTileSprite = new Phaser.TileSprite(this.game, 0, 0, Config.tile.size * this.w, Config.tile.size * this.h, 'gems', 78);

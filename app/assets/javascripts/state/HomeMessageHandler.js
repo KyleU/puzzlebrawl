@@ -31,6 +31,9 @@ define(['panels/Modal', 'state/GameState', 'utils/BrawlSync'], function (Modal, 
         Modal.show('Game Complete', JSON.stringify(v, null, 2), true);
         homeState.game.gameInput.pause();
         break;
+      case 'PreferenceChanged':
+        homeState.options.preferenceChanged(v.name, v.value, v.result);
+        break;
       case 'ServerError':
         Modal.show('Server Error', v.reason + ': ' + v.content);
         break;

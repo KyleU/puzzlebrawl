@@ -15,7 +15,7 @@ object Shared {
   val projectId = "puzzlebrawl"
 
   val compileOptions = Seq(
-    "-encoding", "UTF-8", "-feature", "-deprecation", "-unchecked", "–Xcheck-null", "-Xfatal-warnings", "-Xlint",
+    "-encoding", "UTF-8", "-feature", "-deprecation", "-unchecked", "-Xfatal-warnings", "-Xlint",
     "-Ywarn-adapted-args", "-Ywarn-dead-code", "-Ywarn-inaccessible", "-Ywarn-nullary-override", "-Ywarn-numeric-widen"
   )
 

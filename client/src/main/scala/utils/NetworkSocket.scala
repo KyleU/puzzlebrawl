@@ -44,7 +44,7 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit, onError:
   }
 
   private[this] def onErrorEvent(event: ErrorEvent) = {
-    onError(event.message)
+    onError("Websocket error: " + event)
     event
   }
 

@@ -1,6 +1,6 @@
 /* global define:false */
 /* global _:false */
-define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/Status'], function (Board, PlaymatInput, PlaymatLabels, Status) {
+define(['board/Board', 'playmat/PlaymatInput', 'player/PlayerLabels', 'utils/Status'], function (Board, PlaymatInput, PlayerLabels, Status) {
   'use strict';
 
   function startBrawl(playmat, self, brawl) {
@@ -15,7 +15,7 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
     playmat.input = new PlaymatInput(playmat);
 
     _.each(brawl.players, function(pl) {
-      var board = new Board(pl.id, pl.board, playmat);
+      var board = new Board(pl.id, pl.board, playmat.game);
       playmat.add(board);
 
       if(pl.id === playmat.self) {
@@ -38,7 +38,7 @@ define(['board/Board', 'playmat/PlaymatInput', 'playmat/PlaymatLabels', 'utils/S
     });
 
     _.each(playmat.players, function(p) {
-      p.labels = new PlaymatLabels(playmat, p.id, p.name, p.score);
+      p.labels = new PlayerLabels(playmat, p.id, p.name, p.score);
     });
 
     playmat.otherPlayers = _.filter(playmat.players, function(p) {

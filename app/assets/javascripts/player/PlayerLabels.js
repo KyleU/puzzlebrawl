@@ -8,7 +8,7 @@ define([], function () {
   var friendStyle = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#0f0' };
   var enemyStyle = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#f00' };
 
-  var PlaymatLabels = function(playmat, playerId, name, score) {
+  var PlayerLabels = function(playmat, playerId, name, score) {
     this.playmat = playmat;
 
     var style;
@@ -34,12 +34,12 @@ define([], function () {
     playmat.add(this.scoreLabel);
   };
 
-  PlaymatLabels.prototype.hide = function() {
+  PlayerLabels.prototype.hide = function() {
     this.nameLabel.visible = false;
     this.scoreLabel.visible = false;
   };
 
-  PlaymatLabels.prototype.resize = function(xOffset, width, yOffset) {
+  PlayerLabels.prototype.resize = function(xOffset, width, yOffset) {
     this.nameLabel.x = xOffset;
     this.nameLabel.y = yOffset;
 
@@ -47,12 +47,12 @@ define([], function () {
     this.scoreLabel.y = yOffset;
   };
 
-  PlaymatLabels.prototype.destroy = function() {
+  PlayerLabels.prototype.destroy = function() {
     this.playmat.remove(this.nameLabel);
     this.nameLabel.destroy();
     this.playmat.remove(this.scoreLabel);
     this.scoreLabel.destroy();
   };
 
-  return PlaymatLabels;
+  return PlayerLabels;
 });

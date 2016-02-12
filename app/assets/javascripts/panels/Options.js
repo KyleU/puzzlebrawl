@@ -3,8 +3,9 @@
 define([], function() {
   'use strict';
 
-  function Options(game) {
-    this.game = game;
+  function Options(homeState) {
+    this.game = homeState.game;
+    this.homeState = homeState;
   }
 
   Options.prototype.loadOptions = function(userPrefs) {
@@ -42,6 +43,19 @@ define([], function() {
         default:
           break;
       }
+    }
+  };
+
+  Options.prototype.preferenceChanged = function(name, value, result) {
+    switch(name) {
+      case 'theme':
+        break;
+      case 'username':
+        this.homeState.chooseName.complete(value, result);
+        break;
+      default:
+        console.log(name, value, result);
+        break;
     }
   };
 

@@ -19,22 +19,19 @@ object UserService extends Logging {
   def create[A <: AuthInfo](currentUser: User, profile: CommonSocialProfile): Future[User] = {
     log.info(s"Saving profile [$profile].")
     UserSearchService.retrieve(profile.loginInfo).flatMap {
-      case Some(existingUser) =>
-        if (existingUser.id == currentUser.id) {
-          val u = existingUser.copy(
-            profiles = existingUser.profiles.filterNot(_.providerID == profile.loginInfo.providerID) :+ profile.loginInfo
-          )
-          save(u, update = true)
-        } else {
-          Future.successful(existingUser)
-        }
-      case None => // Link to currentUser
-        Database.execute(ProfileQueries.insert(profile)).flatMap { x =>
-          val u = currentUser.copy(
-            profiles = currentUser.profiles.filterNot(_.providerID == profile.loginInfo.providerID) :+ profile.loginInfo
-          )
-          save(u, update = true)
-        }
+      case Some(existingUser) => if (existingUser.id == currentUser.id) {
+        val profiles = existingUser.profiles.filterNot(_.providerID == profile.loginInfo.providerID) :+ profile.loginInfo
+        val u = existingUser.copy(profiles = profiles)
+        save(u, update = true)
+      } else {
+        Future.successful(existingUser)
+      }
+      case None => Database.execute(ProfileQueries.insert(profile)).flatMap { x =>
+        val u = currentUser.copy(
+          profiles = currentUser.profiles.filterNot(_.providerID == profile.loginInfo.providerID) :+ profile.loginInfo
+        )
+        save(u, update = true)
+      }
     }
   }
 
@@ -45,10 +42,7 @@ object UserService extends Logging {
     } else {
       UserQueries.insert(user)
     }
-    Database.execute(statement).map { i =>
-      UserCache.cacheUser(user)
-      user
-    }
+    Database.execute(statement).map(i => UserCache.cacheUser(user))
   }
 
   def isUsernameInUse(name: String) = Database.query(UserQueries.IsUsernameInUse(name))
@@ -62,12 +56,8 @@ object UserService extends Logging {
         users <- Database.execute(UserQueries.removeById(Seq(userId)), Some(conn))
       } yield {
         UserCache.removeUser(userId)
-        Map(
-          "users" -> users,
-          "profiles" -> profiles,
-          "requests" -> requests,
-          "timing" -> ((System.nanoTime - startTime) / 1000000).toInt
-        )
+        val timing = ((System.nanoTime - startTime) / 1000000).toInt
+        Map("users" -> users, "profiles" -> profiles, "requests" -> requests, "timing" -> timing)
       }
     }
   }
@@ -92,9 +82,7 @@ object UserService extends Logging {
         case "twitter" => Database.execute(OAuth1InfoQueries.removeById(Seq(profile.loginInfo.providerID, profile.loginInfo.providerKey)), conn)
         case p => throw new IllegalArgumentException(s"Unknown provider [$p].")
       }).flatMap { infoCount =>
-        Database.execute(ProfileQueries.remove(Seq(profile.loginInfo.providerID, profile.loginInfo.providerKey)), conn).map { i =>
-          profile
-        }
+        Database.execute(ProfileQueries.remove(Seq(profile.loginInfo.providerID, profile.loginInfo.providerKey)), conn).map(i => profile)
       }
     })
   }

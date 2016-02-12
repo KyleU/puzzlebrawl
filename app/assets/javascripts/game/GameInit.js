@@ -24,6 +24,7 @@ define([
     };
     pb.register(callback);
     game.localServer = pb;
+    pb.start();
   }
 
   return function(game) {

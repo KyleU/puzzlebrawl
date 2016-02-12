@@ -38,7 +38,9 @@ define(['panels/Modal'], function(Modal) {
   }
 
   function init() {
-    window.onerror = handleError;
+    if(Phaser.Plugin.Debug === undefined) {
+      window.onerror = handleError;
+    }
   }
 
   return {
