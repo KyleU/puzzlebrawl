@@ -20,7 +20,6 @@ class ConsoleClient(brawl: Brawl) {
 
   val screen = {
     val factory = new DefaultTerminalFactory()
-    factory.setSuppressSwingTerminalFrame(true)
     val terminal = factory.createTerminal()
     val s = new TerminalScreen(terminal)
     s.startScreen()

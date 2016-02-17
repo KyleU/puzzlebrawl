@@ -9,10 +9,9 @@ import scala.scalajs.js.timers._
 trait NetworkHelper { this: PuzzleBrawl =>
   val connectionEl = org.scalajs.dom.document.getElementById("status-connection")
 
-  val networkStatus = "proxy"
+  //val networkStatus = "proxy"
   //val networkStatus = "offline"
-  //val networkStatus = "parallel"
-  //val networkStatus = "blend"
+  val networkStatus = "blend"
 
   protected[this] val socket = if (networkStatus == "offline") {
     None
@@ -36,9 +35,11 @@ trait NetworkHelper { this: PuzzleBrawl =>
   setTimeout(1000)(sendPing())
 
   protected[this] def messageReceived(c: String, v: js.Dynamic) = if (networkStatus == "proxy") {
-    this.socket.foreach(_.send(s"""{"c": "$c", "v": ${JSON.stringify(v)} }"""))
-  } else {
-    handleMessage(c, v)
+    this.socket.foreach(_.send(c, v))
+  } else if (networkStatus == "offline") {
+    handleOfflineMessage(c, v)
+  } else if (networkStatus == "blend") {
+    handleBlendMessage(c, v)
   }
 
   protected[this] def send(rm: ResponseMessage): Unit = {
@@ -66,7 +67,11 @@ trait NetworkHelper { this: PuzzleBrawl =>
   protected[this] def onSocketMessage(s: String): Unit = networkStatus match {
     case "offline" => throw new IllegalStateException()
     case "proxy" => sendCallback(s)
-    case "parallel" => Logging.info(s"Message [$s] received from socket in parallel mode.")
-    case "blend" => Logging.info(s"Message [$s] received from socket in blend mode.")
+    case "blend" => blendMessage(s)
+  }
+
+  private[this] def blendMessage(s: String) = {
+    Logging.info(s"Message [$s] received from socket in blend mode.")
+    sendCallback(s)
   }
 }

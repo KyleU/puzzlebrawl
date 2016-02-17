@@ -18,9 +18,9 @@ define([], function () {
 
     var self = this.playmat.players[this.playmat.self];
     if(self.target !== undefined && this.playmat.otherPlayers.length > 1) {
-      var tgtBoard = this.playmat.players[self.target].board;
-      this.sprite.x = tgtBoard.x;
-      this.sprite.y = tgtBoard.y;
+      var tgtGroup = this.playmat.players[self.target].group;
+      this.sprite.x = tgtGroup.x;
+      this.sprite.y = tgtGroup.y;
       this.sprite.visible = true;
     }
   };
@@ -75,11 +75,11 @@ define([], function () {
     if(player.target !== tgt) {
       player.target = tgt;
       if(playmat.self === src) {
-        var targetBoard = playmat.players[tgt].board;
+        var targetGroup = playmat.players[tgt].group;
         var sprite = this.sprite;
 
         var tween = this.playmat.game.add.tween(sprite);
-        tween.to({ x: targetBoard.x, y: targetBoard.y }, 200, Phaser.Easing.Cubic.Out);
+        tween.to({ x: targetGroup.x, y: targetGroup.y }, 200, Phaser.Easing.Cubic.Out);
         tween.onComplete.add(function() {
           var selfTeam = playmat.players[playmat.self].team;
           var targetTeam = playmat.players[tgt].team;

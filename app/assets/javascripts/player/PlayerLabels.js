@@ -8,30 +8,30 @@ define([], function () {
   var friendStyle = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#0f0' };
   var enemyStyle = { font: '64px Helvetica Neue, Helvetica, Arial, sans-serif', fill: '#f00' };
 
-  var PlayerLabels = function(playmat, playerId, name, score) {
-    this.playmat = playmat;
+  var PlayerLabels = function(playerGroup, score) {
+    this.playerGroup = playerGroup;
 
     var style;
-    if(playmat.self === playerId) {
+    if(playerGroup.role === 'self') {
       style = selfStyle;
     } else {
-      var selfTeam = playmat.players[playmat.self].team;
-      var targetTeam = playmat.players[playerId].team;
-      if(selfTeam === targetTeam) {
+      if(playerGroup.role === 'friend') {
         style = friendStyle;
-      } else {
+      } else if(playerGroup.role === 'enemy') {
         style = enemyStyle;
+      } else {
+        throw new Error('Unknown role [' + playerGroup.role + '].');
       }
     }
 
-    this.nameLabel = new Phaser.Text(playmat.game, 0, 0, name, style);
-    this.nameLabel.name = 'name-label-' + name;
-    playmat.add(this.nameLabel);
+    this.nameLabel = new Phaser.Text(playerGroup.game, 0, playerGroup.board.height, playerGroup.player.name, style);
+    this.nameLabel.name = 'name-label-' + playerGroup.player.name;
+    playerGroup.add(this.nameLabel);
 
-    this.scoreLabel = new Phaser.Text(playmat.game, 0, 0, score, scoreStyle);
-    this.scoreLabel.name = 'score-label-' + name;
+    this.scoreLabel = new Phaser.Text(playerGroup.game, playerGroup.board.width, playerGroup.board.height, score, scoreStyle);
+    this.scoreLabel.name = 'score-label-' + playerGroup.player.name;
     this.scoreLabel.anchor.set(1, 0);
-    playmat.add(this.scoreLabel);
+    playerGroup.add(this.scoreLabel);
   };
 
   PlayerLabels.prototype.hide = function() {
@@ -48,9 +48,9 @@ define([], function () {
   };
 
   PlayerLabels.prototype.destroy = function() {
-    this.playmat.remove(this.nameLabel);
+    this.playerGroup.remove(this.nameLabel);
     this.nameLabel.destroy();
-    this.playmat.remove(this.scoreLabel);
+    this.playerGroup.remove(this.scoreLabel);
     this.scoreLabel.destroy();
   };
 

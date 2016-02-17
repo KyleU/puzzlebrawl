@@ -57,7 +57,7 @@ object Dependencies {
   }
 
   object Miscellaneous {
-    val lanterna = "com.googlecode.lanterna" % "lanterna" % "3.0.0-beta1"
+    val lanterna = "com.googlecode.lanterna" % "lanterna" % "3.0.0-beta2"
   }
 
   object Testing {

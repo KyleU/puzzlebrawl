@@ -30,7 +30,7 @@ define([
 
   Playmat.prototype.onPlayerUpdate = function(update) {
     var p = this;
-    var board = p.players[update.id].board;
+    var board = p.players[update.id].group.board;
     if(board === undefined || board === null) {
       throw new Error('Player update received with invalid id [' + update.id + '].');
     }
@@ -42,12 +42,12 @@ define([
   Playmat.prototype.changeScore = function(id, delta) {
     var player = this.players[id];
     player.score += delta;
-    player.labels.scoreLabel.text = Formatter.withCommas(player.score);
+    player.group.labels.scoreLabel.text = Formatter.withCommas(player.score);
   };
 
   Playmat.prototype.onPlayerLoss = function(playerId) {
     if(this.players !== undefined && this.players[playerId] !== undefined) {
-      this.players[playerId].board.alpha = 0.5;
+      this.players[playerId].group.board.alpha = 0.5;
     }
     if(PlaymatBrawl.pendingNav !== undefined && PlaymatBrawl.pendingNav !== null) {
       this.game.navigation.navigate(PlaymatBrawl.pendingNav);

@@ -9,7 +9,15 @@ import scala.scalajs.js
 import scala.util.control.NonFatal
 
 trait MessageHelper { this: PuzzleBrawl =>
-  protected[this] def handleMessage(c: String, v: js.Dynamic) = try {
+  protected[this] def handleBlendMessage(c: String, v: js.Dynamic) = {
+    c match {
+      case _ =>
+        this.socket.foreach(_.send(c, v))
+      //handleOfflineMessage(c, v)
+    }
+  }
+
+  protected[this] def handleOfflineMessage(c: String, v: js.Dynamic) = try {
     c match {
       case "GetVersion" => send(VersionResponse("0.0"))
       case "Ping" => send(Pong(JsonUtils.getLong(v.timestamp)))

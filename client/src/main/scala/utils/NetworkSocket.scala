@@ -2,6 +2,9 @@ package utils
 
 import org.scalajs.dom.raw._
 
+import scala.scalajs.js
+import scala.scalajs.js.JSON
+
 class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit, onError: (String) => Unit, onClose: () => Unit) {
   var connecting = false
   var connected = false
@@ -15,10 +18,12 @@ class NetworkSocket(onConnect: () => Unit, onMessage: (String) => Unit, onError:
     openSocket(url)
   }
 
-  def send(s: String) = ws match {
+  def send(s: String): Unit = ws match {
     case Some(socket) => socket.send(s)
     case None => throw new IllegalStateException()
   }
+
+  def send(c: String, v: js.Dynamic): Unit = send(s"""{"c": "$c", "v": ${JSON.stringify(v)} }""")
 
   private[this] val url = {
     val loc = org.scalajs.dom.document.location

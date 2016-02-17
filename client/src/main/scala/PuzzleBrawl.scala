@@ -36,11 +36,10 @@ class PuzzleBrawl extends MessageHelper with NetworkHelper with Brawl.Callbacks 
     case "offline" =>
       val username = None
       send(InitialState(userId, username, UserPreferences()))
-    case "proxy" => socket match {
+    case _ => socket match {
       case Some(x) if x.connected => // No op
       case _ => this.pendingStart = true
     }
-    case "blend" => // TODO
   }
 
   @JSExport

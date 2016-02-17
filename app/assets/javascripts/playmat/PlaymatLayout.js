@@ -46,20 +46,18 @@ define(['utils/Config'], function (Config) {
 
     var xOffset = marginPx;
 
-    self.labels.resize(xOffset, self.board.w * Config.tile.size * selfScale, marginPx + (self.board.h * Config.tile.size * selfScale));
+    self.group.x = xOffset;
+    self.group.y = marginPx;
 
-    self.board.x = xOffset;
-    self.board.y = marginPx;
-
-    self.board.scale = { x: selfScale, y: selfScale };
-    xOffset += self.board.width + marginPx;
+    self.group.scale = { x: selfScale, y: selfScale };
+    xOffset += (self.group.board.width * selfScale) + marginPx;
 
     if(splitPlayers[1].length > 0) {
       xOffset = renderOthers(splitPlayers[1], xOffset);
     }
 
     p.w = xOffset;
-    p.h = (self.board.h + 1) * Config.tile.size;
+    p.h = (self.group.board.h + 1) * Config.tile.size;
 
     if(p.w !== originalSize[0] || p.h !== originalSize[1]) {
       this.playmat.resizer.resize();
@@ -92,18 +90,15 @@ define(['utils/Config'], function (Config) {
       }
 
       if(boardsPerRow > 5) {
-        player.labels.hide();
-      } else {
-        var offsetY = marginPx + ((row + 1) * (player.board.h * Config.tile.size * othersScale)) + (row * 64);
-        player.labels.resize(xOffset, player.board.w * Config.tile.size * othersScale, offsetY);
+        player.group.labels.hide();
       }
 
-      player.board.x = xOffset;
-      player.board.y = marginPx + (row * ((player.board.h * Config.tile.size * othersScale) + 64));
+      player.group.x = xOffset;
+      player.group.y = marginPx + (row * ((player.group.board.h * Config.tile.size * othersScale) + 64));
 
-      player.board.scale = { x: othersScale, y: othersScale };
+      player.group.scale = { x: othersScale, y: othersScale };
 
-      xOffset += player.board.width + marginPx;
+      xOffset += (player.group.board.width * othersScale) + marginPx;
       if(xOffset > maxOffset) {
         maxOffset = xOffset;
       }

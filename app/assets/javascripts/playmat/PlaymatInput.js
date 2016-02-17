@@ -8,10 +8,10 @@ define(['utils/Config'], function (Config) {
     var srcY = pointer.positionDown.y;
 
     return _.find(playmat.players, function(player) {
-      var minX = (player.board.x * playmat.scale.x) + playmat.x;
-      var maxX = ((player.board.x + player.board.width) * playmat.scale.x) + playmat.x;
-      var minY = (player.board.y * playmat.scale.y) + playmat.y;
-      var maxY = ((player.board.y + player.board.height) * playmat.scale.y) + playmat.y;
+      var minX = (player.group.x * playmat.scale.x) + playmat.x;
+      var maxX = ((player.group.x + player.group.board.width) * playmat.scale.x) + playmat.x;
+      var minY = (player.group.y * playmat.scale.y) + playmat.y;
+      var maxY = ((player.group.y + player.group.board.height) * playmat.scale.y) + playmat.y;
       return srcX >= minX && srcX <= maxX && srcY >= minY && srcY <= maxY;
     });
   }
