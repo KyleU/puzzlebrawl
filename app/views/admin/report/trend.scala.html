@@ -1,4 +1,4 @@
-@(metrics: Seq[(org.joda.time.LocalDate, Map[models.audit.DailyMetric.Metric, Long])], chartData: String)(
+@(metrics: Seq[(org.joda.time.LocalDate, Map[models.audit.DailyMetric, Long])], chartData: String)(
     implicit session: Session, flash: Flash
 )@views.html.admin.layout.admin(
   utils.Config.projectName + " Trend Report",
@@ -19,7 +19,7 @@
     <thead>
       <tr>
         <th>Date</th>
-        @for(metric <- models.audit.DailyMetric.all) {
+        @for(metric <- models.audit.DailyMetric.values) {
           <th>@metric.title</th>
         }
       </tr>
@@ -28,7 +28,7 @@
       @for(row <- metrics.reverse) {
         <tr>
           <td>@row._1</td>
-          @for(m <- models.audit.DailyMetric.all) {
+          @for(m <- models.audit.DailyMetric.values) {
             <td>@utils.Formatter.withCommas(row._2.getOrElse(m, 0L))</td>
           }
         </tr>
@@ -37,7 +37,7 @@
     <tfoot>
       <tr>
         <th>Total</th>
-        @for(m <- models.audit.DailyMetric.all) {
+        @for(m <- models.audit.DailyMetric.values) {
           <th>@utils.Formatter.withCommas(metrics.map(_._2.getOrElse(m, 0L)).sum)</th>
         }
       </tr>

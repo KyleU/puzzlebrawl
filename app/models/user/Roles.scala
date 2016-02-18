@@ -1,6 +1,7 @@
 package models.user
 
 import com.mohiva.play.silhouette.api.{ Authenticator, Authorization }
+import enumeratum._
 import play.api.i18n._
 import play.api.mvc.Request
 
@@ -15,28 +16,15 @@ final case class WithRole(role: Role) extends Authorization[User, Authenticator]
   }
 }
 
-sealed trait Role extends Serializable {
-  def name: String
-}
+sealed abstract class Role(override val entryName: String) extends EnumEntry
 
-object Role {
-  def apply(role: String): Role = role match {
-    case Admin.name => Admin
-    case User.name => User
-    case _ => Unknown
-  }
+object Role extends Enum[Role] {
+  def apply(role: String): Role = Role.withName(role)
+  def unapply(role: Role): Option[String] = Some(role.toString)
 
-  def unapply(role: Role): Option[String] = Some(role.name)
+  override def values = findValues
 
-  object Admin extends Role {
-    val name = "admin"
-  }
-
-  object User extends Role {
-    val name = "user"
-  }
-
-  object Unknown extends Role {
-    val name = "-"
-  }
+  object Admin extends Role("admin")
+  object User extends Role("user")
+  object Unknown extends Role("-")
 }

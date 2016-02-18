@@ -58,6 +58,7 @@ object Dependencies {
 
   object Miscellaneous {
     val lanterna = "com.googlecode.lanterna" % "lanterna" % "3.0.0-beta2"
+    val enumeratum = "com.beachape" %% "enumeratum-play-json" % "1.3.7"
   }
 
   object Testing {

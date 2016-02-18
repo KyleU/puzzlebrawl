@@ -25,7 +25,7 @@
           <td><a href="@controllers.admin.routes.UserController.userDetail(u.id)">@u.id</a></td>
           <td>@u.username</td>
           <td>@utils.Formatter.withCommas(requestCounts.getOrElse(u.id, 0))</td>
-          <td>@Html(u.roles.map(_.name).mkString(",<br/>"))</td>
+          <td>@Html(u.roles.mkString(",<br/>"))</td>
           <td>@Html(u.profiles.map(x => s"${x.providerID}:${x.providerKey}").mkString(",<br/>"))</td>
           <td>@u.created.toString("yyyy-MM-dd HH:mm:ss")</td>
           <td>

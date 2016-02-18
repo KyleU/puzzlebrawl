@@ -1,51 +1,18 @@
 package models.audit
 
-import org.joda.time.{ LocalDateTime, LocalDate }
+import enumeratum._
 
-object DailyMetric {
-  sealed trait Metric {
-    def title: String
-  }
+sealed abstract class DailyMetric(val title: String) extends EnumEntry
 
-  case object BrawlsStarted extends Metric {
-    override val title = "Brawls"
-  }
-  case object BrawlsWon extends Metric {
-    override val title = "Won"
-  }
-  case object BrawlsAdandoned extends Metric {
-    override val title = "Abandoned"
-  }
-
-  case object Signups extends Metric {
-    override val title = "Signups"
-  }
-
-  case object Requests extends Metric {
-    override val title = "Requests"
-  }
-
-  case object Feedbacks extends Metric {
-    override val title = "Feedbacks"
-  }
-
-  case object ServerFreeSpace extends Metric {
-    override val title = "Server Free Space"
-  }
-
-  case object ReportSent extends Metric {
-    override val title = "Mailed"
-  }
-
-  val all = Seq[Metric](
-    BrawlsStarted, BrawlsWon, BrawlsAdandoned,
-    Signups, Requests, Feedbacks,
-    ServerFreeSpace,
-    ReportSent
-  )
-
-  private[this] val allMap = all.map(m => m.toString -> m).toMap
-  def fromString(s: String) = allMap(s)
+object DailyMetric extends Enum[DailyMetric] {
+  override val values = findValues
+  case object BrawlsStarted extends DailyMetric("Brawls")
+  case object BrawlsWon extends DailyMetric("Won")
+  case object BrawlsAdandoned extends DailyMetric("Abandoned")
+  case object Signups extends DailyMetric("Signups")
+  case object Requests extends DailyMetric("Requests")
+  case object Feedbacks extends DailyMetric("Feedbacks")
+  case object ServerFreeSpace extends DailyMetric("Server Free Space")
+  case object ReportSent extends DailyMetric("Mailed")
 }
 
-final case class DailyMetric(date: LocalDate, metric: DailyMetric.Metric, value: Long, measured: LocalDateTime)

@@ -34,7 +34,7 @@ object UserQueries extends BaseQueries[User] {
     override val sql = updateSql(Seq("username", "prefs", "profiles", "roles"))
     override val values = {
       val profiles = u.profiles.map(l => s"${l.providerID}:${l.providerKey}").toArray
-      val roles = u.roles.map(_.name).toArray
+      val roles = u.roles.map(_.toString).toArray
       val prefs = Json.toJson(u.preferences).toString()
       Seq(u.username, prefs, profiles, roles, u.id)
     }
@@ -47,7 +47,7 @@ object UserQueries extends BaseQueries[User] {
 
   final case class AddRole(id: UUID, role: Role) extends Statement {
     override val sql = s"update $tableName set roles = array_append(roles, ?) where id = ?"
-    override val values = Seq(role.name, id)
+    override val values = Seq(role.toString, id)
   }
 
   final case class FindUserByUsername(username: String) extends FlatSingleRowQuery[User] {
@@ -91,7 +91,7 @@ object UserQueries extends BaseQueries[User] {
   override protected def toDataSeq(u: User) = {
     val prefs = Json.toJson(u.preferences).toString()
     val profiles = u.profiles.map(l => s"${l.providerID}:${l.providerKey}").toArray
-    val roles = u.roles.map(_.name).toArray
+    val roles = u.roles.map(_.toString).toArray
     Seq(u.id, u.username, prefs, profiles, roles, u.created)
   }
 }

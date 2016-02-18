@@ -10,7 +10,7 @@ import org.joda.time.format.DateTimeFormat
 import scala.io.Source
 
 object LogService {
-  private[this] val logStartPhrases = Seq("[TRACE]", "[DEBUG]", "[INFO] ", "[WARN] ", "[ERROR]", "[FATAL]")
+  private[this] val logStartPhrases = LogLevel.values.map(_.startPhrase)
 
   val logDir = new File("logs")
   if (!logDir.exists) {
@@ -52,7 +52,7 @@ object LogService {
     if (levelEndIndex == -1 || (levelEndIndex != 5 && levelEndIndex != 6)) {
       throw new IllegalStateException(s"Invalid main line index [$levelEndIndex] for line [$lineNumber]: $line")
     }
-    val level = LogLevel.fromString(line.substring(1, levelEndIndex))
+    val level = LogLevel.withName(line.substring(1, levelEndIndex))
 
     val occurredEndIndex = line.indexOf(' ', levelEndIndex + 20)
     val occurredString = line.substring(levelEndIndex + 2, occurredEndIndex)

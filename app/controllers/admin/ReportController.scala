@@ -40,19 +40,19 @@ class ReportController @javax.inject.Inject() (override val ctx: ApplicationCont
     } yield Ok(views.html.admin.report.requests(userCounts, userAgentCounts, pathCounts, referrerCounts))
   }
 
-  private[this] def toChartData(metrics: Seq[(org.joda.time.LocalDate, Map[models.audit.DailyMetric.Metric, Long])]) = {
-    def toChartDataValues(metric: DailyMetric.Metric) = metrics.map(x => x._1 -> x._2.getOrElse(metric, 0L)).reverse.map { row =>
+  private[this] def toChartData(metrics: Seq[(org.joda.time.LocalDate, Map[models.audit.DailyMetric, Long])]) = {
+    def toChartDataValues(metric: DailyMetric) = metrics.map(x => x._1 -> x._2.getOrElse(metric, 0L)).reverse.map { row =>
       val ms = utils.DateUtils.toMillis(row._1.toLocalDateTime(org.joda.time.LocalTime.MIDNIGHT).plusDays(1))
       s"""{ "x": $ms, "y": ${row._2} }"""
     }.mkString(", ")
 
     val pre = "[\n"
     val post = "\n]\n"
-    val content = DailyMetric.all.map { metric =>
+    val content = DailyMetric.values.map { metric =>
       s"""  {
-    "values": [ ${toChartDataValues(metric)} ],
-    "key": "${metric.title}"
-  }"""
+        "values": [ ${toChartDataValues(metric)} ],
+        "key": "${metric.title}"
+      }"""
     }.mkString(",\n")
     pre + content + post
   }

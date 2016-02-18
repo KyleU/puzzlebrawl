@@ -1,12 +1,16 @@
 package models.audit
 
+import enumeratum._
 import play.twirl.api.Html
 
-sealed trait LogLevel {
+sealed trait LogLevel extends EnumEntry {
+  def startPhrase = "[" + toString.toUpperCase + "]"
   def toHtml: Html
 }
 
-object LogLevel {
+object LogLevel extends Enum[LogLevel] {
+  override val values = findValues
+
   case object Trace extends LogLevel {
     override def toHtml = Html("""<span class="label label-success">Trace</span>""")
   }
@@ -25,8 +29,4 @@ object LogLevel {
   case object Fatal extends LogLevel {
     override def toHtml = Html("""<span class="label label-danger">Fatal</span>""")
   }
-
-  val all = Seq(Trace, Debug, Info, Warn, Error, Fatal)
-
-  def fromString(s: String) = all.find(_.toString.toLowerCase == s.toLowerCase).getOrElse(throw new IllegalStateException())
 }

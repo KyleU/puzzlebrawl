@@ -1,6 +1,6 @@
 package services.audit
 
-import models.audit.DailyMetric
+import models.audit.{ DailyMetricResult, DailyMetric }
 import models.audit.DailyMetric._
 import models.queries.audit.DailyMetricQueries
 import org.joda.time.LocalDate
@@ -11,15 +11,15 @@ import utils.DateUtils
 import scala.concurrent.Future
 
 object DailyMetricService {
-  def getMetric(d: LocalDate, m: DailyMetric.Metric) = Database.query(DailyMetricQueries.GetValue(d, m))
+  def getMetric(d: LocalDate, m: DailyMetric) = Database.query(DailyMetricQueries.GetValue(d, m))
 
   def getMetrics(d: LocalDate) = Database.query(DailyMetricQueries.GetMetrics(d)).flatMap { m =>
-    if (m.size == DailyMetric.all.size) {
+    if (m.size == DailyMetric.values.size) {
       Future.successful((d, (m, 0)))
     } else {
-      val missingMetrics = DailyMetric.all.filterNot(m.keySet.contains)
+      val missingMetrics = DailyMetric.values.filterNot(m.keySet.contains)
       calculateMetrics(d, missingMetrics).map { metrics =>
-        val models = metrics.map(x => DailyMetric(d, x._1, x._2, DateUtils.now)).toSeq
+        val models = metrics.map(x => DailyMetricResult(d, x._1, x._2, DateUtils.now)).toSeq
         Database.execute(DailyMetricQueries.insertBatch(models))
         (d, (m ++ metrics, metrics.size))
       }
@@ -28,8 +28,8 @@ object DailyMetricService {
 
   def getAllMetrics = Database.query(DailyMetricQueries.GetAllMetrics)
 
-  def setMetric(d: LocalDate, metric: DailyMetric.Metric, value: Long) = {
-    val dm = DailyMetric(d, metric, value, DateUtils.now)
+  def setMetric(d: LocalDate, metric: DailyMetric, value: Long) = {
+    val dm = DailyMetricResult(d, metric, value, DateUtils.now)
     Database.execute(DailyMetricQueries.UpdateMetric(dm)).flatMap { rowsAffected =>
       if (rowsAffected == 1) {
         Future.successful(dm)
@@ -47,7 +47,7 @@ object DailyMetricService {
     }
   }
 
-  private[this] def calculateMetrics(d: LocalDate, metrics: Seq[DailyMetric.Metric]) = {
+  private[this] def calculateMetrics(d: LocalDate, metrics: Seq[DailyMetric]) = {
     val futures = metrics.map { metric =>
       getSql(metric) match {
         case Some(sql) => Database.query(DailyMetricQueries.CalculateMetric(metric, sql, d))
@@ -60,7 +60,7 @@ object DailyMetricService {
     Future.sequence(futures).map(_.toMap)
   }
 
-  private[this] def getSql(metric: Metric) = metric match {
+  private[this] def getSql(metric: DailyMetric) = metric match {
     case BrawlsStarted => Some("select count(*) as c from brawls where created >= ? and created < ?")
     case BrawlsWon => Some("select count(*) as c from brawls where created >= ? and created < ? and status = 'win'")
     case BrawlsAdandoned => Some("select count(*) as c from brawls where created >= ? and created < ? and status = 'abandoned'")
