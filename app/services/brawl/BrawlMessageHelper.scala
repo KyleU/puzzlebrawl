@@ -24,8 +24,8 @@ trait BrawlMessageHelper { this: BrawlService =>
         case ActiveGemsRight => player.activeGemsRight().foreach(m => sendMove(m))
         case ActiveGemsClockwise => player.activeGemsClockwise().foreach(m => sendMove(m))
         case ActiveGemsCounterClockwise => player.activeGemsCounterClockwise().foreach(m => sendMove(m))
-        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("active-step", Seq(m))))))
-        case ActiveGemsDrop => sendToAll(PlayerUpdate(player.id, player.dropActiveFullTurn(brawl)))
+        case ActiveGemsStep => player.activeGemsStep().foreach(m => sendToAll(parse(PlayerUpdate(player.id, Seq(UpdateSegment("active-step", Seq(m)))))))
+        case ActiveGemsDrop => sendToAll(parse(PlayerUpdate(player.id, player.dropActiveFullTurn(brawl))))
         case st: SelectTarget => if (!player.target.contains(st.target)) {
           player.target = Some(st.target)
           sendToAll(PlayerUpdate(player.id, Seq(UpdateSegment("target", Seq(TargetChanged(st.target))))))
@@ -39,5 +39,9 @@ trait BrawlMessageHelper { this: BrawlService =>
         sender() ! ServerError(x.getClass.getSimpleName, x.getMessage)
     }
     logBrawlMessageComplete(br.message, br.userId, time)
+  }
+
+  private[this] def parse(pu: PlayerUpdate) = {
+    pu
   }
 }

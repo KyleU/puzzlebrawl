@@ -14,10 +14,7 @@ import utils.metrics.InstrumentedActor
 
 trait ConnectionServiceTraceHelper extends InstrumentedActor { this: ConnectionService =>
   protected[this] def handleConnectionTrace() {
-    val ret = TraceResponse(id, List(
-      "userId" -> user.id,
-      "name" -> currentUsername.getOrElse("Guest")
-    ))
+    val ret = ConnectionTraceResponse(id, user.id, currentUsername)
     sender() ! ret
   }
 
@@ -51,7 +48,7 @@ trait ConnectionServiceTraceHelper extends InstrumentedActor { this: ConnectionS
     case Some(dc) =>
       val json = Json.parse(data).as[JsObject]
       AnalyticsService.trace(user.id, sourceAddress, json)
-      dc ! TraceResponse(id, json.fields)
+      dc ! ClientTraceResponse(id, json)
     case None => activeBrawl match {
       case Some(brawl) => brawl.forward(DebugInfo(data))
       case None => log.warn(s"Received unsolicited DebugInfo [$data] from [$id] with no active brawl.")

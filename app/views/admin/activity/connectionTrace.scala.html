@@ -1,0 +1,14 @@
+@(trace: ConnectionTraceResponse)(implicit session: Session, flash: Flash)
+<h4>Connection [@trace.id]</h4>
+
+<table class="table table-bordered">
+  <tr>
+    <td>User ID</td>
+    <td>@trace.userId</td>
+  </tr>
+
+  <tr>
+    <td>Username</td>
+    <td>@trace.username.getOrElse("-")</td>
+  </tr>
+</table>

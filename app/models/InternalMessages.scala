@@ -5,6 +5,7 @@ import java.util.UUID
 import akka.actor.ActorRef
 import models.user.User
 import org.joda.time.LocalDateTime
+import play.api.libs.json.JsObject
 
 sealed trait InternalMessage
 
@@ -30,8 +31,14 @@ final case class UpdateSchedule(id: UUID, script: String, minActionMs: Int, maxA
 case object GetSystemStatus extends InternalMessage
 final case class SystemStatus(brawls: Seq[(UUID, Seq[(UUID, String)])], connections: Seq[(UUID, String)]) extends InternalMessage
 
-final case class ConnectionTrace(id: UUID) extends InternalMessage
-final case class ClientTrace(id: UUID) extends InternalMessage
-final case class BrawlTrace(id: UUID) extends InternalMessage
-final case class TraceResponse(id: UUID, data: Seq[(String, Any)]) extends InternalMessage
+final case class SendConnectionTrace(id: UUID) extends InternalMessage
+final case class ConnectionTraceResponse(id: UUID, userId: UUID, username: Option[String]) extends InternalMessage
 
+final case class SendClientTrace(id: UUID) extends InternalMessage
+final case class ClientTraceResponse(id: UUID, data: JsObject) extends InternalMessage
+
+final case class SendBrawlTrace(id: UUID) extends InternalMessage
+final case class BrawlTraceResponse(
+  id: UUID, scenario: String, seed: Int, started: Long,
+  players: Seq[(UUID, String, Option[UUID], Int, Option[(BrawlMessage, LocalDateTime)])],
+  observers: Seq[(UUID, String, Option[UUID])]) extends InternalMessage

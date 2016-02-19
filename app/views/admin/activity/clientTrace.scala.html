@@ -1,0 +1,11 @@
+@(trace: ClientTraceResponse)(implicit session: Session, flash: Flash)
+<h4>Client Connection [@trace.id]</h4>
+
+<table class="table table-bordered">
+  @for(stat <- trace.data.fields) {
+    <tr>
+      <td>@stat._1</td>
+      <td>@Html(stat._2.toString)</td>
+    </tr>
+  }
+</table>

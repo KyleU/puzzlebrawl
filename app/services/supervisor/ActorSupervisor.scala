@@ -42,9 +42,9 @@ class ActorSupervisor(val ctx: ApplicationContext) extends ActorSupervisorHelper
     case bs: BrawlStopped => timeReceive(bs) { handleBrawlStopped(bs.id) }
 
     case GetSystemStatus => timeReceive(GetSystemStatus) { handleGetSystemStatus() }
-    case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace(ct) }
-    case ct: ClientTrace => timeReceive(ct) { handleClientTrace(ct) }
-    case bt: BrawlTrace => timeReceive(bt) { handleBrawlTrace(bt) }
+    case ct: SendConnectionTrace => timeReceive(ct) { handleSendConnectionTrace(ct) }
+    case ct: SendClientTrace => timeReceive(ct) { handleSendClientTrace(ct) }
+    case bt: SendBrawlTrace => timeReceive(bt) { handleSendBrawlTrace(bt) }
 
     case im: InternalMessage => log.warn(s"Unhandled internal message [${im.getClass.getSimpleName}] received.")
     case x => log.warn(s"ActorSupervisor encountered unknown message: ${x.toString}")
@@ -56,19 +56,19 @@ class ActorSupervisor(val ctx: ApplicationContext) extends ActorSupervisorHelper
     sender() ! SystemStatus(brawlStatuses, connectionStatuses)
   }
 
-  private[this] def handleConnectionTrace(ct: ConnectionTrace) = connections.find(_._1 == ct.id) match {
-    case Some(g) => g._2.actorRef forward ct
-    case None => sender() ! ServerError("Unknown Connection", ct.id.toString)
+  private[this] def handleSendConnectionTrace(ct: SendConnectionTrace) = connections.find(_._1 == ct.id) match {
+    case Some(c) => c._2.actorRef forward ct
+    case None => sender() ! ServerError(s"Unknown Connection [${ct.id}].", ct.id.toString)
   }
 
-  private[this] def handleClientTrace(ct: ClientTrace) = connections.find(_._1 == ct.id) match {
-    case Some(g) => g._2.actorRef forward ct
-    case None => sender() ! ServerError("Unknown Client", ct.id.toString)
+  private[this] def handleSendClientTrace(ct: SendClientTrace) = connections.find(_._1 == ct.id) match {
+    case Some(c) => c._2.actorRef forward ct
+    case None => sender() ! ServerError(s"Unknown Client Connection [${ct.id}].", ct.id.toString)
   }
 
-  private[this] def handleBrawlTrace(bt: BrawlTrace) = brawls.get(bt.id) match {
+  private[this] def handleSendBrawlTrace(bt: SendBrawlTrace) = brawls.get(bt.id) match {
     case Some(g) => g.actorRef forward bt
-    case None => sender() ! ServerError("Unknown Game", bt.id.toString)
+    case None => sender() ! ServerError(s"Unknown Brawl [${bt.id}].", bt.id.toString)
   }
 
   protected[this] def handleConnectionStarted(user: User, connectionId: UUID, conn: ActorRef) {

@@ -64,8 +64,8 @@ class ConnectionService(
   }
 
   private[this] def handleInternalMessage(im: InternalMessage) = im match {
-    case ct: ConnectionTrace => timeReceive(ct) { handleConnectionTrace() }
-    case ct: ClientTrace => timeReceive(ct) { handleClientTrace() }
+    case ct: SendConnectionTrace => timeReceive(ct) { handleConnectionTrace() }
+    case ct: SendClientTrace => timeReceive(ct) { handleClientTrace() }
     case bs: BrawlStarted => handleBrawlStarted(bs.id, bs.brawlService, bs.started)
     case bs: BrawlStopped => handleBrawlStopped(bs.id)
 

@@ -1,7 +1,7 @@
 import sbt._
 
 object Dependencies {
-  val scapegoatVersion = "1.1.1"
+  val scapegoatVersion = "1.2.0"
 
   object Cache {
     val ehCache = "net.sf.ehcache" % "ehcache-core" % "2.6.11"
@@ -12,12 +12,14 @@ object Dependencies {
   }
 
   object Akka {
-    val actor = "com.typesafe.akka" %% "akka-actor" % "2.4.1"
-    val remote = "com.typesafe.akka" %% "akka-remote" % "2.4.1"
-    val logging = "com.typesafe.akka" %% "akka-slf4j" % "2.4.1"
-    val cluster = "com.typesafe.akka" %% "akka-cluster" % "2.4.1"
-    val clusterMetrics = "com.typesafe.akka" %% "akka-cluster-metrics" % "2.4.1"
-    val clusterTools = "com.typesafe.akka" %% "akka-cluster-tools" % "2.4.1"
+    private[this] val version = "2.4.2"
+    val actor = "com.typesafe.akka" %% "akka-actor" % version
+    val remote = "com.typesafe.akka" %% "akka-remote" % version
+    val logging = "com.typesafe.akka" %% "akka-slf4j" % version
+    val cluster = "com.typesafe.akka" %% "akka-cluster" % version
+    val clusterMetrics = "com.typesafe.akka" %% "akka-cluster-metrics" % version
+    val clusterTools = "com.typesafe.akka" %% "akka-cluster-tools" % version
+    val testkit = "com.typesafe.akka" %% "akka-testkit" % version
   }
 
   object Play {
@@ -44,16 +46,15 @@ object Dependencies {
   }
 
   object Metrics {
+    private[this] val version = "3.1.2"
+    val jvm = "io.dropwizard.metrics" % "metrics-jvm" % version withSources()
+    val ehcache = "io.dropwizard.metrics" % "metrics-ehcache" % version withSources() intransitive()
+    val healthChecks = "io.dropwizard.metrics" % "metrics-healthchecks" % version withSources() intransitive()
+    val json = "io.dropwizard.metrics" % "metrics-json" % version withSources()
+    val servlets = "io.dropwizard.metrics" % "metrics-servlets" % version withSources() intransitive()
+    val graphite = "io.dropwizard.metrics" % "metrics-graphite" % version withSources() intransitive()
     val metrics = "nl.grons" %% "metrics-scala" % "3.5.2" withSources()
-    val jvm = "io.dropwizard.metrics" % "metrics-jvm" % "3.1.2" withSources()
-    val ehcache = "io.dropwizard.metrics" % "metrics-ehcache" % "3.1.2" withSources() intransitive()
-    val healthChecks = "io.dropwizard.metrics" % "metrics-healthchecks" % "3.1.2" withSources() intransitive()
-
-    val json = "io.dropwizard.metrics" % "metrics-json" % "3.1.2" withSources()
-
     val jettyServlet = "org.eclipse.jetty" % "jetty-servlet" % "9.3.7.v20160115" withSources()
-    val servlets = "io.dropwizard.metrics" % "metrics-servlets" % "3.1.2" withSources() intransitive()
-    val graphite = "io.dropwizard.metrics" % "metrics-graphite" % "3.1.2" withSources() intransitive()
   }
 
   object Miscellaneous {
@@ -62,7 +63,6 @@ object Dependencies {
   }
 
   object Testing {
-    val akkaTestkit = "com.typesafe.akka" %% "akka-testkit" % "2.4.1"
     val gatlingCore = "io.gatling" % "gatling-test-framework" % "2.1.7" % "test"
     val gatlingCharts = "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.1.7" % "test"
   }

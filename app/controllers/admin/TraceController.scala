@@ -16,25 +16,23 @@ class TraceController @javax.inject.Inject() (override val ctx: ApplicationConte
   implicit val timeout = Timeout(10.seconds)
 
   def traceConnection(connectionId: UUID) = withAdminSession("connection") { implicit request =>
-    (ctx.supervisor ask ConnectionTrace(connectionId)).map {
-      case tr: TraceResponse => Ok(views.html.admin.activity.trace("Connection", tr))
+    (ctx.supervisor ask SendConnectionTrace(connectionId)).map {
+      case tr: ConnectionTraceResponse => Ok(views.html.admin.activity.connectionTrace(tr))
       case se: ServerError => Ok(s"${se.reason}: ${se.content}")
     }
   }
 
   def traceClient(connectionId: UUID) = withAdminSession("client") { implicit request =>
-    (ctx.supervisor ask ClientTrace(connectionId)).map {
-      case tr: TraceResponse => Ok(views.html.admin.activity.trace("Client", tr))
+    (ctx.supervisor ask SendClientTrace(connectionId)).map {
+      case tr: ClientTraceResponse => Ok(views.html.admin.activity.clientTrace(tr))
       case se: ServerError => Ok(s"${se.reason}: ${se.content}")
     }
   }
 
   def traceBrawl(brawlId: UUID) = withAdminSession("brawl") { implicit request =>
     implicit val identity = request.identity
-    (ctx.supervisor ask BrawlTrace(brawlId)).map {
-      case tr: TraceResponse =>
-        val buttons = Seq("Observe As Admin" -> controllers.admin.routes.ObserveController.observeBrawlAsAdmin(brawlId).url)
-        Ok(views.html.admin.activity.trace("Brawl", tr, buttons))
+    (ctx.supervisor ask SendBrawlTrace(brawlId)).map {
+      case tr: BrawlTraceResponse => Ok(views.html.admin.activity.brawlTrace(tr))
       case se: ServerError => Ok(s"${se.reason}: ${se.content}")
     }
   }

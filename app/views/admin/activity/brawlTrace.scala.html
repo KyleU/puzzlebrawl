@@ -1,0 +1,69 @@
+@(trace: BrawlTraceResponse)(implicit session: Session, flash: Flash)
+
+<div class="pull-right">
+  <a target="_blank" href="@controllers.admin.routes.ObserveController.observeBrawlAsAdmin(trace.id)">
+    <span class="glyphicon glyphicon-search" title="Observe as Admin"></span>
+  </a>
+</div>
+
+<h4>Brawl [@trace.id]</h4>
+
+<table class="table table-bordered">
+  <tr>
+    <th>Scenario</th>
+    <th>Seed</th>
+    <th>Started</th>
+  </tr>
+  <tr>
+    <td>@trace.scenario</td>
+    <td>@trace.seed</td>
+    <td>@utils.DateUtils.fromMillis(trace.started)</td>
+  </tr>
+</table>
+
+<strong>Players</strong>
+<table class="table table-bordered">
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Message Count</th>
+    <th>Last Message</th>
+    <th>Actions</th>
+  </tr>
+  @trace.players.map { p =>
+    <tr>
+      <td>@p._1</td>
+      <td>@p._2</td>
+      <td>@p._4</td>
+      <td>@p._5.map(x => s"${x._1} - ${x._2}").getOrElse("None")</td>
+      <td>
+        @p._3.map { c =>
+          <a href="@controllers.admin.routes.TraceController.traceConnection(c)">
+            <span class="glyphicon glyphicon-signal" title="Trace Connection"></span>
+          </a>
+        }
+        <a href="@controllers.admin.routes.ObserveController.observeBrawlAs(trace.id, p._1)">
+          <span class="glyphicon glyphicon-search" title="Observe as [@p._2]"></span>
+        </a>
+      </td>
+    </tr>
+  }
+</table>
+
+@if(trace.observers.nonEmpty) {
+  <strong>Observers</strong>
+  <table class="table table-bordered">
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Observing As</th>
+    </tr>
+    @trace.observers.map { o =>
+      <tr>
+        <td>@o._1</td>
+        <td>@o._2</td>
+        <td>@o._3</td>
+      </tr>
+    }
+  </table>
+}
