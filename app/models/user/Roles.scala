@@ -16,7 +16,9 @@ final case class WithRole(role: Role) extends Authorization[User, Authenticator]
   }
 }
 
-sealed abstract class Role(override val entryName: String) extends EnumEntry
+sealed abstract class Role(override val entryName: String) extends EnumEntry {
+  override def toString = entryName
+}
 
 object Role extends Enum[Role] {
   def apply(role: String): Role = Role.withName(role)
@@ -26,5 +28,5 @@ object Role extends Enum[Role] {
 
   object Admin extends Role("admin")
   object User extends Role("user")
-  object Unknown extends Role("-")
+  object Unknown extends Role("unknown")
 }

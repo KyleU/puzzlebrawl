@@ -40,6 +40,8 @@ object Server {
     scalacOptions ++= Shared.compileOptions,
     scalacOptions in Test ++= Seq("-Yrangepos"),
 
+    publishMavenStyle := false,
+
     resolvers += Resolver.jcenterRepo,
     libraryDependencies ++= dependencies,
 

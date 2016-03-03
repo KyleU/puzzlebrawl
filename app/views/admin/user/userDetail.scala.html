@@ -11,6 +11,24 @@
 
   <div class="panel panel-default">
     <div class="panel-body">
+      <h5>Roles</h5>
+      <ul>
+        @models.user.Role.values.map { role =>
+          <li>
+            @if(user.roles.contains(role)) {
+              <input type="checkbox" name="role-@role.entryName" value="true" checked="checked" />
+            } else {
+              <input type="checkbox" name="role-@role.entryName" value="true" />
+            }
+            @role.entryName
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
       <h5>Preferences</h5>
       <table class="table">
         <tr>

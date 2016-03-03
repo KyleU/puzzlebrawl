@@ -30,21 +30,18 @@ object UserSearchService extends IdentityService[User] with Logging {
     case Some(u) => Future.successful(Some(u))
     case None => if (loginInfo.providerID == "anonymous") {
       Database.query(UserQueries.getById(Seq(UUID.fromString(loginInfo.providerKey)))).map {
-        case Some(dbUser) =>
-          if (dbUser.profiles.nonEmpty) {
-            log.warn(s"Attempt to authenticate as anonymous for user with profiles [${dbUser.profiles}].")
-            None
-          } else {
-            UserCache.cacheUserForLoginInfo(dbUser, loginInfo)
-            Some(dbUser)
-          }
+        case Some(dbUser) => if (dbUser.profiles.nonEmpty) {
+          log.warn(s"Attempt to authenticate as anonymous for user with profiles [${dbUser.profiles}].")
+          None
+        } else {
+          UserCache.cacheUser(dbUser)
+          Some(dbUser)
+        }
         case None => None
       }
     } else {
       Database.query(UserQueries.FindUserByProfile(loginInfo)).map {
-        case Some(dbUser) =>
-          UserCache.cacheUserForLoginInfo(dbUser, loginInfo)
-          Some(dbUser)
+        case Some(dbUser) => Some(UserCache.cacheUser(dbUser))
         case None => None
       }
     }

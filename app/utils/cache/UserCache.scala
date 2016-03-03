@@ -13,12 +13,10 @@ object UserCache {
 
   def cacheUser(user: User) = {
     CacheService.set(s"user.${user.id}", user)
+    for (p <- user.profiles) {
+      CacheService.set(s"user.${p.providerID}:${p.providerKey}", user)
+    }
     user
-  }
-
-  def cacheUserForLoginInfo(user: User, loginInfo: LoginInfo) = {
-    CacheService.set(s"user.${user.id}", user)
-    CacheService.set(s"user.${loginInfo.providerID}:${loginInfo.providerKey}", user)
   }
 
   def getUserByLoginInfo(loginInfo: LoginInfo) = {
