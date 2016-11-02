@@ -34,7 +34,8 @@ object BaseSerializers {
   }
 
   implicit val boolOptionWriter = Writer[Option[Boolean]] {
-    case Some(b) => if (b) { Js.True } else { Js.False }
+    case Some(b) if b => Js.True
+    case Some(b) => Js.False
     case None => Js.Null
   }
   implicit val boolOptionReader = Reader[Option[Boolean]] {

@@ -16,8 +16,6 @@ import sbt.Keys._
 import sbt.Project.projectToRef
 import sbt._
 import sbtide.Keys._
-import tut.Plugin._
-import wartremover.WartRemover.autoImport._
 
 object Server {
   private[this] val dependencies = {
@@ -62,8 +60,6 @@ object Server {
     scapegoatDisabledInspections := Seq("DuplicateImport"),
     scapegoatVersion := Dependencies.scapegoatVersion,
     ScalariformKeys.preferences := ScalariformKeys.preferences.value,
-    wartremoverErrors ++= Shared.includedWartRemovers,
-    tutSourceDirectory := baseDirectory.value / "doc",
 
     // IntelliJ import fixes
     ideExcludedDirectories <<= (baseDirectory, target, crossTarget) { (b, t, ct) =>
@@ -78,7 +74,6 @@ object Server {
     .enablePlugins(SbtWeb)
     .enablePlugins(play.sbt.PlayScala)
     .settings(scalariformSettings: _*)
-    .settings(tutSettings: _*)
     .settings(serverSettings: _*)
     .aggregate(projectToRef(Client.client))
     .aggregate(Shared.sharedJvm)

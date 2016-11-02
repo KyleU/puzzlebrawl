@@ -7,12 +7,13 @@ import playscalajs.ScalaJSPlay
 import playscalajs.ScalaJSPlay.autoImport._
 import sbt.Keys._
 import sbt._
-import wartremover.WartRemover.autoImport._
 
 object Client {
+
   private[this] val clientSettings = Seq(
     scalaVersion := Shared.Versions.scala,
     persistLauncher := false,
+    //noinspection ScalaDeprecation
     sourceMapsDirectories += Shared.sharedJs.base / "..",
     unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
     libraryDependencies ++= Seq(
@@ -22,8 +23,7 @@ object Client {
     scalaJSStage in Global := FastOptStage,
     scapegoatIgnoredFiles := Seq(".*/json/.*"),
     scapegoatVersion := Dependencies.scapegoatVersion,
-    ScalariformKeys.preferences := ScalariformKeys.preferences.value,
-    wartremoverErrors ++= Shared.includedWartRemovers
+    ScalariformKeys.preferences := ScalariformKeys.preferences.value
   )
 
   lazy val client = (project in file("client"))
