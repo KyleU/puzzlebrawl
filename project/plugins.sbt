@@ -46,6 +46,3 @@ addSbtPlugin("org.brianmckenna" % "sbt-wartremover" % "0.14")
 
 // Documentation
 addSbtPlugin("org.tpolecat" % "tut-plugin" % "0.4.1")
-
-// Dev Tools
-addSbtPlugin("org.jetbrains" % "sbt-ide-settings" % "0.1.1")

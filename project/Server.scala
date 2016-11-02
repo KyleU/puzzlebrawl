@@ -15,7 +15,6 @@ import playscalajs.PlayScalaJS.autoImport._
 import sbt.Keys._
 import sbt.Project.projectToRef
 import sbt._
-import sbtide.Keys._
 
 object Server {
   private[this] val dependencies = {
@@ -59,14 +58,7 @@ object Server {
     scapegoatIgnoredFiles := Seq(".*/Row.scala", ".*/Routes.scala", ".*/ReverseRoutes.scala", ".*/JavaScriptReverseRoutes.scala", ".*/*.template.scala"),
     scapegoatDisabledInspections := Seq("DuplicateImport"),
     scapegoatVersion := Dependencies.scapegoatVersion,
-    ScalariformKeys.preferences := ScalariformKeys.preferences.value,
-
-    // IntelliJ import fixes
-    ideExcludedDirectories <<= (baseDirectory, target, crossTarget) { (b, t, ct) =>
-      (t * "*").filter(_.isDirectory).filter(_ != ct).get ++
-        (ct * "*").filter(_.isDirectory).filter(f => !(f.name.contains("twirl") || f.name.contains("routes"))).get ++
-        Seq(b / "logs") ++ Seq(b / "public" / "lib") ++ Seq(b / "offline")
-    }
+    ScalariformKeys.preferences := ScalariformKeys.preferences.value
   )
 
   lazy val server = Project(id = Shared.projectId, base = file("."))
