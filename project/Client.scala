@@ -4,7 +4,6 @@ import com.typesafe.sbt.SbtScalariform.{ ScalariformKeys, scalariformSettings }
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import playscalajs.ScalaJSPlay
-import playscalajs.ScalaJSPlay.autoImport._
 import sbt.Keys._
 import sbt._
 
@@ -14,11 +13,10 @@ object Client {
     scalaVersion := Shared.Versions.scala,
     persistLauncher := false,
     //noinspection ScalaDeprecation
-    sourceMapsDirectories += Shared.sharedJs.base / "..",
     unmanagedSourceDirectories in Compile := Seq((scalaSource in Compile).value),
     libraryDependencies ++= Seq(
-      "org.scala-js" %%% "scalajs-dom" % "0.9.0",
-      "com.lihaoyi" %%% "upickle" % "0.3.8"
+      "org.scala-js" %%% "scalajs-dom" % Dependencies.ScalaJS.domVersion,
+      "com.lihaoyi" %%% "upickle" % Dependencies.ScalaJS.uPickleVersion
     ),
     scalaJSStage in Global := FastOptStage,
     scapegoatIgnoredFiles := Seq(".*/json/.*"),

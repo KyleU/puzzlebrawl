@@ -8,7 +8,6 @@ import com.typesafe.sbt.SbtScalariform.{ScalariformKeys, scalariformSettings}
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 
 import playscalajs.ScalaJSPlay
-import playscalajs.ScalaJSPlay.autoImport._
 import wartremover.WartRemover.autoImport._
 
 object Shared {
@@ -21,7 +20,7 @@ object Shared {
 
   object Versions {
     val app = "0.1-SNAPSHOT"
-    val scala = "2.11.7"
+    val scala = "2.11.8"
   }
 
   val includedWartRemovers = Seq(
@@ -33,7 +32,6 @@ object Shared {
     .settings(scalaVersion := Versions.scala)
     .enablePlugins(ScalaJSPlay)
     .settings(
-      sourceMapsBase := baseDirectory.value / "..",
       scalaJSStage in Global := FastOptStage,
       scapegoatIgnoredFiles := Seq(".*"),
       scapegoatVersion := Dependencies.scapegoatVersion
