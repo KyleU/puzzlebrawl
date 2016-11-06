@@ -1,6 +1,6 @@
 package services.audit
 
-import models.audit.{ DailyMetricResult, DailyMetric }
+import models.audit.{ DailyMetric, DailyMetricResult }
 import models.audit.DailyMetric._
 import models.queries.audit.DailyMetricQueries
 import org.joda.time.LocalDate
@@ -9,6 +9,7 @@ import services.database.Database
 import utils.DateUtils
 
 import scala.concurrent.Future
+import scala.util.control.NonFatal
 
 object DailyMetricService {
   def getMetric(d: LocalDate, m: DailyMetric) = Database.query(DailyMetricQueries.GetValue(d, m))
@@ -70,7 +71,7 @@ object DailyMetricService {
     case _ => None
   }
 
-  private[this] def getFreeSpace = {
+  private[this] def getFreeSpace = try {
     import scala.sys.process._
     val result = "df /".!!
     val lastLine = result.split("\n").last
@@ -78,5 +79,7 @@ object DailyMetricService {
     val startIndex = lastLine.indexOf(' ', endIndex - 5)
     val ret = 100 - lastLine.substring(startIndex, endIndex).trim.toLong
     ret
+  } catch {
+    case NonFatal(x) => 0L
   }
 }
