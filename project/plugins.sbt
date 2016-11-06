@@ -29,6 +29,11 @@ addSbtPlugin("io.gatling" % "gatling-sbt" % "2.1.7")
 // Source Control
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.4")
 
+// App Packaging
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.1.4")
+
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
+
 // Code Quality
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.0") // dependencyGraph
 

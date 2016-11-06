@@ -12,6 +12,7 @@ import wartremover.WartRemover.autoImport._
 
 object Shared {
   val projectId = "puzzlebrawl"
+  val projectName = "Puzzle Brawl"
 
   val compileOptions = Seq(
     "-encoding", "UTF-8", "-feature", "-deprecation", "-unchecked", "-Xfatal-warnings", "-Xlint",
