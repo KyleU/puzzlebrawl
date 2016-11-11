@@ -23,51 +23,54 @@ abstract class BaseController() extends Silhouette[User, CookieAuthenticator] wi
 
   def withAdminSession(action: String)(block: (SecuredRequest[AnyContent]) => Future[Result]) = SecuredAction.async { implicit request =>
     val startTime = System.nanoTime
-    if (request.identity.roles.contains(Role.Admin)) {
-      block(request).map { r =>
-        val duration = ((System.nanoTime - startTime) / 1000000).toInt
-        logRequest(request, request.identity.id, request.authenticator.loginInfo, duration, r.header.status)
-        r
+    metrics.timer(action).timeFuture {
+      if (request.identity.roles.contains(Role.Admin)) {
+        block(request).map { r =>
+          val duration = ((System.nanoTime - startTime) / 1000000).toInt
+          logRequest(request, request.identity.id, request.authenticator.loginInfo, duration, r.header.status)
+          r
+        }
+      } else {
+        Future.successful(NotFound("404 Not Found"))
       }
-    } else {
-      Future.successful(NotFound("404 Not Found"))
     }
   }
 
   def withSession(action: String)(block: (SecuredRequest[AnyContent]) => Future[Result]) = UserAwareAction.async { implicit request =>
     val startTime = System.nanoTime
-    val response = request.identity match {
-      case Some(user) =>
-        val secured = SecuredRequest(user, request.authenticator.getOrElse(throw new IllegalStateException()), request)
-        block(secured).map { r =>
-          val duration = ((System.nanoTime - startTime) / 1000000).toInt
-          logRequest(secured, secured.identity.id, secured.authenticator.loginInfo, duration, r.header.status)
-          r
-        }
-      case None =>
-        val user = User(
-          id = UUID.randomUUID(),
-          username = None,
-          preferences = UserPreferences(),
-          profiles = Nil,
-          created = DateUtils.now
-        )
+    metrics.timer(action).timeFuture {
+      request.identity match {
+        case Some(user) =>
+          val secured = SecuredRequest(user, request.authenticator.getOrElse(throw new IllegalStateException()), request)
+          block(secured).map { r =>
+            val duration = ((System.nanoTime - startTime) / 1000000).toInt
+            logRequest(secured, secured.identity.id, secured.authenticator.loginInfo, duration, r.header.status)
+            r
+          }
+        case None =>
+          val user = User(
+            id = UUID.randomUUID(),
+            username = None,
+            preferences = UserPreferences(),
+            profiles = Nil,
+            created = DateUtils.now
+          )
 
-        for {
-          user <- ctx.env.userService.save(user)
-          authenticator <- env.authenticatorService.create(LoginInfo("anonymous", user.id.toString))
-          value <- env.authenticatorService.init(authenticator)
-          result <- block(SecuredRequest(user, authenticator, request))
-          authedResponse <- env.authenticatorService.embed(value, result)
-        } yield {
-          env.eventBus.publish(SignUpEvent(user, request, request2Messages))
-          env.eventBus.publish(LoginEvent(user, request, request2Messages))
-          val duration = ((System.nanoTime - startTime) / 1000000).toInt
-          logRequest(request, user.id, authenticator.loginInfo, duration, authedResponse.header.status)
-          authedResponse
-        }
+          for {
+            user <- ctx.env.userService.save(user)
+            authenticator <- env.authenticatorService.create(LoginInfo("anonymous", user.id.toString))
+            value <- env.authenticatorService.init(authenticator)
+            result <- block(SecuredRequest(user, authenticator, request))
+            authedResponse <- env.authenticatorService.embed(value, result)
+          } yield {
+            env.eventBus.publish(SignUpEvent(user, request, request2Messages))
+            env.eventBus.publish(LoginEvent(user, request, request2Messages))
+            val duration = ((System.nanoTime - startTime) / 1000000).toInt
+            logRequest(request, user.id, authenticator.loginInfo, duration, authedResponse.header.status)
+            authedResponse
+          }
+      }
     }
-    response
   }
 
   private[this] def logRequest(request: RequestHeader, userId: UUID, loginInfo: LoginInfo, duration: Int, status: Int) = {

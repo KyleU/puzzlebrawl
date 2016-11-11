@@ -29,6 +29,9 @@ addSbtPlugin("io.gatling" % "gatling-sbt" % "2.1.7")
 // Source Control
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.8.4")
 
+// Dependency Resolution
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-M14-3")
+
 // App Packaging
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.1.4")
 
