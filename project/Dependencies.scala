@@ -32,7 +32,7 @@ object Dependencies {
 
   object WebJars {
     val requireJs = "org.webjars" % "requirejs" % "2.1.22"
-    val bootstrap = "org.webjars" % "bootstrap" % "3.3.6"
+    val bootstrap = "org.webjars" % "bootstrap" % "3.3.7"
     val underscore = "org.webjars" % "underscorejs" % "1.8.3"
     val d3 = "org.webjars" % "d3js" % "3.5.12"
     val nvd3 = "org.webjars" % "nvd3-community" % "1.7.0"
@@ -43,12 +43,12 @@ object Dependencies {
   }
 
   object Authentication {
-    val silhouette = "com.mohiva" %% "play-silhouette" % "3.0.4"
+    val silhouette = "com.mohiva" %% "play-silhouette" % "3.0.5"
   }
 
   object ScalaJS {
     val domVersion = "0.9.1"
-    val uPickleVersion = "0.4.3"
+    val uPickleVersion = "0.4.4"
   }
 
   object Metrics {
@@ -69,7 +69,7 @@ object Dependencies {
   }
 
   object Testing {
-    val gatlingVersion = "2.2.2"
+    val gatlingVersion = "2.2.3"
     val gatlingCore = "io.gatling" % "gatling-test-framework" % gatlingVersion % "test"
     val gatlingCharts = "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "test"
   }
