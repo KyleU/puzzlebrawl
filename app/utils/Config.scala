@@ -15,7 +15,7 @@ object Config {
 
 @javax.inject.Singleton
 class Config @javax.inject.Inject() (val cnf: play.api.Configuration) {
-  val debug = !Play.isProd(Play.current)
+  val debug = (!Play.isProd(Play.current)) || cnf.getBoolean("debug").getOrElse(false)
 
   val fileCacheDir = cnf.getString("cache.dir").getOrElse("./cache")
 
