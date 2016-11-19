@@ -12,7 +12,7 @@ object Dependencies {
   }
 
   object Akka {
-    private[this] val version = "2.4.12"
+    private[this] val version = "2.4.13"
     val actor = "com.typesafe.akka" %% "akka-actor" % version
     val remote = "com.typesafe.akka" %% "akka-remote" % version
     val logging = "com.typesafe.akka" %% "akka-slf4j" % version
@@ -31,10 +31,10 @@ object Dependencies {
   }
 
   object WebJars {
-    val requireJs = "org.webjars" % "requirejs" % "2.1.22"
+    val requireJs = "org.webjars" % "requirejs" % "2.3.2"
     val bootstrap = "org.webjars" % "bootstrap" % "3.3.7"
     val underscore = "org.webjars" % "underscorejs" % "1.8.3"
-    val d3 = "org.webjars" % "d3js" % "3.5.12"
+    val d3 = "org.webjars" % "d3js" % "3.5.17"
     val nvd3 = "org.webjars" % "nvd3-community" % "1.7.0"
   }
 
