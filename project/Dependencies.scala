@@ -1,7 +1,7 @@
 import sbt._
 
 object Dependencies {
-  val scapegoatVersion = "1.2.1"
+  val scapegoatVersion = "1.3.0"
 
   object Cache {
     val ehCache = "net.sf.ehcache" % "ehcache-core" % "2.6.11"
