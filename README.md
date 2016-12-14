@@ -2,9 +2,9 @@
 
 I had grand plans to build a web-based, server-controlled MMO version of Super Puzzle Fighter. 
 
-I finished the product, but couldn't find a partner that had the skills and wanted to help.
+I finished the product, but couldn't find a partner that had graphic design and marketing skills that wanted to help.
 
-So, here's Puzzle Brawl. You can download and run it as a normal SBT project.
+So, here's Puzzle Brawl. You can download and run it as a normal SBT project, or see it in action at [https://puzzlebrawl.com](https://puzzlebrawl.com)
 
 While I doubt anyone will get much use out of the game (though, try it out, it's fun).
 
