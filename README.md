@@ -11,4 +11,3 @@ While I doubt anyone will get much use out of the game (though, try it out, it's
 It uses WebSockets to pass game information as fast as possible, using a shared Scala library that compiles to both Scala and JS. All the animations and tweening are handled by Phaser.
  
 The entire app is a well-groomed project, and serves as a good "kitchen-sink" example Scala project.
-
