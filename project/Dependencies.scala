@@ -12,7 +12,7 @@ object Dependencies {
   }
 
   object Akka {
-    private[this] val version = "2.4.14"
+    private[this] val version = "2.4.16"
     val actor = "com.typesafe.akka" %% "akka-actor" % version
     val remote = "com.typesafe.akka" %% "akka-remote" % version
     val logging = "com.typesafe.akka" %% "akka-slf4j" % version
